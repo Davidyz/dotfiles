@@ -1,1 +1,74 @@
-/home/davidyz/.config/alacritty/alacritty.yml
+# Colors (Pencil Dark)
+colors:
+  # Default Colors
+  primary:
+    background: '0x212121'
+    foreground: '0xf1f1f1'
+  # Normal colors
+  normal:
+    black:   '0x212121'
+    red:     '0xc30771'
+    green:   '0x10a778'
+    yellow:  '0xa89c14'
+    blue:    '0x008ec4'
+    magenta: '0x523c79'
+    cyan:    '0x20a5ba'
+    white:   '0xe0e0e0'
+  # Bright colors
+  bright:
+    black:   '0x818181'
+    red:     '0xfb007a'
+    green:   '0x5fd7af'
+    yellow:  '0xf3e430'
+    blue:    '0x20bbfc'
+    magenta: '0x6855de'
+    cyan:    '0x4fb8cc'
+    white:   '0xf1f1f1'
+
+font:
+  # The normal (roman) font face to use.
+  normal:
+    family: Roboto Mono
+    style: Regular
+
+  # The bold font face
+  bold:
+    family: Roboto Mono
+    style: Bold
+
+  # The italic font face
+  italic:
+    family: Roboto Mono
+    style: Italic
+  size: 12.5
+
+window:
+  scrolling:
+    # Maximum number of lines in the scrollback buffer.
+    # Specifying '0' will disable scrolling.
+    history: 10000
+    # Number of lines the viewport will move for every line scrolled when
+    # scrollback is enabled (history > 0).
+    # multiplier: 10
+
+  # If `true`, bold text is drawn using the bright color variants.
+  # draw_bold_text_with_bright_colors: true
+
+  # selection:
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
+  # save_to_clipboard: true
+  live_config_reload: true
+  fullscreen: true
+  startup_mode: Maximized
+
+key_bindings:
+  - { key: V, mods: Control|Shift, action: Paste }
+  - { key: C, mods: Control|Shift, action: Copy }
+  - { key: Key0, mods: Control, action: ResetFontSize }
+  - { key: Equals, mods: Control, action: IncreaseFontSize }
+  - { key: Minus, mods: Control, action: DecreaseFontSize }
+  - { key: Minus, mods: Alt, action: ScrollLineUp }
+  - { key: Equals, mods: Alt, action: ScrollLineDown }
+  - { key: PageUp, mods: Alt, action: ScrollPageUp }
+  - { key: PageDown, mods: Alt, action: ScrollPageDown }
+  - { key: T, mods: Control|Shift, action: SpawnNewInstance }
