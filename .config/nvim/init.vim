@@ -3,6 +3,7 @@ filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 call plug#begin('~/.vim/plugged')
+Plug 'easymotion/vim-easymotion'
 Plug 'neovimhaskell/haskell-vim', { 'for': ['haskell', 'hs'] }
 Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc', 'latex'] }
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'latex'] }
@@ -24,9 +25,10 @@ Plug 'ervandew/supertab'
 Plug 'mikelue/vim-maven-plugin'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'chaoren/vim-wordmotion'
+Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
 
 if has('nvim')
-  Plug 'neoclide/coc.nvim',  { 'branch': 'release' }
+  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'github/copilot.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
 endif
@@ -75,6 +77,7 @@ set nofoldenable
 set foldlevelstart=99
 set mouse=a
 set noswapfile
+" assumes set ignorecase smartcase
 
 nnoremap <space> za
 set background=dark
@@ -139,8 +142,10 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
 
@@ -231,7 +236,7 @@ filetype detect
 augroup filetype
   au BufRead,BufNewFile *.flex,*.jflex,*.lex    set filetype=jflex
 augroup END
-autocmd FileType jflex setlocal expandtab autoindent ts=8 shiftwidth=0 softtabstop=-1
+autocmd FileType jflex setlocal expandtab autoindent ts=4 shiftwidth=0 softtabstop=-1
 
 if index(["jflex", "flex", "lex"], &ft) != -1
   so ~/.config/nvim/syntax/jflex.vim
@@ -243,11 +248,13 @@ augroup END
 autocmd FileType cup setlocal expandtab autoindent ts=4 shiftwidth=0 softtabstop=-1 omnifunc=javacomplete#Complete 
 
 autocmd FileType py setlocal ts=4 expandtab autoindent 
+autocmd FileType lark setlocal ts=4 expandtab autoindent 
 autocmd FileType markdown setlocal ts=2 expandtab autoindent 
 autocmd FileType pandoc setlocal ts=2 expandtab autoindent 
 autocmd FileType vim setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
-autocmd FileType c setlocal ts=8 expandtab autoindent shiftwidth=0 softtabstop=-1
-autocmd FileType arduino setlocal ts=8 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/davidyz/Arduino/libraries/
+autocmd FileType c setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
+autocmd FileType cpp setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
+autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/davidyz/Arduino/libraries/
 autocmd FileType haskell setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType html setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType xml setlocal ts=2 expandtab autoindent sw=2
@@ -369,3 +376,5 @@ highlight Pmenu ctermbg=DarkRed
 " ranger related
 let g:ranger_replace_netrw = 1
 set conceallevel=0
+
+let b:copilot_enabled = 0
