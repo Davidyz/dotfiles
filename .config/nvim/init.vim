@@ -36,6 +36,10 @@ endif
 " All of your Plugins must be added before the following line
 call plug#end()
 
+if has('unix')
+  let g:python3_host_prog = "/usr/bin/python3"
+endif
+
 let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker']
 
 filetype plugin indent on    " required
@@ -138,6 +142,9 @@ endfunction
 nmap <silent> gd :call <SID>GoToDefinition()<CR>
 nmap <silent> gb :call GoBack()<CR>
 
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>r <Plug>(coc-rename)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
