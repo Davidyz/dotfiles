@@ -1,3 +1,7 @@
+if &shell =~# "\c*fish"
+  set shell=sh
+endif
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -26,11 +30,15 @@ Plug 'mikelue/vim-maven-plugin'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'chaoren/vim-wordmotion'
 Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
+Plug 'ryanoasis/vim-devicons'
+Plug 'dag/vim-fish'
+Plug 'nvie/vim-flake8', { 'for': ['py'] }
 
 if has('nvim')
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'github/copilot.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
+  " Plug 'kyazdani42/nvim-web-devicons'
 endif
 
 " All of your Plugins must be added before the following line
@@ -45,18 +53,7 @@ let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh'
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 filetype plugin on
-
-" All system-wide defaults are set in $VIMRUNTIME/archlinux.vim (usually just
-" /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
-" you can find below.  If you wish to change any of those settings, you should
-" do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
-" everytime an upgrade of the vim packages is performed.  It is recommended to
-" make changes after sourcing archlinux.vim since it alters the value of the
-" 'compatible' option.
-
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages.
-" runtime! archlinux.vim
+set encoding=UTF-8
 
 " If you prefer the old-style vim functionalty, add 'runtime! vimrc_example.vim'
 " Or better yet, read /usr/share/vim/vim80/vimrc_example.vim or the vim manual
@@ -111,10 +108,11 @@ map <C-PageUp> <Esc>:tabprevious<CR>
 map <C-PageDown> <Esc>:tabnext<CR>
 imap <C-PageUp> <Esc>:tabprevious<CR>
 imap <C-PageDown> <Esc>:tabnext<CR>
-noremap <C-t> <Esc>:tabnew<CR>
 map <C-S-PageUp> <Esc>:-tabmove<CR>
 map <C-S-PageDown> <Esc>:+tabmove<CR>
-
+map <C-w> <Esc>:tabclose<CR>
+imap <C-w> <Esc>:tabclose<CR>
+noremap <C-t> <Esc>:tabnew<CR>
 nnoremap <S-f> :tabnew<CR>:FZF<CR>
 nnoremap <S-r> :tabnew<CR>:Rg<CR>
 
@@ -213,29 +211,38 @@ function! WordCount()
   endif
 endfunction
 
+function! LightlineWebDevIcons()
+  return WebDevIconsGetFileTypeSymbol(bufname())
+endfunction
+
 let g:lightline = { 
-      \ 'active': {
-        \ 'left': [ ['mode', 'paste'],
-        \             ['gitbranch', 'readonly', 'absolutepath', 'modified'] ],
-        \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
-        \ },
-        \ 'component': {
-          \   'readonly': '%{&filetype=="help"?"":&readonly?"\ue0a2":""}',
-          \   'modified': '%{&filetype=="help"?"":&modified?"\ue0a0":&modifiable?"":"-"}',
-          \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-          \   'gitbranch': gitbranch#name()
+      \   'colorscheme': 'wombat',
+        \ 'active': {
+          \ 'left': [ ['mode', 'paste'], 
+          \           ['gitbranch'], 
+          \           ['readonly', 'icon', 'absolutepath', 'modified']] ,
+          \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
           \ },
-          \ 'component_function': {
-            \   'wordcount': 'WordCount'
+          \ 'component': {
+            \   'readonly': '%{&filetype=="help"?"":&readonly?"\ue0a2":""}',
+            \   'modified': '%{&filetype=="help"?"":&modified?"\ue0a0":&modifiable?"":"-"}',
+            \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
+            \   'gitbranch': gitbranch#name()
             \ },
-            \ 'component_visible_condition': {
-              \   'readonly': '(&filetype!="help"&& &readonly)',
-              \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-              \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+            \ 'component_function': {
+              \   'wordcount': 'WordCount',
+              \   'icon': 'LightlineWebDevIcons'
               \ },
-              \ 'separator': { 'left': "", 'right': "" },
-              \ 'subseparator': { 'left': "|", 'right': "|" }
-              \ } 
+              \ 'component_visible_condition': {
+                \   'readonly': '(&filetype!="help"&& &readonly)',
+                \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+                \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
+                \   'gitbranch': 'gitbranch#name() != ""'
+                \ },
+                \   'separator': { 'left': '', 'right': '' },
+                \   'subseparator': { 'left': '', 'right': '' }
+                \ }
+
 set noshowmode
 
 filetype detect
@@ -254,7 +261,7 @@ augroup filetype
 augroup END
 autocmd FileType cup setlocal expandtab autoindent ts=4 shiftwidth=0 softtabstop=-1 omnifunc=javacomplete#Complete 
 
-autocmd FileType py setlocal ts=4 expandtab autoindent 
+autocmd FileType py setlocal ts=4 expandtab autoindent highlight ColorColumn ctermbg=magenta :call matchadd('ColorColumn', '\%81v', 100)
 autocmd FileType lark setlocal ts=4 expandtab autoindent 
 autocmd FileType markdown setlocal ts=2 expandtab autoindent 
 autocmd FileType pandoc setlocal ts=2 expandtab autoindent 
@@ -267,6 +274,7 @@ autocmd FileType html setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType xml setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType sh setlocal ts=4 expandtab autoindent
 autocmd FileType zsh setlocal ts=4 expandtab autoindent
+autocmd FileType fish setlocal ts=4 expandtab autoindent
 
 autocmd BufNewFile *.py
       \ exe "normal I\nif __name__ == '__main__':" .  "\npass\<Esc>1G"
@@ -385,3 +393,9 @@ let g:ranger_replace_netrw = 1
 set conceallevel=0
 
 let b:copilot_enabled = 0
+
+function! StartifyEntryFormat()
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
+
+
