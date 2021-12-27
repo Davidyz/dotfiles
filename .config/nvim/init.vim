@@ -33,6 +33,7 @@ Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
 Plug 'ryanoasis/vim-devicons'
 Plug 'dag/vim-fish'
 Plug 'nvie/vim-flake8', { 'for': ['py'] }
+Plug 'joshdick/onedark.vim'
 
 if has('nvim')
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -47,6 +48,7 @@ call plug#end()
 if has('unix')
   let g:python3_host_prog = "/usr/bin/python3"
 endif
+
 
 let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker']
 
@@ -81,7 +83,6 @@ set noswapfile
 " assumes set ignorecase smartcase
 
 nnoremap <space> za
-set background=dark
 filetype plugin on
 map <Home> ^
 imap <Home> <Esc>^i
@@ -215,8 +216,13 @@ function! LightlineWebDevIcons()
   return WebDevIconsGetFileTypeSymbol(bufname())
 endfunction
 
+function! LightlineTabWebDevIcons(n)
+  let l:bufnr = tabpagebuflist(a:n)[tabpagewinnr(a:n) - 1]
+  return WebDevIconsGetFileTypeSymbol(bufname(l:bufnr))
+endfunction
+
 let g:lightline = { 
-      \   'colorscheme': 'wombat',
+      \   'colorscheme': 'onedark',
         \ 'active': {
           \ 'left': [ ['mode', 'paste'], 
           \           ['gitbranch'], 
@@ -240,7 +246,10 @@ let g:lightline = {
                 \   'gitbranch': 'gitbranch#name() != ""'
                 \ },
                 \   'separator': { 'left': '', 'right': '' },
-                \   'subseparator': { 'left': '', 'right': '' }
+                \   'subseparator': { 'left': '', 'right': '' },
+                \ 'tab_component_function': {
+                  \ "tabnum": "LightlineTabWebDevIcons"
+                  \ }
                 \ }
 
 set noshowmode
@@ -397,5 +406,12 @@ let b:copilot_enabled = 0
 function! StartifyEntryFormat()
   return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
+if has('nvim')
+    au! TabNewEntered * Startify
+endif
 
-
+if has('termguicolors')
+  set termguicolors
+  set background=dark
+endif
+colorscheme onedark
