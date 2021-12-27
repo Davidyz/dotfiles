@@ -34,6 +34,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'dag/vim-fish'
 Plug 'nvie/vim-flake8', { 'for': ['py'] }
 Plug 'joshdick/onedark.vim'
+Plug 'vim-scripts/crontab.vim'
 
 if has('nvim')
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
