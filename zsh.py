@@ -23,6 +23,9 @@ if ZSH is None:
         print("zsh not found. Exitting.")
         exit(0)
 
+if (not os.path.islink('~/.zshrc')) and os.path.isfile('~/.zshrc'):
+    os.system('mv ~/.zshrc, ~/.zshrc.old')
+
 if isinstance(ZSH_CUSTOM, str):
     os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'plugins')))
     for name in plugins:
