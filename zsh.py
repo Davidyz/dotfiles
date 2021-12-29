@@ -12,7 +12,7 @@ plugins = {
     "zsh-syntax-highlighting": "https://github.com/zsh-users/zsh-syntax-highlighting.git",
     "zsh-256color": "https://github.com/chrissicool/zsh-256color",
     "zsh-completions": "https://github.com/zsh-users/zsh-completions",
-    "docker": "git@github.com:srijanshetty/docker-zsh.git"
+    "docker": "https://github.com/srijanshetty/docker-zsh.git"
 }
 
 themes = {
