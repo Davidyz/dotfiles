@@ -42,7 +42,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 if has('nvim')
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'github/copilot.vim'
-  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'pandoc']}
 endif
 
 " All of your Plugins must be added before the following line
