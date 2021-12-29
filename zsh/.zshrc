@@ -93,6 +93,9 @@ plugins=(
     ufw
     stack
     cabal
+    zsh-256color
+    zsh-completions
+    docker
 )
 
 autoload -Uz compinit

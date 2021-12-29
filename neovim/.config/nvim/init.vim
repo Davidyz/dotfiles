@@ -31,16 +31,18 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'chaoren/vim-wordmotion'
 Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
 Plug 'ryanoasis/vim-devicons'
-Plug 'dag/vim-fish'
-Plug 'nvie/vim-flake8', { 'for': ['py'] }
-Plug 'joshdick/onedark.vim'
+Plug 'nvie/vim-flake8', { 'for': ['python'] }
+Plug 'psf/black', { 'for': ['python'], 'branch': 'stable' }
 Plug 'vim-scripts/crontab.vim'
+
+Plug 'ayu-theme/ayu-vim'
+Plug 'joshdick/onedark.vim'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
 if has('nvim')
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'github/copilot.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
-  " Plug 'kyazdani42/nvim-web-devicons'
 endif
 
 " All of your Plugins must be added before the following line
@@ -65,7 +67,6 @@ set encoding=UTF-8
 " do not load defaults if ~/.vimrc is missing
 "let skip_defaults_vim=1
 set nu rnu
-:color delek
 set ts=4
 
 if has("autocmd")                                                          
@@ -223,11 +224,11 @@ function! LightlineTabWebDevIcons(n)
 endfunction
 
 let g:lightline = { 
-      \   'colorscheme': 'onedark',
+      \   'colorscheme': 'ayu',
         \ 'active': {
           \ 'left': [ ['mode', 'paste'], 
-          \           ['gitbranch'], 
-          \           ['readonly', 'icon', 'absolutepath', 'modified']] ,
+          \           ['readonly', 'icon', 'absolutepath', 'modified'],
+          \           ['gitbranch']] ,
           \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
           \ },
           \ 'component': {
@@ -277,6 +278,8 @@ autocmd FileType markdown setlocal ts=2 expandtab autoindent
 autocmd FileType pandoc setlocal ts=2 expandtab autoindent 
 autocmd FileType vim setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType c setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
+autocmd FileType javascript setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
+autocmd FileType json setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType cpp setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/davidyz/Arduino/libraries/
 autocmd FileType haskell setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
@@ -384,6 +387,8 @@ endif
 
 if &filetype == 'python'
   let b:coc_pairs = [["'''", "\n'''"]]
+  nnoremap <F9> :Black<CR>
+  let g:black_linelength = 80
 endif
 
 if &filetype == 'jsp'
@@ -415,4 +420,6 @@ if has('termguicolors')
   set termguicolors
   set background=dark
 endif
-colorscheme onedark
+
+let g:ayucolor = 'mirage'
+colorscheme ayu

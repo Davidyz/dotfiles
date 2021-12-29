@@ -27,5 +27,7 @@
 
 	"coc.preferences.jumpCommand": "tab drop",
 
-	"python.venvPath": "/home/davidyz/.local/share/virtualenvs/"
+	"python.venvPath": "/home/davidyz/.local/share/virtualenvs/",
+    "python.pythonPath": "/usr/bin/python3",
+    "python.formatting.provider":"autopep8"
 }
