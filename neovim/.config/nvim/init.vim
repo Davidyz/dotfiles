@@ -32,7 +32,7 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvie/vim-flake8', { 'for': ['python'] }
-Plug 'psf/black', { 'for': ['python'], 'branch': 'stable' }
+Plug 'psf/black', { 'for': ['python'] }
 Plug 'vim-scripts/crontab.vim'
 
 Plug 'ayu-theme/ayu-vim'
