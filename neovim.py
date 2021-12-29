@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 
+HOME = os.path.expanduser('~')
 commands = [
     """sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'""",
     "python -m ensurepip",
@@ -25,12 +26,12 @@ elif shutil.which("apt"):
     commands.extend(extra_commands)
 
 def pre():
-    if os.path.isfile(os.path.expanduser('~/.config/nvim/init.vim')) and not os.path.islink(os.path.expanduser('~/.config/nvim/init.vim')):
-        os.system('mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.old')
-    if os.path.isfile(os.path.expanduser('~/.config/nvim/coc-settings.json')) and not os.path.islink(os.path.expanduser('~/.config/nvim/coc-settings.json')):
-        os.system('mv ~/.config/nvim/coc-settings.json ~/.config/nvim/coc-settings.json.old')
-    if not os.path.isdir(os.path.expanduser('~/.config/nvim')):
-        os.makedirs('~/.config/nvim')
+    if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')):
+        os.system(f'mv {HOME}/.config/nvim/init.vim {HOME}/.config/nvim/init.vim.old')
+    if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')):
+        os.system(f'mv {HOME}/.config/nvim/coc-settings.json {HOME}/.config/nvim/coc-settings.json.old')
+    if not os.path.isdir(os.path.expanduser(f'{HOME}/.config/nvim')):
+        os.makedirs(f'{HOME}/.config/nvim')
 
 def post():
     for command in commands:

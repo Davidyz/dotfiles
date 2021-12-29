@@ -2,7 +2,8 @@ import os
 import shutil
 import sys
 
-ZSH_PATH = os.path.expanduser('~/.oh-my-zsh/')
+HOME = os.path.expanduser("~")
+ZSH_PATH = os.path.expanduser(f'{HOME}/.oh-my-zsh/')
 ZSH_CUSTOM_PATH = os.path.join(ZSH_PATH, 'custom')
 ZSH_CUSTOM = ZSH_CUSTOM_PATH if os.path.isdir(ZSH_CUSTOM_PATH) else None
 ZSH = ZSH_PATH if os.path.isdir(ZSH_PATH) else None
@@ -27,8 +28,8 @@ if ZSH is None:
         exit(0)
 
 def pre():
-    if (not os.path.islink(os.path.expanduser('~/.zshrc'))) and os.path.isfile(os.path.expanduser('~/.zshrc')):
-        os.system('mv ~/.zshrc ~/.zshrc.old')
+    if (not os.path.islink(os.path.expanduser(f'{HOME}/.zshrc'))) and os.path.isfile(os.path.expanduser(f'{HOME}/.zshrc')):
+        os.system(f'mv {HOME}/.zshrc {HOME}/.zshrc.old')
 
 def post():
     if isinstance(ZSH_CUSTOM, str):
