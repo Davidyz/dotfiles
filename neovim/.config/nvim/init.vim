@@ -274,8 +274,8 @@ autocmd FileType cup setlocal expandtab autoindent ts=4 shiftwidth=0 softtabstop
 
 autocmd FileType py setlocal ts=4 expandtab autoindent highlight ColorColumn ctermbg=magenta :call matchadd('ColorColumn', '\%81v', 100)
 autocmd FileType lark setlocal ts=4 expandtab autoindent 
-autocmd FileType markdown setlocal ts=2 expandtab autoindent 
-autocmd FileType pandoc setlocal ts=2 expandtab autoindent 
+autocmd FileType markdown setlocal ts=2 expandtab autoindent
+autocmd FileType pandoc setlocal ts=2 expandtab autoindent
 autocmd FileType vim setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType c setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType javascript setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
@@ -405,7 +405,7 @@ highlight Pmenu ctermbg=DarkRed
 
 " ranger related
 let g:ranger_replace_netrw = 1
-set conceallevel=0
+let g:vim_json_conceal = 0
 
 let b:copilot_enabled = 0
 
