@@ -6,7 +6,7 @@ HOME = os.path.expanduser('~')
 commands = [
     """sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'""",
     "python -m ensurepip",
-    "python -m pip install jupytext flake8 black",
+    "python -m pip install jupytext flake8 black neovim"
 ]
 
 if shutil.which("pacman"):
@@ -26,12 +26,12 @@ elif shutil.which("apt"):
     commands.extend(extra_commands)
 
 def pre():
+    if not os.path.isdir(os.path.expanduser(f'{HOME}/.config/nvim')):
+        os.makedirs(f'{HOME}/.config/nvim')
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')):
         os.system(f'mv {HOME}/.config/nvim/init.vim {HOME}/.config/nvim/init.vim.old')
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')):
         os.system(f'mv {HOME}/.config/nvim/coc-settings.json {HOME}/.config/nvim/coc-settings.json.old')
-    if not os.path.isdir(os.path.expanduser(f'{HOME}/.config/nvim')):
-        os.makedirs(f'{HOME}/.config/nvim')
 
 def post():
     for command in commands:
