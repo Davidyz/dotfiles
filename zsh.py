@@ -40,3 +40,5 @@ if isinstance(ZSH_CUSTOM, str):
         url = themes[name]
         if not name in os.listdir():
             os.system(f'git clone {url} {name}')
+
+os.system(f'chsh --shell {shutil.which("zsh")} davidyz')
