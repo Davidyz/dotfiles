@@ -1,4 +1,5 @@
 import os, shutil
+
 ZSH_PATH = os.path.expanduser('~/.oh-my-zsh/')
 ZSH_CUSTOM_PATH = os.path.join(ZSH_PATH, 'custom')
 ZSH_CUSTOM = ZSH_CUSTOM_PATH if os.path.isdir(ZSH_CUSTOM_PATH) else None
@@ -23,10 +24,8 @@ if ZSH is None:
         print("zsh not found. Exitting.")
         exit(0)
 
-if (not os.path.islink('~/.zshrc')) and os.path.isfile('~/.zshrc'):
+if (not os.path.islink(os.path.expanduser('~/.zshrc'))) and os.path.isfile(os.path.expanduser('~/.zshrc')):
     os.system('mv ~/.zshrc, ~/.zshrc.old')
-elif os.path.islink('~/.zshrc'):
-    os.system('rm ~/.zshrc')
 
 if isinstance(ZSH_CUSTOM, str):
     os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'plugins')))
