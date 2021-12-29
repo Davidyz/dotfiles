@@ -25,12 +25,8 @@ elif shutil.which("apt"):
 
 if os.path.isfile('~/.config/nvim/init.vim') and not os.path.islink('~/.config/nvim/init.vim'):
     os.system('mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.old')
-elif os.path.islink('~/.config/nvim/init.vim'):
-    os.system('rm ~/.config/nvim/init.vim')
 if os.path.isfile('~/.config/nvim/coc-settings.json') and not os.path.islink('~/.config/nvim/coc-settings.json'):
     os.system('mv ~/.config/nvim/coc-settings.json ~/.config/nvim/coc-settings.json.old')
-elif os.path.islink('~/.config/nvim/coc-settings.json'):
-    os.system('rm ~/.config/nvim/coc-settings.json')
 
 for command in commands:
     os.system(command)
