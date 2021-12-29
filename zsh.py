@@ -25,6 +25,8 @@ if ZSH is None:
 
 if (not os.path.islink('~/.zshrc')) and os.path.isfile('~/.zshrc'):
     os.system('mv ~/.zshrc, ~/.zshrc.old')
+elif os.path.islink('~/.zshrc'):
+    os.system('rm ~/.zshrc')
 
 if isinstance(ZSH_CUSTOM, str):
     os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'plugins')))
