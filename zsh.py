@@ -1,4 +1,6 @@
-import os, shutil
+import os
+import shutil
+import sys
 
 ZSH_PATH = os.path.expanduser('~/.oh-my-zsh/')
 ZSH_CUSTOM_PATH = os.path.join(ZSH_PATH, 'custom')
@@ -24,20 +26,26 @@ if ZSH is None:
         print("zsh not found. Exitting.")
         exit(0)
 
-if (not os.path.islink(os.path.expanduser('~/.zshrc'))) and os.path.isfile(os.path.expanduser('~/.zshrc')):
-    os.system('mv ~/.zshrc, ~/.zshrc.old')
+def pre():
+    if (not os.path.islink(os.path.expanduser('~/.zshrc'))) and os.path.isfile(os.path.expanduser('~/.zshrc')):
+        os.system('mv ~/.zshrc ~/.zshrc.old')
 
-if isinstance(ZSH_CUSTOM, str):
-    os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'plugins')))
-    for name in plugins:
-        url = plugins[name]
-        if not name in os.listdir():
-            os.system(f'git clone {url} {name}')
+def post():
+    if isinstance(ZSH_CUSTOM, str):
+        os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'plugins')))
+        for name in plugins:
+            url = plugins[name]
+            if not name in os.listdir():
+                os.system(f'git clone {url} {name}')
 
-    os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'themes')))
-    for name in themes:
-        url = themes[name]
-        if not name in os.listdir():
-            os.system(f'git clone {url} {name}')
+        os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, 'themes')))
+        for name in themes:
+            url = themes[name]
+            if not name in os.listdir():
+                os.system(f'git clone {url} {name}')
 
-os.system(f'chsh --shell {shutil.which("zsh")} davidyz')
+if __name__ == '__main__':
+    if 'pre' in sys.argv:
+        pre()
+    elif 'post' in sys.argv:
+        post()
