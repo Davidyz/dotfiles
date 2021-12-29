@@ -29,9 +29,9 @@ def pre():
     if not os.path.isdir(os.path.expanduser(f'{HOME}/.config/nvim')):
         os.makedirs(f'{HOME}/.config/nvim')
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')):
-        os.system(f'mv {HOME}/.config/nvim/init.vim {HOME}/.config/nvim/init.vim.old')
+        os.system(f'rm {HOME}/.config/nvim/init.vim')
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')):
-        os.system(f'mv {HOME}/.config/nvim/coc-settings.json {HOME}/.config/nvim/coc-settings.json.old')
+        os.system(f'rm {HOME}/.config/nvim/coc-settings.json')
 
 def post():
     for command in commands:
