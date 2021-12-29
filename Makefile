@@ -4,7 +4,7 @@ PC = alacritty
 server:
 	for i in $(SERVER); do \
 		stow -vS -t ~ $$i --override=.*; \
-		if test $$i.py ; \
+		if test -f $$i.py ; \
 			then python $$i.py; \
 		fi; \
 	done
@@ -12,8 +12,8 @@ server:
 pc:
 	make server
 	for i in $(PC); do \
-		stow -vS -t ~ $(i) --override=".*"; \
-		if test $$i.py ; \
+		stow -vS -t ~ $$i --override=".*"; \
+		if test -f $$i.py ; \
 			then python $$i.py; \
 		fi; \
 	done
