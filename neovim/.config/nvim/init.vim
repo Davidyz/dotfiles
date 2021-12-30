@@ -284,6 +284,7 @@ autocmd FileType cpp setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop
 autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/davidyz/Arduino/libraries/
 autocmd FileType haskell setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType html setlocal ts=2 expandtab autoindent sw=2
+autocmd FileType yaml setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType xml setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType sh setlocal ts=4 expandtab autoindent
 autocmd FileType zsh setlocal ts=4 expandtab autoindent
