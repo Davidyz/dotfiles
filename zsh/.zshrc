@@ -102,8 +102,7 @@ autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
 
-unsetopt share_history
-setopt noshare_history
+unsetopt sharehistory
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
@@ -118,7 +117,7 @@ alias arduino-burn="arduino-compile && sudo arduino-upload"
 alias pandoc-pdf="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"Arial\" -V fontsize=12"
 alias pandoc-cn="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"NotoCJK\""
 alias alacritty="env WINIT_UNIX_BACKEND=x11 alacritty"
-export TERM=xterm-256color
+# export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 export PYTHONPATH=$HOME/git/learning_python/module/
 source $ZSH/oh-my-zsh.sh
@@ -177,3 +176,7 @@ PROMPT='%{$fg[white]%}$(virtualenv_info)%{$reset_color%}%'+$PROMPT
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+unsetopt null_glob 
+unsetopt csh_null_glob
+unsetopt nomatch

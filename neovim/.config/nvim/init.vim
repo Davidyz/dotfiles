@@ -162,7 +162,7 @@ if &ft=="python"
 endif
 
 set laststatus=2
-if !has('gui_running')
+if !has('gui_running') && !has('termguicolors')
   set t_Co=256
 endif
 
