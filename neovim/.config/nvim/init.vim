@@ -53,7 +53,7 @@ if has('unix')
 endif
 
 
-let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker']
+let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker', 'coc-sumneko-lua']
 
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -424,3 +424,5 @@ endif
 
 let g:ayucolor = 'mirage'
 colorscheme ayu
+
+ hi MatchParen term=NONE cterm=NONE gui=NONE
