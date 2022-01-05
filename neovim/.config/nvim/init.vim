@@ -119,30 +119,6 @@ noremap <C-t> <Esc>:tabnew<CR>
 nnoremap <S-f> :tabnew<CR>:FZF<CR>
 nnoremap <S-r> :tabnew<CR>:Rg<CR>
 
-let g:line_cache = -1
-let g:column_cache = -1
-function! GoBack ()
-  if g:line_cache >= 0 && g:column_cache >= 0
-    call cursor(g:line_cache, g:column_cache)
-  endif
-endfunction
-
-function! s:GoToDefinition()
-  let g:line_cache = line('.')
-  let g:column_cache = virtcol('.')
-  if CocAction('jumpDefinition')
-    return v:true
-  endif
-
-  let ret = execute("silent! normal \<C-]>")
-  if ret =~ "Error" || ret =~ "错误"
-    call searchdecl(expand('<cword>'))
-  endif
-endfunction
-
-nmap <silent> gd :call <SID>GoToDefinition()<CR>
-nmap <silent> gb :call GoBack()<CR>
-
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>r <Plug>(coc-rename)
