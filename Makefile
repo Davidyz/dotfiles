@@ -1,5 +1,5 @@
 SERVER = neovim zsh
-PC = alacritty
+PC = alacritty chrome
 
 server:
 	for i in $(SERVER); do \
