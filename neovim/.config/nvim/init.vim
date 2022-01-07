@@ -170,8 +170,6 @@ function! WordCount()
   if index(g:texts ,&ft) == -1
     return ""
   else
-    "    return len(split(join(getline(1,'$'), ' '), '\s\+'))
-
     let s:old_status = v:statusmsg
     let position = getpos(".")
     exe ":silent normal g\<c-g>"
@@ -202,9 +200,8 @@ endfunction
 let g:lightline = { 
       \   'colorscheme': 'ayu',
       \ 'active': {
-        \ 'left': [ ['mode', 'paste'], 
-        \           ['readonly', 'icon', 'absolutepath', 'modified'],
-        \           ['gitbranch']] ,
+        \ 'left': [ ['readonly', 'mode', 'paste'], 
+        \           ['gitbranch', 'icon', 'absolutepath', 'modified'] ],
         \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
         \ },
         \ 'component': {
