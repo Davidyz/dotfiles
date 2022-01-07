@@ -201,33 +201,33 @@ endfunction
 
 let g:lightline = { 
       \   'colorscheme': 'ayu',
-        \ 'active': {
-          \ 'left': [ ['mode', 'paste'], 
-          \           ['readonly', 'icon', 'absolutepath', 'modified'],
-          \           ['gitbranch']] ,
-          \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
+      \ 'active': {
+        \ 'left': [ ['mode', 'paste'], 
+        \           ['readonly', 'icon', 'absolutepath', 'modified'],
+        \           ['gitbranch']] ,
+        \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
+        \ },
+        \ 'component': {
+          \   'readonly': '%{&filetype=="help"?"":&readonly?"\ue0a2":""}',
+          \   'modified': '%{&filetype=="help"?"":&modified?"\ue0a0":&modifiable?"":"-"}',
+          \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
+          \   'gitbranch': gitbranch#name()
           \ },
-          \ 'component': {
-            \   'readonly': '%{&filetype=="help"?"":&readonly?"\ue0a2":""}',
-            \   'modified': '%{&filetype=="help"?"":&modified?"\ue0a0":&modifiable?"":"-"}',
-            \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-            \   'gitbranch': gitbranch#name()
+          \ 'component_function': {
+            \   'wordcount': 'WordCount',
+            \   'icon': 'LightlineWebDevIcons'
             \ },
-            \ 'component_function': {
-              \   'wordcount': 'WordCount',
-              \   'icon': 'LightlineWebDevIcons'
+            \ 'component_visible_condition': {
+              \   'readonly': '(&filetype!="help"&& &readonly)',
+              \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+              \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
+              \   'gitbranch': 'gitbranch#name() != ""'
               \ },
-              \ 'component_visible_condition': {
-                \   'readonly': '(&filetype!="help"&& &readonly)',
-                \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-                \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
-                \   'gitbranch': 'gitbranch#name() != ""'
-                \ },
-                \   'separator': { 'left': '', 'right': '' },
-                \   'subseparator': { 'left': '', 'right': '' },
-                \ 'tab_component_function': {
-                  \ "tabnum": "LightlineTabWebDevIcons"
-                  \ }
+              \   'separator': { 'left': '', 'right': '' },
+              \   'subseparator': { 'left': '', 'right': '' },
+              \ 'tab_component_function': {
+                \ "tabnum": "LightlineTabWebDevIcons"
+                \ }
                 \ }
 
 set noshowmode
@@ -390,7 +390,7 @@ function! StartifyEntryFormat()
   return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
 if has('nvim')
-    au! TabNewEntered * Startify
+  au! TabNewEntered * Startify
 endif
 
 if has('termguicolors')
@@ -401,4 +401,6 @@ endif
 let g:ayucolor = 'mirage'
 colorscheme ayu
 
- hi MatchParen term=NONE cterm=NONE gui=NONE
+hi MatchParen term=NONE cterm=NONE gui=NONE
+hi VertSplit guifg=black
+set fillchars+=vert:
