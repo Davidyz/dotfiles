@@ -19,6 +19,7 @@ Plug 'vim-scripts/cup.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'luochen1990/rainbow'
 Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
 Plug 'goerz/jupytext.vim'
 Plug 'udalov/javap-vim'
 Plug 'tpope/vim-surround'
@@ -27,7 +28,6 @@ Plug 'cespare/vim-toml', { 'branch': 'main' }
 Plug 'mhinz/vim-startify'
 Plug 'ervandew/supertab'
 Plug 'mikelue/vim-maven-plugin'
-Plug 'francoiscabrol/ranger.vim'
 Plug 'chaoren/vim-wordmotion'
 Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
 Plug 'ryanoasis/vim-devicons'
@@ -326,7 +326,9 @@ if exists('g:started_by_firenvim') != 0
   endif
 endif
 
-let g:rainbow_active = 1
+if index(['nerdtree'], &filetype) >= 0
+  let g:rainbow_active = 1
+endif
 
 let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
@@ -377,8 +379,6 @@ highlight CursorLine ctermbg=DarkGray cterm=none
 highlight Comment cterm=italic ctermfg=Red
 highlight Pmenu ctermbg=DarkRed
 
-" ranger related
-let g:ranger_replace_netrw = 1
 let g:vim_json_conceal = 0
 
 let b:copilot_enabled = 0
@@ -401,3 +401,8 @@ colorscheme ayu
 hi MatchParen term=NONE cterm=NONE gui=NONE
 hi VertSplit guifg=black
 set fillchars+=vert:
+
+nnoremap <Leader>t :NERDTreeToggle<CR>
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+let NERDTreeNodeDelimiter="\x07"
