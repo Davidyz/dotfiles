@@ -326,10 +326,6 @@ if exists('g:started_by_firenvim') != 0
   endif
 endif
 
-if index(['nerdtree'], &filetype) >= 0
-  let g:rainbow_active = 1
-endif
-
 let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
 let g:NERDTrimTrailingWhitespace = 1
@@ -405,4 +401,6 @@ set fillchars+=vert:
 nnoremap <Leader>t :NERDTreeToggle<CR>
 autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+autocmd BufEnter NERD_tree* :LeadingSpaceDisable
+autocmd BufEnter NERD_tree* :let g:rainbow_active = 0
 let NERDTreeNodeDelimiter="\x07"
