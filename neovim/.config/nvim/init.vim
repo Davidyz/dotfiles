@@ -40,7 +40,9 @@ Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
 if has('nvim')
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+  Plug 'IngoMeyer441/coc_current_word'
   Plug 'github/copilot.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'pandoc']}
 endif
@@ -76,6 +78,8 @@ set guicursor=
 let delimitMate_expand_cr = 1
 let s:cursor_movement = v:true
 
+
+highlight CurrentWord guibg=#cbccc6
 set foldmethod=manual
 set foldmethod=indent
 set nofoldenable
@@ -122,6 +126,8 @@ nnoremap <S-r> :tabnew<CR>:Rg<CR>
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>r <Plug>(coc-rename)
+nmap <leader>f  <Plug>(coc-fix-current)
+
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -404,3 +410,23 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 autocmd BufEnter NERD_tree* :LeadingSpaceDisable
 autocmd BufEnter NERD_tree* :let g:rainbow_active = 0
 let NERDTreeNodeDelimiter="\x07"
+
+let g:rainbow_active = 1
+
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      ["foo.bar"] = "Identifier",
+    },
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
