@@ -207,14 +207,15 @@ let g:lightline = {
       \   'colorscheme': 'ayu',
       \ 'active': {
         \ 'left': [ ['readonly', 'mode', 'paste'], 
-        \           ['gitbranch', 'icon', 'absolutepath', 'modified'] ],
+        \           ['gitbranch', 'icon', 'Hostname', 'absolutepath', 'modified'] ],
         \   'right': [ [ 'lineinfo' ], ['percent'], ['wordcount'] ],
         \ },
         \ 'component': {
           \   'readonly': '%{&filetype=="help"?"":&readonly?"\ue0a2":""}',
           \   'modified': '%{&filetype=="help"?"":&modified?"\ue0a0":&modifiable?"":"-"}',
           \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-          \   'gitbranch': gitbranch#name()
+          \   'gitbranch': gitbranch#name(),
+          \ 'Hostname': '%{$USER}@%{hostname()}:'
           \ },
           \ 'component_function': {
             \   'wordcount': 'WordCount',
