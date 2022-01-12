@@ -30,6 +30,8 @@ elif shutil.which("apt"):
     commands.extend(extra_commands)
 
 def pre():
+    if not os.path.isdir(f'{HOME}/.config'):
+        os.makedirs(f'{HOME}/.config')
     if not os.path.isdir(f'{HOME}/.config/nvim'):
         os.makedirs(f'{HOME}/.config/nvim')
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/init.vim')):

@@ -261,7 +261,7 @@ autocmd FileType c setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-
 autocmd FileType javascript setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType json setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType cpp setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
-autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/davidyz/Arduino/libraries/
+autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/$USER/Arduino/libraries/
 autocmd FileType haskell setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType html setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType yaml setlocal ts=2 expandtab autoindent sw=2

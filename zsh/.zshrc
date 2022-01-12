@@ -118,9 +118,11 @@ alias arduino-burn="arduino-compile && sudo arduino-upload"
 alias pandoc-pdf="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"Arial\" -V fontsize=12"
 alias pandoc-cn="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"NotoCJK\""
 alias alacritty="env WINIT_UNIX_BACKEND=x11 alacritty"
+alias unzip_gbk="unzip -O gbk "
 # export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 export PYTHONPATH=$HOME/git/learning_python/module/
+export ANDROID_HOME=/storage/emulated/0/
 source $ZSH/oh-my-zsh.sh
 
 zstyle ':completion:*' ignored-patterns '__pycache__'
