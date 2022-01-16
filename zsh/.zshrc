@@ -127,6 +127,11 @@ source $ZSH/oh-my-zsh.sh
 
 zstyle ':completion:*' ignored-patterns '__pycache__'
 
+if [ -f `which lsd` ]
+then
+    alias ls='lsd'
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
