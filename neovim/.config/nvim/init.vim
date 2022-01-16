@@ -42,6 +42,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+  Plug 'rafcamlet/coc-nvim-lua'
   Plug 'IngoMeyer441/coc_current_word'
   Plug 'github/copilot.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'pandoc']}
@@ -55,12 +56,14 @@ if has('unix')
 endif
 
 
-let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker', 'coc-sumneko-lua']
+let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker', 'coc-lua']
 
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 filetype plugin on
-set encoding=UTF-8
+
+lua require('misc')
+" set encoding=UTF-8
 
 " If you prefer the old-style vim functionalty, add 'runtime! vimrc_example.vim'
 " Or better yet, read /usr/share/vim/vim80/vimrc_example.vim or the vim manual
@@ -68,65 +71,62 @@ set encoding=UTF-8
 
 " do not load defaults if ~/.vimrc is missing
 "let skip_defaults_vim=1
-set nu rnu
-set ts=4
+" set nu rnu
+" set ts=4
 
 if has("autocmd")                                                          
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-set guicursor=
-let delimitMate_expand_cr = 1
+" set guicursor=
 let s:cursor_movement = v:true
 
 
 highlight CurrentWord guibg=#cbccc6
-set foldmethod=manual
-set foldmethod=indent
-set nofoldenable
-set foldlevelstart=99
-set mouse=a
-set noswapfile
+" set foldmethod=indent
+" set nofoldenable
+" set foldlevelstart=99
+" set mouse=a
+" set noswapfile
 " assumes set ignorecase smartcase
 
-nnoremap <space> za
+" nnoremap <space> za
 filetype plugin on
-map <Home> ^
-imap <Home> <Esc>^i
+" map <Home> ^
+" imap <Home> <Esc>^i
 
-nmap <A-w> <C-w>
-imap <A-w> <C-w>
-vmap <A-w> <C-w>
-tnoremap <A-Esc> <C-\><C-n>
-noremap <A-Esc> <Esc>
+" tnoremap <A-Esc> <C-\><C-n>
+" noremap <A-Esc> <Esc>
+
+lua require('keymaps.global')
 
 " split related
-noremap <silent> <C-Left> :vertical resize -1<CR>
-noremap <silent> <C-Right> :vertical resize +1<CR>
-noremap <silent> <C-Up> :resize -1<CR>
-noremap <silent> <C-Down> :resize +1<CR>
+" noremap <silent> <C-Left> :vertical resize -1<CR>
+" noremap <silent> <C-Right> :vertical resize +1<CR>
+" noremap <silent> <C-Up> :resize -1<CR>
+" noremap <silent> <C-Down> :resize +1<CR>
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 " tabs related
-map <C-PageUp> <Esc>:tabprevious<CR>
-map <C-PageDown> <Esc>:tabnext<CR>
-imap <C-PageUp> <Esc>:tabprevious<CR>
-imap <C-PageDown> <Esc>:tabnext<CR>
-map <C-S-PageUp> <Esc>:-tabmove<CR>
-map <C-S-PageDown> <Esc>:+tabmove<CR>
-map <C-w> <Esc>:tabclose<CR>
-imap <C-w> <Esc>:tabclose<CR>
-noremap <C-t> <Esc>:tabnew<CR>
-nnoremap <S-f> :tabnew<CR>:FZF<CR>
-nnoremap <S-r> :tabnew<CR>:Rg<CR>
+" map <C-PageUp> <Esc>:tabprevious<CR>
+" map <C-PageDown> <Esc>:tabnext<CR>
+" imap <C-PageUp> <Esc>:tabprevious<CR>
+" imap <C-PageDown> <Esc>:tabnext<CR>
+" map <C-S-PageUp> <Esc>:-tabmove<CR>
+" map <C-S-PageDown> <Esc>:+tabmove<CR>
+" map <C-w> <Esc>:tabclose<CR>
+" map <C-w> <Esc>:tabclose<CR>
+" noremap <C-t> <Esc>:tabnew<CR>
+" nnoremap <S-f> :tabnew<CR>:FZF<CR>
+" nnoremap <S-r> :tabnew<CR>:Rg<CR>
 
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>r <Plug>(coc-rename)
-nmap <leader>f  <Plug>(coc-fix-current)
+" xmap <leader>a <Plug>(coc-codeaction-selected)
+" nmap <leader>a <Plug>(coc-codeaction-selected)
+" nmap <leader>r <Plug>(coc-rename)
+" nmap <leader>f <Plug>(coc-fix-current)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
@@ -269,6 +269,7 @@ autocmd FileType xml setlocal ts=2 expandtab autoindent sw=2
 autocmd FileType sh setlocal ts=4 expandtab autoindent
 autocmd FileType zsh setlocal ts=4 expandtab autoindent
 autocmd FileType fish setlocal ts=4 expandtab autoindent
+autocmd FileType lua setlocal ts=2 expandtab autoindent
 
 autocmd BufNewFile *.py
       \ exe "normal I\nif __name__ == '__main__':" .  "\npass\<Esc>1G"
