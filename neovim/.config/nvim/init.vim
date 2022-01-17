@@ -45,7 +45,7 @@ if has('nvim')
   Plug 'rafcamlet/coc-nvim-lua'
   Plug 'IngoMeyer441/coc_current_word'
   Plug 'github/copilot.vim'
-  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'pandoc']}
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
 endif
 
 " All of your Plugins must be added before the following line
@@ -90,15 +90,16 @@ highlight CurrentWord guibg=#cbccc6
 " assumes set ignorecase smartcase
 
 " nnoremap <space> za
+
 filetype plugin on
+
 " map <Home> ^
 " imap <Home> <Esc>^i
 
 " tnoremap <A-Esc> <C-\><C-n>
 " noremap <A-Esc> <Esc>
 
-lua require('keymaps.global')
-
+lua require('keymaps.main')
 " split related
 " noremap <silent> <C-Left> :vertical resize -1<CR>
 " noremap <silent> <C-Right> :vertical resize +1<CR>
@@ -143,7 +144,7 @@ if &ft=="python"
   nmap <F5> :w<CR>:!clear;python %<CR>
 endif
 
-set laststatus=2
+" set laststatus=2
 if !has('gui_running') && !has('termguicolors')
   set t_Co=256
 endif
@@ -234,7 +235,7 @@ let g:lightline = {
                 \ }
                 \ }
 
-set noshowmode
+" set noshowmode
 
 filetype detect
 
@@ -320,7 +321,7 @@ autocmd FileType jsp setlocal expandtab autoindent ts=2 shiftwidth=0 softtabstop
 autocmd BufNewFile *.java
       \ exe "normal Ipublic class " . expand('%:t:r') . "{\n}\<Esc>1G"
 
-set clipboard+=unnamedplus
+" set clipboard+=unnamedplus
 
 if index(g:texts, &ft) >= 0
   set tw=80
@@ -334,11 +335,11 @@ if exists('g:started_by_firenvim') != 0
   endif
 endif
 
-let g:NERDCreateDefaultMappings = 1
-let g:NERDSpaceDelims = 1
-let g:NERDTrimTrailingWhitespace = 1
-nnoremap <Leader>c<space> NERDCommenterToggle<CR>
-vnoremap <Leader>c<space> NERDCommenterToggle<CR>
+" let g:NERDCreateDefaultMappings = 1
+" let g:NERDSpaceDelims = 1
+" let g:NERDTrimTrailingWhitespace = 1
+" nnoremap <Leader>c<space> NERDCommenterToggle<CR>
+" vnoremap <Leader>c<space> NERDCommenterToggle<CR>
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
@@ -406,29 +407,14 @@ hi MatchParen term=NONE cterm=NONE gui=NONE
 hi VertSplit guifg=black
 set fillchars+=vert:
 
-nnoremap <Leader>t :NERDTreeToggle<CR>
+" nnoremap <Leader>t :NERDTreeToggle<CR>
 autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 autocmd BufEnter NERD_tree* :LeadingSpaceDisable
 autocmd BufEnter NERD_tree* :let g:rainbow_active = 0
-let NERDTreeNodeDelimiter="\x07"
+" let NERDTreeNodeDelimiter="\x07"
 
 let g:rainbow_active = 1
 
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
-EOF
+lua require('plugins.main')
+lua require('filetype.main')

@@ -17,6 +17,11 @@ command;
     * `make pc` will install all GUI related configurations, for example 
     [alacritty][alacritty] configuration.  
 
+## NeoVim specific
+The old VimScript config is being re-written with lua because this is a more
+generalisable scripting language. If not deploying the `make` command, make sure
+to copy/link the whole `.config/nvim` directory to the target location.
+
 ## Credits
 Command line utilities listed in [dependencies](Dependencies) ;
 
