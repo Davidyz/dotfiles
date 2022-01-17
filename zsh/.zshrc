@@ -7,6 +7,10 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
+if [ -d $HOME/.cargo/bin ]
+then 
+  export PATH=$PATH:$HOME/.cargo/bin
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH_DISABLE_COMPFIX=true
