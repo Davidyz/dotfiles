@@ -9,3 +9,4 @@ vim.cmd([[
 
 require('plugins.tree_sitter')
 require('plugins.NERDTree')
+require('plugins.coc-nvim')

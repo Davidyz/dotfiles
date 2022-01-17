@@ -19,3 +19,10 @@ vim.opt.clipboard = 'unnamedplus'
 if vim.fn.has('unix') then
   vim.g.python3_host_prog = "/usr/bin/python3"
 end
+
+vim.o.cursorline = true
+vim.o.compatible = false
+
+if vim.fn.has("autocmd") then
+  vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
+end
