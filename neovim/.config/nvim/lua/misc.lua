@@ -16,3 +16,6 @@ vim.opt.laststatus = 2
 vim.opt.showmode = false
 vim.opt.clipboard = 'unnamedplus'
 
+if vim.fn.has('unix') then
+  vim.g.python3_host_prog = "/usr/bin/python3"
+end

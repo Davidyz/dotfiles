@@ -3,7 +3,7 @@ if &shell =~# "\c*fish"
 endif
 
 set nocompatible              " be iMproved, required
-filetype off                  " required
+filetype on                  " required
 
 " set the runtime path to include Vundle and initialize
 "call plug#begin('~/.vim/plugged')
@@ -54,16 +54,16 @@ filetype off                  " required
 lua require('plugins.main')
 
 
-if has('unix')
-  let g:python3_host_prog = "/usr/bin/python3"
-endif
+" if has('unix')
+  " let g:python3_host_prog = "/usr/bin/python3"
+" endif
 
 
 let g:coc_global_extensions = ['coc-pyright', 'coc-java', 'coc-vimlsp', 'coc-sh', 'coc-tsserver', 'coc-clangd', 'coc-pairs', 'coc-snippets', 'coc-spell-checker', 'coc-rainbow-fart', 'coc-marketplace', 'coc-grammarly', 'coc-json', 'coc-ci', 'coc-docker', 'coc-lua']
 
-filetype plugin indent on    " required
+" filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
-filetype plugin on
+" filetype plugin on
 
 lua require('misc')
 " set encoding=UTF-8
