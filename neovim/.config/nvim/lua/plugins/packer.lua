@@ -21,7 +21,7 @@ return require('packer').startup(function(use)
   }
   use {
     'junegunn/fzf',
-    run = "fzf#install()"
+    run = ":fzf#install()"
   }
   use 'junegunn/fzf.vim'
   use 'itchyny/lightline.vim'
