@@ -8,7 +8,6 @@ if CPU_COUNT is None:
     CPU_COUNT = 1
 
 commands = [
-    """sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'""",
     "python -m ensurepip",
     "python -m pip install jupytext flake8 black neovim"
 ]
@@ -43,7 +42,7 @@ def post():
     for command in commands:
         os.system(command)
 
-    os.system('nvim +:PlugInstall +:CocUpdate +:qa')
+    os.system('nvim +:PackerInstall +:CocUpdate +:qa')
     os.system('env EDITOR=nvim')
 
 if __name__ == '__main__':

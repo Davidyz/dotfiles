@@ -6,50 +6,53 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-call plug#begin('~/.vim/plugged')
-Plug 'easymotion/vim-easymotion'
-Plug 'neovimhaskell/haskell-vim', { 'for': ['haskell', 'hs'] }
-Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc', 'latex'] }
-Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'latex'] }
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'itchyny/lightline.vim'
-Plug 'itchyny/vim-gitbranch'
-Plug 'vim-scripts/cup.vim'
-Plug 'Yggdroot/indentLine'
-Plug 'luochen1990/rainbow'
-Plug 'preservim/nerdcommenter'
-Plug 'preservim/nerdtree'
-Plug 'goerz/jupytext.vim'
-Plug 'udalov/javap-vim'
-Plug 'tpope/vim-surround'
-Plug 'psliwka/vim-smoothie'
-Plug 'cespare/vim-toml', { 'branch': 'main' }
-Plug 'mhinz/vim-startify'
-Plug 'ervandew/supertab'
-Plug 'mikelue/vim-maven-plugin'
-Plug 'chaoren/vim-wordmotion'
-Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
-Plug 'ryanoasis/vim-devicons'
-Plug 'nvie/vim-flake8', { 'for': ['python'] }
-Plug 'psf/black', { 'for': ['python'] }
-Plug 'vim-scripts/crontab.vim'
+"call plug#begin('~/.vim/plugged')
+"Plug 'easymotion/vim-easymotion'
+"Plug 'neovimhaskell/haskell-vim', { 'for': ['haskell', 'hs'] }
+"Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc', 'latex'] }
+"Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'latex'] }
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+"Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/vim-gitbranch'
+"Plug 'vim-scripts/cup.vim'
+"Plug 'Yggdroot/indentLine'
+"Plug 'luochen1990/rainbow'
+"Plug 'preservim/nerdcommenter'
+"Plug 'preservim/nerdtree'
+"Plug 'goerz/jupytext.vim'
+"Plug 'udalov/javap-vim'
+"Plug 'tpope/vim-surround'
+"Plug 'psliwka/vim-smoothie'
+"Plug 'cespare/vim-toml', { 'branch': 'main' }
+"Plug 'mhinz/vim-startify'
+"Plug 'ervandew/supertab'
+"Plug 'mikelue/vim-maven-plugin'
+"Plug 'chaoren/vim-wordmotion'
+"Plug 'lark-parser/vim-lark-syntax', { 'for': ['lark'] }
+"Plug 'ryanoasis/vim-devicons'
+"Plug 'nvie/vim-flake8', { 'for': ['python'] }
+"Plug 'psf/black', { 'for': ['python'] }
+"Plug 'vim-scripts/crontab.vim'
 
-Plug 'ayu-theme/ayu-vim'
-Plug 'joshdick/onedark.vim'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+"Plug 'ayu-theme/ayu-vim'
+"Plug 'joshdick/onedark.vim'
+"Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
-if has('nvim')
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-  Plug 'rafcamlet/coc-nvim-lua'
-  Plug 'IngoMeyer441/coc_current_word'
-  Plug 'github/copilot.vim'
-  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
-endif
+"if has('nvim')
+  "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  "Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+  "Plug 'rafcamlet/coc-nvim-lua'
+  "Plug 'IngoMeyer441/coc_current_word'
+  "Plug 'github/copilot.vim'
+  "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'pandoc']}
+"endif
 
-" All of your Plugins must be added before the following line
-call plug#end()
+"" All of your Plugins must be added before the following line
+"call plug#end()
+
+lua require('plugins.main')
+
 
 if has('unix')
   let g:python3_host_prog = "/usr/bin/python3"
@@ -140,9 +143,9 @@ function! s:show_documentation()
   endif
 endfunction
 
-if &ft=="python"
-  nmap <F5> :w<CR>:!clear;python %<CR>
-endif
+" if &ft=="python"
+  " nmap <F5> :w<CR>:!clear;python %<CR>
+" endif
 
 " set laststatus=2
 if !has('gui_running') && !has('termguicolors')
@@ -416,5 +419,4 @@ autocmd BufEnter NERD_tree* :let g:rainbow_active = 0
 
 let g:rainbow_active = 1
 
-lua require('plugins.main')
 lua require('filetype.main')

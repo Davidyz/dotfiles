@@ -1,18 +1,18 @@
-vim.o.encoding = 'utf-8'
+vim.opt.encoding = 'utf-8'
 
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.tabstop = 4
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 4
 
-vim.o.guicursor = nil
-vim.o.foldmethod = 'indent'
-vim.o.foldenable = false
-vim.o.foldlevelstart = 99
-vim.o.mouse = 'a'
-vim.o.swapfile = false
+vim.opt.guicursor = nil
+vim.opt.foldmethod = 'indent'
+vim.opt.foldenable = false
+vim.opt.foldlevelstart = 99
+vim.opt.mouse = 'a'
+vim.opt.swapfile = false
 
-vim.o.laststatus = 2
+vim.opt.laststatus = 2
 
-vim.o.showmode = false
-vim.o.clipboard = 'unnamedplus'
+vim.opt.showmode = false
+vim.opt.clipboard = 'unnamedplus'
 
