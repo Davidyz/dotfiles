@@ -42,7 +42,7 @@ def post():
     for command in commands:
         os.system(command)
 
-    os.system('nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'')
+    os.system("nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'")
     os.system('env EDITOR=nvim')
 
 if __name__ == '__main__':
