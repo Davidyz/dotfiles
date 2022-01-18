@@ -192,3 +192,9 @@ PROMPT='%{$fg[white]%}$(virtualenv_info)%{$reset_color%}%'+$PROMPT
 unsetopt null_glob 
 unsetopt csh_null_glob
 unsetopt nomatch
+
+if [ ! -f `which thefuck` ] && [ -f `which pip3`]; then 
+  pip install thefuck
+fi
+
+eval $(thefuck --alias)
