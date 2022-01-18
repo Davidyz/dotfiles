@@ -1,11 +1,4 @@
-" set nocompatible              " be iMproved, required
-" filetype on                  " required
 lua require('plugins.main')
-lua require('misc')
-" if has("autocmd")
-  " au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-" endif
-let s:cursor_movement = v:true
 highlight CurrentWord guibg=#cbccc6
 filetype plugin on
 lua require('keymaps.main')
@@ -129,8 +122,6 @@ autocmd FileType sh setlocal ts=4 expandtab autoindent
 autocmd FileType zsh setlocal ts=4 expandtab autoindent
 autocmd FileType fish setlocal ts=4 expandtab autoindent
 autocmd FileType lua setlocal ts=2 expandtab autoindent
-autocmd BufNewFile *.py
-      \ exe "normal I\nif __name__ == '__main__':" .  "\npass\<Esc>1G"
 set statusline+=%#warningmsg#
 set statusline+=%*
 syntax on
@@ -166,34 +157,9 @@ let g:AutoPairs = {'(': ')',
       \"$${": "}$$"}
 autocmd FileType java setlocal expandtab autoindent ts=4 shiftwidth=0 softtabstop=-1 
 autocmd FileType jsp setlocal expandtab autoindent ts=2 shiftwidth=0 softtabstop=-1 
-autocmd BufNewFile *.java
-      \ exe "normal Ipublic class " . expand('%:t:r') . "{\n}\<Esc>1G"
-if index(g:texts, &ft) >= 0
-  set tw=80
-endif
-if exists('g:started_by_firenvim') != 0
-  let g:lightline = {}
-  au BufEnter github.com_*.txt set filetype=markdown
-  if (@% =~# "localhost_.*ipynb.*")
-    set ft=python
-  endif
-endif
 let g:SuperTabDefaultCompletionType = "<c-n>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 inoremap <silent><expr> <c-space> coc#refresh()
-let g:mkdp_preview_options = {
-      \ 'mkit': {},
-      \ 'katex': {},
-      \ 'uml': {},
-      \ 'maid': {},
-      \ 'disable_sync_scroll': 0,
-      \ 'sync_scroll_type': 'relative',
-      \ 'hide_yaml_meta': 1,
-      \ 'sequence_diagrams': {},
-      \ 'flowchart_diagrams': {},
-      \ 'content_editable': v:false,
-      \ 'disable_filename': 0
-      \ }
 let g:mkdp_filetypes = ['markdown', 'pandoc', 'ipynb']
 if index(g:mkdp_filetypes, &ft) >= 0
   nmap mp :MarkdownPreviewToggle<CR>
@@ -227,3 +193,4 @@ autocmd BufEnter NERD_tree* :let g:rainbow_active = 0
 let g:rainbow_active = 1
 lua require('filetype.main')
 lua require('colorscheme.main')
+lua require('misc')

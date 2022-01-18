@@ -6,6 +6,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 return require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
   use 'easymotion/vim-easymotion'
   use {
     'neovimhaskell/haskell-vim',
@@ -24,7 +25,10 @@ return require('packer').startup(function(use)
     run = ":fzf#install()"
   }
   use 'junegunn/fzf.vim'
-  use 'itchyny/lightline.vim'
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
   use 'itchyny/vim-gitbranch'
   use 'vim-scripts/cup.vim'
   use 'Yggdroot/indentLine'

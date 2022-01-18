@@ -26,3 +26,5 @@ vim.o.compatible = false
 if vim.fn.has("autocmd") then
   vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
 end
+
+vim.opt.textwidth = 80
