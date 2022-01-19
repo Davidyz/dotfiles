@@ -13,15 +13,15 @@ end
 
 local function devicon()
   return string.sub(
-        require('nvim-web-devicons').get_icon(vim.fn.expand('%'), vim.fn.expand('%:e'), {}),
-        1
-        )
+    require('nvim-web-devicons').get_icon(vim.fn.expand('%'), vim.fn.expand('%:e'), {}),
+    1
+  )
 end
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'ayu_mirage',
+    theme = 'auto',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {},
@@ -44,10 +44,9 @@ require('lualine').setup {
     lualine_z = {}
   },
   tabline = {
-    lualine_b = { {'tabs', max_length=99, mode=2, tabs_color = {
-        active    = {fg = '#FFCC66', bg = '#1A1F29'},
-        inactive = {fg = '#CCCAC2', bg = '#242936'}
-     }} }
+    lualine_b = {
+      {'tabs', max_length=99, mode=2, tabs_color = {active = {fg = '#FFCC66', bg = '#1A1F29'}}}
+    }
   },
   extensions = {}
 }
