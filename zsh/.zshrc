@@ -195,8 +195,8 @@ unsetopt null_glob
 unsetopt csh_null_glob
 unsetopt nomatch
 
-if [ ! -f `which thefuck` ] && [ -f `which pip3`]; then 
-  pip install thefuck
+if  ! which thefuck && which pip3; then 
+  pip3 install thefuck
 fi
 
 eval $(thefuck --alias)
