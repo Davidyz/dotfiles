@@ -103,6 +103,8 @@ plugins=(
     docker
 )
 
+if [ `which autojump` ]; then plugins+=(autojump) fi
+
 autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
