@@ -110,7 +110,7 @@ autocmd FileType markdown setlocal ts=2 expandtab autoindent
 autocmd FileType pandoc setlocal ts=2 expandtab autoindent
 autocmd FileType vim setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType c setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
-autocmd FileType javascript setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
+autocmd FileType javascript setlocal ts=2 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType json setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType cpp setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1
 autocmd FileType arduino setlocal ts=4 expandtab autoindent shiftwidth=0 softtabstop=-1 path+=/home/$USER/Arduino/libraries/

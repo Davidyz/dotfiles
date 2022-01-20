@@ -4,7 +4,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 
-vim.opt.guicursor = nil
 vim.opt.foldmethod = 'indent'
 vim.opt.foldenable = false
 vim.opt.foldlevelstart = 99
