@@ -133,7 +133,7 @@ source $ZSH/oh-my-zsh.sh
 
 zstyle ':completion:*' ignored-patterns '__pycache__'
 
-if [ -f `which lsd` ]
+if command -v lsd > /dev/null
 then
     alias ls='lsd'
 fi
