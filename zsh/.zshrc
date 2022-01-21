@@ -195,7 +195,7 @@ unsetopt null_glob
 unsetopt csh_null_glob
 unsetopt nomatch
 
-if  ! which thefuck && which pip3; then 
+if ! command -v thefuck > /dev/null && command -v pip3 > /dev/null ; then
   pip3 install thefuck
 fi
 
