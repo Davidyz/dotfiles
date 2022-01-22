@@ -7,6 +7,7 @@ end
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
+  use 'windwp/nvim-autopairs'
   use 'easymotion/vim-easymotion'
   use {
     'neovimhaskell/haskell-vim',
@@ -36,7 +37,10 @@ return require('packer').startup(function(use)
   use 'preservim/nerdcommenter'
   use 'preservim/nerdtree'
   use 'goerz/jupytext.vim'
-  use 'udalov/javap-vim'
+  use {
+    'udalov/javap-vim',
+    ft = {'javap'}
+  }
   use 'tpope/vim-surround'
   use 'psliwka/vim-smoothie'
   use {

@@ -1,3 +1,4 @@
+vim.api.nvim_set_option("filetype", "detect")
 vim.opt.encoding = 'utf-8'
 
 vim.opt.number = true
@@ -27,3 +28,7 @@ if vim.fn.has("autocmd") then
 end
 
 vim.opt.textwidth = 80
+
+if not vim.fn.has('gui_running') and not vim.fn.has('termguicolors') then
+  vim.api.nvim_set_option('t_Co', {256})
+end
