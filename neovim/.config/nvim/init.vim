@@ -38,10 +38,6 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 inoremap <silent><expr> <c-space> coc#refresh()
 let g:mkdp_filetypes = ['markdown', 'pandoc', 'ipynb']
-if index(g:mkdp_filetypes, &ft) >= 0
-  nmap mp :MarkdownPreviewToggle<CR>
-  let b:coc_pairs = [["${", "}$"], ["$${", "}$$"]]
-endif
 if &filetype == 'python'
   let b:coc_pairs = [["'''", "\n'''"]]
   nnoremap <F9> :Black<CR>
