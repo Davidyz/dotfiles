@@ -170,17 +170,19 @@ ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
-neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C
+if command -v neofetch > /dev/null ; then
+  neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C
+fi
 
 if {test -f $(command -v pacman)} && {test -f /usr/share/doc/find-the-command/ftc.zsh} ; then
-    source /usr/share/doc/find-the-command/ftc.zsh
+  source /usr/share/doc/find-the-command/ftc.zsh
 elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then 
-    source /etc/zsh_command_not_found
+  source /etc/zsh_command_not_found
 fi
 
 if test -f ~/.local_script.sh;
 then
-        source ~/.local_script.sh
+  source ~/.local_script.sh
 fi
 
 function virtualenv_info { 
