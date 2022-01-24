@@ -103,7 +103,7 @@ plugins=(
     docker
 )
 
-if [ `which autojump` ]; then plugins+=(autojump) fi
+if command -v autojump > /dev/null ; then plugins+=(autojump) fi
 
 autoload -Uz compinit
 compinit
