@@ -8,7 +8,6 @@ if CPU_COUNT is None:
     CPU_COUNT = 1
 
 commands = [
-    "python -m ensurepip",
     "python -m pip install jupytext flake8 black neovim"
 ]
 
