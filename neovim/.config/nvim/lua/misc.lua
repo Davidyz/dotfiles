@@ -39,3 +39,5 @@ end
 
 vim.opt.fillchars = "vert:"
 vim.opt.foldlevel = 50
+
+vim.api.nvim_command([[hi MatchParen gui=None guibg=Grey guifg=None]])

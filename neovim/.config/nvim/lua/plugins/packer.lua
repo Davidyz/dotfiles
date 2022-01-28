@@ -82,7 +82,8 @@ return require('packer').startup(function(use)
     branch = 'release'
   }
   use 'rafcamlet/coc-nvim-lua'
-  use 'IngoMeyer441/coc_current_word'
+  use 'dominikduda/vim_current_word'
+  -- use 'IngoMeyer441/coc_current_word'
   use 'github/copilot.vim'
   use {
     'iamcco/markdown-preview.nvim',
