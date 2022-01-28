@@ -15,7 +15,14 @@ command;
     [neovim][nvim] and [zsh][zsh] configurations.  
 
     * `make pc` will install all GUI related configurations, for example 
-    [alacritty][alacritty] configuration.  
+    [alacritty][alacritty] configuration.
+
+### Hooks
+Hooks are executed before and/or after the installation of the dot files. The
+hooks are written in Python and the name has to match the name of the directory.
+
+For example, the hook for directory `/neovim` has to be `neovim.py`.
+
 
 ## NeoVim specific
 The old VimScript config is being re-written with lua because this is a more
