@@ -30,6 +30,7 @@
 	"python.venvPath": "~/.local/share/virtualenvs/",
     "python.pythonPath": "/usr/bin/python3",
     "python.formatting.provider":"autopep8",
+    "python.analysis.diagnosticMode": "workspace",
 
     "Lua.workspace.library":[
         "/usr/share/nvim/runtime/lua/",
