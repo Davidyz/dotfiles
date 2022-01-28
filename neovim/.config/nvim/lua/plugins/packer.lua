@@ -30,6 +30,7 @@ return require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
+  use 'SmiteshP/nvim-gps'
   use 'itchyny/vim-gitbranch'
   use 'vim-scripts/cup.vim'
   use 'Yggdroot/indentLine'
@@ -75,6 +76,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
+  use 'romgrk/nvim-treesitter-context'
   use {
     'neoclide/coc.nvim',
     branch = 'release'

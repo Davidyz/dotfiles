@@ -38,3 +38,4 @@ if not vim.fn.has('gui_running') and not vim.fn.has('termguicolors') then
 end
 
 vim.opt.fillchars = "vert:"
+vim.opt.foldlevel = 50

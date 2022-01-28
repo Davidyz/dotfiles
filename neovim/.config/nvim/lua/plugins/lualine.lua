@@ -1,5 +1,7 @@
 require('utils')
 
+local gps = require('nvim-gps')
+
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv('HOME'), '~')
 end
@@ -30,7 +32,13 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics', devicon},
-    lualine_c = {file_path},
+    lualine_c = {
+      file_path,
+      {
+        gps.get_location,
+        cond = gps.is_available
+      }
+    },
     lualine_x = {'encoding', 'fileformat'},
     lualine_y = {'progress'},
     lualine_z = {'location', word_count}
