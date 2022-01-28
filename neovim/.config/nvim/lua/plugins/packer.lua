@@ -48,7 +48,7 @@ return require('packer').startup(function(use)
     branch = 'main'
    }
   use 'mhinz/vim-startify'
-  use 'ervandew/supertab'
+  -- use 'ervandew/supertab'
   use 'mikelue/vim-maven-plugin'
   use 'chaoren/vim-wordmotion'
   use {

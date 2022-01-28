@@ -4,6 +4,13 @@ vim.opt.encoding = 'utf-8'
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+
+if vim.bo.filetype ~= 'fstab' then
+  vim.opt.expandtab = true
+else
+  vim.opt.expandtab = false
+end
 
 vim.opt.foldmethod = 'indent'
 vim.opt.foldenable = false
