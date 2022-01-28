@@ -1,9 +1,10 @@
 require('keymaps.global')
 
+require('keymaps.black')
 require('keymaps.coc-nvim')
+require('keymaps.markdown_preview')
 require('keymaps.NERDTree')
 require('keymaps.NERDCommenter')
-require('keymaps.markdown_preview')
 
 require('keymaps.python')
 require('keymaps.shell')

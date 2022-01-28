@@ -33,7 +33,7 @@ return require('packer').startup(function(use)
   use 'itchyny/vim-gitbranch'
   use 'vim-scripts/cup.vim'
   use 'Yggdroot/indentLine'
-  use 'luochen1990/rainbow'
+  use 'p00f/nvim-ts-rainbow'
   use 'preservim/nerdcommenter'
   use 'preservim/nerdtree'
   use 'goerz/jupytext.vim'

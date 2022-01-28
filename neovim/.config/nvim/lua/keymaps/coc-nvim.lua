@@ -16,3 +16,6 @@ Set_keymap('x', '<leader>a', '<Plug>(coc-codeaction-selected)', false)
 Set_keymap('n', '<leader>a', '<Plug>(coc-codeaction-selected)', false)
 Set_keymap('n', '<leader>r', '<Plug>(coc-rename)', false)
 Set_keymap('n', '<leader>f', '<Plug>(coc-fix-current)', false)
+
+Set_keymap('i', '<cr>', [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], { silent=true, expr=true, noremap=true })
+Set_keymap('i', '<c-space>', 'coc#refresh()', { silent=true, expr=true, noremap=true })
