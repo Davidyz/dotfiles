@@ -12,9 +12,6 @@ else
   vim.opt.expandtab = false
 end
 
-vim.opt.foldmethod = 'indent'
-vim.opt.foldenable = false
-vim.opt.foldlevelstart = 99
 vim.opt.mouse = 'a'
 vim.opt.swapfile = false
 
