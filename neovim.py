@@ -22,6 +22,7 @@ elif shutil.which("apt"):
         extra_commands.append("curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -")
         extra_commands.append("echo deb https://dl.yarnpkg.com/debian/ stable main | sudo tee /etc/apt/sources.list.d/yarn.list""")
         extra_commands.append("sudo apt update && sudo apt install yarn -y")
+        extra_commands.append('sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen')
     elif shutil.which('node') is None:
         extra_commands.append("curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -")
         extra_commands.append("sudo apt update && sudo apt install nodejs -y")
@@ -39,10 +40,11 @@ def pre():
     if os.path.isfile(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')) and not os.path.islink(os.path.expanduser(f'{HOME}/.config/nvim/coc-settings.json')):
         os.system(f'rm {HOME}/.config/nvim/coc-settings.json')
 
-def post():
     for command in commands:
         os.system(command)
 
+
+def post():
     os.system("nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'")
     os.system('env EDITOR=nvim')
 
