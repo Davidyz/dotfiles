@@ -14,8 +14,6 @@
 		}
 	},
 
-	"pairs.enableCharacters": ["(", "[", "{", "<", "'", "\"", "`", "${", "$${"],
-
 	"cSpell.enabledLanguageIds": ["markdown", "pandoc", "text", "txt", "plaintext"],
 	"cSpell.language": "en-GB",
 	"cSpell.allowCompoundWords": true,
