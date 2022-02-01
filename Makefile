@@ -1,25 +1,38 @@
 SERVER = neovim zsh
-PC = alacritty chrome
+PC = alacritty chrome $(SERVER)
+DEPENDENCIES = stow git python3 pip
+
+check:
+	@echo "Performing dependency check..."
+	@for i in $(DEPENDENCIES); do \
+		if ! command -v $$i > /dev/null; then \
+			echo "$$i is not installed!!!"; \
+			exit 1; \
+		else \
+			echo "$$i is installed"; \
+		fi; \
+	done
 
 server:
-	for i in $(SERVER); do \
+	@make check
+	@for i in $(SERVER); do \
 		if test -f $$i.py ; \
-			then python $$i.py pre; \
+			then python3 $$i.py pre; \
 		fi; \
 		stow -vS -t ~ $$i --override=.*; \
 		if test -f $$i.py ; \
-			then python $$i.py post; \
+			then python3 $$i.py post; \
 		fi; \
 	done
 
 pc:
-	make server
-	for i in $(PC); do \
+	@make check
+	@for i in $(PC); do \
 		if test -f $$i.py ; \
-			then python $$i.py pre; \
+			then python3 $$i.py pre; \
 		fi; \
 		stow -vS -t ~ $$i --override=".*"; \
 		if test -f $$i.py ; \
-			then python $$i.py post; \
+			then python3 $$i.py post; \
 		fi; \
 	done
