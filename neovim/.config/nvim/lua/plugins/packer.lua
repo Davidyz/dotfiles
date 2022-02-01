@@ -32,12 +32,18 @@ return require('packer').startup(function(use)
   }
   use 'SmiteshP/nvim-gps'
   use 'itchyny/vim-gitbranch'
-  use 'vim-scripts/cup.vim'
+  use {
+    'vim-scripts/cup.vim',
+    ft = {'cup'}
+  }
   use 'Yggdroot/indentLine'
   use 'p00f/nvim-ts-rainbow'
   use 'preservim/nerdcommenter'
   use 'preservim/nerdtree'
-  use 'goerz/jupytext.vim'
+  use {
+    'goerz/jupytext.vim',
+    ft = {'jupyter', 'notebook', 'ipynb', 'py'}
+  }
   use {
     'udalov/javap-vim',
     ft = {'javap'}
@@ -50,7 +56,10 @@ return require('packer').startup(function(use)
    }
   use 'mhinz/vim-startify'
   -- use 'ervandew/supertab'
-  use 'mikelue/vim-maven-plugin'
+  use {
+    'mikelue/vim-maven-plugin',
+    ft = {'maven', 'xml'}
+  }
   use 'chaoren/vim-wordmotion'
   use {
     'lark-parser/vim-lark-syntax',
@@ -81,9 +90,11 @@ return require('packer').startup(function(use)
     'neoclide/coc.nvim',
     branch = 'release'
   }
-  use 'rafcamlet/coc-nvim-lua'
+  use {
+    'rafcamlet/coc-nvim-lua',
+    ft = {'lua'}
+  }
   use 'dominikduda/vim_current_word'
-  -- use 'IngoMeyer441/coc_current_word'
   use 'github/copilot.vim'
   use {
     'iamcco/markdown-preview.nvim',
