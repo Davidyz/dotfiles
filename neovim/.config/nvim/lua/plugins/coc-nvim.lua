@@ -12,5 +12,6 @@ vim.g.coc_global_extensions = {'coc-pyright',
   'coc-json',
   'coc-ci',
   'coc-docker',
-  'coc-lua'
+  'coc-lua',
+  'coc-phpls'
 }
