@@ -42,7 +42,7 @@ return require('packer').startup(function(use)
   use 'preservim/nerdtree'
   use {
     'goerz/jupytext.vim',
-    ft = {'jupyter', 'notebook', 'ipynb', 'py'}
+    ft = {'jupyter', 'notebook', 'ipynb', 'py', 'json'}
   }
   use {
     'udalov/javap-vim',

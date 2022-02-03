@@ -6,10 +6,14 @@ SOURCE_CODE = {'java', 'c', 'cpp', 'python', 'hs', 'sh', 'go', 'php', 'json', 'b
 TEXT = {'md', 'txt', 'markdown', 'rmd', 'pandoc', 'text'}
 
 function List_contains(array, element)
-    for _, value in pairs(array) do
-        if value == element then
-            return true
-        end
+  for _, value in pairs(array) do
+    if value == element then
+      return true
     end
-    return false
+  end
+  return false
+end
+
+function Get_ColorCode(group, tag)
+  return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), tag)
 end

@@ -1,5 +1,5 @@
 SERVER = neovim zsh
-PC = alacritty chrome $(SERVER)
+PC = $(SERVER) alacritty chrome
 DEPENDENCIES = stow git python3 pip
 
 check:

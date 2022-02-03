@@ -33,6 +33,7 @@ require('lualine').setup {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics', devicon},
     lualine_c = {
+      'hostname',
       file_path,
       {
         gps.get_location,
@@ -53,7 +54,7 @@ require('lualine').setup {
   },
   tabline = {
     lualine_b = {
-      {'tabs', max_length=99, mode=2, tabs_color = {active = {fg = '#FFCC66', bg = '#1A1F29'}}}
+      {'tabs', max_length=99, mode=2, tabs_color = {active = {fg = Get_ColorCode('qfLineNr', 'fg'), bg = Get_ColorCode('VertSplit', 'fg')}}}
     }
   },
   extensions = {}

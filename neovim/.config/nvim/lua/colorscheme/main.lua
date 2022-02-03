@@ -4,3 +4,4 @@ end
 vim.opt.background = 'dark'
 
 require('colorscheme.ayu')
+require('utils')
