@@ -54,8 +54,13 @@ return require('packer').startup(function(use)
     'cespare/vim-toml',
     branch = 'main'
    }
-  use 'mhinz/vim-startify'
-  -- use 'ervandew/supertab'
+  use {
+    "startup-nvim/startup.nvim",
+    requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
+    config = function()
+      require"startup".setup()
+    end
+  }
   use {
     'mikelue/vim-maven-plugin',
     ft = {'maven', 'xml'}
