@@ -76,11 +76,14 @@ return require('packer').startup(function(use)
   }
   use 'vim-scripts/crontab.vim'
   use 'ayu-theme/ayu-vim'
+  use 'cocopon/iceberg.vim'
   use 'joshdick/onedark.vim'
   use {
     'kaicataldo/material.vim',
     branch= 'main'
   }
+  use 'Th3Whit3Wolf/one-nvim'
+  use 'Cybolic/palenight.vim'
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'

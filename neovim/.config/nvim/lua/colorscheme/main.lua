@@ -3,5 +3,5 @@ if vim.fn.has('termguicolors') then
 end
 vim.opt.background = 'dark'
 
-require('colorscheme.ayu')
 require('utils')
+require('colorscheme.onedark')
