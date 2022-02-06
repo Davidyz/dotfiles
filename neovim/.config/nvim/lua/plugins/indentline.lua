@@ -13,7 +13,10 @@ end
 vim.g.indentLine_setColor = 1
 vim.g.indentLine_leadingSpaceEnabled = 1
 
-vim.api.nvim_command([[autocmd FileType startup IndentLinesDisable]])
+local noIndentLineFt = {'startup', 'packer'}
+for _, ft in ipairs(noIndentLineFt) do
+  vim.api.nvim_command([[autocmd FileType ]] .. ft .. [[ IndentLinesDisable]])
+end
 
 for _, ft in ipairs(SOURCE_CODE) do
   vim.api.nvim_command([[autocmd FileType ]] .. ft .. [[ IndentLinesEnable]])
