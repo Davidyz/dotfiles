@@ -13,7 +13,9 @@ plugins = {
     "zsh-syntax-highlighting": "https://github.com/zsh-users/zsh-syntax-highlighting.git",
     "zsh-256color": "https://github.com/chrissicool/zsh-256color",
     "zsh-completions": "https://github.com/zsh-users/zsh-completions",
-    "docker": "https://github.com/srijanshetty/docker-zsh.git"
+    "docker": "https://github.com/srijanshetty/docker-zsh.git",
+    "zsh-autopair": "https://github.com/hlissner/zsh-autopair.git",
+    "zsh-autocomplete": "https://github.com/marlonrichert/zsh-autocomplete.git"
 }
 
 themes = {

@@ -83,24 +83,26 @@ export FZF_BASE=/usr/bin/fzf
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    adb
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    extract
-    sudo
-    command-not-found
-    pip
-    virtualenv
-    pipenv
-    fzf
-    mvn
-    ufw
-    stack
-    cabal
-    zsh-256color
-    zsh-completions
-    docker
+  adb
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  extract
+  sudo
+  command-not-found
+  pip
+  virtualenv
+  pipenv
+  fzf
+  mvn
+  ufw
+  stack
+  cabal
+  zsh-256color
+  zsh-completions
+  docker
+  python
+  zsh-autopair
 )
 
 if command -v autojump > /dev/null ; then plugins+=(autojump) fi
@@ -180,7 +182,7 @@ elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then
   source /etc/zsh_command_not_found
 fi
 
-if test -f ~/.local_script.sh;
+if [ -f ~/.local_script.sh ]
 then
   source ~/.local_script.sh
 fi

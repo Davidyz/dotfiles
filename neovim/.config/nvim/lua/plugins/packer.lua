@@ -53,13 +53,6 @@ return require('packer').startup(function(use)
   use {
     'cespare/vim-toml',
     branch = 'main'
-   }
-  use {
-    "startup-nvim/startup.nvim",
-    requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
-    config = function()
-      require"startup".setup(require('plugins.startup_nvim'))
-    end
   }
   use {
     'mikelue/vim-maven-plugin',
@@ -69,7 +62,7 @@ return require('packer').startup(function(use)
   use {
     'lark-parser/vim-lark-syntax',
     ft = {'lark'}
-   }
+  }
   use 'ryanoasis/vim-devicons'
   use {
     'nvie/vim-flake8',
