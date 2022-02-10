@@ -27,7 +27,8 @@ end
 vim.o.cursorline = true
 vim.o.compatible = false
 
-if vim.fn.has("autocmd") then
+if vim.fn.has('autocmd') then
+  -- recover cursor location from history
   vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
 end
 
