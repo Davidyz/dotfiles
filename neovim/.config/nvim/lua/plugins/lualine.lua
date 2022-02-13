@@ -20,6 +20,14 @@ local function devicon()
   )
 end
 
+local function get_context()
+  return GetUserName() .. "@" .. GetHostname()
+end
+
+local function is_text()
+  return vim.tbl_contains(TEXT, vim.bo.filetype)
+end
+
 require('lualine').setup {
   options = {
     icons_enabled = true,
@@ -33,7 +41,7 @@ require('lualine').setup {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics', devicon},
     lualine_c = {
-      'hostname',
+      get_context,
       file_path,
       {
         gps.get_location,
@@ -42,7 +50,13 @@ require('lualine').setup {
     },
     lualine_x = {'encoding', 'fileformat'},
     lualine_y = {'progress'},
-    lualine_z = {'location', word_count}
+    lualine_z = {
+      'location', 
+      {
+        word_count,
+        cond = is_text
+      }
+    },
   },
   inactive_sections = {
     lualine_a = {},
