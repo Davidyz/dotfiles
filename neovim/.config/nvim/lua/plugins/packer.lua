@@ -102,6 +102,7 @@ return require('packer').startup(function(use)
     run = 'cd app && yarn install',
     ft = {'markdown', 'pandoc'}
   }
+  use 'vim-scripts/restore_view.vim'
 
   if packer_bootstrap then
     require('packer').sync()
