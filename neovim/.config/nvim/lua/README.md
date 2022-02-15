@@ -21,6 +21,12 @@ Named after the `filetype`.
 
 Named after the plugins.
 
+### `./colorscheme`
+>contains settings related to the colorschemes.
+
+This directory contains both active and inactive colorschemes. The active
+colorscheme may be chosen in `./colorscheme/main.lua`.
+
 ## Others
 `*/main.lua` is the entry point to all the other configs in that sub-directory. 
 In other words, when there is a new file to be added, `require` it in 
