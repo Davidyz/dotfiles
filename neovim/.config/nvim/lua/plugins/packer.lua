@@ -96,7 +96,7 @@ return require('packer').startup(function(use)
     ft = {'lua'}
   }
   use 'dominikduda/vim_current_word'
-  use 'github/copilot.vim'
+  -- use 'github/copilot.vim'
   use {
     'iamcco/markdown-preview.nvim',
     run = 'cd app && yarn install',
