@@ -3,7 +3,7 @@ require('utils')
 function NoTrailingSpaces()
   if List_contains(SOURCE_CODE, vim.bo.filetype) then
     vim.api.nvim_command(":mkview!")
-    vim.api.nvim_command(":%s/ *$//g")
+    vim.api.nvim_command(":silent! %s/ *$//e")
     vim.api.nvim_command(":loadview")
   end
 end
