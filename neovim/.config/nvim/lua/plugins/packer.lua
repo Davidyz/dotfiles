@@ -40,6 +40,7 @@ return require('packer').startup(function(use)
   use 'p00f/nvim-ts-rainbow'
   use 'preservim/nerdcommenter'
   use 'preservim/nerdtree'
+  use 'Xuyuanp/nerdtree-git-plugin'
   use {
     'goerz/jupytext.vim',
     ft = {'jupyter', 'notebook', 'ipynb', 'py', 'json'}
