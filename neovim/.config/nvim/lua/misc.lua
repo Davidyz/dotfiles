@@ -34,10 +34,6 @@ if vim.fn.has('autocmd') then
   vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
 end
 
-for _, ft in ipairs(TEXT) do
-  vim.api.nvim_command(string.format("autocmd Filetype %s g:textwidth=80", ft))
-end
-
 if not vim.fn.has('gui_running') and not vim.fn.has('termguicolors') then
   vim.api.nvim_set_option('t_Co', {256})
 end

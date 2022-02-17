@@ -1,3 +1,19 @@
+require('utils')
+
+function NoTrailingSpaces()
+  if List_contains(SOURCE_CODE, vim.bo.filetype) then
+    vim.api.nvim_command(":mkview!")
+    vim.api.nvim_command(":%s/ *$//g")
+    vim.api.nvim_command(":loadview")
+  end
+end
+
+for _, ft in ipairs(TEXT) do
+  vim.api.nvim_command(string.format("autocmd Filetype %s g:textwidth=80", ft))
+end
+
+vim.api.nvim_command("autocmd BufWritePre * call v:lua.NoTrailingSpaces()")
+
 require('filetype.json')
 require('filetype.xml')
 require('filetype.yaml')
