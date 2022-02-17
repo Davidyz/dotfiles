@@ -8,10 +8,16 @@ require('nvim-autopairs').setup({
   map_cr = false
 })
 
--- npairs.add_rule({Rule("${", "}$", 'pandoc'),
-                 -- Rule("$${", "}$$", 'pandoc')})
-
 _G.MUtils= {}
+
+npairs.add_rule(Rule("'''", "'''", 'python'))
+npairs.add_rule(Rule('"""', '"""', 'python'))
+
+npairs.add_rule(Rule('${', '}$', 'pandoc'))
+npairs.add_rule(Rule('$${', '}$$', 'pandoc'))
+
+npairs.add_rule(Rule('${', '}$', 'tex'))
+npairs.add_rule(Rule('$${', '}$$', 'tex'))
 
 MUtils.completion_confirm=function()
   if vim.fn.pumvisible() ~= 0  then
