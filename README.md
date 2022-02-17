@@ -15,7 +15,8 @@ Clone the repository to your system:
 ```sh
 git clone git@github.com:Davidyz/dotfiles.git
 ```
-To omit the git history, use the `--depth 1` flag:
+To omit the git history (this avoids long waiting time when cloning), use the 
+`--depth 1` flag:
 ```sh
 git clone git@github.com:Davidyz/dotfiles.git --depth 1
 ```
