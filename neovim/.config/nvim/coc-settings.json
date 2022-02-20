@@ -18,7 +18,7 @@
 	"cSpell.language": "en-GB",
 	"cSpell.allowCompoundWords": true,
 
-	"rainbow-fart.enabled": false, 
+	"rainbow-fart.enabled": false,
 
 	"java.completion.enabled": true,
 	"java.import.maven.enabled": true,
@@ -27,7 +27,7 @@
 
 	"python.venvPath": "~/.local/share/virtualenvs/",
     "python.pythonPath": "/usr/bin/python3",
-    "python.formatting.provider":"autopep8",
+    "python.formatting.provider":"black",
     "python.analysis.diagnosticMode": "workspace",
 
     "Lua.workspace.library":[
