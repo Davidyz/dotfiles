@@ -104,19 +104,7 @@ return require('packer').startup(function(use)
     ft = {'markdown', 'pandoc'}
   }
   use 'vim-scripts/restore_view.vim'
-  use {
-    -- use local branch when available. useful for development.
-    '~/git/make.nvim',
-    cond=function()
-      return vim.fn.isdirectory('~/git/make.nvim')
-    end
-  }
-  use {
-    'Davidyz/make.nvim',
-    cond=function()
-      return not vim.fn.isdirectory('~/git/make.nvim')
-    end
-  }
+  use 'Davidyz/make.nvim'
 
   if packer_bootstrap then
     require('packer').sync()
