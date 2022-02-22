@@ -104,7 +104,7 @@ return require('packer').startup(function(use)
     ft = {'markdown', 'pandoc'}
   }
   use 'vim-scripts/restore_view.vim'
-  use 'Davidyz/make.nvim'
+  use {'Davidyz/make.nvim', branch='main'}
 
   if packer_bootstrap then
     require('packer').sync()
