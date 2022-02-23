@@ -1,6 +1,21 @@
 require('utils')
 
 local gps = require('nvim-gps')
+local current_theme = require('lualine.themes.auto')
+local function get_mode_theme()
+  if vim.api.nvim_get_mode() == 'n' then
+    return current_theme.normal
+  elseif vim.api.nvim_get_mode() == 'i' then
+    return current_theme.insert
+  elseif vim.api.nvim_get_mode() == 'v' then
+    return current_theme.visual
+  elseif vim.api.nvim_get_mode() == 'r' then
+    return current_theme.replace
+  else
+    return current_theme.normal
+  end
+end
+
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv('HOME'), '~')
@@ -51,7 +66,7 @@ require('lualine').setup {
     lualine_x = {'encoding', 'fileformat'},
     lualine_y = {'progress'},
     lualine_z = {
-      'location', 
+      'location',
       {
         word_count,
         cond = is_text
@@ -68,7 +83,21 @@ require('lualine').setup {
   },
   tabline = {
     lualine_b = {
-      {'tabs', max_length=99, mode=2, tabs_color = {active = {fg = Get_ColorCode('qfLineNr', 'fg'), bg = Get_ColorCode('VertSplit', 'fg')}}}
+      {
+        'tabs',
+        max_length = vim.o.columns / 3,
+        mode=2,
+        tabs_color = {
+          active = {
+            fg = current_theme.normal.b.fg,
+            bg = current_theme.normal.b.bg
+          },
+          inactive = {
+            fg = current_theme.normal.c.fg,
+            bg = current_theme.normal.c.bg
+          }
+        }
+      }
     }
   },
   extensions = {}
