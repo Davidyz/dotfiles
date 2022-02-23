@@ -2,6 +2,7 @@ require('keymaps.global')
 
 require('keymaps.black')
 require('keymaps.coc-nvim')
+require('keymaps.golden_view')
 require('keymaps.markdown_preview')
 require('keymaps.NERDTree')
 require('keymaps.NERDCommenter')

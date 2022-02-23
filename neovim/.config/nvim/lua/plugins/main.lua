@@ -9,6 +9,7 @@ vim.cmd([[
 
 require('plugins.black')
 require('plugins.coc-nvim')
+require('plugins.golden_view')
 require('plugins.haskell')
 require('plugins.indentline')
 require('plugins.jupytext')
