@@ -12,6 +12,7 @@ check:
 			echo "$$i is installed"; \
 		fi; \
 	done
+	@echo "All dependencies are met...";echo ''
 
 server:
 	@make check
@@ -19,7 +20,7 @@ server:
 		if test -f $$i.py ; \
 			then python3 $$i.py pre; \
 		fi; \
-		stow -vS -t ~ $$i --override=.*; \
+		stow -vS -R -t ~ $$i --override=.*; \
 		if test -f $$i.py ; \
 			then python3 $$i.py post; \
 		fi; \
@@ -31,7 +32,7 @@ pc:
 		if test -f $$i.py ; \
 			then python3 $$i.py pre; \
 		fi; \
-		stow -vS -t ~ $$i --override=".*"; \
+		stow -vS -R -t ~ $$i --override=".*"; \
 		if test -f $$i.py ; \
 			then python3 $$i.py post; \
 		fi; \
