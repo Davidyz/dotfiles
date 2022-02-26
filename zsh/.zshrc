@@ -8,7 +8,7 @@ fi
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
 if [ -d $HOME/.cargo/bin ]
-then 
+then
   export PATH=$PATH:$HOME/.cargo/bin
 fi
 
@@ -76,7 +76,10 @@ HIST_STAMPS="dd/mm/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 #ZSH_CUSTOM=/path/to/new-custom-folder
 
-export FZF_BASE=/usr/bin/fzf
+if [ -f `which fzf` ] > /dev/null ; then
+  export FZF_BASE=`which fzf`
+fi
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -127,9 +130,14 @@ alias pandoc-pdf="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"
 alias pandoc-cn="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"NotoCJK\""
 alias alacritty="env WINIT_UNIX_BACKEND=x11 alacritty"
 alias unzip_gbk="unzip -O gbk "
-# export TERM=xterm-256color
+export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
-export PYTHONPATH=$HOME/git/learning_python/module/
+
+PY_PATH=`python -c "import glob, os;dirs = glob.glob(f'{os.path.expanduser(\"~\")}/**/learning_python/module') or glob.glob(f'{os.path.expanduser(\"~\")}/learning_python/module') ;print(dirs[0] if len(dirs) == 1 else exit())"`
+if [ -d $PY_PATH ]; then
+  export PYTHONPATH=$PY_PATH
+fi
+
 export ANDROID_HOME=/storage/emulated/0/
 source $ZSH/oh-my-zsh.sh
 
@@ -137,7 +145,7 @@ zstyle ':completion:*' ignored-patterns '__pycache__'
 
 if command -v lsd > /dev/null
 then
-    alias ls='lsd'
+  alias ls='lsd'
 fi
 
 # User configuration
@@ -162,8 +170,8 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 if [[ $TERM == xterm-termite ]]; then
-    . /etc/profile.d/vte.sh
-    __vte_osc7
+  . /etc/profile.d/vte.sh
+  __vte_osc7
 fi
 
 ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
@@ -173,12 +181,12 @@ ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
 if command -v neofetch > /dev/null ; then
-  neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C
+  neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime
 fi
 
 if {test -f $(command -v pacman)} && {test -f /usr/share/doc/find-the-command/ftc.zsh} ; then
   source /usr/share/doc/find-the-command/ftc.zsh
-elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then 
+elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then
   source /etc/zsh_command_not_found
 fi
 
@@ -187,15 +195,15 @@ then
   source ~/.local_script.sh
 fi
 
-function virtualenv_info { 
-    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+function virtualenv_info {
+  [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
 PROMPT='%{$fg[white]%}$(virtualenv_info)%{$reset_color%}%'+$PROMPT
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-unsetopt null_glob 
+unsetopt null_glob
 unsetopt csh_null_glob
 unsetopt nomatch
 
