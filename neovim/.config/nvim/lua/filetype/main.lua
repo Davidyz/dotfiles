@@ -29,6 +29,7 @@ require('filetype.typescript')
 require('filetype.vim')
 require('filetype.zsh')
 
+require('filetype.gitcommit')
 require('filetype.pandoc')
 require('filetype.markdown')
 require('filetype.html')
