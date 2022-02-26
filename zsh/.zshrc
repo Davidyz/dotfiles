@@ -212,3 +212,6 @@ if ! command -v thefuck > /dev/null && command -v pip3 > /dev/null ; then
 fi
 
 eval $(thefuck --alias)
+
+bindkey '^[[1;2C' forward-word
+bindkey '^[[1;2D' backward-word
