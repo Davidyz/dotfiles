@@ -8,5 +8,5 @@ local function nerdtreeToggle()
   end
 end
 
-Set_keymap('n', '<Leader>t', nerdtreeToggle())
-Set_keymap('v', '<Leader>t', nerdtreeToggle())
+Set_keymap('n', '<Leader>t', ':NERDTreeMirror<CR>:' .. nerdtreeToggle())
+Set_keymap('v', '<Leader>t', ':NERDTreeMirror<CR>:' .. nerdtreeToggle())
