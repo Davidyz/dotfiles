@@ -36,7 +36,9 @@ return require('packer').startup(function(use)
     'vim-scripts/cup.vim',
     ft = {'cup'}
   }
-  use 'Yggdroot/indentLine'
+  use {
+    'Yggdroot/indentLine'
+  }
   use 'p00f/nvim-ts-rainbow'
   use 'preservim/nerdcommenter'
   use 'preservim/nerdtree'
@@ -105,7 +107,11 @@ return require('packer').startup(function(use)
   }
   use 'vim-scripts/restore_view.vim'
   use 'zhaocai/GoldenView.Vim'
-  use {'Davidyz/make.nvim', branch='main'}
+  use {
+    'Davidyz/make.nvim',
+    branch='main'
+  }
+  use 'mhinz/vim-startify'
 
   if packer_bootstrap then
     require('packer').sync()
