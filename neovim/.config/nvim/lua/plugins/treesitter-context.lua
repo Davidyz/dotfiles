@@ -4,10 +4,7 @@ require('treesitter-context').setup{
     max_lines = 0,
     patterns = {
         default = {
-            'class',
-            'function',
-            'method',
-            'for', -- These won't appear in the context
+            'for',
             'while',
             'if',
             'switch',
