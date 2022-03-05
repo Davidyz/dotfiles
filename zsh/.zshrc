@@ -104,7 +104,6 @@ plugins=(
   zsh-256color
   zsh-completions
   docker
-  python
   zsh-autopair
 )
 
@@ -215,3 +214,12 @@ eval $(thefuck --alias)
 
 bindkey '^[[1;2C' forward-word
 bindkey '^[[1;2D' backward-word
+
+if command -v pip > /dev/null; then
+  if ! python -c 'import rope'; then pip install rope; fi
+  if ! command -v pystubgen > /dev/null; then pip install pystubgen; fi
+fi
+
+if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
+  pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
+fi
