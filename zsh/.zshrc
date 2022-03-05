@@ -86,6 +86,7 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  autoupdate
   adb
   git
   zsh-autosuggestions
@@ -112,6 +113,8 @@ if command -v autojump > /dev/null ; then plugins+=(autojump) fi
 autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
+
+export UPDATE_ZSH_DAYS=1
 
 unsetopt sharehistory
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -215,11 +218,11 @@ eval $(thefuck --alias)
 bindkey '^[[1;2C' forward-word
 bindkey '^[[1;2D' backward-word
 
-if command -v pip > /dev/null; then
+if [ -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
   if ! python -c 'import rope'; then pip install rope; fi
   if ! command -v pystubgen > /dev/null; then pip install pystubgen; fi
-fi
 
-if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
-  pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
+  if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
+    pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
+  fi
 fi

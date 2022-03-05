@@ -16,6 +16,7 @@ plugins = {
     "docker": "https://github.com/srijanshetty/docker-zsh.git",
     "zsh-autopair": "https://github.com/hlissner/zsh-autopair.git",
     "zsh-autocomplete": "https://github.com/marlonrichert/zsh-autocomplete.git",
+    "autoupdate": "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins",
 }
 
 themes = {"powerlevel10k": "https://github.com/romkatv/powerlevel10k.git"}
@@ -31,9 +32,9 @@ if ZSH is None:
 
 
 def pre():
-    if (not os.path.islink(os.path.expanduser(f"{HOME}/.zshrc"))) and os.path.isfile(
-        os.path.expanduser(f"{HOME}/.zshrc")
-    ):
+    if (
+        not os.path.islink(os.path.expanduser(f"{HOME}/.zshrc"))
+    ) and os.path.isfile(os.path.expanduser(f"{HOME}/.zshrc")):
         os.system(f"mv {HOME}/.zshrc {HOME}/.zshrc.old")
 
 
