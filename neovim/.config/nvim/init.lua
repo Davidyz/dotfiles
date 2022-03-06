@@ -1,5 +1,5 @@
-require('colorscheme.main')
 require('plugins.main')
+require('colorscheme.main')
 require('keymaps.main')
 require('filetype.main')
 require('misc')

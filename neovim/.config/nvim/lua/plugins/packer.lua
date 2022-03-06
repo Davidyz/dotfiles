@@ -78,7 +78,9 @@ return require('packer').startup(function(use)
   use 'vim-scripts/crontab.vim'
   use 'ayu-theme/ayu-vim'
   use 'cocopon/iceberg.vim'
-  use 'joshdick/onedark.vim'
+  use {
+    'navarasu/onedark.nvim'
+  }
   use {
     'kaicataldo/material.vim',
     branch= 'main'
