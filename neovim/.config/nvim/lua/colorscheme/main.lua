@@ -1,7 +1,7 @@
-if vim.fn.has('termguicolors') then
-  vim.opt.termguicolors = true
+if vim.fn.has("termguicolors") then
+	vim.opt.termguicolors = true
 end
-vim.opt.background = 'dark'
+vim.opt.background = "dark"
 
-require('utils')
-require('colorscheme.onedark')
+require("utils")
+require("colorscheme.onedark")
