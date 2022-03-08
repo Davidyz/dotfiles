@@ -6,12 +6,10 @@ function NoTrailingSpaces()
     local cursor_col = vim.fn.col('.')
     vim.api.nvim_command(":silent! mkview!")
     vim.api.nvim_command(":silent! %s/ *$//e")
+    vim.fn.histdel("cmd", -1)
     vim.api.nvim_command(":silent! loadview!")
 
     vim.fn.cursor(cursor_line, cursor_col)
-    vim.fn.histdel("cmd", -1)
-    vim.fn.histdel("cmd", -1)
-    vim.fn.histdel("cmd", -1)
   end
 end
 

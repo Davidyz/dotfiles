@@ -1,20 +1,7 @@
 require('utils')
 
 local gps = require('nvim-gps')
-local current_theme = require('lualine.themes.auto')
-local function get_mode_theme()
-  if vim.api.nvim_get_mode() == 'n' then
-    return current_theme.normal
-  elseif vim.api.nvim_get_mode() == 'i' then
-    return current_theme.insert
-  elseif vim.api.nvim_get_mode() == 'v' then
-    return current_theme.visual
-  elseif vim.api.nvim_get_mode() == 'r' then
-    return current_theme.replace
-  else
-    return current_theme.normal
-  end
-end
+local current_theme = require('lualine.themes.onedark')
 
 
 local function file_path()
