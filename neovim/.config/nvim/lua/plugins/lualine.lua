@@ -41,7 +41,15 @@ require("lualine").setup({
   },
   sections = {
     lualine_a = { "mode" },
-    lualine_b = { "branch", "diff", "diagnostics", devicon },
+    lualine_b = {
+      "branch",
+      "diff",
+      {
+        "diagnostics",
+        sources = { "coc" },
+      },
+      devicon,
+    },
     lualine_c = {
       get_context,
       file_path,
