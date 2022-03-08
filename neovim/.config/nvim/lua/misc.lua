@@ -9,9 +9,9 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 
 if vim.bo.filetype ~= "fstab" then
-	vim.opt.expandtab = true
+  vim.opt.expandtab = true
 else
-	vim.opt.expandtab = false
+  vim.opt.expandtab = false
 end
 
 vim.opt.mouse = "a"
@@ -23,21 +23,19 @@ vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
 if vim.fn.has("unix") then
-	vim.g.python3_host_prog = "/usr/bin/python3"
+  vim.g.python3_host_prog = "/usr/bin/python3"
 end
 
 vim.o.cursorline = true
 vim.o.compatible = false
 
 if vim.fn.has("autocmd") then
-	-- recover cursor location from history
-	vim.api.nvim_command(
-		[[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
-	)
+  -- recover cursor location from history
+  vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
 end
 
 if not vim.fn.has("gui_running") and not vim.fn.has("termguicolors") then
-	vim.api.nvim_set_option("t_Co", { 256 })
+  vim.api.nvim_set_option("t_Co", { 256 })
 end
 
 vim.opt.fillchars = "vert:"

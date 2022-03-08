@@ -10,20 +10,20 @@ Set_keymap("t", "<A-Esc>", "<C-\\><C-n>") -- terminal
 Set_keymap("", "<A-Esc>", "<Esc>")
 
 Set_keymap("", "<C-Left>", ":vertical resize -1<CR>", {
-	noremap = true, -- split window sizes
-	silent = true,
+  noremap = true, -- split window sizes
+  silent = true,
 })
 Set_keymap("", "<C-Right>", ":vertical resize +1<CR>", {
-	noremap = true,
-	silent = true,
+  noremap = true,
+  silent = true,
 })
 Set_keymap("", "<C-Up>", ":resize -1<CR>", {
-	noremap = true,
-	silent = true,
+  noremap = true,
+  silent = true,
 })
 Set_keymap("", "<C-Down>", ":resize +1<CR>", {
-	noremap = true,
-	silent = true,
+  noremap = true,
+  silent = true,
 })
 
 Set_keymap("n", "<C-h>", "<C-w>h") -- move between splits
