@@ -15,6 +15,10 @@ end
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
   use("windwp/nvim-autopairs")
+  use({
+    "chrisbra/csv.vim",
+    ft = { "csv" },
+  })
   use("easymotion/vim-easymotion")
   use({
     "neovimhaskell/haskell-vim",
