@@ -140,7 +140,7 @@ if [ -d $PY_PATH ]; then
   export PYTHONPATH=$PY_PATH
 fi
 
-export ANDROID_HOME=/storage/emulated/0/
+export ANDROID_STORAGE=/storage/emulated/0/
 source $ZSH/oh-my-zsh.sh
 
 zstyle ':completion:*' ignored-patterns '__pycache__'
@@ -275,5 +275,5 @@ function omz_termsupport_preexec {
   local LINE="${2:gs/%/%%}"
 
   # title "$CMD" "%100>...>${LINE}%<<"
-  title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE $LINE%<<"
+  title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
 }
