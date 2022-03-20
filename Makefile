@@ -17,23 +17,25 @@ check:
 server:
 	@make check
 	@for i in $(SERVER); do \
-		if test -f $$i.py ; \
-			then python3 $$i.py pre; \
-		fi; \
-		stow -vS -R -t ~ $$i --override=.*; \
-		if test -f $$i.py ; \
-			then python3 $$i.py post; \
+		if test -f $$i.py ; then \
+			if python3 $$i.py pre; then \
+				stow -vS -R -t ~ $$i --override=.*; \
+				if test -f $$i.py ; \
+					then python3 $$i.py post; \
+				fi; \
+			fi; \
 		fi; \
 	done
 
 pc:
 	@make check
 	@for i in $(PC); do \
-		if test -f $$i.py ; \
-			then python3 $$i.py pre; \
-		fi; \
-		stow -vS -R -t ~ $$i --override=".*"; \
-		if test -f $$i.py ; \
-			then python3 $$i.py post; \
+		if test -f $$i.py ; then \
+			if python3 $$i.py pre; then\
+				stow -vS -R -t ~ $$i --override=".*"; \
+				if test -f $$i.py ; \
+					then python3 $$i.py post; \
+				fi; \
+			fi; \
 		fi; \
 	done

@@ -42,7 +42,9 @@ def pre():
         os.makedirs(f"{HOME}/.config/nvim")
     if os.path.isfile(
         os.path.expanduser(f"{HOME}/.config/nvim/init.vim")
-    ) and not os.path.islink(os.path.expanduser(f"{HOME}/.config/nvim/init.vim")):
+    ) and not os.path.islink(
+        os.path.expanduser(f"{HOME}/.config/nvim/init.vim")
+    ):
         os.system(f"rm {HOME}/.config/nvim/init.vim")
     if os.path.isfile(
         os.path.expanduser(f"{HOME}/.config/nvim/coc-settings.json")
@@ -63,28 +65,32 @@ def post():
 
 
 if __name__ == "__main__":
-    if shutil.which("nvim") is None:
-        wd = os.getcwd()
-        os.chdir(os.path.expanduser("~"))
-        if "git" in os.listdir():
-            os.chdir("git")
-        if shutil.which("yay"):
-            os.system("yay -S neovim-nightly-bin")
-        elif shutil.which("apt"):
-            if not os.path.isdir("neovim"):
-                os.system("git clone git@github.com:neovim/neovim.git")
-            os.system("cd neovim && checkout nightly")
-            os.system(
-                "sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen"
-            )
-            os.system(f"make -j{os.cpu_count()}")
-            os.system("sudo make install")
-        else:
-            exit()
-        os.system("pip install neovim pynvim")
-        os.system("npm install -g neovim")
-        os.chdir(wd)
     if "pre" in sys.argv:
+        if shutil.which("nvim") is None:
+            wd = os.getcwd()
+            os.chdir(os.path.expanduser("~"))
+            if "git" in os.listdir():
+                os.chdir("git")
+            if shutil.which("yay"):
+                os.system("yay -S neovim-nightly-bin")
+            elif shutil.which("apt"):
+                if not os.path.isdir("neovim"):
+                    os.system("git clone git@github.com:neovim/neovim.git")
+                os.system("cd neovim && checkout nightly")
+                os.system(
+                    "sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen"
+                )
+                os.system(f"make -j{os.cpu_count()}")
+                os.system("sudo make install")
+            else:
+                exit()
+            os.system("pip install neovim pynvim")
+            os.system("npm install -g neovim")
+            os.chdir(wd)
+
+        if shutil.which("nvim") is None:
+            print("Neovim executable is not found. Abouting.")
+            sys.exit(1)
         pre()
     elif "post" in sys.argv:
         post()

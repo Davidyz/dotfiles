@@ -21,15 +21,6 @@ plugins = {
 
 themes = {"powerlevel10k": "https://github.com/romkatv/powerlevel10k.git"}
 
-if ZSH is None:
-    if shutil.which("zsh"):
-        os.system(
-            'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
-        )
-    else:
-        print("zsh not found. Exitting.")
-        exit(0)
-
 
 def pre():
     if (
@@ -55,6 +46,15 @@ def post():
 
 if __name__ == "__main__":
     if "pre" in sys.argv:
+        if ZSH is None:
+            if shutil.which("zsh"):
+                os.system(
+                    'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+                )
+            else:
+                print("zsh not found. Exitting.")
+                exit(1)
         pre()
+
     elif "post" in sys.argv:
         post()
