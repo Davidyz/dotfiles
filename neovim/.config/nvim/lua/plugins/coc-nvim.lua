@@ -19,6 +19,6 @@ vim.g.coc_global_extensions = {
   "coc-phpls",
 }
 
-vim.api.nvim_command(
-  "autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']"
-)
+vim.api.nvim_command([[
+  autocmd FileType python let b:coc_root_patterns = ['Pipfile.lock', '.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
+]])

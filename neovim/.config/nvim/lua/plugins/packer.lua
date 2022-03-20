@@ -14,6 +14,12 @@ end
 
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
+  use({
+    "lilydjwg/fcitx.vim",
+    cond = function()
+      return vim.fn.executable("fcitx5")
+    end,
+  })
   use("windwp/nvim-autopairs")
   use({
     "chrisbra/csv.vim",
@@ -104,6 +110,7 @@ return require("packer").startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
+  use("sunjon/Shade.nvim")
   use("romgrk/nvim-treesitter-context")
   use("nvim-treesitter/playground")
   use({
