@@ -13,10 +13,6 @@ function NoTrailingSpaces()
   end
 end
 
-for _, ft in ipairs(TEXT) do
-  vim.api.nvim_command(string.format("autocmd Filetype %s g:textwidth=80", ft))
-end
-
 vim.api.nvim_command("autocmd BufWritePre * call v:lua.NoTrailingSpaces()")
 
 require("filetype.json")
