@@ -1,4 +1,5 @@
 import os
+import platform
 import shutil
 import sys
 
@@ -6,6 +7,12 @@ HOME = os.path.expanduser("~")
 CPU_COUNT = os.cpu_count()
 if CPU_COUNT is None:
     CPU_COUNT = 1
+NVIM_CONFIG_ROOT = os.path.expanduser(
+    "~/.config/nvim"
+    if not platform.system() == "Windows"
+    else "~/AppData/Local/nvim"
+)
+
 
 commands = ["python -m pip install jupytext flake8 black neovim"]
 
@@ -34,24 +41,21 @@ elif shutil.which("apt"):
 
 
 def pre():
-    if os.path.islink("~/.config/nvim/init.vim"):
-        os.system("rm ~/.config/nvim/init.vim")
-    if not os.path.isdir(f"{HOME}/.config"):
-        os.makedirs(f"{HOME}/.config")
-    if not os.path.isdir(f"{HOME}/.config/nvim"):
-        os.makedirs(f"{HOME}/.config/nvim")
-    if os.path.isfile(
-        os.path.expanduser(f"{HOME}/.config/nvim/init.vim")
-    ) and not os.path.islink(
-        os.path.expanduser(f"{HOME}/.config/nvim/init.vim")
+    INIT_VIM = os.path.join(NVIM_CONFIG_ROOT, "init.vim")
+    INIT_LUA = os.path.join(NVIM_CONFIG_ROOT, "init.lua")
+    COC_JSON = os.path.join(NVIM_CONFIG_ROOT, "coc-settings.json")
+    if (not os.path.isdir(NVIM_CONFIG_ROOT)) or os.path.islink(
+        NVIM_CONFIG_ROOT
     ):
-        os.system(f"rm {HOME}/.config/nvim/init.vim")
-    if os.path.isfile(
-        os.path.expanduser(f"{HOME}/.config/nvim/coc-settings.json")
-    ) and not os.path.islink(
-        os.path.expanduser(f"{HOME}/.config/nvim/coc-settings.json")
-    ):
-        os.system(f"rm {HOME}/.config/nvim/coc-settings.json")
+        if os.path.islink(NVIM_CONFIG_ROOT):
+            os.remove(NVIM_CONFIG_ROOT)
+        os.makedirs(NVIM_CONFIG_ROOT)
+    for file in (INIT_VIM, INIT_LUA, COC_JSON):
+        if os.path.isfile(file):
+            if os.path.islink(file):
+                os.remove(file)
+            else:
+                os.rename(file, file + ".bak")
 
     for command in commands:
         os.system(command)
@@ -61,7 +65,8 @@ def post():
     os.system(
         "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
     )
-    os.system("env EDITOR=nvim")
+    if not platform.system() == "Windows":
+        os.system("env EDITOR=nvim")
 
 
 if __name__ == "__main__":
@@ -83,7 +88,8 @@ if __name__ == "__main__":
                 os.system(f"make -j{os.cpu_count()}")
                 os.system("sudo make install")
             else:
-                exit()
+                print("Neovim executable is not found.")
+                exit(1)
             os.system("pip install neovim pynvim")
             os.system("npm install -g neovim")
             os.chdir(wd)
