@@ -1,1 +1,1 @@
-vim.api.nvim_command([[autocmd FileType xml setlocal ts=2 autoindent sw=2]])
+vim.api.nvim_create_autocmd("FileType", { pattern = "xml", command = "setlocal ts=2 autoindent sw=2" })

@@ -1,6 +1,6 @@
 require("utils")
 
-function NoTrailingSpaces()
+local function no_trailing_spaces()
   if List_contains(SOURCE_CODE, vim.bo.filetype) then
     local cursor_line = vim.fn.line(".")
     local cursor_col = vim.fn.col(".")
@@ -13,7 +13,7 @@ function NoTrailingSpaces()
   end
 end
 
-vim.api.nvim_command("autocmd BufWritePre * call v:lua.NoTrailingSpaces()")
+vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*", callback = no_trailing_spaces })
 
 require("filetype.json")
 require("filetype.xml")
