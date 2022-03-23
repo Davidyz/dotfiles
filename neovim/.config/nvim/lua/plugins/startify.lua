@@ -1,7 +1,5 @@
 require("utils")
-if vim.fn.has("nvim") then
-  vim.api.nvim_command([[au! TabNewEntered * Startify]])
-end
+vim.api.nvim_create_autocmd("TabNewEntered", { pattern = "*", command = "Startify" })
 
 vim.api.nvim_command([[
 function! StartifyEntryFormat()

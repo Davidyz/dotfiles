@@ -58,7 +58,8 @@
     "context",
     "markdown",
     "text",
-    "rst"
+    "rst",
+    "gitcommit"
   ],
   "markdownlint.config": {
     "line_length": true

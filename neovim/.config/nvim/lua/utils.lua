@@ -37,3 +37,11 @@ end
 function Get_ColorCode(group, tag)
   return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), tag)
 end
+
+function GetTermCode(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+function SendKey(str, mode)
+  return vim.api.nvim_feedkeys(string, mode, false)
+end
