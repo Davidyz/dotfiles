@@ -1,25 +1,28 @@
-require("plugins.packer")
+require("utils")
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost packer.lua source <afile> | PackerCompile
-  augroup end
-]])
+local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
+vim.api.nvim_create_autocmd(
+  "BufWritePost",
+  { pattern = "packer.lua", command = "source <afile> | PackerCompile", group = packer_user_config }
+)
 
-require("plugins.black")
-require("plugins.coc-nvim")
-require("plugins.golden_view")
-require("plugins.haskell")
-require("plugins.indentline")
-require("plugins.jupytext")
-require("plugins.lualine")
-require("plugins.markdown_preview")
-require("plugins.nvim_autopairs")
-require("plugins.nvim_gps")
-require("plugins.NERDTree")
-require("plugins.pandoc")
-require("plugins.rainbow")
-require("plugins.startify")
-require("plugins.tree_sitter")
-require("plugins.treesitter-context")
+local items = {
+  "plugins.packer",
+  "plugins.black",
+  "plugins.coc-nvim",
+  "plugins.golden_view",
+  "plugins.haskell",
+  "plugins.indentline",
+  "plugins.jupytext",
+  "plugins.lualine",
+  "plugins.markdown_preview",
+  "plugins.nvim_autopairs",
+  "plugins.nvim_gps",
+  "plugins.NERDTree",
+  "plugins.pandoc",
+  "plugins.rainbow",
+  "plugins.startify",
+  "plugins.tree_sitter",
+  "plugins.treesitter-context",
+}
+TryRequire(items)

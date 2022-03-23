@@ -45,3 +45,32 @@ end
 function SendKey(str, mode)
   return vim.api.nvim_feedkeys(string, mode, false)
 end
+
+function Require(item)
+  if not type(item) == "string" then
+    return false
+  end
+  local status, error_message = pcall(require, item)
+  return status
+end
+
+function TryRequire(items, retry_count)
+  if retry_count == 0 then
+    vim.api.nvim_echo({ { "Failed to require the following files:", "None" } }, false, {})
+    for _, item in ipairs(items) do
+      vim.api.nvim_echo({ { item, "None" } }, false, {})
+    end
+    return
+  end
+  retry_count = retry_count or 10
+  local failed = {}
+  for _, item in ipairs(items) do
+    local status = Require(item)
+    if not status then
+      table.insert(failed, item)
+    end
+  end
+  if table.getn(failed) > 0 then
+    TryRequire(failed, retry_count - 1)
+  end
+end

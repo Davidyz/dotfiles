@@ -1,5 +1,3 @@
-require("plugins.main")
-require("colorscheme.main")
-require("keymaps.main")
-require("filetype.main")
-require("misc")
+require("utils")
+local items = { "plugins.main", "colorscheme.main", "keymaps.main", "filetype.main", "misc" }
+TryRequire(items)

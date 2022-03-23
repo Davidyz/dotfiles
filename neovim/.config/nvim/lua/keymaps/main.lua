@@ -1,13 +1,19 @@
-require("keymaps.global")
+require("utils")
 
-require("keymaps.black")
-require("keymaps.coc-nvim")
-require("keymaps.golden_view")
-require("keymaps.markdown_preview")
-require("keymaps.NERDTree")
-require("keymaps.NERDCommenter")
+local items = {
+  "keymaps.global",
 
-require("keymaps.python")
-require("keymaps.shell")
-require("keymaps.java")
-require("keymaps.c")
+  "keymaps.black",
+  "keymaps.coc-nvim",
+  "keymaps.golden_view",
+  "keymaps.markdown_preview",
+  "keymaps.NERDTree",
+  "keymaps.NERDCommenter",
+
+  "keymaps.python",
+  "keymaps.shell",
+  "keymaps.java",
+  "keymaps.c",
+}
+
+TryRequire(items)

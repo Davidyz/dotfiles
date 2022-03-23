@@ -15,22 +15,25 @@ end
 
 vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*", callback = no_trailing_spaces })
 
-require("filetype.json")
-require("filetype.xml")
-require("filetype.yaml")
+local items = {
+  "filetype.json",
+  "filetype.xml",
+  "filetype.yaml",
 
-require("filetype.c_cpp")
-require("filetype.java")
-require("filetype.lua")
-require("filetype.haskell")
-require("filetype.php")
-require("filetype.python")
-require("filetype.sh")
-require("filetype.typescript")
-require("filetype.vim")
-require("filetype.zsh")
+  "filetype.c_cpp",
+  "filetype.java",
+  "filetype.lua",
+  "filetype.haskell",
+  "filetype.php",
+  "filetype.python",
+  "filetype.sh",
+  "filetype.typescript",
+  "filetype.vim",
+  "filetype.zsh",
 
-require("filetype.gitcommit")
-require("filetype.pandoc")
-require("filetype.markdown")
-require("filetype.html")
+  "filetype.gitcommit",
+  "filetype.pandoc",
+  "filetype.markdown",
+  "filetype.html",
+}
+TryRequire(items)
