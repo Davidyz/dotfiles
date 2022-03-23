@@ -18,7 +18,7 @@ function! Check_back_space() abort
 endfunction
 ]])
 
-Set_keymap("n", "K", ":call v:lua.Show_documentation()<CR>", { silent = true, noremap = true })
+Set_keymap("n", "K", "", { silent = true, noremap = true, callback = Show_documentation })
 Set_keymap("x", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
 Set_keymap("n", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
 Set_keymap("n", "<leader>r", "<Plug>(coc-rename)", false)
@@ -39,3 +39,5 @@ Set_keymap(
   { silent = true, expr = true, noremap = true }
 )
 Set_keymap("i", "<S-TAB>", [[pumvisible() ? "\<C-p>" : "\<C-h>"]], { silent = true, expr = true })
+Set_keymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
+Set_keymap("n", "gr", "<Plug>(coc-references)", { silent = true })

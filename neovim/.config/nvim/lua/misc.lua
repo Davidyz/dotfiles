@@ -22,19 +22,23 @@ vim.opt.laststatus = 2
 vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
-if vim.fn.has("unix") then
+if vim.fn.has("unix") ~= 0 then
   vim.g.python3_host_prog = "/usr/bin/python3"
+elseif vim.fn.has("win32") or vim.fn.has("win64") then
+  local count
+  vim.g.python3_host_prog, count = string.gsub(vim.fn.which("python3"), "\n", "")
 end
 
 vim.o.cursorline = true
 vim.o.compatible = false
 
-if vim.fn.has("autocmd") then
-  -- recover cursor location from history
-  vim.api.nvim_command([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
-end
+-- recover cursor location from history
+vim.api.nvim_create_autocmd(
+  "BufReadPost",
+  { pattern = "*", command = [[if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]] }
+)
 
-if not vim.fn.has("gui_running") and not vim.fn.has("termguicolors") then
+if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option("t_Co", { 256 })
 end
 

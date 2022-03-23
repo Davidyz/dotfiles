@@ -110,7 +110,6 @@ return require("packer").startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
-  use("sunjon/Shade.nvim")
   use("romgrk/nvim-treesitter-context")
   use("nvim-treesitter/playground")
   use({
