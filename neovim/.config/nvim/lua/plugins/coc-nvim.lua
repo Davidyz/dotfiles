@@ -51,3 +51,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
     vim.fn["CocActionAsync"]("highlight")
   end,
 })
+vim.api.nvim_command([[
+hi clear CocHighlightText
+hi link CocHighlightText Pmenu
+]])
