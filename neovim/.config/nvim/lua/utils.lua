@@ -42,8 +42,11 @@ function GetTermCode(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-function SendKey(str, mode)
-  return vim.api.nvim_feedkeys(string, mode, false)
+function SendKey(str, mode, escape)
+  if escape == nil then
+    escape = false
+  end
+  return vim.api.nvim_feedkeys(string, mode, escape)
 end
 
 function Require(item)

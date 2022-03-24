@@ -14,9 +14,10 @@ local function show_doc()
   end
 end
 
-local function check_back_space()
+function _G.check_back_space()
   local col = vim.fn.col(".") - 1
-  return (col > 1) or string.match(vim.fn.getline(".")[col - 1], ".%s+")
+  local line = vim.fn.getline(".")[col - 1] or " "
+  return (col > 1) or string.match(line, "%s")
 end
 
 Set_keymap("n", "K", "", { silent = true, noremap = true, callback = show_doc })
@@ -31,20 +32,24 @@ Set_keymap("i", "<cr>", [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<
   noremap = true,
 })
 Set_keymap("i", "<C-space>", "", { silent = true, expr = true, noremap = true, callback = vim.fn["coc#refresh"] })
-Set_keymap("i", "<TAB>", "", {
+
+Set_keymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : v:lua.check_back_space() ? "\<TAB>" : coc#refresh()]], {
   silent = true,
   expr = true,
   noremap = true,
-  callback = function()
-    if vim.fn.pumvisible() then
-      return GetTermCode([[<C-n>]])
-    elseif check_back_space() then
-      return GetTermCode([[<TAB>]])
-    else
-      return vim.fn["coc#refresh"]()
-    end
-  end,
 })
+-- Set_keymap("i", "<TAB>", "", {
+-- silent = true,
+-- expr = true,
+-- noremap = true,
+-- callback = function()
+-- if vim.fn.pumvisible() then
+-- return GetTermCode([[<C-n>]])
+-- else
+-- return GetTermCode([[<TAB>]])
+-- end
+-- end,
+-- })
 
 Set_keymap("i", "<S-TAB>", "", {
   silent = true,
@@ -57,5 +62,6 @@ Set_keymap("i", "<S-TAB>", "", {
     end
   end,
 })
+
 Set_keymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
 Set_keymap("n", "gr", "<Plug>(coc-references)", { silent = true })
