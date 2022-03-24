@@ -44,3 +44,10 @@ vim.api.nvim_create_autocmd("BufRead", {
     vim.g.coc_filetype_map = { ["pandoc"] = "markdown" }
   end,
 })
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  pattern = "*",
+  callback = function()
+    vim.fn["CocActionAsync"]("highlight")
+  end,
+})
