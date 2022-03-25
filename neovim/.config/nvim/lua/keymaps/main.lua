@@ -12,7 +12,6 @@ local items = {
 
   "keymaps.python",
   "keymaps.shell",
-  "keymaps.java",
   "keymaps.c",
 }
 

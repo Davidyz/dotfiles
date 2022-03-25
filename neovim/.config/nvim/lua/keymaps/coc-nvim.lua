@@ -16,8 +16,8 @@ end
 
 function _G.check_back_space()
   local col = vim.fn.col(".") - 1
-  local line = vim.fn.getline(".")[col - 1] or " "
-  return (col > 1) or string.match(line, "%s")
+  local line = vim.fn.getline(".")[col - 1] or ""
+  return (col > 1) or string.match(line, "%s") ~= nil
 end
 
 Set_keymap("n", "K", "", { silent = true, noremap = true, callback = show_doc })
@@ -33,11 +33,14 @@ Set_keymap("i", "<cr>", [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<
 })
 Set_keymap("i", "<C-space>", "", { silent = true, expr = true, noremap = true, callback = vim.fn["coc#refresh"] })
 
-Set_keymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : v:lua.check_back_space() ? "\<TAB>" : coc#refresh()]], {
+-- Set_keymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : v:lua.check_back_space() ? "\<TAB>" : coc#refresh()]], {
+
+Set_keymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : "\<TAB>"]], {
   silent = true,
   expr = true,
   noremap = true,
 })
+
 -- Set_keymap("i", "<TAB>", "", {
 -- silent = true,
 -- expr = true,
