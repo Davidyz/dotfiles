@@ -17,7 +17,7 @@ return require("packer").startup(function(use)
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
-      return vim.fn.executable("fcitx5")
+      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
     end,
   })
   use("windwp/nvim-autopairs")
