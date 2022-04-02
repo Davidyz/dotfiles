@@ -158,11 +158,13 @@ fi
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if command -v nvim > /dev/null then
+if command -v nvim > /dev/null;
+then
   export EDITOR='nvim'
 fi
 
-if command -v vipe > /dev/null then
+if command -v vipe > /dev/null;
+then
   export PAGER='vipe'
 fi
 
