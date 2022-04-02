@@ -8,4 +8,4 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", { pattern = "java", command = "setlocal autoindent shiftwidth=0 ts=2 sts=2" })
-vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*.java", callback = format("google-java-format -") })
+vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*.java", callback = format("google-java-format", "-") })

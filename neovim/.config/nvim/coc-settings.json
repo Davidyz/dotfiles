@@ -4,37 +4,17 @@
     "haskell": {
       "command": "/usr/bin/haskell-language-server",
       "args": ["--lsp"],
-      "rootPatterns": [
-        "*.cabal",
-        "stack.yaml",
-        "cabal.project",
-        "package.yaml",
-        "hie.yaml",
-        ".git"
-      ],
+      "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", "hie.yaml", ".git"],
       "filetypes": ["haskell", "hs", "lhaskell"]
     },
     "arduino": {
       "command": "/usr/bin/arduino-language-server",
       "rootPatterns": ["*.ino", ".git"],
       "filetypes": ["arduino"],
-      "args": [
-        "-cli",
-        "/usr/bin/arduino-cli",
-        "-clangd",
-        "/usr/bin/clangd",
-        "-cli-config",
-        "/home/davidyz/.arduino15/arduino-cli.yaml"
-      ]
+      "args": ["-cli", "/usr/bin/arduino-cli", "-clangd", "/usr/bin/clangd", "-cli-config", "/home/davidyz/.arduino15/arduino-cli.yaml"]
     }
   },
-  "cSpell.enabledLanguageIds": [
-    "markdown",
-    "pandoc",
-    "text",
-    "txt",
-    "plaintext"
-  ],
+  "cSpell.enabledLanguageIds": ["markdown", "pandoc", "text", "txt", "plaintext"],
   "cSpell.language": "en-GB",
   "cSpell.allowCompoundWords": true,
   "rainbow-fart.enabled": false,
@@ -45,22 +25,9 @@
   "python.pythonPath": "/usr/bin/python3",
   "python.formatting.provider": "black",
   "python.analysis.diagnosticMode": "workspace",
-  "Lua.workspace.library": [
-    "/usr/share/nvim/runtime/lua/",
-    "/usr/share/nvim/runtime/lua/vim/",
-    "/usr/share/nvim/runtime/lua/lsp/"
-  ],
+  "Lua.workspace.library": ["/usr/share/nvim/runtime/lua/", "/usr/share/nvim/runtime/lua/vim/", "/usr/share/nvim/runtime/lua/lsp/"],
   "Lua.diagnostics.globals": ["vim"],
-  "grammarly.filetypes": [
-    "asciidoc",
-    "tex",
-    "plaintex",
-    "context",
-    "markdown",
-    "text",
-    "rst",
-    "gitcommit"
-  ],
+  "grammarly.filetypes": ["asciidoc", "tex", "plaintex", "context", "markdown", "text", "rst", "gitcommit"],
   "markdownlint.config": {
     "line_length": true
   },

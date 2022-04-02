@@ -15,6 +15,7 @@ npairs.add_rule(Rule('"""', '"""', "python"))
 
 npairs.add_rule(Rule("${", "}$", "pandoc"))
 npairs.add_rule(Rule("$${", "}$$", "pandoc"))
+npairs.add_rule(Rule("```", "```", "pandoc"))
 
 npairs.add_rule(Rule("${", "}$", "tex"))
 npairs.add_rule(Rule("$${", "}$$", "tex"))
