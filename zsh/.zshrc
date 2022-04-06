@@ -163,11 +163,6 @@ then
   export EDITOR='nvim'
 fi
 
-if command -v vipe > /dev/null;
-then
-  export PAGER='vipe'
-fi
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
