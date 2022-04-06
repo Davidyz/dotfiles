@@ -14,6 +14,7 @@ end
 
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
+  use({ "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } })
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
@@ -132,6 +133,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
+  use("~/git/md-code.nvim")
   use("mhinz/vim-startify")
 
   if packer_bootstrap then
