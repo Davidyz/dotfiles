@@ -38,6 +38,9 @@ elif shutil.which("apt"):
         )
         extra_commands.append("sudo apt update && sudo apt install nodejs -y")
     commands.extend(extra_commands)
+    commands.append(
+        "sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen"
+    )
 
 elif shutil.which("dnf") != None or shutil.which("yum") != None:
     command = shutil.which("dnf") or shutil.which("yum")
@@ -47,7 +50,7 @@ elif shutil.which("dnf") != None or shutil.which("yum") != None:
     if shutil.which("npm") is None:
         commands.append(f"sudo {command} install -y npm")
     if shutil.which("yarn") is None:
-        commands.append("npm install --global yarn")
+        commands.append("sudo npm install --global yarn")
 
 
 def pre():
@@ -88,13 +91,15 @@ if __name__ == "__main__":
                 os.chdir("git")
             if shutil.which("yay"):
                 os.system("yay -S neovim-nightly-bin")
-            elif shutil.which("apt"):
+            elif (
+                shutil.which("apt")
+                or shutil.which("dnf")
+                or shutil.which("yum")
+            ):
                 if not os.path.isdir("neovim"):
                     os.system("git clone git@github.com:neovim/neovim.git")
                 os.system("cd neovim && checkout nightly")
-                os.system(
-                    "sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen"
-                )
+
                 os.system(f"make -j{os.cpu_count()}")
                 os.system("sudo make install")
             else:
