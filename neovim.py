@@ -39,6 +39,16 @@ elif shutil.which("apt"):
         extra_commands.append("sudo apt update && sudo apt install nodejs -y")
     commands.extend(extra_commands)
 
+elif shutil.which("dnf") != None or shutil.which("yum") != None:
+    command = shutil.which("dnf") or shutil.which("yum")
+    commands.append(
+        f"sudo {command} -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch gettext curl"
+    )
+    if shutil.which("npm") is None:
+        commands.append(f"sudo {command} install -y npm")
+    if shutil.which("yarn") is None:
+        commands.append("npm install --global yarn")
+
 
 def pre():
     INIT_VIM = os.path.join(NVIM_CONFIG_ROOT, "init.vim")
