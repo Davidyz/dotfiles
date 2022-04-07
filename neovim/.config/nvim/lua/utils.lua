@@ -57,12 +57,17 @@ function Require(item)
   return status
 end
 
+local stat_height = vim.o.cmdheight
+
 function TryRequire(items, retry_count)
   if retry_count == 0 then
+    stat_height = vim.o.cmdheight
+    vim.o.cmdheight = table.getn(items) + 1
     vim.api.nvim_echo({ { "Failed to require the following files:", "None" } }, false, {})
     for _, item in ipairs(items) do
       vim.api.nvim_echo({ { item, "None" } }, false, {})
     end
+    vim.o.cmdheight = stat_height
     return
   end
   retry_count = retry_count or 10
