@@ -82,3 +82,31 @@ function TryRequire(items, retry_count)
     TryRequire(failed, retry_count - 1)
   end
 end
+
+function _G.any(array, func)
+  if type(func) ~= "function" then
+    func = function(item)
+      return item
+    end
+  end
+  for i, item in ipairs(array) do
+    if func(item) then
+      return true
+    end
+  end
+  return false
+end
+
+function _G.all(array, func)
+  if type(func) ~= "function" then
+    func = function(item)
+      return item
+    end
+  end
+  for i, item in ipairs(array) do
+    if not func(item) then
+      return false
+    end
+  end
+  return true
+end

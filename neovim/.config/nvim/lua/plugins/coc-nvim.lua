@@ -1,12 +1,19 @@
+require("utils")
+
+local extensions = {
+  -- mappings from plugin to required runtime.
+  ["coc-pyright"] = { "python", "python3" },
+  ["coc-java"] = { "java", "javac" },
+  ["coc-sh"] = { "bash", "sh" },
+  ["coc-tsserver"] = { "node" },
+  ["coc-clangd"] = { "gcc", "clang", "msvc" },
+  ["coc-phpls"] = { "php" },
+}
+
 vim.g.coc_global_extensions = {
   "coc-markdownlint",
-  "coc-pyright",
   "coc-highlight",
-  "coc-java",
   "coc-vimlsp",
-  "coc-sh",
-  "coc-tsserver",
-  "coc-clangd",
   "coc-snippets",
   "coc-spell-checker",
   "coc-rainbow-fart",
@@ -16,10 +23,17 @@ vim.g.coc_global_extensions = {
   "coc-git",
   "coc-ci",
   "coc-docker",
-  "coc-lua",
   "coc-phpls",
   "coc-prettier",
+  "coc-lua",
 }
+
+for plugin, exec in pairs(extensions) do
+  if any(exec, vim.fn.executable) then
+    -- only load extensions for which the runtime is found on local machine.
+    table.insert(vim.g.coc_global_extensions, plugin)
+  end
+end
 
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*.py",
