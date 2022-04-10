@@ -1,4 +1,4 @@
-local function format(command, args)
+function _G.format(command, args)
   if not (type(args) == "string") then
     args = ""
   end
@@ -16,4 +16,17 @@ local function format(command, args)
     end
   end
 end
-_G.format = format
+
+function _G.initTemplate(ftype, lines, cond, cursor_line)
+  cond = cond or function()
+    return true
+  end
+  if cond() then
+    for i, l in ipairs(lines) do
+      vim.fn.setline(i, l)
+    end
+  end
+  if type(cursor_line) == "number" then
+    vim.fn.cursor(cursor_line, 0)
+  end
+end
