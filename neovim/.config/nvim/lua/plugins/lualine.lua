@@ -7,17 +7,6 @@ local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
 end
 
-local function word_count()
-  if not vim.tbl_contains(TEXT, vim.bo.filetype) then
-    return ""
-  end
-  local wc = vim.fn.wordcount()["words"]
-  if wc >= 0 then
-    return "wc: " .. tostring(wc)
-  end
-  return ""
-end
-
 local function devicon()
   return string.sub(require("nvim-web-devicons").get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}), 1)
 end
@@ -28,6 +17,15 @@ end
 
 local function is_text()
   return vim.tbl_contains(TEXT, vim.bo.filetype)
+end
+
+local function wordCount()
+  local wc = vim.api.nvim_eval("wordcount()")
+  if wc["visual_words"] then
+    return "wc: " .. tostring(wc["visual_words"])
+  else
+    return "wc: " .. tostring(wc["words"])
+  end
 end
 
 require("lualine").setup({
@@ -63,7 +61,7 @@ require("lualine").setup({
     lualine_z = {
       "location",
       {
-        word_count,
+        wordCount,
         cond = is_text,
       },
     },

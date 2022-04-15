@@ -9,6 +9,7 @@ local items = {
   "keymaps.markdown_preview",
   "keymaps.NERDTree",
   "keymaps.NERDCommenter",
+  "keymaps.whichkey",
 
   "keymaps.python",
   "keymaps.shell",
