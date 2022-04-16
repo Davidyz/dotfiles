@@ -1,7 +1,8 @@
+local style = "dark_default"
 require("github-theme").setup({
-  theme_style = "dark_default",
+  theme_style = style,
   comment_style = "italic",
   keyword_style = "italic",
 })
 
-vim.api.nvim_command("colorscheme github_dark_default")
+vim.api.nvim_command("colorscheme github_" .. style)
