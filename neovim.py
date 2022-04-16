@@ -70,8 +70,9 @@ def pre():
             else:
                 os.rename(file, file + ".bak")
 
-    for command in commands:
-        os.system(command)
+    if shutil.which("nvim") is None:
+        for command in commands:
+            os.system(command)
 
 
 def post():
