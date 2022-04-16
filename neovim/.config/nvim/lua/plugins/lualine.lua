@@ -1,7 +1,7 @@
 require("utils")
 
 local gps = require("nvim-gps")
-local current_theme = require("lualine.themes.onedark")
+local current_theme = require("lualine.themes.github_dark_default")
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")

@@ -97,6 +97,7 @@ return require("packer").startup(function(use)
   })
   use("vim-scripts/crontab.vim")
   use("ayu-theme/ayu-vim")
+  use("projekt0n/github-nvim-theme")
   use("cocopon/iceberg.vim")
   use({
     "navarasu/onedark.nvim",

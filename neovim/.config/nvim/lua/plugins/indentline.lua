@@ -1,5 +1,5 @@
 require("utils")
-vim.g.indentLine_leadingSpaceChar = "."
+vim.g.indentLine_leadingSpaceChar = " "
 vim.g.indentLine_char = "┆"
 
 if List_contains(SOURCE_CODE, vim.bo.filetype) then
