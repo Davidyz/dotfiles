@@ -35,5 +35,6 @@ local items = {
   "filetype.pandoc",
   "filetype.markdown",
   "filetype.html",
+  "filetype.bib",
 }
 TryRequire(items)

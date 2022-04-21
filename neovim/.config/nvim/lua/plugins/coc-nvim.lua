@@ -18,7 +18,6 @@ vim.g.coc_global_extensions = {
   "coc-spell-checker",
   "coc-rainbow-fart",
   "coc-marketplace",
-  "coc-grammarly",
   "coc-json",
   "coc-git",
   "coc-ci",
@@ -26,6 +25,7 @@ vim.g.coc_global_extensions = {
   "coc-phpls",
   "coc-prettier",
   "coc-lua",
+  "coc-bibtex",
 }
 
 for plugin, exec in pairs(extensions) do
