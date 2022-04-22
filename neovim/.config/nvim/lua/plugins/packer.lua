@@ -14,22 +14,31 @@ end
 
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
-  use({ "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } })
+
+  -- filetypes
   use({
-    "lilydjwg/fcitx.vim",
-    cond = function()
-      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
-    end,
+    "neovimhaskell/haskell-vim",
+    ft = { "haskell", "hs" },
   })
-  use("windwp/nvim-autopairs")
   use({
     "chrisbra/csv.vim",
     ft = { "csv" },
   })
-  use("easymotion/vim-easymotion")
   use({
-    "neovimhaskell/haskell-vim",
-    ft = { "haskell", "hs" },
+    "goerz/jupytext.vim",
+    ft = { "jupyter", "notebook", "ipynb", "py", "json" },
+  })
+  use({
+    "nvie/vim-flake8",
+    ft = { "python" },
+  })
+  use({
+    "psf/black",
+    ft = { "python" },
+  })
+  use({
+    "lark-parser/vim-lark-syntax",
+    ft = { "lark" },
   })
   use({
     "vim-pandoc/vim-pandoc",
@@ -40,39 +49,17 @@ return require("packer").startup(function(use)
     ft = { "markdown", "pandoc", "latex" },
   })
   use({
-    "junegunn/fzf",
-    run = ":call fzf#install()",
-  })
-  use("junegunn/fzf.vim")
-  use({
-    "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", opt = true },
-  })
-  use("SmiteshP/nvim-gps")
-  use("itchyny/vim-gitbranch")
-  use({
     "vim-scripts/cup.vim",
     ft = { "cup" },
-  })
-  use("Yggdroot/indentLine")
-
-  use("p00f/nvim-ts-rainbow")
-  use("preservim/nerdcommenter")
-  use("preservim/nerdtree")
-  use("Xuyuanp/nerdtree-git-plugin")
-  use({
-    "goerz/jupytext.vim",
-    ft = { "jupyter", "notebook", "ipynb", "py", "json" },
   })
   use({
     "udalov/javap-vim",
     ft = { "javap" },
   })
-  use("tpope/vim-surround")
-  use("psliwka/vim-smoothie")
   use({
     "cespare/vim-toml",
     branch = "main",
+    ft = { "toml" },
   })
   use({
     "mikelue/vim-maven-plugin",
@@ -81,21 +68,17 @@ return require("packer").startup(function(use)
       "xml",
     },
   })
-  use("chaoren/vim-wordmotion")
-  use({
-    "lark-parser/vim-lark-syntax",
-    ft = { "lark" },
-  })
-  use("ryanoasis/vim-devicons")
-  use({
-    "nvie/vim-flake8",
-    ft = { "python" },
-  })
-  use({
-    "psf/black",
-    ft = { "python" },
-  })
   use("vim-scripts/crontab.vim")
+
+  -- markdown
+  use({ "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } })
+  use({
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && yarn install",
+    ft = { "markdown", "pandoc" },
+  })
+
+  -- color schemes.
   use("ayu-theme/ayu-vim")
   use("projekt0n/github-nvim-theme")
   use("cocopon/iceberg.vim")
@@ -108,12 +91,20 @@ return require("packer").startup(function(use)
   })
   use("Th3Whit3Wolf/one-nvim")
   use("Cybolic/palenight.vim")
+
+  -- tree sitter
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
   use("romgrk/nvim-treesitter-context")
   use("nvim-treesitter/playground")
+  use("windwp/nvim-autopairs")
+  use("andymass/vim-matchup")
+  use("SmiteshP/nvim-gps")
+  use("p00f/nvim-ts-rainbow")
+
+  -- coc.nvim
   use({
     "neoclide/coc.nvim",
     branch = "release",
@@ -122,12 +113,34 @@ return require("packer").startup(function(use)
     "rafcamlet/coc-nvim-lua",
     ft = { "lua" },
   })
+
+  -- misc
   -- use 'github/copilot.vim'
   use({
-    "iamcco/markdown-preview.nvim",
-    run = "cd app && yarn install",
-    ft = { "markdown", "pandoc" },
+    "lilydjwg/fcitx.vim",
+    cond = function()
+      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
+    end,
   })
+  use("easymotion/vim-easymotion")
+  use({
+    "junegunn/fzf",
+    run = ":call fzf#install()",
+  })
+  use("junegunn/fzf.vim")
+  use({
+    "nvim-lualine/lualine.nvim",
+    requires = { "kyazdani42/nvim-web-devicons", opt = true },
+  })
+  use("itchyny/vim-gitbranch")
+  use("Yggdroot/indentLine")
+  use("preservim/nerdcommenter")
+  use("preservim/nerdtree")
+  use("Xuyuanp/nerdtree-git-plugin")
+  use("tpope/vim-surround")
+  use("psliwka/vim-smoothie")
+  use("chaoren/vim-wordmotion")
+  use("ryanoasis/vim-devicons")
   use("vim-scripts/restore_view.vim")
   use("zhaocai/GoldenView.Vim")
   use({
