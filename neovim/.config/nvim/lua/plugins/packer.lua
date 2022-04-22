@@ -83,7 +83,7 @@ return require("packer").startup(function(use)
   use("projekt0n/github-nvim-theme")
   use("cocopon/iceberg.vim")
   use({
-    "navarasu/onedark.nvim",
+    "olimorris/onedarkpro.nvim",
   })
   use({
     "kaicataldo/material.vim",

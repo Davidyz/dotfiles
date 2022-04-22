@@ -1,8 +1,15 @@
-local onedark = require("onedark")
+local onedark = require("onedarkpro")
 
 onedark.setup({
-  style = "warmer",
+  theme = function()
+    if vim.o.background == "dark" then
+      return "onedark"
+    else
+      return "onelight"
+    end
+  end,
+  options = {
+    cursorline = true,
+  },
 })
 onedark.load()
-
-vim.api.nvim_command([[colorscheme onedark]])

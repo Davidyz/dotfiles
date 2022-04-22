@@ -26,6 +26,11 @@
         "-cli-config",
         "/home/davidyz/.arduino15/arduino-cli.yaml"
       ]
+    },
+    "sql": {
+      "command": "sql-language-server",
+      "args": ["up", "--method", "stdio"],
+      "filetypes": ["sql", "mysql"]
     }
   },
   "cSpell.enabledLanguageIds": [

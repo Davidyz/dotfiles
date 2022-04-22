@@ -4,4 +4,4 @@ end
 vim.opt.background = "dark"
 
 require("utils")
-Require("colorscheme.github")
+Require("colorscheme.onedark")
