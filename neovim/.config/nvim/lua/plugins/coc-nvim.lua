@@ -8,6 +8,8 @@ local extensions = {
   ["coc-tsserver"] = { "node" },
   ["coc-clangd"] = { "gcc", "clang", "msvc" },
   ["coc-phpls"] = { "php" },
+  ["coc-docker"] = { "docker" },
+  ["coc-bibtex"] = { "texlive", "pandoc" },
 }
 
 vim.g.coc_global_extensions = {
@@ -21,11 +23,9 @@ vim.g.coc_global_extensions = {
   "coc-json",
   "coc-git",
   "coc-ci",
-  "coc-docker",
   "coc-phpls",
   "coc-prettier",
   "coc-lua",
-  "coc-bibtex",
 }
 
 for plugin, exec in pairs(extensions) do

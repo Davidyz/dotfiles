@@ -147,7 +147,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
-  use("~/git/md-code.nvim")
+  use("Davidyz/md-code.nvim")
   use("mhinz/vim-startify")
   use({
     "folke/which-key.nvim",

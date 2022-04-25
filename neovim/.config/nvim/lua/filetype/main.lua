@@ -13,8 +13,6 @@ local function no_trailing_spaces()
   end
 end
 
-vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*", callback = no_trailing_spaces })
-
 local items = {
   "filetype.json",
   "filetype.xml",

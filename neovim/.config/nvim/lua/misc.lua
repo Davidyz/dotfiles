@@ -25,8 +25,7 @@ vim.opt.clipboard = "unnamedplus"
 if vim.fn.has("unix") ~= 0 then
   vim.g.python3_host_prog = "/usr/bin/python3"
 elseif vim.fn.has("win32") or vim.fn.has("win64") then
-  local count
-  vim.g.python3_host_prog, count = string.gsub(vim.fn.which("python3"), "\n", "")
+  vim.g.python3_host_prog = 'py'
 end
 
 vim.o.cursorline = true
