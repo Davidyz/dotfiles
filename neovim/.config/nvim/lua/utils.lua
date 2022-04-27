@@ -1,11 +1,13 @@
 require("os")
 
+local M = {}
+
 HOME = os.getenv("HOME")
 
 SOURCE_CODE = { "java", "c", "cpp", "python", "hs", "sh", "go", "php", "json", "bash", "zsh", "vim", "lua", "make" }
 TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text" }
 
-function List_contains(array, element)
+function M.contains(array, element)
   for _, value in pairs(array) do
     if value == element then
       return true
@@ -14,19 +16,22 @@ function List_contains(array, element)
   return false
 end
 
-function IsSourceCode(filetype)
-  return List_contains(SOURCE_CODE, filetype)
+function M.isSourceCode(filetype)
+  return M.contains(SOURCE_CODE, filetype)
 end
 
-function GetHostname()
+function M.getHostname()
   local f = io.popen("/bin/hostname")
-  local hostname = f:read("*a") or ""
-  f:close()
-  hostname = string.gsub(hostname, "\n$", "")
-  return hostname
+  if f ~= nil then
+    local hostname = f:read("*a") or ""
+    f:close()
+    hostname = string.gsub(hostname, "\n$", "")
+    return hostname
+  end
+  return ""
 end
 
-function GetUserName()
+function M.getUserName()
   local username = vim.fn.getenv("USER")
   if username == nil then
     username = vim.fn.getenv("USERNAME")
@@ -34,22 +39,22 @@ function GetUserName()
   return username
 end
 
-function Get_ColorCode(group, tag)
+function M.get_ColorCode(group, tag)
   return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), tag)
 end
 
-function GetTermCode(str)
+function M.getTermCode(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-function SendKey(str, mode, escape)
+function M.sendKey(str, mode, escape)
   if escape == nil then
     escape = false
   end
   return vim.api.nvim_feedkeys(string, mode, escape)
 end
 
-function Require(item)
+function M.Require(item)
   if not type(item) == "string" then
     return false
   end
@@ -59,10 +64,10 @@ end
 
 local stat_height = vim.o.cmdheight
 
-function TryRequire(items, retry_count)
+function M.tryRequire(items, retry_count)
   if retry_count == 0 then
     stat_height = vim.o.cmdheight
-    vim.o.cmdheight = table.getn(items) + 1
+    vim.o.cmdheight = #items + 1
     vim.api.nvim_echo({ { "Failed to require the following files:", "None" } }, false, {})
     for _, item in ipairs(items) do
       vim.api.nvim_echo({ { item, "None" } }, false, {})
@@ -73,17 +78,17 @@ function TryRequire(items, retry_count)
   retry_count = retry_count or 10
   local failed = {}
   for _, item in ipairs(items) do
-    local status = Require(item)
+    local status = M.Require(item)
     if not status then
       table.insert(failed, item)
     end
   end
-  if table.getn(failed) > 0 then
-    TryRequire(failed, retry_count - 1)
+  if #failed > 0 then
+    M.tryRequire(failed, retry_count - 1)
   end
 end
 
-function _G.any(array, func)
+function M.any(array, func)
   if type(func) ~= "function" then
     func = function(item)
       return item
@@ -97,7 +102,7 @@ function _G.any(array, func)
   return false
 end
 
-function _G.all(array, func)
+function M.all(array, func)
   if type(func) ~= "function" then
     func = function(item)
       return item
@@ -110,3 +115,20 @@ function _G.all(array, func)
   end
   return true
 end
+
+--- separate a string.
+---@param inputstr string
+---@param sep string
+---@return table
+function M.split(inputstr, sep)
+  sep = sep or "%s"
+  local t = {}
+  for field, s in string.gmatch(inputstr, "([^" .. sep .. "]*)(" .. sep .. "?)") do
+    table.insert(t, field)
+    if s == "" then
+      return t
+    end
+  end
+end
+
+return M

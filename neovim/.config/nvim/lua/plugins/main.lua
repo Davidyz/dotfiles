@@ -1,4 +1,4 @@
-require("utils")
+local utils = require("utils")
 require("plugins.packer")
 local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
 vim.api.nvim_create_autocmd(
@@ -24,4 +24,4 @@ local items = {
   "plugins.tree_sitter",
   "plugins.treesitter-context",
 }
-TryRequire(items)
+utils.tryRequire(items)

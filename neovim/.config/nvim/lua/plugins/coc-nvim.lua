@@ -1,4 +1,4 @@
-require("utils")
+local utils = require("utils")
 
 local extensions = {
   -- mappings from plugin to required runtime.
@@ -29,7 +29,7 @@ vim.g.coc_global_extensions = {
 }
 
 for plugin, exec in pairs(extensions) do
-  if any(exec, vim.fn.executable) then
+  if utils.any(exec, vim.fn.executable) then
     -- only load extensions for which the runtime is found on local machine.
     table.insert(vim.g.coc_global_extensions, plugin)
   end
@@ -62,7 +62,9 @@ vim.api.nvim_create_autocmd("BufRead", {
 vim.api.nvim_create_autocmd("CursorHold", {
   pattern = "*",
   callback = function()
-    vim.fn["CocActionAsync"]("highlight")
+    if vim.fn["CocActionAsync"] ~= nil then
+      vim.fn["CocActionAsync"]("highlight")
+    end
   end,
 })
 vim.api.nvim_command([[

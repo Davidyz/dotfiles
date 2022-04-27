@@ -1,4 +1,4 @@
-require("keymaps.utils")
+local km_utils = require("keymaps.utils")
 
 local function nerdtreeToggle()
   if vim.bo.filetype == "nerdtree" then
@@ -8,5 +8,5 @@ local function nerdtreeToggle()
   end
 end
 
-Set_keymap("n", "<Leader>t", ":NERDTreeMirror<CR>:" .. nerdtreeToggle())
-Set_keymap("v", "<Leader>t", ":NERDTreeMirror<CR>:" .. nerdtreeToggle())
+km_utils.setKeymap("n", "<Leader>t", ":NERDTreeMirror<CR>:" .. nerdtreeToggle())
+km_utils.setKeymap("v", "<Leader>t", ":NERDTreeMirror<CR>:" .. nerdtreeToggle())

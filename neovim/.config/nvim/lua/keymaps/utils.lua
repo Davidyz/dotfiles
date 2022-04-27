@@ -1,6 +1,7 @@
-require("utils")
-
-function Set_keymap(mode, keys, command, extra_args)
+local M = {}
+-- @param mode string
+-- @param keys string
+function M.setKeymap(mode, keys, command, extra_args)
   if extra_args == false then
     extra_args = { noremap = false }
   else
@@ -13,3 +14,5 @@ function Set_keymap(mode, keys, command, extra_args)
     vim.api.nvim_set_keymap(mode, keys, "", extra_args)
   end
 end
+
+return M

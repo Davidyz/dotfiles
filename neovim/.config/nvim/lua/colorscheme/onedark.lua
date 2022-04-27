@@ -11,6 +11,6 @@ onedark.setup({
   options = {
     cursorline = true,
   },
-  styles = { keywords = "italic" },
+  styles = { keywords = "italic", function_definition = "italic" },
 })
 onedark.load()

@@ -1,4 +1,3 @@
-require("utils")
 vim.api.nvim_create_autocmd("TabNewEntered", { pattern = "*", command = "Startify" })
 
 vim.api.nvim_command([[
@@ -8,6 +7,7 @@ endfunction
 ]])
 
 vim.g.startify_lists = {
+  { ["type"] = "commands", ["header"] = { "   Commands" } },
   {
     ["type"] = "dir",
     ["header"] = { "   Current directory: " },
@@ -16,4 +16,7 @@ vim.g.startify_lists = {
     ["type"] = "files",
     ["header"] = { "   History: " },
   },
+}
+vim.g.startify_commands = {
+  { ["t"] = "terminal" },
 }

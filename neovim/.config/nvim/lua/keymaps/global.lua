@@ -1,41 +1,40 @@
-require("keymaps.utils")
-require("utils")
+local km_utils = require("keymaps.utils")
 
-Set_keymap("n", "<space>", "za") -- fold
+km_utils.setKeymap("n", "<space>", "za") -- fold
 
-Set_keymap("", "<Home>", "^") -- home
-Set_keymap("i", "<Home>", "<Esc>^i", { noremap = false })
+km_utils.setKeymap("", "<Home>", "^") -- home
+km_utils.setKeymap("i", "<Home>", "<Esc>^i", { noremap = false })
 
-Set_keymap("t", "<A-Esc>", "<C-\\><C-n>") -- terminal
-Set_keymap("", "<A-Esc>", "<Esc>")
+km_utils.setKeymap("t", "<A-Esc>", "<C-\\><C-n>") -- terminal
+km_utils.setKeymap("", "<A-Esc>", "<Esc>")
 
-Set_keymap("", "<C-Left>", ":vertical resize -1<CR>", {
+km_utils.setKeymap("", "<C-Left>", ":vertical resize -1<CR>", {
   noremap = true, -- split window sizes
   silent = true,
 })
-Set_keymap("", "<C-Right>", ":vertical resize +1<CR>", {
+km_utils.setKeymap("", "<C-Right>", ":vertical resize +1<CR>", {
   noremap = true,
   silent = true,
 })
-Set_keymap("", "<C-Up>", ":resize -1<CR>", {
+km_utils.setKeymap("", "<C-Up>", ":resize -1<CR>", {
   noremap = true,
   silent = true,
 })
-Set_keymap("", "<C-Down>", ":resize +1<CR>", {
+km_utils.setKeymap("", "<C-Down>", ":resize +1<CR>", {
   noremap = true,
   silent = true,
 })
 
-Set_keymap("n", "<C-h>", "<C-w>h") -- move between splits
-Set_keymap("n", "<C-j>", "<C-w>j")
-Set_keymap("n", "<C-k>", "<C-w>k")
-Set_keymap("n", "<C-l>", "<C-w>l")
+km_utils.setKeymap("n", "<C-h>", "<C-w>h") -- move between splits
+km_utils.setKeymap("n", "<C-j>", "<C-w>j")
+km_utils.setKeymap("n", "<C-k>", "<C-w>k")
+km_utils.setKeymap("n", "<C-l>", "<C-w>l")
 
-Set_keymap("", "<C-PageUp>", "<Esc>:tabprevious<CR>", false)
-Set_keymap("", "<C-PageDown>", "<Esc>:tabnext<CR>", false)
-Set_keymap("", "<C-S-PageUp>", "<Esc>:-tabmove<CR>", false)
-Set_keymap("", "<C-S-PageDown>", "<Esc>:+tabmove<CR>", false)
-Set_keymap("", "<C-w>", "<Esc>:tabclose<CR>", false)
-Set_keymap("", "<C-t>", "<Esc>:tabnew<CR>")
-Set_keymap("n", "<S-f>", ":tabnew<CR>:FZF<CR>")
-Set_keymap("n", "<S-r>", ":tabnew<CR>:Rg<CR>")
+km_utils.setKeymap("", "<C-PageUp>", "<Esc>:tabprevious<CR>", false)
+km_utils.setKeymap("", "<C-PageDown>", "<Esc>:tabnext<CR>", false)
+km_utils.setKeymap("", "<C-S-PageUp>", "<Esc>:-tabmove<CR>", false)
+km_utils.setKeymap("", "<C-S-PageDown>", "<Esc>:+tabmove<CR>", false)
+km_utils.setKeymap("", "<C-w>", "<Esc>:tabclose<CR>", false)
+km_utils.setKeymap("", "<C-t>", "<Esc>:tabnew<CR>")
+km_utils.setKeymap("n", "<S-f>", ":tabnew<CR>:FZF<CR>")
+km_utils.setKeymap("n", "<S-r>", ":tabnew<CR>:Rg<CR>")

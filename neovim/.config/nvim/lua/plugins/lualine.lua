@@ -1,7 +1,7 @@
-require("utils")
+local utils = require("utils")
 
 local gps = require("nvim-gps")
-local current_theme = require("lualine.themes.github_dark_default") or require("lualine.themes.auto")
+local current_theme = require("lualine.themes.auto")
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
@@ -12,7 +12,7 @@ local function devicon()
 end
 
 local function get_context()
-  return GetUserName() .. "@" .. GetHostname()
+  return utils.getUserName() .. "@" .. utils.getHostname()
 end
 
 local function is_text()
@@ -78,18 +78,7 @@ require("lualine").setup({
     lualine_b = {
       {
         "tabs",
-        max_length = vim.o.columns / 3,
         mode = 2,
-        tabs_color = {
-          active = {
-            fg = current_theme.normal.b.fg,
-            bg = current_theme.normal.b.bg,
-          },
-          inactive = {
-            fg = current_theme.normal.c.fg,
-            bg = current_theme.normal.c.bg,
-          },
-        },
       },
     },
   },

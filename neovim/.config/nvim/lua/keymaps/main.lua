@@ -1,4 +1,4 @@
-require("utils")
+local utils = require("utils")
 
 local items = {
   "keymaps.global",
@@ -16,4 +16,4 @@ local items = {
   "keymaps.c",
 }
 
-TryRequire(items)
+utils.tryRequire(items)

@@ -1,3 +1,1 @@
-require("keymaps.utils")
-
-Set_keymap("n", "<Leader>w", "WhichKey", { noremap = true, expr = true })
+km_utils.setKeymap("n", "<Leader>w", "WhichKey", { noremap = true, expr = true })

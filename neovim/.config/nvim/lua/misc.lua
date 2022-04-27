@@ -1,4 +1,4 @@
-require("utils")
+local utils = require("utils")
 
 vim.api.nvim_set_option("filetype", "detect")
 vim.opt.encoding = "utf-8"

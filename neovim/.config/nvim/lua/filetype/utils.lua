@@ -1,4 +1,6 @@
-function _G.format(command, args)
+local M = {}
+
+M.format = function(command, args)
   if not (type(args) == "string") then
     args = ""
   end
@@ -12,16 +14,13 @@ function _G.format(command, args)
         vim.api.nvim_command([[echo "Please fix syntax error."]])
       end
     else
-      vim.api.nvim_command([[echo "Formatter ]] .. command([[ is not found."]]))
+      vim.api.nvim_command([[echo "Formatter ]] .. command .. [[ is not found."]])
     end
   end
 end
 
-function _G.initTemplate(ftype, lines, cond, cursor_line)
-  cond = cond or function()
-    return true
-  end
-  if cond() then
+M.initTemplate = function(ftype, lines, cond, cursor_line)
+  if cond == nil or (type(cond) == "function" and cond()) then
     for i, l in ipairs(lines) do
       vim.fn.setline(i, l)
     end
@@ -30,3 +29,5 @@ function _G.initTemplate(ftype, lines, cond, cursor_line)
     vim.fn.cursor(cursor_line, 0)
   end
 end
+
+return M

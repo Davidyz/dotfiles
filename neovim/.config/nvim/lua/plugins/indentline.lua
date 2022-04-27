@@ -1,8 +1,8 @@
-require("utils")
+local utils = require("utils")
 vim.g.indentLine_leadingSpaceChar = "_"
 vim.g.indentLine_char = "┆"
 
-if List_contains(SOURCE_CODE, vim.bo.filetype) then
+if utils.contains(SOURCE_CODE, vim.bo.filetype) then
   vim.g.indentLine_enabled = 1
 else
   vim.g.indentLine_enabled = 0
@@ -22,3 +22,5 @@ end
 for _, ft in ipairs(SOURCE_CODE) do
   vim.api.nvim_create_autocmd("FileType", { pattern = ft, command = ":IndentLinesEnable" })
 end
+
+vim.api.nvim_create_autocmd("TermEnter", { command = ":IndentLinesDisable" })

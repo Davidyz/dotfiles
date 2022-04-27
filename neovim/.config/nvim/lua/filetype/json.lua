@@ -1,5 +1,3 @@
-require("filetype.utils")
-
 vim.g.vim_json_conceal = 0
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "json",

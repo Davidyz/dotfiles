@@ -1,9 +1,9 @@
-require("keymaps.utils")
-require("utils")
+local km_utils = require("keymaps.utils")
+local utils = require("utils")
 
 local function show_doc()
   if
-    List_contains({ "vim", "help" }, vim.bo.filetype)
+    utils.contains({ "vim", "help" }, vim.bo.filetype)
     or string.match(vim.fn.getline("."), "vim%." .. "%w+%." .. vim.fn.expand("<cword>") .. "%(")
   then
     vim.api.nvim_exec("h " .. vim.fn.expand("<cword>"), {})
@@ -20,35 +20,35 @@ function _G.check_back_space()
   return (col > 1) or string.match(line, "%s") ~= nil
 end
 
-Set_keymap("n", "K", show_doc, { silent = true, noremap = true })
-Set_keymap("x", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
-Set_keymap("n", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
-Set_keymap("n", "<leader>r", "<Plug>(coc-rename)", false)
-Set_keymap("n", "<leader>f", "<Plug>(coc-fix-current)", false)
+km_utils.setKeymap("n", "K", show_doc, { silent = true, noremap = true })
+km_utils.setKeymap("x", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
+km_utils.setKeymap("n", "<leader>a", "<Plug>(coc-codeaction-selected)", false)
+km_utils.setKeymap("n", "<leader>r", "<Plug>(coc-rename)", false)
+km_utils.setKeymap("n", "<leader>f", "<Plug>(coc-fix-current)", false)
 
-Set_keymap("i", "<cr>", [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], {
+km_utils.setKeymap("i", "<cr>", [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], {
   silent = true,
   expr = true,
   noremap = true,
 })
-Set_keymap("i", "<C-space>", vim.fn["coc#refresh"], { silent = true, expr = true, noremap = true })
+km_utils.setKeymap("i", "<C-space>", vim.fn["coc#refresh"], { silent = true, expr = true, noremap = true })
 
-Set_keymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : "\<TAB>"]], {
+km_utils.setKeymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : "\<TAB>"]], {
   silent = true,
   expr = true,
   noremap = true,
 })
 
-Set_keymap("i", "<S-TAB>", function()
+km_utils.setKeymap("i", "<S-TAB>", function()
   if vim.fn.pumvisible() then
-    return GetTermCode([[<C-p>]])
+    return utils.getTermCode([[<C-p>]])
   else
-    return GetTermCode([[<C-h>]])
+    return utils.getTermCode([[<C-h>]])
   end
 end, {
   silent = true,
   expr = true,
 })
 
-Set_keymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
-Set_keymap("n", "gr", "<Plug>(coc-references)", { silent = true })
+km_utils.setKeymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
+km_utils.setKeymap("n", "gr", "<Plug>(coc-references)", { silent = true })

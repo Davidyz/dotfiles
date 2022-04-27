@@ -104,6 +104,15 @@ return require("packer").startup(function(use)
   use("SmiteshP/nvim-gps")
   use("p00f/nvim-ts-rainbow")
 
+  -- lsp
+  -- use({
+  -- "junnplus/nvim-lsp-setup",
+  -- requires = {
+  -- "neovim/nvim-lspconfig",
+  -- "williamboman/nvim-lsp-installer",
+  -- },
+  -- })
+
   -- coc.nvim
   use({
     "neoclide/coc.nvim",
@@ -133,7 +142,7 @@ return require("packer").startup(function(use)
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
   })
   use("itchyny/vim-gitbranch")
-  use("Yggdroot/indentLine")
+  use({ "Yggdroot/indentLine" })
   use("preservim/nerdcommenter")
   use("preservim/nerdtree")
   use("Xuyuanp/nerdtree-git-plugin")
@@ -147,7 +156,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
-  use("Davidyz/md-code.nvim")
+  use("~/git/md-code.nvim")
   use("mhinz/vim-startify")
   use({
     "folke/which-key.nvim",

@@ -1,4 +1,4 @@
-require("keymaps.utils")
+local km_utils = require("keymaps.utils")
 
-Set_keymap("n", "<Leader>c<space>", "NERDCommenterToggle<CR>")
-Set_keymap("v", "<Leader>c<space>", "NERDCommenterToggle<CR>")
+km_utils.setKeymap("n", "<Leader>c<space>", "NERDCommenterToggle<CR>", { noremap = true })
+km_utils.setKeymap("v", "<Leader>c<space>", "NERDCommenterToggle<CR>", { noremap = true })
