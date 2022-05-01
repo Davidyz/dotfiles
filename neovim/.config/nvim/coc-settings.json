@@ -48,7 +48,7 @@
   "java.import.maven.enabled": true,
   "coc.preferences.jumpCommand": "tab drop",
   "python.venvPath": "~/.local/share/virtualenvs/",
-  "python.pythonPath": "/usr/bin/python3",
+  "python.pythonPath": "python3",
   "python.formatting.provider": "black",
   "python.analysis.diagnosticMode": "workspace",
   "Lua.workspace.library": [

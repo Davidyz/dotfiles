@@ -20,6 +20,7 @@ vim.g.coc_global_extensions = {
   "coc-spell-checker",
   "coc-rainbow-fart",
   "coc-marketplace",
+  "coc-markdownlint",
   "coc-json",
   "coc-git",
   "coc-ci",
