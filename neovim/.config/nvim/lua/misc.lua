@@ -55,3 +55,10 @@ vim.api.nvim_command([[hi MatchParen gui=None guibg=Grey guifg=None]])
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.api.nvim_set_option("updatetime", 50)
 vim.api.nvim_set_option("laststatus", 3)
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    vim.b.editting_vim_config = (vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil)
+  end,
+})

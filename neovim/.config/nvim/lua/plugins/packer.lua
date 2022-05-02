@@ -121,6 +121,9 @@ return require("packer").startup(function(use)
   use({
     "rafcamlet/coc-nvim-lua",
     ft = { "lua" },
+    cond = function()
+      return vim.b.editting_vim_config
+    end,
   })
 
   -- dap

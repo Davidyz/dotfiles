@@ -52,3 +52,5 @@ end, {
 
 km_utils.setKeymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
 km_utils.setKeymap("n", "gr", "<Plug>(coc-references)", { silent = true })
+km_utils.setKeymap("n", "g[", "<Plug>(coc-diagnostic-prev)", { silent = true, noremap = true })
+km_utils.setKeymap("n", "g]", "<Plug>(coc-diagnostic-next)", { silent = true, noremap = true })
