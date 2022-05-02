@@ -9,7 +9,8 @@ vim.api.nvim_create_autocmd(
 local items = {
   "plugins.black",
   "plugins.coc-nvim",
-  "plugins.copilot",
+  -- "plugins.copilot",
+  "plugins.dap",
   "plugins.golden_view",
   "plugins.haskell",
   "plugins.indentline",

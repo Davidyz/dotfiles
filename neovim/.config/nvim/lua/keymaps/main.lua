@@ -5,6 +5,9 @@ local items = {
 
   "keymaps.black",
   "keymaps.coc-nvim",
+  -- "keymaps.copilot",
+  "keymaps.dap",
+  "keymaps.fzf",
   "keymaps.golden_view",
   "keymaps.markdown_preview",
   "keymaps.NERDTree",

@@ -1,3 +1,4 @@
-vim.g.goldenview__ignore_urule = {
+vim.g.goldenview__ignore_urule = { filetype = {
   "nerdtree",
-}
+  "dap-repl",
+} }

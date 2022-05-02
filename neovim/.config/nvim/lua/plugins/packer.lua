@@ -123,8 +123,15 @@ return require("packer").startup(function(use)
     ft = { "lua" },
   })
 
+  -- dap
+  use("mfussenegger/nvim-dap")
+  use("theHamsta/nvim-dap-virtual-text")
+  use("rcarriga/nvim-dap-ui")
+  use("jbyuki/one-small-step-for-vimkind")
+
   -- misc
-  use("github/copilot.vim")
+  use("ap/vim-css-color")
+  -- use("github/copilot.vim")
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
