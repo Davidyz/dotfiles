@@ -133,7 +133,6 @@ return require("packer").startup(function(use)
   use("jbyuki/one-small-step-for-vimkind")
 
   -- misc
-  use("ap/vim-css-color")
   -- use("github/copilot.vim")
   use({
     "lilydjwg/fcitx.vim",
@@ -166,7 +165,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
-  use("~/git/md-code.nvim")
+  use("Davidyz/md-code.nvim")
   use("mhinz/vim-startify")
 
   if packer_bootstrap then
