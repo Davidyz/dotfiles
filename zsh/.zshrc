@@ -76,10 +76,6 @@ HIST_STAMPS="dd/mm/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 #ZSH_CUSTOM=/path/to/new-custom-folder
 
-if [ -f `which fzf` ] > /dev/null ; then
-  export FZF_BASE=`which fzf`
-fi
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -97,7 +93,6 @@ plugins=(
   pip
   virtualenv
   pipenv
-  fzf
   mvn
   ufw
   stack
@@ -107,6 +102,11 @@ plugins=(
   docker
   zsh-autopair
 )
+
+if command -v fzf > /dev/null ; then
+  export FZF_BASE=`which fzf`
+  plugins+=(fzf)
+fi
 
 if command -v autojump > /dev/null ; then plugins+=(autojump) fi
 
@@ -210,7 +210,7 @@ PROMPT='%{$fg[white]%}$(virtualenv_info)%{$reset_color%}%'+$PROMPT
 
 unsetopt null_glob
 unsetopt csh_null_glob
-unsetopt nomatch
+setopt nonomatch
 
 if ! command -v thefuck > /dev/null && command -v pip3 > /dev/null ; then
   pip3 install thefuck
@@ -221,13 +221,14 @@ eval $(thefuck --alias)
 bindkey '^[[1;2C' forward-word
 bindkey '^[[1;2D' backward-word
 
-if [ -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
-  if ! python -c 'import rope' 2> /dev/null ; then pip install rope > /dev/null; fi
-  if ! command -v pystubgen > /dev/null; then pip install pystubgen > /dev/null; fi
-
+if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
   if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
     [ ! -f $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi ] && pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
   fi
+fi
+
+if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
+  alias nvim="nvr --remote "
 fi
 
 function omz_termsupport_preexec {
