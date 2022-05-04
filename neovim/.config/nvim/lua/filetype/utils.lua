@@ -1,5 +1,8 @@
 local M = {}
 
+-- @param command string
+-- @param args string
+-- @return function
 M.format = function(command, args)
   if not (type(args) == "string") then
     args = ""
@@ -19,6 +22,10 @@ M.format = function(command, args)
   end
 end
 
+-- @param ftype string
+-- @param lines table
+-- @param cond function
+-- @param cursor_line integer
 M.initTemplate = function(ftype, lines, cond, cursor_line)
   if cond == nil or (type(cond) == "function" and cond()) then
     for i, l in ipairs(lines) do

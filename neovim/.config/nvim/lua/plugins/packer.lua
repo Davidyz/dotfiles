@@ -134,6 +134,7 @@ return require("packer").startup(function(use)
 
   -- misc
   -- use("github/copilot.vim")
+  use("nvim-lua/plenary.nvim")
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
@@ -151,7 +152,7 @@ return require("packer").startup(function(use)
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
   })
   use("itchyny/vim-gitbranch")
-  use({ "Yggdroot/indentLine" })
+  use("Yggdroot/indentLine")
   use("preservim/nerdcommenter")
   use("preservim/nerdtree")
   use("Xuyuanp/nerdtree-git-plugin")

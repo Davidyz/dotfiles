@@ -1,4 +1,5 @@
 local utils = require("utils")
+local job = require("plenary.job")
 
 vim.api.nvim_set_option("filetype", "detect")
 vim.opt.encoding = "utf-8"
@@ -37,6 +38,11 @@ elseif (vim.fn.has("win32") or vim.fn.has("win64")) and vim.fn.executable("py") 
 end
 
 vim.o.cursorline = true
+vim.o.cursorcolumn = true
+vim.api.nvim_command([[
+hi clear CursorColumn
+hi link CursorColumn CursorLine
+]])
 vim.o.compatible = false
 
 -- recover cursor location from history
@@ -62,3 +68,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.b.editting_vim_config = (vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil)
   end,
 })
+
+if not vim.fn.executable("nvr") then
+  job
+    :new({
+      command = "python",
+      args = { "-m", "pip", "install", "neovim-remote" },
+      on_exit = function()
+        print("neovim-remote has been installed.")
+      end,
+    })
+    :start()
+end

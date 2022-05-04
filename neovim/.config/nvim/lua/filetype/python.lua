@@ -1,16 +1,23 @@
 local ft_utils = require("filetype.utils")
-local packages = { "rope", "pyright" }
-local co = coroutine.create(function(dep)
-  if vim.fn.has("unix") ~= 0 and os.execute('python -c "import ' .. dep .. '" 2> /dev/null') ~= 0 then
-    os.execute("python -m pip install " .. dep .. " > /dev/null")
-  end
-end)
+local packages = { "rope", "pyright", "debugpy", "isort" }
+local job = require("plenary.job")
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
+vim.api.nvim_create_autocmd("BufEnter", {
+  -- install necessary packages for development and refactoring.
+  pattern = "*.py",
   callback = function()
     for _, dep in ipairs(packages) do
-      coroutine.resume(co, dep)
+      if vim.fn.has("unix") ~= 0 and os.execute('python -c "import ' .. dep .. '" 2> /dev/null') ~= 0 then
+        job
+          :new({
+            command = "python",
+            args = { "-m", "pip", "install", dep },
+            on_exit = function()
+              print(dep .. " has been installed.")
+            end,
+          })
+          :start()
+      end
     end
   end,
 })

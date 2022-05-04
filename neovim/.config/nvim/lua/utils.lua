@@ -1,4 +1,5 @@
-require("os")
+local os = require("os")
+local co = require("coroutine")
 
 local M = {}
 
@@ -129,6 +130,23 @@ function M.split(inputstr, sep)
       return t
     end
   end
+end
+
+M.async_run = function(func, callback)
+  assert(type(func) == "function", "type error :: expected func")
+  local thread = co.create(func)
+  local step = nil
+  step = function(...)
+    local stat, ret = co.resume(thread, ...)
+    assert(stat, ret)
+    if co.status(thread) == "dead" then
+      (callback or function(arg) end)(ret)
+    else
+      assert(type(ret) == "function", "type error :: expected func")
+      ret(step)
+    end
+  end
+  step()
 end
 
 return M
