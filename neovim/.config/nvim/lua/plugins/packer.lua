@@ -97,7 +97,7 @@ return require("packer").startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
-  use("romgrk/nvim-treesitter-context")
+  use("lewis6991/nvim-treesitter-context")
   use("nvim-treesitter/playground")
   use("windwp/nvim-autopairs")
   use("andymass/vim-matchup")

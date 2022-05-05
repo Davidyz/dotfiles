@@ -1,5 +1,4 @@
 {
-  "hover.floatConfig": { "border": true },
   "coc.preferences.formatOnSaveFiletypes": ["markdown", "json"],
   "languageserver": {
     "haskell": {
@@ -79,5 +78,20 @@
         "files": ["*.bib"]
       }
     }
-  }
+  },
+  "suggest.floatConfig": { "border": true, "highlight": "Pmenu" },
+  "diagnostic.floatConfig": {
+    "border": true,
+    "close": true,
+    "highlight": "Pmenu"
+  },
+  "signature.floatConfig": {
+    "border": true,
+    "highlight": "Pmenu"
+  },
+  "hover.floatConfig": {
+    "border": true,
+    "highlight": "Pmenu"
+  },
+  "leetcode.language": "python3"
 }

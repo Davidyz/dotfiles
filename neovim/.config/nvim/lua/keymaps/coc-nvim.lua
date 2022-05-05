@@ -54,3 +54,11 @@ km_utils.setKeymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
 km_utils.setKeymap("n", "gr", "<Plug>(coc-references)", { silent = true })
 km_utils.setKeymap("n", "g[", "<Plug>(coc-diagnostic-prev)", { silent = true, noremap = true })
 km_utils.setKeymap("n", "g]", "<Plug>(coc-diagnostic-next)", { silent = true, noremap = true })
+
+km_utils.setKeymap("n", "<C-p>", function()
+  if vim.fn["coc#float#has_float"]() ~= 0 then
+    vim.fn["coc#float#jump"]()
+  elseif #(vim.fn["coc#float#get_float_win_list"]()) ~= 0 then
+    vim.cmd("quit")
+  end
+end, { noremap = true, silent = true })
