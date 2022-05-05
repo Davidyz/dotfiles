@@ -17,6 +17,7 @@ plugins = {
     "zsh-autopair": "https://github.com/hlissner/zsh-autopair.git",
     "zsh-autocomplete": "https://github.com/marlonrichert/zsh-autocomplete.git",
     "autoupdate": "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins",
+    "zsh-colored-man-pages": "https://github.com/ael-code/zsh-colored-man-pages.git",
 }
 
 themes = {"powerlevel10k": "https://github.com/romkatv/powerlevel10k.git"}

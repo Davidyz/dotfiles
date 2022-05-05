@@ -101,6 +101,8 @@ plugins=(
   zsh-completions
   docker
   zsh-autopair
+  yarn
+  colored-man-pages
 )
 
 if command -v fzf > /dev/null ; then
