@@ -1,2 +1,5 @@
 vim.g.black_linelength = 79
-vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*.py", command = "Black" })
+
+if vim.fn.exists(":Black") ~= 0 then
+  vim.api.nvim_create_autocmd("BufWritePre", { pattern = "*.py", command = "Black" })
+end

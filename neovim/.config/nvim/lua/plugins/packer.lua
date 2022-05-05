@@ -131,6 +131,7 @@ return require("packer").startup(function(use)
   use("theHamsta/nvim-dap-virtual-text")
   use("rcarriga/nvim-dap-ui")
   use("jbyuki/one-small-step-for-vimkind")
+  use("mfussenegger/nvim-jdtls")
 
   -- misc
   -- use("github/copilot.vim")
