@@ -1,7 +1,13 @@
+local utils = require("utils")
 require("nvim-treesitter.install").prefer_git = true
 
+local installed_list = "all"
+if utils.cpu_count() < 2 then
+  installed_list = {}
+end
+
 require("nvim-treesitter.configs").setup({
-  ensure_installed = "all",
+  ensure_installed = installed_list,
   playground = {
     enable = true,
     updatetime = 25,
