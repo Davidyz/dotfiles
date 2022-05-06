@@ -1,19 +1,6 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["markdown", "json"],
   "languageserver": {
-    "haskell": {
-      "command": "/usr/bin/haskell-language-server",
-      "args": ["--lsp"],
-      "rootPatterns": [
-        "*.cabal",
-        "stack.yaml",
-        "cabal.project",
-        "package.yaml",
-        "hie.yaml",
-        ".git"
-      ],
-      "filetypes": ["haskell", "hs", "lhaskell"]
-    },
     "arduino": {
       "command": "/usr/bin/arduino-language-server",
       "rootPatterns": ["*.ino", ".git"],
@@ -26,6 +13,24 @@
         "-cli-config",
         "/home/davidyz/.arduino15/arduino-cli.yaml"
       ]
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": ["dockerfile"],
+      "args": ["--stdio"]
+    },
+    "haskell": {
+      "command": "/usr/bin/haskell-language-server",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml",
+        ".git"
+      ],
+      "filetypes": ["haskell", "hs", "lhaskell"]
     },
     "sql": {
       "command": "sql-language-server",

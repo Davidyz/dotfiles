@@ -153,7 +153,7 @@ return require("packer").startup(function(use)
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
   })
   use("itchyny/vim-gitbranch")
-  use("Yggdroot/indentLine")
+  use({ "Yggdroot/indentLine", ft = SOURCE_CODE })
   use("preservim/nerdcommenter")
   use("preservim/nerdtree")
   use("Xuyuanp/nerdtree-git-plugin")
@@ -167,7 +167,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
-  use("Davidyz/md-code.nvim")
+  use({ "Davidyz/md-code.nvim", ft = { "markdown" } })
   use("mhinz/vim-startify")
 
   if packer_bootstrap then
