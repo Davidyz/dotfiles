@@ -60,7 +60,9 @@ vim.opt.foldlevel = 50
 vim.api.nvim_command([[hi MatchParen gui=None guibg=Grey guifg=None]])
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.api.nvim_set_option("updatetime", 50)
-vim.api.nvim_set_option("laststatus", 3)
+if vim.fn.has("nvim-0.7") ~= 0 then
+  vim.api.nvim_set_option("laststatus", 3)
+end
 
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",

@@ -13,6 +13,7 @@ local items = {
   "keymaps.NERDTree",
   "keymaps.NERDCommenter",
 
+  "keymaps.help",
   "keymaps.python",
   "keymaps.shell",
   "keymaps.c",

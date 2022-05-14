@@ -79,6 +79,7 @@ require("lualine").setup({
       {
         "tabs",
         mode = 2,
+        max_length = vim.o.columns,
       },
     },
   },

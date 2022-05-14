@@ -133,6 +133,9 @@ return require("packer").startup(function(use)
   use("jbyuki/one-small-step-for-vimkind")
   use("mfussenegger/nvim-jdtls")
 
+  -- vimspector
+  -- use("puremourning/vimspector")
+
   -- misc
   -- use("github/copilot.vim")
   use("nvim-lua/plenary.nvim")

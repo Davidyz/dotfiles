@@ -7,12 +7,11 @@ function M.setKeymap(mode, keys, command, extra_args)
   else
     extra_args = extra_args or { noremap = true }
   end
-  if type(command) == "string" then
-    vim.api.nvim_set_keymap(mode, keys, command, extra_args)
-  elseif type(command) == "function" then
+  if type(command) == "function" then
     extra_args.callback = command
-    vim.api.nvim_set_keymap(mode, keys, "", extra_args)
+    command = ""
   end
+  vim.api.nvim_set_keymap(mode, keys, command, extra_args)
 end
 
 return M
