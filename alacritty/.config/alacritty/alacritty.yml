@@ -76,19 +76,6 @@ colors:
     # cyan:    '0x56b6c2'
     # white:   '0xe6efff'
 
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  dim:
-    black:   '0x1e2127'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0x828791'
   # ayu mirage
   # primary:
     # background: '#1f2430'
@@ -116,6 +103,8 @@ colors:
     # magenta: '#f17676'
     # cyan: '#9debcf'
     # white: '#ffffff'
+    #
+background_opacity: 1
 
 font:
   # The normal (roman) font face to use.

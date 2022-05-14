@@ -230,7 +230,9 @@ if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
 fi
 
 if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
-  alias nvim="nvr --remote "
+  alias nvim="nvr -cc :tabnew --remote "
+  alias nvim-vs="nvr -O "
+  alias nvim-sp="nvr -o "
 fi
 
 function omz_termsupport_preexec {
