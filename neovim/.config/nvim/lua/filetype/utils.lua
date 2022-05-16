@@ -8,7 +8,7 @@ M.format = function(command, args)
     args = ""
   end
   return function()
-    if vim.fn.executable(command) and (vim.g.auto_format == nil or vim.g.auto_format == 1) then
+    if vim.fn.executable(command) ~= 0 and (vim.g.auto_format == nil or vim.g.auto_format == 1) then
       if vim.b.coc_diagnostic_info == nil or vim.b.coc_diagnostic_info["error"] == 0 then
         vim.api.nvim_command([[:silent! mkview]])
         vim.api.nvim_command([[:%!]] .. command .. " " .. args)
