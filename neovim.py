@@ -2,6 +2,9 @@ import os
 import platform
 import shutil
 import sys
+import tarfile
+from ctypes import ArgumentError
+from urllib import request
 
 HOME = os.path.expanduser("~")
 CPU_COUNT = os.cpu_count()
@@ -83,6 +86,56 @@ def post():
         os.system("env EDITOR=nvim")
 
 
+NIGHTLY_URL = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+RELEASE_URL = "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
+TMP_PATH = "/tmp/"
+
+
+def get_zip(url: str, dest: str) -> str:
+    if os.path.isdir(dest):
+        dest = os.path.join(dest, "nvim-linux64.tar.gz")
+    return request.urlretrieve(url, dest)[0]
+
+
+def extract_tar_gz(path: str):
+    if path.endswith("tar.gz"):
+        tar = tarfile.open(path, "r:gz")
+        tar.extractall(TMP_PATH)
+        tar.close()
+    else:
+        raise ArgumentError("Not a tar.gz file.")
+
+
+def install(source: str, to: str):
+    dirs = os.listdir(source)
+    for i in dirs:
+        if os.path.isdir(os.path.join(source, i)):
+            shutil.copytree(
+                os.path.join(source, i),
+                os.path.join(to, i),
+                dirs_exist_ok=True,
+            )
+        else:
+            shutil.copy(os.path.join(source, i), os.path.join(to, i))
+
+
+def delete(path: str):
+    if os.path.isdir(path):
+        for i in os.listdir(path):
+            delete(os.path.join(path, i))
+        os.rmdir(path)
+    else:
+        os.remove(path)
+
+
+def install_neovim():
+    zip_path = get_zip(RELEASE_URL, TMP_PATH)
+    extract_tar_gz(zip_path)
+    delete(zip_path)
+    install(os.path.join(TMP_PATH, "nvim-linux64"), "/usr")
+    delete(os.path.join(TMP_PATH, "nvim-linux64"))
+
+
 if __name__ == "__main__":
     if "pre" in sys.argv:
         if shutil.which("nvim") is None:
@@ -111,8 +164,9 @@ if __name__ == "__main__":
             os.chdir(wd)
 
         if shutil.which("nvim") is None:
-            print("Neovim executable is not found. Abouting.")
-            sys.exit(1)
+            if platform.system().lower() == "linux":
+                os.setuid(0)
+                install_neovim()
         pre()
     elif "post" in sys.argv:
         post()
