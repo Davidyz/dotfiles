@@ -142,7 +142,7 @@ return require("packer").startup(function(use)
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
-      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
+      return (vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")) ~= 0
     end,
   })
   use("easymotion/vim-easymotion")
