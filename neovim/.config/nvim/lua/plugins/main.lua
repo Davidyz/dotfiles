@@ -1,5 +1,6 @@
 local utils = require("utils")
-require("plugins.packer")
+require("packer")
+require("plugins.packer_nvim")
 local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
 vim.api.nvim_create_autocmd(
   "BufWritePost",
@@ -10,6 +11,7 @@ local items = {
   "plugins.black",
   "plugins.coc-nvim",
   -- "plugins.copilot",
+  -- "plugins.fauxpilot",
   "plugins.dap",
   "plugins.golden_view",
   "plugins.haskell",

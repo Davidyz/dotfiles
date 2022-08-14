@@ -71,7 +71,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-if not vim.fn.executable("nvr") then
+if vim.fn.executable("nvr") == 0 then
   job
     :new({
       command = "python",
