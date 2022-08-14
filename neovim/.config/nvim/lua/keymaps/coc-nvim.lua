@@ -32,11 +32,11 @@ km_utils.setKeymap("n", "<leader>f", "<Plug>(coc-fix-current)", false)
 
 -- km_utils.setKeymap("i", "<cr>", [[pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], {
 km_utils.setKeymap("i", "<cr>", function()
-  if vim.fn.pumvisible() ~= 0 then
+  if vim.fn["coc#pum#visible"]() ~= 0 then
     return vim.fn["coc#_select_confirm"]()
   else
     vim.fn["coc#on_enter"]()
-    return utils.getTermCode("<cr>")
+    return utils.getTermCode("<CR>")
   end
 end, {
   silent = true,
@@ -47,8 +47,8 @@ km_utils.setKeymap("i", "<C-space>", vim.fn["coc#refresh"], { silent = true, exp
 
 -- km_utils.setKeymap("i", "<TAB>", [[pumvisible() ? "\<C-n>" : "\<TAB>"]], {
 km_utils.setKeymap("i", "<TAB>", function()
-  if vim.fn.pumvisible() ~= 0 then
-    return utils.getTermCode("<C-n>")
+  if vim.fn["coc#pum#visible"]() ~= 0 then
+    return vim.fn["coc#pum#next"](1)
   elseif check_back_space() then
     return utils.getTermCode("<TAB>")
   else
@@ -61,8 +61,8 @@ end, {
 })
 
 km_utils.setKeymap("i", "<S-TAB>", function()
-  if vim.fn.pumvisible() ~= 0 then
-    return utils.getTermCode([[<C-p>]])
+  if vim.fn["coc#pum#visible"]() ~= 0 then
+    return vim.fn["coc#pum#prev"](1)
   else
     return utils.getTermCode([[<C-h>]])
   end
