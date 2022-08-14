@@ -60,17 +60,16 @@ vim.api.nvim_create_autocmd("BufRead", {
   end,
 })
 
-if vim.fn.exists(":CocList") ~= 0 then
-  vim.api.nvim_create_autocmd("CursorHold", {
-    pattern = "*",
-    callback = function()
-      if vim.fn["CocActionAsync"] ~= nil then
-        vim.fn["CocActionAsync"]("highlight")
-      end
-    end,
-  })
-  vim.api.nvim_command([[
+vim.api.nvim_create_autocmd("CursorHold", {
+  pattern = "*",
+  callback = function()
+    if vim.fn["CocActionAsync"] ~= nil then
+      vim.fn["CocActionAsync"]("highlight")
+    end
+  end,
+})
+
+vim.api.nvim_command([[
 hi clear CocHighlightText
-hi link CocHighlightText Pmenu
+hi link CocHighlightText TermCursorNC
 ]])
-end

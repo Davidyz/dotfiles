@@ -137,12 +137,12 @@ return require("packer").startup(function(use)
   -- use("puremourning/vimspector")
 
   -- misc
-  -- use("github/copilot.vim")
+  -- use("~/git/fauxpilot.nvim")
   use("nvim-lua/plenary.nvim")
   use({
     "lilydjwg/fcitx.vim",
     cond = function()
-      return (vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")) ~= 0
+      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
     end,
   })
   use("easymotion/vim-easymotion")
