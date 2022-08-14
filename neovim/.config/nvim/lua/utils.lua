@@ -150,12 +150,14 @@ M.async_run = function(func, callback)
 end
 
 M.cpu_count = function()
-  local file = io.popen("grep -c processor /proc/cpuinfo")
-  if file == nil then
-    return
+  if vim.fn.executable('grep') ~= 0 then
+    local file = io.popen("grep -c processor /proc/cpuinfo")
+    if file == nil then
+      return
+    end
+    local numcpus = file:read()
+    file:close()
+    return tonumber(numcpus, 10)
   end
-  local numcpus = file:read()
-  file:close()
-  return tonumber(numcpus, 10)
 end
 return M
