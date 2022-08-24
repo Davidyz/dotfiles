@@ -5,7 +5,7 @@ onedark.setup({
   styles = {
     strings = "NONE",
     comments = "NONE",
-    keywords = "italic",
+    keywords = "NONE",
     functions = "NONE",
     variables = "NONE",
     virtual_text = "NONE",
@@ -18,7 +18,7 @@ onedark.setup({
     cursorline = true,
     transparency = true,
     terminal_colors = true,
-    window_unfocussed_color = true,
+    window_unfocused_color = true,
   },
   plugins = { treesitter = true },
 })
