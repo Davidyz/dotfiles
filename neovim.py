@@ -79,6 +79,10 @@ def pre():
 
 
 def post():
+    if not platform.system() == "Windows":
+        os.system(
+            "git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        )
     os.system(
         "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
     )
@@ -139,34 +143,15 @@ def install_neovim():
 if __name__ == "__main__":
     if "pre" in sys.argv:
         if shutil.which("nvim") is None:
-            wd = os.getcwd()
-            os.chdir(os.path.expanduser("~"))
-            if "git" in os.listdir():
-                os.chdir("git")
-            if shutil.which("yay"):
-                os.system("yay -S neovim-nightly-bin")
-            elif (
-                shutil.which("apt")
-                or shutil.which("dnf")
-                or shutil.which("yum")
-            ):
-                if not os.path.isdir("neovim"):
-                    os.system("git clone git@github.com:neovim/neovim.git")
-                os.system("cd neovim && checkout nightly")
-
-                os.system(f"make -j{os.cpu_count()}")
-                os.system("sudo make install")
-            else:
-                print("Neovim executable is not found.")
-                exit(1)
-            os.system("pip install neovim pynvim")
-            os.system("npm install -g neovim")
-            os.chdir(wd)
-
-        if shutil.which("nvim") is None:
             if platform.system().lower() == "linux":
                 os.setuid(0)
                 install_neovim()
+            else:
+                print("Neovim executable is not found.")
+                exit(1)
+
+        os.system("pip install neovim pynvim")
+        os.system("sudo npm install -g neovim")
         pre()
     elif "post" in sys.argv:
         post()
