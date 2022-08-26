@@ -1,6 +1,6 @@
 local utils = require("utils")
-require("packer")
 require("plugins.packer_nvim")
+require("packer")
 local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
 vim.api.nvim_create_autocmd(
   "BufWritePost",
