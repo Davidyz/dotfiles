@@ -2,16 +2,16 @@
   "coc.preferences.formatOnSaveFiletypes": ["markdown", "json"],
   "languageserver": {
     "arduino": {
-      "command": "/usr/bin/arduino-language-server",
+      "command": "arduino-language-server",
       "rootPatterns": ["*.ino", ".git"],
       "filetypes": ["arduino"],
       "args": [
         "-cli",
-        "/usr/bin/arduino-cli",
+        "arduino-cli",
         "-clangd",
-        "/usr/bin/clangd",
+        "clangd",
         "-cli-config",
-        "/home/davidyz/.arduino15/arduino-cli.yaml"
+        "~/.arduino15/arduino-cli.yaml"
       ]
     },
     "dockerfile": {
@@ -20,7 +20,7 @@
       "args": ["--stdio"]
     },
     "haskell": {
-      "command": "/usr/bin/haskell-language-server",
+      "command": "haskell-language-server",
       "args": ["--lsp"],
       "rootPatterns": [
         "*.cabal",
