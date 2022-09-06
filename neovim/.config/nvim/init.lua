@@ -15,8 +15,8 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 local items = {
-  "colorscheme.main",
   "plugins.main",
+  "colorscheme.main",
   "keymaps.main",
   "filetype.main",
   "misc",
