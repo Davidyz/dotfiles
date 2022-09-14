@@ -3,7 +3,7 @@ require("nvim-treesitter.install").prefer_git = true
 
 local installed_list = {}
 if utils.cpu_count() >= 4 then
-  installed_list = { "all" }
+  installed_list = "all"
 end
 
 require("nvim-treesitter.configs").setup({

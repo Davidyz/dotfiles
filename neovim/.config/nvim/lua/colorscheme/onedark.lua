@@ -4,8 +4,8 @@ onedark.setup({
   theme = "onedark",
   styles = {
     strings = "NONE",
-    comments = "NONE",
-    keywords = "NONE",
+    comments = "italic",
+    keywords = "bold",
     functions = "NONE",
     variables = "NONE",
     virtual_text = "NONE",
