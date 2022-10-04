@@ -109,17 +109,17 @@ background_opacity: 1
 font:
   # The normal (roman) font face to use.
   normal:
-    family: CaskaydiaCove Nerd Font Mono
+    family: Caskaydia Cove Nerd Font
     style: Regular
 
   # The bold font face
   bold:
-    family: CaskaydiaCove Nerd Font Mono
+    family: CaskaydiaCove Nerd Font
     style: Bold
 
   # The italic font face
   italic:
-    family: CaskaydiaCove Nerd Font Mono
+    family: CaskaydiaCove Nerd Font
     style: Italic
   size: 13
 
