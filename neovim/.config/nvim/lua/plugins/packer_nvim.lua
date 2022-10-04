@@ -1,3 +1,7 @@
+local no_vscode = function()
+  return vim.fn.exists("g:vscode") == 0
+end
+
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
@@ -152,13 +156,16 @@ return require("packer").startup(function(use)
   use("chaoren/vim-wordmotion")
   use("ryanoasis/vim-devicons")
   use("vim-scripts/restore_view.vim")
-  use("zhaocai/GoldenView.Vim")
+  use({ "zhaocai/GoldenView.Vim", cond = no_vscode })
   use({
     "Davidyz/make.nvim",
     branch = "main",
   })
   use({ "Davidyz/md-code.nvim", ft = { "markdown" } })
-  use("mhinz/vim-startify")
+  use({
+    "mhinz/vim-startify",
+    cond = no_vscode,
+  })
 
   if vim.g.packer_bootstrap then
     require("packer").sync()

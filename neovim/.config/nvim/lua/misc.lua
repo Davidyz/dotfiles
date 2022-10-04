@@ -3,6 +3,7 @@ local job = require("plenary.job")
 
 vim.api.nvim_set_option("filetype", "detect")
 vim.opt.encoding = "utf-8"
+-- vim.opt.shadafile = "~/.local/share/nvim/shada/main.shada"
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -83,11 +84,11 @@ if vim.fn.executable("nvr") == 0 then
     :start()
 end
 
-if vim.fn.executable('stylua') == 0 and vim.fn.executable('luarocks') > 0 then
+if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
   job
     :new({
       command = "luarocks",
-      args = { 'install' , '--local', 'stylua' },
+      args = { "install", "--local", "stylua" },
       on_exit = function()
         print("stylua has been installed.")
       end,
