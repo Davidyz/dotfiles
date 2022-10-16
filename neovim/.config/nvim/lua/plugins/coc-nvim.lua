@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("_utils")
 
 local extensions = {
   -- mappings from plugin to required runtime.

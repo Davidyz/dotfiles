@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("_utils")
 require("nvim-treesitter.install").prefer_git = true
 
 local installed_list = {}

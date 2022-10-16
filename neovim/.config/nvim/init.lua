@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("_utils")
 
 local fn = vim.fn
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -15,8 +15,8 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 local items = {
-  "plugins.main",
   "colorscheme.main",
+  "plugins.main",
   "keymaps.main",
   "filetype.main",
   "misc",

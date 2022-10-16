@@ -1,5 +1,5 @@
 local km_utils = require("keymaps.utils")
-local utils = require("utils")
+local utils = require("_utils")
 
 local function show_doc()
   if

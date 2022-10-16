@@ -1,4 +1,4 @@
-local no_vscode = function()
+local function no_vscode()
   return vim.fn.exists("g:vscode") == 0
 end
 
@@ -91,7 +91,6 @@ return require("packer").startup(function(use)
   use("nvim-treesitter/playground")
   use("windwp/nvim-autopairs")
   use("andymass/vim-matchup")
-  use("SmiteshP/nvim-gps")
   use("p00f/nvim-ts-rainbow")
 
   -- lsp
@@ -107,12 +106,13 @@ return require("packer").startup(function(use)
   use({
     "neoclide/coc.nvim",
     branch = "release",
+    -- cond = no_vscode,
   })
   use({
     "rafcamlet/coc-nvim-lua",
     ft = { "lua" },
     cond = function()
-      return vim.b.editting_vim_config
+      return vim.b.editting_vim_config and no_vscode()
     end,
   })
 
@@ -130,12 +130,6 @@ return require("packer").startup(function(use)
   -- use("~/git/fauxpilot.nvim")
   -- use("github/copilot.vim")
   use("nvim-lua/plenary.nvim")
-  use({
-    "lilydjwg/fcitx.vim",
-    cond = function()
-      return vim.fn.executable("fcitx5") or vim.fn.executable("fcitx")
-    end,
-  })
   use("easymotion/vim-easymotion")
   use({
     "junegunn/fzf",
@@ -144,10 +138,10 @@ return require("packer").startup(function(use)
   use("junegunn/fzf.vim")
   use({
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", opt = true },
+    requires = { "kyazdani42/nvim-web-devicons", opt = false },
   })
   use("itchyny/vim-gitbranch")
-  use({ "Yggdroot/indentLine", ft = SOURCE_CODE })
+  use({ "Yggdroot/indentLine", ft = SOURCE_CODE, cond = no_vscode })
   use("preservim/nerdcommenter")
   use("preservim/nerdtree")
   use("Xuyuanp/nerdtree-git-plugin")
@@ -161,7 +155,7 @@ return require("packer").startup(function(use)
     "Davidyz/make.nvim",
     branch = "main",
   })
-  use({ "Davidyz/md-code.nvim", ft = { "markdown" } })
+  use({ "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode })
   use({
     "mhinz/vim-startify",
     cond = no_vscode,

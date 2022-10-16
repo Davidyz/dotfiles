@@ -68,12 +68,11 @@ local stat_height = vim.o.cmdheight
 function M.tryRequire(items, retry_count)
   if retry_count == 0 then
     stat_height = vim.o.cmdheight
-    vim.o.cmdheight = #items + 2
+    vim.o.cmdheight = #items + 1
     vim.api.nvim_echo({ { "Failed to require the following files:", "None" } }, false, {})
     for _, item in ipairs(items) do
       vim.api.nvim_echo({ { item, "None" } }, false, {})
     end
-    vim.o.cmdheight = stat_height
     return
   end
   retry_count = retry_count or 10
@@ -150,7 +149,7 @@ M.async_run = function(func, callback)
 end
 
 M.cpu_count = function()
-  if vim.fn.executable('grep') ~= 0 then
+  if vim.fn.executable("grep") ~= 0 then
     local file = io.popen("grep -c processor /proc/cpuinfo")
     if file == nil then
       return

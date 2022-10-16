@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("_utils")
 local job = require("plenary.job")
 
 vim.api.nvim_set_option("filetype", "detect")

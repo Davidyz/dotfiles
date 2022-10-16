@@ -1,6 +1,8 @@
-local utils = require("utils")
+local utils = require("_utils")
+
 require("plugins.packer_nvim")
 require("packer")
+
 local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
 vim.api.nvim_create_autocmd(
   "BufWritePost",
@@ -17,11 +19,10 @@ local items = {
   "plugins.haskell",
   "plugins.indentline",
   "plugins.jupytext",
-  "plugins.lualine",
+  "plugins._lualine",
   "plugins.markdown_preview",
-  "plugins.nvim_autopairs",
-  "plugins.nvim_gps",
   "plugins.NERDTree",
+  "plugins.nvim_autopairs",
   "plugins.pandoc",
   "plugins.rainbow",
   "plugins.startify",
@@ -29,3 +30,7 @@ local items = {
   "plugins.treesitter-context",
 }
 utils.tryRequire(items)
+
+--for _, i in ipairs(items) do
+--require(i)
+--end

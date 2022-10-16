@@ -1,13 +1,16 @@
-local utils = require("utils")
+local utils = require("_utils")
+local nvim_devicon = require("nvim-web-devicons")
 
-local gps = require("nvim-gps")
+if not nvim_devicon.has_loaded() then
+  nvim_devicon.setup()
+end
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
 end
 
 local function devicon()
-  return string.sub(require("nvim-web-devicons").get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}), 1)
+  return string.sub(nvim_devicon.get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}), 1)
 end
 
 local function get_context()
@@ -19,11 +22,11 @@ local function is_text()
 end
 
 local function wordCount()
-  local wc = vim.api.nvim_eval("wordcount()")
-  if wc["visual_words"] then
-    return "wc: " .. tostring(wc["visual_words"])
+  local wc = vim.fn["wordcount"]()
+  if wc.visual_words ~= nil then
+    return "wc: " .. tostring(wc.visual_words)
   else
-    return "wc: " .. tostring(wc["words"])
+    return "wc: " .. tostring(wc.words)
   end
 end
 
@@ -50,13 +53,9 @@ require("lualine").setup({
     lualine_c = {
       get_context,
       file_path,
-      {
-        gps.get_location,
-        cond = gps.is_available,
-      },
     },
-    lualine_x = { "encoding", "fileformat" },
-    lualine_y = { "progress" },
+    lualine_x = { "progress" },
+    lualine_y = { "encoding", "fileformat" },
     lualine_z = {
       "location",
       {
@@ -78,7 +77,6 @@ require("lualine").setup({
       {
         "tabs",
         mode = 2,
-        max_length = vim.o.columns,
       },
     },
   },

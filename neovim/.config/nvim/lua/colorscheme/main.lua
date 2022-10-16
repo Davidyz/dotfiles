@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("_utils")
 
 if vim.fn.has("termguicolors") then
   vim.opt.termguicolors = true
