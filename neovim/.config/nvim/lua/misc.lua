@@ -40,10 +40,7 @@ end
 
 vim.o.cursorline = true
 vim.o.cursorcolumn = true
-vim.api.nvim_command([[
-hi clear CursorColumn
-hi link CursorColumn CursorLine
-]])
+vim.api.nvim_set_hl(0, "CursorColumn", vim.api.nvim_get_hl_by_name("CursorLine", {}))
 vim.o.compatible = false
 
 -- recover cursor location from history
@@ -58,7 +55,8 @@ end
 
 vim.opt.foldlevel = 50
 
-vim.api.nvim_command([[hi MatchParen gui=None guibg=Grey guifg=None]])
+vim.api.nvim_set_hl(0, "MatchParen", vim.api.nvim_get_hl_by_name("TermCursorNC", {}))
+
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.api.nvim_set_option("updatetime", 50)
 if vim.fn.has("nvim-0.7") ~= 0 then
