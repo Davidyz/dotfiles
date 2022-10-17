@@ -229,6 +229,10 @@ if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
   fi
 fi
 
+if ! command -v nvr > /dev/null ; then
+  pip install neovim-remote
+fi
+
 if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
   alias nvim="nvr -cc :tabnew --remote "
   alias nvim-vs="nvr -O "
