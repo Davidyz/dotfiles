@@ -106,7 +106,7 @@ return require("packer").startup(function(use)
   use({
     "neoclide/coc.nvim",
     branch = "release",
-    -- cond = no_vscode,
+    cond = no_vscode,
   })
   use({
     "rafcamlet/coc-nvim-lua",
