@@ -93,3 +93,5 @@ if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
     })
     :start()
 end
+
+vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
