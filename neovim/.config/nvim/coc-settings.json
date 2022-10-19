@@ -99,5 +99,7 @@
     "border": true,
     "highlight": "Pmenu"
   },
-  "leetcode.language": "python3"
+  "leetcode.language": "python3",
+  "webview.openCommand": "firefox \"%u\"",
+  "webview.colorStrategy": "dark"
 }
