@@ -11,26 +11,29 @@ vim.api.nvim_create_autocmd(
 
 local items = {
   "plugins.black",
-  "plugins.coc-nvim",
   -- "plugins.copilot",
   -- "plugins.fauxpilot",
-  "plugins.dap",
-  "plugins.golden_view",
   "plugins.haskell",
   "plugins.indentline",
-  "plugins.jupytext",
-  "plugins._lualine",
-  "plugins.markdown_preview",
-  "plugins.NERDTree",
   "plugins.nvim_autopairs",
   "plugins.pandoc",
   "plugins.rainbow",
-  "plugins.startify",
   "plugins.tree_sitter",
   "plugins.treesitter-context",
 }
 utils.tryRequire(items)
 
---for _, i in ipairs(items) do
---require(i)
---end
+local no_vscode = {
+  "plugins.coc-nvim",
+  "plugins.jupytext",
+  "plugins.dap",
+  "plugins.golden_view",
+  "plugins._lualine",
+  "plugins.markdown_preview",
+  "plugins.NERDTree",
+  "plugins.startify",
+}
+
+if vim.fn.has('g:vscode') == 0 then
+  utils.tryRequire(no_vscode)
+end
