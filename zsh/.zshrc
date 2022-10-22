@@ -116,7 +116,7 @@ autoload -Uz compinit
 compinit
 zstyle ':completion:*' menu select
 
-export UPDATE_ZSH_DAYS=7
+export UPDATE_ZSH_DAYS=
 
 unsetopt sharehistory
 setopt HIST_EXPIRE_DUPS_FIRST
