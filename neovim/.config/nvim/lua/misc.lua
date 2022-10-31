@@ -95,3 +95,4 @@ if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
+io.popen("for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && mv $i ~/.local/state/nvim ; done")
