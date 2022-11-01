@@ -14,7 +14,13 @@ local function devicon()
 end
 
 local function get_context()
-  return utils.getUserName() .. "@" .. utils.getHostname()
+  local user = utils.getUserName()
+  local hostname = utils.getHostname()
+  if user and hostname then
+    return user .. "@" .. hostname
+  elseif user or hostname then
+    return user or hostname
+  end
 end
 
 local function is_text()

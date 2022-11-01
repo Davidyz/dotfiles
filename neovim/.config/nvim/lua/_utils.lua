@@ -22,12 +22,8 @@ function M.isSourceCode(filetype)
 end
 
 function M.getHostname()
-  local f = io.popen("/bin/hostname")
-  if f ~= nil then
-    local hostname = f:read("*a") or ""
-    f:close()
-    hostname = string.gsub(hostname, "\n$", "")
-    return hostname
+  if vim.fn.hostname ~= nil then
+    return vim.fn.hostname()
   end
   return ""
 end
