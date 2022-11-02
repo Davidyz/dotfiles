@@ -104,7 +104,6 @@ colors:
     # cyan: '#9debcf'
     # white: '#ffffff'
     #
-background_opacity: 1
 
 font:
   # The normal (roman) font face to use.
