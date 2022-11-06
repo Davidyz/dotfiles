@@ -1,4 +1,5 @@
 import os
+import subprocess
 import platform
 import shutil
 import sys
@@ -150,8 +151,9 @@ if __name__ == "__main__":
                 print("Neovim executable is not found.")
                 exit(1)
 
-        os.system("pip install neovim pynvim")
-        os.system("sudo npm install -g neovim")
+        os.system("pip install -U neovim pynvim")
+        if subprocess.run("npm list -g neovim") != 0:
+            os.system("sudo npm install -g neovim")
         pre()
     elif "post" in sys.argv:
         post()
