@@ -2,14 +2,14 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
 if [ -d $HOME/.cargo/bin ]
 then
-  export PATH=$PATH:$HOME/.cargo/bin
+    export PATH=$PATH:$HOME/.cargo/bin
 fi
 
 # Path to your oh-my-zsh installation.
@@ -82,32 +82,32 @@ HIST_STAMPS="dd/mm/yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  autoupdate
-  adb
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  extract
-  sudo
-  command-not-found
-  pip
-  virtualenv
-  pipenv
-  mvn
-  ufw
-  stack
-  cabal
-  zsh-256color
-  zsh-completions
-  docker
-  zsh-autopair
-  yarn
-  colored-man-pages
+    autoupdate
+    adb
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    extract
+    sudo
+    command-not-found
+    pip
+    virtualenv
+    pipenv
+    mvn
+    ufw
+    stack
+    cabal
+    zsh-256color
+    zsh-completions
+    docker
+    zsh-autopair
+    yarn
+    colored-man-pages
 )
 
 if command -v fzf > /dev/null ; then
-  export FZF_BASE=`which fzf`
-  plugins+=(fzf)
+    export FZF_BASE=`which fzf`
+    plugins+=(fzf)
 fi
 
 if command -v autojump > /dev/null ; then plugins+=(autojump) fi
@@ -137,10 +137,12 @@ alias unzip_gbk="unzip -O gbk "
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
-PY_PATH=`python -c "import glob, os;dirs = glob.glob(f'{os.path.expanduser(\"~\")}/**/learning_python/module') or glob.glob(f'{os.path.expanduser(\"~\")}/learning_python/module') ;print(dirs[0] if len(dirs) == 1 else exit())"`
-if [ -d $PY_PATH ]; then
-  export PYTHONPATH=$PY_PATH
-fi
+# if [ -z $PYTHONPATH ]; then
+# PY_PATH=`python -c "import glob, os;dirs = glob.glob(f'{os.path.expanduser(\"~\")}/**/learning_python/module') or glob.glob(f'{os.path.expanduser(\"~\")}/learning_python/module') ;print(dirs[0] if len(dirs) == 1 else exit())"`
+# if [ -d $PY_PATH ]; then
+# export PYTHONPATH=$PY_PATH
+# fi
+# fi
 
 export ANDROID_STORAGE=/storage/emulated/0/
 source $ZSH/oh-my-zsh.sh
@@ -149,7 +151,7 @@ zstyle ':completion:*' ignored-patterns '__pycache__'
 
 if command -v lsd > /dev/null
 then
-  alias ls='lsd'
+    alias ls='lsd'
 fi
 
 # User configuration
@@ -162,7 +164,7 @@ fi
 # Preferred editor for local and remote sessions
 if command -v nvim > /dev/null;
 then
-  export EDITOR='nvim'
+    export EDITOR='nvim'
 fi
 
 # Compilation flags
@@ -177,8 +179,8 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 if [[ $TERM == xterm-termite ]]; then
-  . /etc/profile.d/vte.sh
-  __vte_osc7
+    . /etc/profile.d/vte.sh
+    __vte_osc7
 fi
 
 ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
@@ -188,22 +190,22 @@ ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
 if command -v neofetch > /dev/null ; then
-  neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime
+    neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime
 fi
 
 if {test -f $(command -v pacman)} && {test -f /usr/share/doc/find-the-command/ftc.zsh} ; then
-  source /usr/share/doc/find-the-command/ftc.zsh
+    source /usr/share/doc/find-the-command/ftc.zsh
 elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then
-  source /etc/zsh_command_not_found
+    source /etc/zsh_command_not_found
 fi
 
 if [ -f ~/.local_script.sh ]
 then
-  source ~/.local_script.sh
+    source ~/.local_script.sh
 fi
 
 function virtualenv_info {
-  [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
 PROMPT='%{$fg[white]%}$(virtualenv_info)%{$reset_color%}%'+$PROMPT
 
@@ -215,7 +217,7 @@ unsetopt csh_null_glob
 setopt nonomatch
 
 if ! command -v thefuck > /dev/null && command -v pip3 > /dev/null ; then
-  pip3 install thefuck
+    pip3 install thefuck
 fi
 
 eval $(thefuck --alias)
@@ -224,68 +226,68 @@ bindkey '^[[1;2C' forward-word
 bindkey '^[[1;2D' backward-word
 
 if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
-  if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
-    [ ! -f $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi ] && pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
-  fi
+    if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
+        [ ! -f $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi ] && pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
+    fi
 fi
 
 if ! command -v nvr > /dev/null ; then
-  pip install neovim-remote
+    pip install neovim-remote
 fi
 
 if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
-  alias nvim="nvr -cc :tabnew --remote "
-  alias nvim-vs="nvr -O "
-  alias nvim-sp="nvr -o "
+    alias nvim="nvr -cc :tabnew --remote "
+    alias nvim-vs="nvr -O "
+    alias nvim-sp="nvr -o "
 fi
 
 function omz_termsupport_preexec {
-  [[ "${DISABLE_AUTO_TITLE:-}" != true ]] || return
+    [[ "${DISABLE_AUTO_TITLE:-}" != true ]] || return
 
-  emulate -L zsh
-  setopt extended_glob
+    emulate -L zsh
+    setopt extended_glob
 
-  # split command into array of arguments
-  local -a cmdargs
-  cmdargs=("${(z)2}")
-  # if running fg, extract the command from the job description
-  if [[ "${cmdargs[1]}" = fg ]]; then
-    # get the job id from the first argument passed to the fg command
-    local job_id jobspec="${cmdargs[2]#%}"
-    # logic based on jobs arguments:
-    # http://zsh.sourceforge.net/Doc/Release/Jobs-_0026-Signals.html#Jobs
-    # https://www.zsh.org/mla/users/2007/msg00704.html
-    case "$jobspec" in
-      <->) # %number argument:
-        # use the same <number> passed as an argument
-        job_id=${jobspec} ;;
-      ""|%|+) # empty, %% or %+ argument:
-        # use the current job, which appears with a + in $jobstates:
-        # suspended:+:5071=suspended (tty output)
-        job_id=${(k)jobstates[(r)*:+:*]} ;;
-      -) # %- argument:
-        # use the previous job, which appears with a - in $jobstates:
-        # suspended:-:6493=suspended (signal)
-        job_id=${(k)jobstates[(r)*:-:*]} ;;
-      [?]*) # %?string argument:
-        # use $jobtexts to match for a job whose command *contains* <string>
-        job_id=${(k)jobtexts[(r)*${(Q)jobspec}*]} ;;
-      *) # %string argument:
-        # use $jobtexts to match for a job whose command *starts with* <string>
-        job_id=${(k)jobtexts[(r)${(Q)jobspec}*]} ;;
-    esac
+    # split command into array of arguments
+    local -a cmdargs
+    cmdargs=("${(z)2}")
+    # if running fg, extract the command from the job description
+    if [[ "${cmdargs[1]}" = fg ]]; then
+        # get the job id from the first argument passed to the fg command
+        local job_id jobspec="${cmdargs[2]#%}"
+        # logic based on jobs arguments:
+        # http://zsh.sourceforge.net/Doc/Release/Jobs-_0026-Signals.html#Jobs
+        # https://www.zsh.org/mla/users/2007/msg00704.html
+        case "$jobspec" in
+            <->) # %number argument:
+                # use the same <number> passed as an argument
+                job_id=${jobspec} ;;
+            ""|%|+) # empty, %% or %+ argument:
+                # use the current job, which appears with a + in $jobstates:
+                # suspended:+:5071=suspended (tty output)
+                job_id=${(k)jobstates[(r)*:+:*]} ;;
+            -) # %- argument:
+                # use the previous job, which appears with a - in $jobstates:
+                # suspended:-:6493=suspended (signal)
+                job_id=${(k)jobstates[(r)*:-:*]} ;;
+            [?]*) # %?string argument:
+                # use $jobtexts to match for a job whose command *contains* <string>
+                job_id=${(k)jobtexts[(r)*${(Q)jobspec}*]} ;;
+            *) # %string argument:
+                # use $jobtexts to match for a job whose command *starts with* <string>
+                job_id=${(k)jobtexts[(r)${(Q)jobspec}*]} ;;
+        esac
 
-    # override preexec function arguments with job command
-    if [[ -n "${jobtexts[$job_id]}" ]]; then
-      1="${jobtexts[$job_id]}"
-      2="${jobtexts[$job_id]}"
+        # override preexec function arguments with job command
+        if [[ -n "${jobtexts[$job_id]}" ]]; then
+            1="${jobtexts[$job_id]}"
+            2="${jobtexts[$job_id]}"
+        fi
     fi
-  fi
 
-  # cmd name only, or if this is sudo or ssh, the next cmd
-  local CMD="${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}"
-  local LINE="${2:gs/%/%%}"
+    # cmd name only, or if this is sudo or ssh, the next cmd
+    local CMD="${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}"
+    local LINE="${2:gs/%/%%}"
 
-  # title "$CMD" "%100>...>${LINE}%<<"
-  title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
+    # title "$CMD" "%100>...>${LINE}%<<"
+    title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
 }
