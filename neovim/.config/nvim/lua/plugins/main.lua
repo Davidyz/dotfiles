@@ -29,11 +29,13 @@ local no_vscode = {
   "plugins.dap",
   "plugins.golden_view",
   "plugins._lualine",
+  "plugins.mason_tools",
   "plugins.markdown_preview",
   "plugins.NERDTree",
+  "plugins.null_ls",
   "plugins.startify",
 }
 
-if vim.fn.has('g:vscode') == 0 then
+if vim.fn.has("g:vscode") == 0 then
   utils.tryRequire(no_vscode)
 end
