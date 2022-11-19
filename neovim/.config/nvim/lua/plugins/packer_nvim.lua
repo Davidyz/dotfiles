@@ -87,31 +87,11 @@ return require("packer").startup(function(use)
 
   use({
     "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end,
+    cond = no_vscode,
   })
   use({
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    config = function()
-      require("mason-tool-installer").setup({
-        auto_update = true,
-        ensure_installed = {
-          "black",
-          "flake8",
-          "clang-format",
-          "shellcheck",
-          "stylua",
-          "clangd",
-          "lua-language-server",
-          "vim-language-server",
-          "pyright",
-          "clangd",
-          "beautysh",
-          "mypy",
-        },
-      })
-    end,
+    cond = no_vscode,
   })
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -148,6 +128,7 @@ return require("packer").startup(function(use)
         end,
       })
     end,
+    cond = no_vscode,
   })
   -- lsp
   -- use({
