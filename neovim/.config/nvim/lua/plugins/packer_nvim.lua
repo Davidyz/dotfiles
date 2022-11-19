@@ -155,28 +155,29 @@ return require("packer").startup(function(use)
     end,
     cond = no_vscode,
   })
-
   -- lsp
-  use({ "neovim/nvim-lspconfig" })
-  use({ "hrsh7th/nvim-cmp" })
-  use({ "hrsh7th/cmp-nvim-lsp" })
-  use({ "saadparwaiz1/cmp_luasnip" }) -- Snippets source for nvim-cmp
-  use({ "L3MON4D3/LuaSnip" })
-  -- use ({"SmiteshP/nvim-navic"})
+  -- use({
+  -- "junnplus/nvim-lsp-setup",
+  -- requires = {
+  -- "neovim/nvim-lspconfig",
+  -- "williamboman/nvim-lsp-installer",
+  -- },
+  -- })
 
   -- coc.nvim
-  -- use({
-  -- "neoclide/coc.nvim",
-  -- branch = "release",
-  -- cond = no_vscode,
-  -- })
-  -- use({
-  -- "rafcamlet/coc-nvim-lua",
-  -- ft = { "lua" },
-  -- cond = function()
-  -- return vim.b.editting_vim_config and no_vscode()
-  -- end,
-  -- })
+  use({
+    "neoclide/coc.nvim",
+    branch = "release",
+    cond = no_vscode,
+  })
+
+  -- lsp
+  --use({ "neovim/nvim-lspconfig" })
+  --use({ "hrsh7th/nvim-cmp" })
+  --use({ "hrsh7th/cmp-nvim-lsp" })
+  --use({ "saadparwaiz1/cmp_luasnip" }) -- Snippets source for nvim-cmp
+  --use({ "L3MON4D3/LuaSnip" })
+  -- use ({"SmiteshP/nvim-navic"})
 
   -- dap
   use("mfussenegger/nvim-dap")

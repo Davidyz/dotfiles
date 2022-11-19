@@ -1,3 +1,4 @@
+require("mason").setup()
 require("mason-tool-installer").setup({
   auto_update = true,
   ensure_installed = {
@@ -13,6 +14,6 @@ require("mason-tool-installer").setup({
     "clangd",
     "beautysh",
     "mypy",
-    'jdtls'
+    "jdtls",
   },
 })
