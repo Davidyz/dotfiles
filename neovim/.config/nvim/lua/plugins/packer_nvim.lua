@@ -131,8 +131,9 @@ return require("packer").startup(function(use)
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.beautysh,
-          null_ls.builtins.formatting.latexindent,
-          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.diagnostics.flake8.with({
+            extra_args = { "--max-line-length=88" },
+          }),
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.clang_check,
         },
