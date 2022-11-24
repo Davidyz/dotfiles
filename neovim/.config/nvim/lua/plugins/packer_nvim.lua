@@ -85,40 +85,96 @@ return require("packer").startup(function(use)
   use("andymass/vim-matchup")
   use("p00f/nvim-ts-rainbow")
 
+  -- mason
   use({
     "williamboman/mason.nvim",
+    config = function()
+      require('mason').setup()
+    end,
     cond = no_vscode,
   })
   use({
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    config = function()
+      require("mason-tool-installer").setup({
+        auto_update = true,
+        ensure_installed = {
+          "black",
+          "flake8",
+          "clang-format",
+          "shellcheck",
+          "stylua",
+          "clangd",
+          "lua-language-server",
+          "vim-language-server",
+          "pyright",
+          "clangd",
+          "beautysh",
+          "mypy",
+          'jdtls'
+        },
+      })
+    end,
     cond = no_vscode,
   })
   use({
     "jose-elias-alvarez/null-ls.nvim",
     cond = no_vscode,
-  })
-  -- lsp
-  -- use({
-  -- "junnplus/nvim-lsp-setup",
-  -- requires = {
-  -- "neovim/nvim-lspconfig",
-  -- "williamboman/nvim-lsp-installer",
-  -- },
-  -- })
-
-  -- coc.nvim
-  use({
-    "neoclide/coc.nvim",
-    branch = "release",
-    cond = no_vscode,
-  })
-  use({
-    "rafcamlet/coc-nvim-lua",
-    ft = { "lua" },
-    cond = function()
-      return vim.b.editting_vim_config and no_vscode()
+    config = function()
+  local null_ls = require("null-ls")
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  null_ls.setup({
+    sources = {
+      null_ls.builtins.formatting.stylua.with({
+        extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+      }),
+      null_ls.builtins.formatting.black,
+      null_ls.builtins.formatting.clang_format,
+      null_ls.builtins.formatting.beautysh,
+      null_ls.builtins.diagnostics.flake8,
+      null_ls.builtins.diagnostics.mypy,
+      null_ls.builtins.diagnostics.clang_check,
+    },
+    -- you can reuse a shared lspconfig on_attach callback here
+    on_attach = function(client, bufnr)
+      if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          group = augroup,
+          buffer = bufnr,
+          callback = function()
+            -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+            vim.lsp.buf.formatting_sync()
+          end,
+        })
+      end
     end,
   })
+
+    end
+  })
+
+  -- lsp
+  use({ "neovim/nvim-lspconfig" })
+  use({ 'hrsh7th/nvim-cmp' })
+  use({ 'hrsh7th/cmp-nvim-lsp' })
+  use({ 'saadparwaiz1/cmp_luasnip' }) -- Snippets source for nvim-cmp
+  use({ 'L3MON4D3/LuaSnip' })
+  -- use ({"SmiteshP/nvim-navic"})
+
+  -- coc.nvim
+  -- use({
+  -- "neoclide/coc.nvim",
+  -- branch = "release",
+  -- cond = no_vscode,
+  -- })
+  -- use({
+  -- "rafcamlet/coc-nvim-lua",
+  -- ft = { "lua" },
+  -- cond = function()
+  -- return vim.b.editting_vim_config and no_vscode()
+  -- end,
+  -- })
 
   -- dap
   use("mfussenegger/nvim-dap")
