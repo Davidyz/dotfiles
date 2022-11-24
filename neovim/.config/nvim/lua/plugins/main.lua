@@ -29,10 +29,8 @@ local no_vscode = {
   "plugins.dap",
   "plugins.golden_view",
   "plugins._lualine",
-  "plugins.mason_tools",
   "plugins.markdown_preview",
   "plugins.NERDTree",
-  "plugins.null_ls",
   "plugins.startify",
 }
 
