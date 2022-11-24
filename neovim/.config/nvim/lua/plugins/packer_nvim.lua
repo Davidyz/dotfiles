@@ -85,12 +85,36 @@ return require("packer").startup(function(use)
   use("andymass/vim-matchup")
   use("p00f/nvim-ts-rainbow")
 
+  -- mason
   use({
     "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
     cond = no_vscode,
   })
   use({
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    config = function()
+      require("mason-tool-installer").setup({
+        auto_update = true,
+        ensure_installed = {
+          "black",
+          "flake8",
+          "clang-format",
+          "shellcheck",
+          "stylua",
+          "clangd",
+          "lua-language-server",
+          "vim-language-server",
+          "pyright",
+          "clangd",
+          "beautysh",
+          "mypy",
+          "jdtls",
+        },
+      })
+    end,
     cond = no_vscode,
   })
   use({
@@ -130,21 +154,28 @@ return require("packer").startup(function(use)
     end,
     cond = no_vscode,
   })
+
   -- lsp
-  -- use({
-  -- "junnplus/nvim-lsp-setup",
-  -- requires = {
-  -- "neovim/nvim-lspconfig",
-  -- "williamboman/nvim-lsp-installer",
-  -- },
-  -- })
+  use({ "neovim/nvim-lspconfig" })
+  use({ "hrsh7th/nvim-cmp" })
+  use({ "hrsh7th/cmp-nvim-lsp" })
+  use({ "saadparwaiz1/cmp_luasnip" }) -- Snippets source for nvim-cmp
+  use({ "L3MON4D3/LuaSnip" })
+  -- use ({"SmiteshP/nvim-navic"})
 
   -- coc.nvim
-  use({
-    "neoclide/coc.nvim",
-    branch = "release",
-    cond = no_vscode,
-  })
+  -- use({
+  -- "neoclide/coc.nvim",
+  -- branch = "release",
+  -- cond = no_vscode,
+  -- })
+  -- use({
+  -- "rafcamlet/coc-nvim-lua",
+  -- ft = { "lua" },
+  -- cond = function()
+  -- return vim.b.editting_vim_config and no_vscode()
+  -- end,
+  -- })
 
   -- dap
   use("mfussenegger/nvim-dap")
