@@ -24,15 +24,13 @@ local items = {
 utils.tryRequire(items)
 
 local no_vscode = {
-  "plugins.coc-nvim",
+  --  "plugins.coc-nvim",
   "plugins.jupytext",
   "plugins.dap",
   "plugins.golden_view",
   "plugins._lualine",
-  "plugins.mason_tools",
   "plugins.markdown_preview",
   "plugins.NERDTree",
-  "plugins.null_ls",
   "plugins.startify",
 }
 
