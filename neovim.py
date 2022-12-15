@@ -152,7 +152,7 @@ if __name__ == "__main__":
                 exit(1)
 
         os.system("pip install -U neovim pynvim")
-        if subprocess.run("npm list -g neovim") != 0:
+        if subprocess.run("npm list -g neovim".split()) != 0:
             os.system("sudo npm install -g neovim")
         pre()
     elif "post" in sys.argv:
