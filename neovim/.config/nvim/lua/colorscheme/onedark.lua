@@ -18,7 +18,7 @@ onedark.setup({
     cursorline = true,
     transparency = true,
     terminal_colors = true,
-    window_unfocused_color = true,
+    highlight_inactive_windows = true,
   },
   plugins = { treesitter = true },
 })
