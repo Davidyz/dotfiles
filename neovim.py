@@ -12,9 +12,7 @@ CPU_COUNT = os.cpu_count()
 if CPU_COUNT is None:
     CPU_COUNT = 1
 NVIM_CONFIG_ROOT = os.path.expanduser(
-    "~/.config/nvim"
-    if not platform.system() == "Windows"
-    else "~/AppData/Local/nvim"
+    "~/.config/nvim" if not platform.system() == "Windows" else "~/AppData/Local/nvim"
 )
 
 
@@ -61,9 +59,7 @@ def pre():
     INIT_VIM = os.path.join(NVIM_CONFIG_ROOT, "init.vim")
     INIT_LUA = os.path.join(NVIM_CONFIG_ROOT, "init.lua")
     COC_JSON = os.path.join(NVIM_CONFIG_ROOT, "coc-settings.json")
-    if (not os.path.isdir(NVIM_CONFIG_ROOT)) or os.path.islink(
-        NVIM_CONFIG_ROOT
-    ):
+    if (not os.path.isdir(NVIM_CONFIG_ROOT)) or os.path.islink(NVIM_CONFIG_ROOT):
         if os.path.islink(NVIM_CONFIG_ROOT):
             os.remove(NVIM_CONFIG_ROOT)
         os.makedirs(NVIM_CONFIG_ROOT)
@@ -91,8 +87,12 @@ def post():
         os.system("env EDITOR=nvim")
 
 
-NIGHTLY_URL = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
-RELEASE_URL = "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
+NIGHTLY_URL = (
+    "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+)
+RELEASE_URL = (
+    "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
+)
 TMP_PATH = "/tmp/"
 
 
