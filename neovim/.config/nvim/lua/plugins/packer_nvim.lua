@@ -127,6 +127,7 @@ return require("packer").startup(function(use)
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.beautysh,
+          null_ls.builtins.formatting.latexindent,
           null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.clang_check,
@@ -140,7 +141,7 @@ return require("packer").startup(function(use)
               buffer = bufnr,
               callback = function()
                 -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                vim.lsp.buf.formatting_sync()
+                vim.lsp.buf.format({ bufnr = bufnr })
               end,
             })
           end
@@ -162,13 +163,6 @@ return require("packer").startup(function(use)
     "neoclide/coc.nvim",
     branch = "release",
     cond = no_vscode,
-  })
-  use({
-    "rafcamlet/coc-nvim-lua",
-    ft = { "lua" },
-    cond = function()
-      return vim.b.editting_vim_config and no_vscode()
-    end,
   })
 
   -- dap
@@ -193,7 +187,12 @@ return require("packer").startup(function(use)
   })
   use("itchyny/vim-gitbranch")
   use({ "Yggdroot/indentLine", ft = SOURCE_CODE, cond = no_vscode })
-  use("preservim/nerdcommenter")
+  use({
+    "preservim/nerdcommenter",
+    config = function()
+      vim.g.NERDCustomDelimiters = { ipynb = { left = "#", leftAlt = "#" } }
+    end,
+  })
   use("preservim/nerdtree")
   use("Xuyuanp/nerdtree-git-plugin")
   use("tpope/vim-surround")

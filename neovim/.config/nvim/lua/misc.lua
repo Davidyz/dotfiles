@@ -34,7 +34,7 @@ if vim.fn.has("unix") ~= 0 then
   elseif vim.fn.executable("python") then
     vim.g.python3_host_prog = "python"
   end
-elseif (vim.fn.has("win32") or vim.fn.has("win64")) and vim.fn.executable("py") then
+elseif (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and vim.fn.executable("py") == 1 then
   vim.g.python3_host_prog = "py"
 end
 
@@ -95,4 +95,6 @@ if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
-io.popen("for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && mv $i ~/.local/state/nvim ; done")
+if vim.fn.has('unix') then
+  io.popen("for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && [ -z '$(ls ~/.local/state/nvim)' ] && mv $i ~/.local/state/nvim ; done")
+end

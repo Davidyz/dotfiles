@@ -10,6 +10,7 @@ local extensions = {
   ["coc-phpls"] = { "php" },
   ["coc-docker"] = { "docker" },
   ["coc-bibtex"] = { "texlive", "pandoc" },
+  ["coc-rust-analyzer"] = { "rustc" },
 }
 
 vim.g.coc_global_extensions = {
