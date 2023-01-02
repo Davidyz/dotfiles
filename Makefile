@@ -2,6 +2,22 @@ SERVER = neovim zsh
 PC = $(SERVER) alacritty chrome
 DEPENDENCIES = stow git python3 pip npm
 
+all:
+	@if [ -z $(TARGET) ]; then \
+		make check; \
+		exit; \
+	fi;
+	@[ -d $(TARGET) ] && \
+		([ -f $(TARGET).py ] && \
+			python3 $$i.py pre && \
+			stow --adopt -vS -R -t $$HOME $(TARGET) --override=.* && \
+			python3 $(TARGET).py post || \
+			stow --adopt -vS -R -t $$HOME $(TARGET) --override=.*;) || \
+		(echo Target $(TARGET) not found.;
+		exit 1;)
+	fi;
+
+
 check:
 	@echo "Performing dependency check..."
 	@for i in $(DEPENDENCIES); do \
@@ -19,11 +35,13 @@ server:
 	@for i in $(SERVER); do \
 		if test -f $$i.py ; then \
 			if python3 $$i.py pre; then \
-				stow -vS -R -t $$HOME $$i --override=.*; \
+				stow --adopt -vS -R -t $$HOME $$i --override=.*; \
 				if test -f $$i.py ; \
 					then python3 $$i.py post; \
 				fi; \
 			fi; \
+		else \
+			stow --adopt -vS -R -t $$HOME $$i --override=.*; \
 		fi; \
 	done
 
@@ -32,10 +50,12 @@ pc:
 	@for i in $(PC); do \
 		if test -f $$i.py ; then \
 			if python3 $$i.py pre; then\
-				stow -vS -R -t $$HOME $$i --override=".*"; \
+				stow --adopt -vS -R -t $$HOME $$i --override=".*"; \
 				if test -f $$i.py ; \
 					then python3 $$i.py post; \
 				fi; \
 			fi; \
+		else \
+			stow --adopt -vS -R -t $$HOME $$i --override=.*; \
 		fi; \
 	done

@@ -56,6 +56,9 @@ function M.Require(item)
     return false
   end
   local status, error_message = pcall(require, item)
+  if not status then
+		print(error_message)
+  end
   return status
 end
 

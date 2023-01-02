@@ -190,7 +190,7 @@ ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
 if command -v neofetch > /dev/null ; then
-    neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime
+    neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime --de_version off
 fi
 
 if {test -f $(command -v pacman)} && {test -f /usr/share/doc/find-the-command/ftc.zsh} ; then
@@ -291,3 +291,9 @@ function omz_termsupport_preexec {
     # title "$CMD" "%100>...>${LINE}%<<"
     title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
 }
+
+PATH="/home/davidyz/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/davidyz/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/davidyz/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/davidyz/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/davidyz/perl5"; export PERL_MM_OPT;
