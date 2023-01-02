@@ -12,6 +12,7 @@ local items = {
   "filetype.php",
   "filetype.python",
   "filetype.sh",
+  "filetype.tex",
   "filetype.typescript",
   "filetype.vim",
   "filetype.zsh",

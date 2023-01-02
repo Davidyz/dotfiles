@@ -28,6 +28,10 @@ local function is_text()
 end
 
 local function wordCount()
+  if type(vim.b.latex_wc) == "string" then
+    return ("wc: " .. vim.b.latex_wc) or ""
+  end
+
   local wc = vim.fn["wordcount"]()
   if wc.visual_words ~= nil then
     return "wc: " .. tostring(wc.visual_words)
