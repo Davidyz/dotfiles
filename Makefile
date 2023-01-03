@@ -1,6 +1,6 @@
-SERVER = neovim zsh
+SERVER = neovim zsh lsd
 PC = $(SERVER) alacritty chrome
-DEPENDENCIES = stow git python3 pip npm
+DEPENDENCIES = stow git python3 pip npm fzf
 
 all:
 	@if [ -z $(TARGET) ]; then \
