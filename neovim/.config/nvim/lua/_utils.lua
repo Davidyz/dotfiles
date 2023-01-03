@@ -6,7 +6,7 @@ local M = {}
 HOME = os.getenv("HOME")
 
 SOURCE_CODE = { "java", "c", "cpp", "python", "hs", "sh", "go", "php", "json", "bash", "zsh", "vim", "lua", "make" }
-TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text" }
+TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text", "tex" }
 
 function M.contains(array, element)
   for _, value in pairs(array) do
@@ -57,7 +57,7 @@ function M.Require(item)
   end
   local status, error_message = pcall(require, item)
   if not status then
-		print(error_message)
+    print(error_message)
   end
   return status
 end
