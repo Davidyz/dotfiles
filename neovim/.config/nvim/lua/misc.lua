@@ -25,14 +25,14 @@ vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
 if vim.fn.has("unix") ~= 0 then
-  if vim.fn.executable("/usr/bin/python3") then
-    vim.g.python3_host_prog = "/usr/bin/python3"
-  elseif vim.fn.executable("python3") then
+  if vim.fn.executable("python3") then
     vim.g.python3_host_prog = "python3"
-  elseif vim.fn.executable("/usr/bin/python") then
-    vim.g.python3_host_prog = "/usr/bin/python"
   elseif vim.fn.executable("python") then
     vim.g.python3_host_prog = "python"
+  elseif vim.fn.executable("/usr/bin/python3") then
+    vim.g.python3_host_prog = "/usr/bin/python3"
+  elseif vim.fn.executable("/usr/bin/python") then
+    vim.g.python3_host_prog = "/usr/bin/python"
   end
 elseif (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and vim.fn.executable("py") == 1 then
   vim.g.python3_host_prog = "py"
@@ -95,6 +95,8 @@ if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
-if vim.fn.has('unix') then
-  io.popen("for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && [ -z '$(ls ~/.local/state/nvim)' ] && mv $i ~/.local/state/nvim ; done")
+if vim.fn.has("unix") and vim.fn.isdirectory(os.getenv("HOME") .. "/.local/state/nvim/") then
+  io.popen(
+    "for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && [ -z '$(ls ~/.local/state/nvim)' ] && mv $i ~/.local/state/nvim ; done"
+  )
 end
