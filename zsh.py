@@ -24,9 +24,9 @@ themes = {"powerlevel10k": "https://github.com/romkatv/powerlevel10k.git"}
 
 
 def pre():
-    if (
-        not os.path.islink(os.path.expanduser(f"{HOME}/.zshrc"))
-    ) and os.path.isfile(os.path.expanduser(f"{HOME}/.zshrc")):
+    if (not os.path.islink(os.path.expanduser(f"{HOME}/.zshrc"))) and os.path.isfile(
+        os.path.expanduser(f"{HOME}/.zshrc")
+    ):
         os.system(f"mv {HOME}/.zshrc {HOME}/.zshrc.old")
 
 
