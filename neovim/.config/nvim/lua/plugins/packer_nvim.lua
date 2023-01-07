@@ -61,18 +61,9 @@ return require("packer").startup(function(use)
   })
 
   -- color schemes.
-  use("ayu-theme/ayu-vim")
-  use("projekt0n/github-nvim-theme")
-  use("cocopon/iceberg.vim")
   use({
     "olimorris/onedarkpro.nvim",
   })
-  use({
-    "kaicataldo/material.vim",
-    branch = "main",
-  })
-  use("Th3Whit3Wolf/one-nvim")
-  use("Cybolic/palenight.vim")
 
   -- tree sitter
   use({
@@ -83,7 +74,7 @@ return require("packer").startup(function(use)
   use("nvim-treesitter/playground")
   use("windwp/nvim-autopairs")
   use("andymass/vim-matchup")
-  use("p00f/nvim-ts-rainbow")
+  use("https://gitlab.com/HiPhish/nvim-ts-rainbow2")
 
   -- mason
   use({
@@ -91,7 +82,6 @@ return require("packer").startup(function(use)
     config = function()
       require("mason").setup()
     end,
-    cond = no_vscode,
   })
   use({
     "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -111,11 +101,9 @@ return require("packer").startup(function(use)
           "clangd",
           "beautysh",
           "mypy",
-          "jdtls",
         },
       })
     end,
-    cond = no_vscode,
   })
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -131,9 +119,8 @@ return require("packer").startup(function(use)
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.beautysh,
-          null_ls.builtins.diagnostics.flake8.with({
-            extra_args = { "--max-line-length=88" },
-          }),
+          null_ls.builtins.formatting.latexindent,
+          null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.clang_check,
         },
@@ -153,7 +140,6 @@ return require("packer").startup(function(use)
         end,
       })
     end,
-    cond = no_vscode,
   })
 
   -- coc.nvim
@@ -162,14 +148,6 @@ return require("packer").startup(function(use)
     branch = "release",
     cond = no_vscode,
   })
-
-  -- lsp
-  --use({ "neovim/nvim-lspconfig" })
-  --use({ 'hrsh7th/nvim-cmp' })
-  --use({ 'hrsh7th/cmp-nvim-lsp' })
-  --use({ 'saadparwaiz1/cmp_luasnip' }) -- Snippets source for nvim-cmp
-  --use({ 'L3MON4D3/LuaSnip' })
-  -- use ({"SmiteshP/nvim-navic"})
 
   -- dap
   use("mfussenegger/nvim-dap")
