@@ -81,6 +81,8 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+autoload -Uz compinit
+compinit
 plugins=(
     autoupdate
     adb
@@ -109,11 +111,12 @@ if command -v fzf > /dev/null ; then
     export FZF_BASE=`which fzf`
     plugins+=(fzf)
 fi
-
+if command -v docker-compose > /dev/null; then
+    plugins+=(docker-compose)
+fi
 if command -v autojump > /dev/null ; then plugins+=(autojump) fi
+if command -v rsync > /dev/null ; then plugins+=(rsync) fi
 
-autoload -Uz compinit
-compinit
 zstyle ':completion:*' menu select
 
 export UPDATE_ZSH_DAYS=
@@ -232,7 +235,11 @@ if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
 fi
 
 if ! command -v nvr > /dev/null ; then
-    pip install neovim-remote
+    python -m pip install neovim-remote
+fi
+
+if ! python -c 'import neovim' 2> /dev/null; then
+    python -m pip install neovim
 fi
 
 if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
