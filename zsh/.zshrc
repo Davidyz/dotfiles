@@ -12,6 +12,11 @@ then
     export PATH=$PATH:$HOME/.cargo/bin
 fi
 
+if [ -d /usr/lib/distcc/bin/ ]
+then
+    export PATH=$PATH:/usr/lib/distcc/bin/
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"
