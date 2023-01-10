@@ -70,16 +70,18 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-if vim.fn.executable("nvr") == 0 then
-  job
-    :new({
-      command = "python",
-      args = { "-m", "pip", "install", "neovim-remote" },
-      on_exit = function()
-        print("neovim-remote has been installed.")
-      end,
-    })
-    :start()
+for command, package in pairs({ nvr = "neovim-remote", black = "black", isort = "isort", ipython = "ipython" }) do
+  if type(command) == "number" or vim.fn.executable(command) == 0 then
+    job
+      :new({
+        command = "python",
+        args = { "-m", "pip", "install", package },
+        on_exit = function()
+          print(package .. " has been installed.")
+        end,
+      })
+      :start()
+  end
 end
 
 if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
