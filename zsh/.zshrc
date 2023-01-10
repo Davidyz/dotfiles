@@ -145,13 +145,6 @@ alias unzip_gbk="unzip -O gbk "
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
-# if [ -z $PYTHONPATH ]; then
-# PY_PATH=`python -c "import glob, os;dirs = glob.glob(f'{os.path.expanduser(\"~\")}/**/learning_python/module') or glob.glob(f'{os.path.expanduser(\"~\")}/learning_python/module') ;print(dirs[0] if len(dirs) == 1 else exit())"`
-# if [ -d $PY_PATH ]; then
-# export PYTHONPATH=$PY_PATH
-# fi
-# fi
-
 export ANDROID_STORAGE=/storage/emulated/0/
 source $ZSH/oh-my-zsh.sh
 
@@ -237,14 +230,6 @@ if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
     if command -v pystubgen > /dev/null && python -c 'import cv2' 2> /dev/null ; then
         [ ! -f $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi ] && pystubgen cv2 > $(python -c 'import cv2, os; print(os.path.dirname(cv2.__file__))')/__init__.pyi
     fi
-fi
-
-if ! command -v nvr > /dev/null ; then
-    python -m pip install neovim-remote
-fi
-
-if ! python -c 'import neovim' 2> /dev/null; then
-    python -m pip install neovim
 fi
 
 if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then

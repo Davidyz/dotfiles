@@ -36,7 +36,7 @@ def post():
         for name in plugins:
             url = plugins[name]
             if not name in os.listdir():
-                os.system(f"git clone {url} {name}")
+                os.system(f"git clone --depth 1 {url} {name}")
 
         os.chdir(os.path.realpath(os.path.join(ZSH_CUSTOM, "themes")))
         for name in themes:
