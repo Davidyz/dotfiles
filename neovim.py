@@ -134,11 +134,22 @@ def delete(path: str):
 
 
 def install_neovim():
-    zip_path = get_zip(RELEASE_URL, TMP_PATH)
-    extract_tar_gz(zip_path)
-    delete(zip_path)
-    install(os.path.join(TMP_PATH, "nvim-linux64"), "/usr")
-    delete(os.path.join(TMP_PATH, "nvim-linux64"))
+    if shutil.which("apt"):
+        install_commands = [
+            "sudo apt install software-properties-common",
+            "sudo add-apt-repository ppa:neovim-ppa/stable",
+            "sudo apt-get update",
+            "sudo apt-get install neovim",
+            "sudo apt install python3-neovim",
+        ]
+        for command in install_commands:
+            os.system(command)
+    else:
+        zip_path = get_zip(RELEASE_URL, TMP_PATH)
+        extract_tar_gz(zip_path)
+        delete(zip_path)
+        install(os.path.join(TMP_PATH, "nvim-linux64"), "/usr")
+        delete(os.path.join(TMP_PATH, "nvim-linux64"))
 
 
 if __name__ == "__main__":
