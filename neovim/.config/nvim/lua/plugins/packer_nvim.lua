@@ -7,6 +7,12 @@ return require("packer").startup(function(use)
 
   -- filetypes
   use({
+    "shiracamus/vim-syntax-x86-objdump-d",
+    cond = function()
+      return vim.fn.executable("objdump")
+    end,
+  })
+  use({
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
   })
