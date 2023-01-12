@@ -5,4 +5,28 @@ if vim.fn.has("termguicolors") then
 end
 vim.opt.background = "dark"
 
-utils.Require("colorscheme.onedark")
+local onedark = require("onedarkpro")
+
+onedark.setup({
+  theme = "onedark",
+  styles = {
+    strings = "NONE",
+    comments = "italic",
+    keywords = "bold",
+    functions = "NONE",
+    variables = "NONE",
+    virtual_text = "NONE",
+  },
+  options = {
+    bold = true,
+    italic = true,
+    underline = true,
+    undercurl = true,
+    cursorline = true,
+    transparency = true,
+    terminal_colors = true,
+    highlight_inactive_windows = true,
+  },
+  plugins = { treesitter = true },
+})
+onedark.load()
