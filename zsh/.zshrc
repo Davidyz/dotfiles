@@ -89,6 +89,7 @@ HIST_STAMPS="dd/mm/yyyy"
 autoload -Uz compinit
 compinit
 plugins=(
+    ipython-selector
     autoupdate
     adb
     git
@@ -96,7 +97,6 @@ plugins=(
     zsh-syntax-highlighting
     extract
     sudo
-    command-not-found
     pip
     virtualenv
     pipenv
@@ -192,12 +192,6 @@ ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
 if command -v neofetch > /dev/null ; then
     neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime --de_version off
-fi
-
-if {test -f $(command -v pacman)} && {test -f /usr/share/doc/find-the-command/ftc.zsh} ; then
-    source /usr/share/doc/find-the-command/ftc.zsh
-elif {test -f $(command -v apt)} && {test -f /etc/zsh_command_not_found}; then
-    source /etc/zsh_command_not_found
 fi
 
 if [ -f ~/.local_script.sh ]

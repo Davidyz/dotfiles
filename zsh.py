@@ -9,6 +9,7 @@ ZSH_CUSTOM = ZSH_CUSTOM_PATH if os.path.isdir(ZSH_CUSTOM_PATH) else None
 ZSH = ZSH_PATH if os.path.isdir(ZSH_PATH) else None
 
 plugins = {
+    "ipython-selector": "https://github.com/Davidyz/ipython-selector",
     "zsh-autosuggestions": "https://github.com/zsh-users/zsh-autosuggestions",
     "zsh-syntax-highlighting": "https://github.com/zsh-users/zsh-syntax-highlighting.git",
     "zsh-256color": "https://github.com/chrissicool/zsh-256color",
