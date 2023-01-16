@@ -8,6 +8,24 @@ HOME = os.getenv("HOME")
 SOURCE_CODE = { "java", "c", "cpp", "python", "hs", "sh", "go", "php", "json", "bash", "zsh", "vim", "lua", "make" }
 TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text", "tex" }
 
+M.gitModified = function()
+  if vim.fn.has("unix") then
+    local files = vim.fn.systemlist("git ls-files -m 2> /dev/null")
+    if files then
+      return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
+    end
+  end
+end
+
+M.gitUntracked = function()
+  if vim.fn.has("unix") then
+    local files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> /dev/null")
+    if files then
+      return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
+    end
+  end
+end
+
 function M.contains(array, element)
   for _, value in pairs(array) do
     if value == element then
