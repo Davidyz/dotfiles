@@ -16,11 +16,22 @@ end
 local function get_context()
   local user = utils.getUserName()
   local hostname = utils.getHostname()
+  local result = ""
   if user and hostname then
-    return user .. "@" .. hostname
+    result = user .. "@" .. hostname
   elseif user or hostname then
-    return user or hostname
+    result = user or hostname
   end
+  if vim.bo.filetype == "startify" and result ~= "" then
+    result = result
+      .. ": v"
+      .. tostring(vim.version().major)
+      .. "."
+      .. tostring(vim.version().minor)
+      .. "."
+      .. tostring(vim.version().patch)
+  end
+  return result
 end
 
 local function is_text()
