@@ -1,5 +1,5 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["markdown", "json"],
+  "coc.preferences.formatOnSaveFiletypes": ["markdown", "json", "tex"],
   "languageserver": {
     "arduino": {
       "command": "arduino-language-server",

@@ -25,3 +25,12 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  pattern = "*.tex",
+  callback = function()
+    vim.opt.textwidth = 88
+    vim.wo.wrap = true
+    vim.wo.linebreak = true
+  end,
+})
