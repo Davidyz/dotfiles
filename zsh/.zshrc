@@ -99,7 +99,6 @@ plugins=(
     sudo
     pip
     virtualenv
-    pipenv
     mvn
     ufw
     stack
