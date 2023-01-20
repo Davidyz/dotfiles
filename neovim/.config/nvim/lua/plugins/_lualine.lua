@@ -96,6 +96,7 @@ require("lualine").setup({
   tabline = {
     lualine_b = {
       {
+        max_length = vim.o.columns,
         "tabs",
         mode = 2,
       },
