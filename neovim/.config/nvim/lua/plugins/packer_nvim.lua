@@ -170,7 +170,8 @@ return require("packer").startup(function(use)
   -- use("github/copilot.vim")
   use("nvim-lua/plenary.nvim")
   use("easymotion/vim-easymotion")
-  use({ "vijaymarupudi/nvim-fzf" })
+  -- use({ "vijaymarupudi/nvim-fzf" })
+  use("nvim-telescope/telescope.nvim")
   use({
     "nvim-lualine/lualine.nvim",
     requires = { "kyazdani42/nvim-web-devicons", opt = false },
