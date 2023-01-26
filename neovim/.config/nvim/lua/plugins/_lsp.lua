@@ -24,7 +24,7 @@ require("mason-lspconfig").setup_handlers({
       settings = {
         Lua = {
           format = {
-            enable = true,
+            enable = false,
             default_config = {
               indent_style = "space",
               indent_size = "2",
