@@ -28,6 +28,7 @@ local no_vscode = {
   "plugins.jupytext",
   "plugins.dap",
   "plugins.golden_view",
+  "plugins._lsp",
   "plugins._lualine",
   "plugins.markdown_preview",
   "plugins.NERDTree",

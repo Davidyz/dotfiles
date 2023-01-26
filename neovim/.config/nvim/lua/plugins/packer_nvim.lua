@@ -2,6 +2,8 @@ local function no_vscode()
   return vim.fn.exists("g:vscode") == 0
 end
 
+local plugin_utils = require("plugins.utils")
+
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
@@ -92,23 +94,7 @@ return require("packer").startup(function(use)
   use({
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     config = function()
-      require("mason-tool-installer").setup({
-        auto_update = true,
-        ensure_installed = {
-          "black",
-          "flake8",
-          "clang-format",
-          "shellcheck",
-          "stylua",
-          "clangd",
-          "lua-language-server",
-          "vim-language-server",
-          "pyright",
-          "clangd",
-          "beautysh",
-          "mypy",
-        },
-      })
+      require("plugins.mason_tools")
     end,
   })
   use({
@@ -148,12 +134,25 @@ return require("packer").startup(function(use)
     end,
   })
 
+  -- lsp
+  use({ "neovim/nvim-lspconfig" })
+  use({ "hrsh7th/nvim-cmp" })
+  use({ "hrsh7th/cmp-nvim-lsp" })
+  use({ "hrsh7th/cmp-buffer" })
+  use({ "hrsh7th/cmp-path" })
+  use({ "hrsh7th/cmp-cmdline" })
+  use({ "L3MON4D3/LuaSnip" })
+  use({ "saadparwaiz1/cmp_luasnip" })
+  use({ "rafamadriz/friendly-snippets" })
+  use({ "williamboman/mason-lspconfig.nvim" })
+  use({ "hrsh7th/cmp-nvim-lsp-signature-help" })
+
   -- coc.nvim
-  use({
-    "neoclide/coc.nvim",
-    branch = "release",
-    cond = no_vscode,
-  })
+  -- use({
+  -- "neoclide/coc.nvim",
+  -- branch = "release",
+  -- cond = no_vscode,
+  -- })
 
   -- dap
   use("mfussenegger/nvim-dap")
