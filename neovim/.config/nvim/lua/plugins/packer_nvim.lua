@@ -147,6 +147,16 @@ return require("packer").startup(function(use)
   use({ "rafamadriz/friendly-snippets" })
   use({ "williamboman/mason-lspconfig.nvim" })
   use({ "hrsh7th/cmp-nvim-lsp-signature-help" })
+  use({
+    "RRethy/vim-illuminate",
+    config = function()
+      local highlight = vim.api.nvim_get_hl_by_name("TermCursorNC", {})
+      highlight.underline = false
+      vim.api.nvim_set_hl(0, "IlluminatedWordText", highlight)
+      vim.api.nvim_set_hl(0, "IlluminatedWordRead", highlight)
+      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", highlight)
+    end,
+  })
 
   -- coc.nvim
   -- use({
