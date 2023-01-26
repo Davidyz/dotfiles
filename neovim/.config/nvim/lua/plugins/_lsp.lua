@@ -2,7 +2,7 @@ local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 
 lsp_defaults.capabilities =
-  vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
@@ -22,6 +22,13 @@ require("mason-lspconfig").setup_handlers({
       flags = { debounce_text_changes = 150 },
       settings = {
         Lua = {
+          format = {
+            enable = true,
+            default_config = {
+              indent_style = "space",
+              indent_size = "2",
+            },
+          },
           runtime = {
             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
             version = "LuaJIT",
@@ -43,4 +50,5 @@ require("mason-lspconfig").setup_handlers({
       },
     })
   end,
+})
 })
