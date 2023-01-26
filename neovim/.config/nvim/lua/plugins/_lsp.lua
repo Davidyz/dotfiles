@@ -13,6 +13,7 @@ require("mason-lspconfig").setup_handlers({
       flags = { debounce_text_changes = 150 },
       single_file_support = true,
       capabilities = lsp_defaults.capabilities,
+      on_attach = function(client, bufnr) end,
     })
   end,
 

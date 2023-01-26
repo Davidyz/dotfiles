@@ -147,7 +147,6 @@ return require("packer").startup(function(use)
   use({ "rafamadriz/friendly-snippets" })
   use({ "williamboman/mason-lspconfig.nvim" })
   use({ "hrsh7th/cmp-nvim-lsp-signature-help" })
-  use({ "SmiteshP/nvim-navic" })
 
   -- coc.nvim
   -- use({
