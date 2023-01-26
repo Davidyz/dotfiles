@@ -108,6 +108,7 @@ return require("packer").startup(function(use)
           null_ls.builtins.formatting.stylua.with({
             extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
           }),
+          null_ls.builtins.code_actions.gitsigns,
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.formatting.beautysh,
@@ -146,6 +147,7 @@ return require("packer").startup(function(use)
   use({ "rafamadriz/friendly-snippets" })
   use({ "williamboman/mason-lspconfig.nvim" })
   use({ "hrsh7th/cmp-nvim-lsp-signature-help" })
+  use({ "SmiteshP/nvim-navic" })
 
   -- coc.nvim
   -- use({
@@ -167,6 +169,22 @@ return require("packer").startup(function(use)
   -- misc
   -- use("~/git/fauxpilot.nvim")
   -- use("github/copilot.vim")
+  use({
+    "lewis6991/gitsigns.nvim",
+    tag = "release",
+    config = function()
+      require("gitsigns").setup({
+        signs = {
+          add = { text = "+" },
+          change = { text = "│" },
+          delete = { text = "_" },
+          topdelete = { text = "‾" },
+          changedelete = { text = "~" },
+          untracked = { text = "┆" },
+        },
+      })
+    end,
+  })
   use("nvim-lua/plenary.nvim")
   use("easymotion/vim-easymotion")
   -- use({ "vijaymarupudi/nvim-fzf" })
