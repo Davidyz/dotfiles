@@ -181,15 +181,15 @@ return require("packer").startup(function(use)
   -- use("github/copilot.vim")
   use({
     "lewis6991/gitsigns.nvim",
-    tag = "release",
+    branch = "release",
     config = function()
       require("gitsigns").setup({
         signs = {
           add = { text = "+" },
-          change = { text = "│" },
+          change = { text = "~" },
           delete = { text = "_" },
           topdelete = { text = "‾" },
-          changedelete = { text = "~" },
+          changedelete = { text = ">" },
           untracked = { text = "┆" },
         },
       })
