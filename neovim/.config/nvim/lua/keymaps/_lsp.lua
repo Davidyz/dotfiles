@@ -2,6 +2,12 @@ if vim.fn.exists("g:vscode") ~= 0 then
   return
 end
 
+local utils = require("utils")
+
+local window_style = {
+  border = "single",
+}
+
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 local bufmap = function(mode, lhs, rhs)
@@ -70,7 +76,8 @@ cmp.setup({
     { name = "nvim_lua" },
   },
   window = {
-    documentation = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(window_style),
+    completion = cmp.config.window.bordered(window_style),
   },
   formatting = {
     fields = { "abbr", "menu", "kind" },
