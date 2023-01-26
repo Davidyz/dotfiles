@@ -2,7 +2,7 @@ local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 
 lsp_defaults.capabilities =
-vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+  vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
@@ -29,19 +29,19 @@ require("mason-lspconfig").setup_handlers({
               indent_size = "2",
             },
           },
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = "LuaJIT",
-          },
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = { "vim" },
-          },
-          workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
-            checkThirdParty = false,
-          },
+          -- runtime = {
+            -- -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            -- version = "LuaJIT",
+          -- },
+          -- diagnostics = {
+            -- -- Get the language server to recognize the `vim` global
+            -- globals = { "vim" },
+          -- },
+          -- workspace = {
+            -- -- Make the server aware of Neovim runtime files
+            -- library = vim.api.nvim_get_runtime_file("", true),
+            -- checkThirdParty = false,
+          -- },
           -- Do not send telemetry data containing a randomized but unique identifier
           telemetry = {
             enable = false,
@@ -50,5 +50,4 @@ require("mason-lspconfig").setup_handlers({
       },
     })
   end,
-})
 })

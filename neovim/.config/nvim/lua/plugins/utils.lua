@@ -11,13 +11,17 @@ M.mason_packages = {
   "vim-language-server",
   "bash-language-server",
   "pyright",
+  "isort",
+  "jq",
   "clangd",
   "beautysh",
   "mypy",
   "debugpy",
   "yaml-language-server",
   "typescript-language-server",
+  "html-lsp",
 }
+
 local conditionals = {
   arduino = "arduino-language-server",
   ["arduino-cli"] = "arduino-language-server",
@@ -25,6 +29,7 @@ local conditionals = {
   javac = "jdtls",
   tex = "texlab",
   pdflatex = "texlab",
+  docker = "dockerfile-language-server",
 }
 
 for exe, ls in pairs(conditionals) do
