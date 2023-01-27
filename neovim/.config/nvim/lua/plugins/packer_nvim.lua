@@ -2,8 +2,6 @@ local function no_vscode()
   return vim.fn.exists("g:vscode") == 0
 end
 
-local plugin_utils = require("plugins.utils")
-
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
@@ -99,40 +97,7 @@ return require("packer").startup(function(use)
   })
   use({
     "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      local null_ls = require("null-ls")
-      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.stylua.with({
-            extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-          }),
-          null_ls.builtins.code_actions.gitsigns,
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.clang_format,
-          null_ls.builtins.formatting.beautysh,
-          null_ls.builtins.formatting.latexindent,
-          null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.diagnostics.clang_check,
-        },
-        -- you can reuse a shared lspconfig on_attach callback here
-        on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              group = augroup,
-              buffer = bufnr,
-              callback = function()
-                -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                vim.lsp.buf.format({ bufnr = bufnr })
-              end,
-            })
-          end
-        end,
-      })
-    end,
+    config = require("plugins.null_ls"),
   })
 
   -- lsp
@@ -158,13 +123,6 @@ return require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IlluminatedWordWrite", highlight)
     end,
   })
-
-  -- coc.nvim
-  -- use({
-  -- "neoclide/coc.nvim",
-  -- branch = "release",
-  -- cond = no_vscode,
-  -- })
 
   -- dap
   use("mfussenegger/nvim-dap")
@@ -197,7 +155,6 @@ return require("packer").startup(function(use)
   })
   use("nvim-lua/plenary.nvim")
   use("easymotion/vim-easymotion")
-  -- use({ "vijaymarupudi/nvim-fzf" })
   use("nvim-telescope/telescope.nvim")
   use({
     "nvim-lualine/lualine.nvim",

@@ -24,7 +24,6 @@ local items = {
 utils.tryRequire(items)
 
 local no_vscode = {
-  --  "plugins.coc-nvim",
   "plugins.jupytext",
   "plugins.dap",
   "plugins.golden_view",

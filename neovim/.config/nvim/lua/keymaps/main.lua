@@ -4,10 +4,8 @@ local items = {
   "keymaps.global",
 
   "keymaps.black",
-  -- "keymaps.coc-nvim",
   -- "keymaps.copilot",
   "keymaps.dap",
-  -- "keymaps.fzf",
   "keymaps.golden_view",
   "keymaps._lsp",
   "keymaps.markdown_preview",

@@ -2,8 +2,6 @@ if vim.fn.exists("g:vscode") ~= 0 then
   return
 end
 
-local utils = require("utils")
-
 local window_style = {
   border = "single",
 }
