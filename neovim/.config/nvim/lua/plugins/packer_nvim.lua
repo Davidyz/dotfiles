@@ -61,8 +61,10 @@ return require("packer").startup(function(use)
   -- markdown
   use({ "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } })
   use({
-    "iamcco/markdown-preview.nvim",
-    run = "cd app && yarn install",
+    "davidgranstrom/nvim-markdown-preview",
+    config = function()
+      vim.g.nvim_markdown_preview_theme = "github"
+    end,
     ft = { "markdown", "pandoc" },
   })
 
@@ -97,7 +99,7 @@ return require("packer").startup(function(use)
   })
   use({
     "jose-elias-alvarez/null-ls.nvim",
-    config = require("plugins.null_ls")
+    config = require("plugins.null_ls"),
   })
 
   -- lsp
