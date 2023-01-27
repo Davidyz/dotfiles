@@ -67,7 +67,7 @@ require("lualine").setup({
       "diff",
       {
         "diagnostics",
-        sources = { "coc" },
+        sources = { "nvim_lsp" },
       },
       devicon,
     },
