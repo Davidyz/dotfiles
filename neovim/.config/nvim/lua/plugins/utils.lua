@@ -33,7 +33,7 @@ local conditionals = {
 }
 
 for exe, ls in pairs(conditionals) do
-  if vim.fn.executable(exe) then
+  if vim.fn.executable(exe) ~= 0 then
     table.insert(M.mason_packages, ls)
   end
 end
