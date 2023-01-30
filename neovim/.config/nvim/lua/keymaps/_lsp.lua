@@ -17,41 +17,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function()
     -- Displays hover information about the symbol under the cursor
-    bufmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+    bufmap("n", "K", vim.lsp.buf.hover)
 
     -- Jump to the definition
-    bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+    bufmap("n", "gd", vim.lsp.buf.definition)
 
     -- Jump to declaration
-    bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+    bufmap("n", "gD", vim.lsp.buf.declaration)
 
     -- Lists all the implementations for the symbol under the cursor
-    bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
+    bufmap("n", "gi", vim.lsp.buf.implementation)
 
     -- Jumps to the definition of the type symbol
-    bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
+    bufmap("n", "go", vim.lsp.buf.type_definition)
 
     -- Lists all the references
-    bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
+    bufmap("n", "gr", vim.lsp.buf.references)
 
     -- Displays a function's signature information
-    -- bufmap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+    -- bufmap("n", "<C-k>", vim.lsp.buf.signature_help)
 
     -- Renames all references to the symbol under the cursor
-    bufmap("n", "<Leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>")
+    bufmap("n", "<Leader>r", vim.lsp.buf.rename)
 
     -- Selects a code action available at the current cursor position
-    bufmap("n", "<Leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>")
-    bufmap("x", "<F4>", "<cmd>lua vim.lsp.buf.range_code_action()<cr>")
+    bufmap("n", "<Leader>a", vim.lsp.buf.code_action)
+    bufmap("x", "<F4>", vim.lsp.buf.range_code_action)
 
     -- Show diagnostics in a floating window
-    bufmap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
+    bufmap("n", "gl", vim.diagnostic.open_float)
 
     -- Move to the previous diagnostic
-    bufmap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
+    bufmap("n", "[d", vim.diagnostic.goto_prev)
 
     -- Move to the next diagnostic
-    bufmap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+    bufmap("n", "]d", vim.diagnostic.goto_next)
   end,
 })
 
@@ -66,12 +66,12 @@ cmp.setup({
     end,
   },
   sources = {
-    { name = "nvim_lsp", keyword_length = 2 },
+    { name = "nvim_lsp", keyword_length = 1 },
+    { name = "nvim_lua" },
     { name = "path" },
     { name = "buffer", keyword_length = 2 },
-    -- { name = "luasnip", keyword_length = 2 },
+    { name = "luasnip", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
-    { name = "nvim_lua" },
   },
   window = {
     documentation = cmp.config.window.bordered(window_style),
@@ -81,7 +81,15 @@ cmp.setup({
     fields = { "abbr", "menu", "kind" },
   },
   mapping = {
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+    ["<CR>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+      else
+        local cr = vim.api.nvim_replace_termcodes("<cr>", true, true, true)
+        vim.api.nvim_feedkeys(cr, "n", false)
+      end
+    end),
+
     ["<Up>"] = cmp.mapping.select_prev_item(select_opts),
     ["<Down>"] = cmp.mapping.select_next_item(select_opts),
 
