@@ -1,12 +1,12 @@
-local coc_diagnostics = function()
-  local data = vim.b.coc_diagnostic_info
-  if data then
-    return data.error, data.warning, data.information, data.hint
-  else
-    return 0, 0, 0, 0
+local tex_errors = function()
+  local diags = vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+  if not diags then
+    return false
   end
+  return true
 end
 
+local job = require("plenary.job")
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
   pattern = "*.tex",
   callback = function()
@@ -19,9 +19,16 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = "*.tex",
   callback = function()
-    local e, w, i, h = coc_diagnostics()
-    if e == 0 and vim.fn["CocActionAsync"] ~= nil then
-      vim.fn["CocActionAsync"]("runCommand", "latex.Build")
+    if not tex_errors() and vim.fn.executable("pdflatex") then
+      job
+        :new({
+          command = "pdflatex",
+          args = { vim.fn.expand("%:p") },
+          on_exit = function()
+            print("Latex build job finished.")
+          end,
+        })
+        :start()
     end
   end,
 })
