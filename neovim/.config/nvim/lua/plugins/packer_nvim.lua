@@ -82,7 +82,7 @@ return require("packer").startup(function(use)
   use("nvim-treesitter/playground")
   use("windwp/nvim-autopairs")
   use("andymass/vim-matchup")
-  use("https://gitlab.com/HiPhish/nvim-ts-rainbow2")
+  use("https://gitlab.com/HiPhish/nvim-ts-rainbow2.git")
 
   -- mason
   use({
@@ -128,8 +128,7 @@ return require("packer").startup(function(use)
   use({
     "SmiteshP/nvim-navic",
     config = function()
-      require("nvim-navic").setup(
-      )
+      require("nvim-navic").setup()
     end,
   })
 
