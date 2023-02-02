@@ -58,6 +58,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local luasnip = require("luasnip")
 local select_opts = { behavior = cmp.SelectBehavior.Insert }
 
@@ -132,3 +133,4 @@ cmp.setup({
     end, { "i", "s" }),
   },
 })
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
