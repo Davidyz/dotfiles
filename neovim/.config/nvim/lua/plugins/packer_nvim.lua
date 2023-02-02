@@ -125,6 +125,13 @@ return require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IlluminatedWordWrite", highlight)
     end,
   })
+  use({
+    "SmiteshP/nvim-navic",
+    config = function()
+      require("nvim-navic").setup(
+      )
+    end,
+  })
 
   -- dap
   use("mfussenegger/nvim-dap")
@@ -186,6 +193,12 @@ return require("packer").startup(function(use)
   use({
     "mhinz/vim-startify",
     cond = no_vscode,
+  })
+  use({
+    "gpanders/editorconfig.nvim",
+    cond = function()
+      return vim.version().major < 1 and vim.version().minor < 9
+    end,
   })
 
   if vim.g.packer_bootstrap then

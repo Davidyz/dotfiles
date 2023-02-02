@@ -14,7 +14,11 @@ require("mason-lspconfig").setup_handlers({
       flags = { debounce_text_changes = 150 },
       single_file_support = true,
       capabilities = lsp_defaults.capabilities,
-      on_attach = function(client, bufnr) end,
+      on_attach = function(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+          require("nvim-navic").attach(client, bufnr)
+        end
+      end,
     })
   end,
 

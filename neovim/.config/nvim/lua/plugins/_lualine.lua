@@ -1,5 +1,6 @@
 local utils = require("_utils")
 local nvim_devicon = require("nvim-web-devicons")
+local navic = require("nvim-navic")
 
 if not nvim_devicon.has_loaded() then
   nvim_devicon.setup()
@@ -100,6 +101,9 @@ require("lualine").setup({
         "tabs",
         mode = 2,
       },
+    },
+    lualine_z = {
+      { navic.get_location, cond = navic.is_available },
     },
   },
   extensions = {},
