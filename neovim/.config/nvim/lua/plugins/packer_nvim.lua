@@ -61,11 +61,10 @@ return require("packer").startup(function(use)
   -- markdown
   use({ "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } })
   use({
-    "davidgranstrom/nvim-markdown-preview",
-    config = function()
-      vim.g.nvim_markdown_preview_theme = "github"
+    "iamcco/markdown-preview.nvim",
+    run = function()
+      vim.fn["mkdp#util#install"]()
     end,
-    ft = { "markdown", "pandoc" },
   })
 
   -- color schemes.
