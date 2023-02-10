@@ -23,8 +23,14 @@ require("nvim-treesitter.configs").setup({
     enable = true, -- mandatory, false will disable the whole extension
   },
   indent = true,
+  refactor = {
+    highlight_definitions = {
+      enable = true,
+      clear_on_cursor_move = true,
+    },
+  },
 })
 
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = true
+vim.opt.foldenable = false

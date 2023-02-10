@@ -1,13 +1,7 @@
 local utils = require("_utils")
+local lazy_config = require("plugins._lazy")
 
-require("plugins.packer_nvim")
-require("packer")
-
-local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
-vim.api.nvim_create_autocmd(
-  "BufWritePost",
-  { pattern = "packer.lua", command = "source <afile> | PackerCompile", group = packer_user_config }
-)
+require("lazy").setup(lazy_config.plugins, lazy_config.config)
 
 local items = {
   "plugins.black",

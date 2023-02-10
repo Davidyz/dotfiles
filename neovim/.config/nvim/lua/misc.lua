@@ -44,10 +44,14 @@ vim.api.nvim_set_hl(0, "CursorColumn", vim.api.nvim_get_hl_by_name("CursorLine",
 vim.o.compatible = false
 
 -- recover cursor location from history
-vim.api.nvim_create_autocmd(
-  "BufReadPost",
-  { pattern = "*", command = [[if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]] }
-)
+vim.api.nvim_create_autocmd({ "BufRead" }, {
+  pattern = { "*" },
+  callback = function()
+    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      vim.api.nvim_exec("normal! g'\"", false)
+    end
+  end,
+})
 
 if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option("t_Co", { 256 })
@@ -97,8 +101,3 @@ if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
-if vim.fn.has("unix") and vim.fn.isdirectory(os.getenv("HOME") .. "/.local/state/nvim/") then
-  io.popen(
-    "for i in ~/.local/share/nvim/{shada,undo,swap}; do [ -d $i ] && [ -z '$(ls ~/.local/state/nvim)' ] && mv $i ~/.local/state/nvim ; done"
-  )
-end

@@ -7,23 +7,22 @@ if vim.fn.has("unix") ~= 0 then
   end
 end
 
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-vim.g.packer_bootstrap = false
-if fn.empty(fn.glob(install_path)) > 0 then
-  vim.g.packer_bootstrap = fn.system({
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
     "git",
     "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
   })
 end
+vim.opt.rtp:prepend(lazypath)
 
 local items = {
-  "colorscheme.main",
   "plugins.main",
+  "colorscheme.main",
   "keymaps.main",
   "filetype.main",
   "misc",

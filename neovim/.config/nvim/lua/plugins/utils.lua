@@ -31,8 +31,6 @@ local conditionals = {
   pdflatex = "texlab",
   docker = "dockerfile-language-server",
   cmake = "cmake-language-server",
-  ghc = "haskell-language-server",
-  nasm = "asm-lsp",
 }
 
 for exe, ls in pairs(conditionals) do

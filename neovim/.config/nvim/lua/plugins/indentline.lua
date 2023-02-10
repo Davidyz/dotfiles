@@ -1,5 +1,5 @@
 local utils = require("_utils")
-require("packer")
+-- require("packer")
 
 vim.g.indentLine_leadingSpaceChar = " "
 vim.g.indentLine_char = "┆"
