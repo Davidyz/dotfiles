@@ -1,6 +1,7 @@
 SERVER = neovim zsh lsd
 PC = $(SERVER) alacritty chrome
 DEPENDENCIES = stow git python3 pip npm fzf
+WINDOWS = neovim
 
 all:
 	@if [ -z $(TARGET) ]; then \
@@ -57,5 +58,13 @@ pc:
 			fi; \
 		else \
 			stow --adopt -vS -R -t $$HOME $$i --override=.*; \
+		fi; \
+	done
+
+win:
+	@make check
+	@for i in $(WINDOWS); do \
+		if test -f $$i.py ; then \
+			python3 $$i.py pre && python3 $$i.py post; \
 		fi; \
 	done

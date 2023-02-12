@@ -85,6 +85,11 @@ def post():
     )
     if not platform.system() == "Windows":
         os.system("env EDITOR=nvim")
+    elif isinstance(os.getenv("APPDATA"), str):
+        os.link(
+            "./neovim/.config/nvim/",
+            os.path.join(os.getenv("APPDATA"), "Local", "nvim"),
+        )
 
 
 NIGHTLY_URL = (
