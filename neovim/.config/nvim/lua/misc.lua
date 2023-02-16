@@ -74,30 +74,45 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-for command, package in pairs({ nvr = "neovim-remote", black = "black", isort = "isort", ipython = "ipython" }) do
+for command, package in pairs({ nvr = "neovim-remote", ipython = "ipython" }) do
   if type(command) == "number" or vim.fn.executable(command) == 0 then
     job
-      :new({
-        command = "python",
-        args = { "-m", "pip", "install", package },
-        on_exit = function()
-          print(package .. " has been installed.")
-        end,
-      })
-      :start()
+        :new({
+          command = "python",
+          args = { "-m", "pip", "install", package },
+          on_exit = function()
+            print(package .. " has been installed.")
+          end,
+        })
+        :start()
   end
 end
 
 if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
   job
-    :new({
-      command = "luarocks",
-      args = { "install", "--local", "stylua" },
-      on_exit = function()
-        print("stylua has been installed.")
-      end,
-    })
-    :start()
+      :new({
+        command = "luarocks",
+        args = { "install", "--local", "stylua" },
+        on_exit = function()
+          print("stylua has been installed.")
+        end,
+      })
+      :start()
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
+
+local external_deps = { "rg", "python3", "node", "npm" }
+local missing_packages = ""
+for _, cmd in ipairs(external_deps) do
+  if vim.fn.executable(cmd) == 0 then
+    if missing_packages == "" then
+      missing_packages = cmd
+    else
+      missing_packages = missing_packages .. " " .. cmd
+    end
+  end
+end
+if missing_packages ~= "" then
+  print("Missing external command(s): " .. missing_packages)
+end

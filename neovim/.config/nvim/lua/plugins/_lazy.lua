@@ -6,7 +6,6 @@ local function no_vscode()
 end
 
 M.plugins = {
-
   -- filetypes
   {
     "shiracamus/vim-syntax-x86-objdump-d",
@@ -58,7 +57,7 @@ M.plugins = {
       "xml",
     },
   },
-  "vim-scripts/crontab.vim",
+  { "vim-scripts/crontab.vim",  ft = { "crontab" } },
 
   -- markdown
   { "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } },
@@ -67,6 +66,7 @@ M.plugins = {
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
+    ft = { "markdown", "pandoc" },
   },
 
   -- color schemes.
@@ -125,13 +125,26 @@ M.plugins = {
       require("nvim-navic").setup()
     end,
   },
+  {
+    "uga-rosa/cmp-dictionary",
+    cond = function()
+      return vim.fn.filereadable("~/.local/lib/aspell/en.dict") ~= 0
+    end,
+    config = function()
+      require("cmd_dictionary").setup({
+        dic = {
+          ["*"] = "~/.local/lib/aspell/en.dict",
+        },
+      })
+    end,
+  },
 
   -- dap
   "mfussenegger/nvim-dap",
   "theHamsta/nvim-dap-virtual-text",
   "rcarriga/nvim-dap-ui",
   "jbyuki/one-small-step-for-vimkind",
-  "mfussenegger/nvim-jdtls",
+  { "mfussenegger/nvim-jdtls",     ft = { "java" } },
 
   -- vimspector
   -- "puremourning/vimspector",
@@ -140,9 +153,19 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   {
+    "brenoprata10/nvim-highlight-colors",
+    config = function()
+      require("nvim-highlight-colors").turnOn()
+    end,
+  },
+  {
     "ethanholz/nvim-lastplace",
     config = function()
-      require("nvim-lastplace").setup({})
+      require("nvim-lastplace").setup({
+        lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+        lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
+        lastplace_open_folds = true,
+      })
     end,
   },
   {
@@ -169,13 +192,13 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons" },
   "itchyny/vim-gitbranch",
-  { "Yggdroot/indentLine", ft = SOURCE_CODE },
+  { "Yggdroot/indentLine",   ft = SOURCE_CODE },
   {
     "preservim/nerdcommenter",
   },
   "preservim/nerdtree",
   "Xuyuanp/nerdtree-git-plugin",
-  "tpope/vim-surround",
+  { "kylechui/nvim-surround" },
   "psliwka/vim-smoothie",
   "chaoren/vim-wordmotion",
   "ryanoasis/vim-devicons",
@@ -185,7 +208,7 @@ M.plugins = {
     "Davidyz/make.nvim",
     branch = "main",
   },
-  { "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode },
+  { "Davidyz/md-code.nvim",   ft = { "markdown" }, cond = no_vscode },
   {
     "mhinz/vim-startify",
     cond = no_vscode,
@@ -198,7 +221,10 @@ M.plugins = {
   },
 }
 
-M.config = { ui = {
-  border = "double",
-} }
+M.config = {
+  ui = {
+    border = "double",
+  },
+}
+
 return M

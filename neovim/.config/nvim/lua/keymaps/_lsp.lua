@@ -72,6 +72,7 @@ cmp.setup({
     { name = "nvim_lsp", keyword_length = 1 },
     { name = "nvim_lua" },
     { name = "path" },
+    { name = "dictionary", keyword_length = 2 },
     { name = "buffer", keyword_length = 2 },
     { name = "luasnip", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
