@@ -92,7 +92,9 @@ M.plugins = {
   {
     "williamboman/mason.nvim",
     config = function()
-      require("mason").setup()
+      require("mason").setup({
+        ui = { border = "double" },
+      })
     end,
   },
   {
@@ -192,13 +194,18 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons" },
   "itchyny/vim-gitbranch",
-  { "Yggdroot/indentLine",   ft = SOURCE_CODE },
+  { "Yggdroot/indentLine",    ft = SOURCE_CODE },
   {
     "preservim/nerdcommenter",
   },
   "preservim/nerdtree",
   "Xuyuanp/nerdtree-git-plugin",
-  { "kylechui/nvim-surround" },
+  {
+    "kylechui/nvim-surround",
+    config = function()
+      require("nvim-surround").setup()
+    end,
+  },
   "psliwka/vim-smoothie",
   "chaoren/vim-wordmotion",
   "ryanoasis/vim-devicons",
@@ -208,7 +215,7 @@ M.plugins = {
     "Davidyz/make.nvim",
     branch = "main",
   },
-  { "Davidyz/md-code.nvim",   ft = { "markdown" }, cond = no_vscode },
+  { "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode },
   {
     "mhinz/vim-startify",
     cond = no_vscode,
@@ -217,6 +224,12 @@ M.plugins = {
     "gpanders/editorconfig.nvim",
     cond = function()
       return vim.version().major < 1 and vim.version().minor < 9
+    end,
+  },
+  {
+    "Davidyz/lsp-location-handler.nvim",
+    config = function()
+      require("location-handler").setup()
     end,
   },
 }

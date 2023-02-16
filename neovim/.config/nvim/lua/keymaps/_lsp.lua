@@ -69,12 +69,12 @@ cmp.setup({
     end,
   },
   sources = {
-    { name = "nvim_lsp", keyword_length = 1 },
+    { name = "nvim_lsp",               keyword_length = 1 },
     { name = "nvim_lua" },
     { name = "path" },
-    { name = "dictionary", keyword_length = 2 },
-    { name = "buffer", keyword_length = 2 },
-    { name = "luasnip", keyword_length = 2 },
+    { name = "dictionary",             keyword_length = 2 },
+    { name = "buffer",                 keyword_length = 2 },
+    { name = "luasnip",                keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
   },
   window = {
@@ -97,7 +97,7 @@ cmp.setup({
     ["<Up>"] = cmp.mapping.select_prev_item(select_opts),
     ["<Down>"] = cmp.mapping.select_next_item(select_opts),
 
-    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs( -4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-d>"] = cmp.mapping(function(fallback)
       if luasnip.jumpable(1) then
@@ -107,8 +107,8 @@ cmp.setup({
       end
     end, { "i", "s" }),
     ["<C-b>"] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+      if luasnip.jumpable( -1) then
+        luasnip.jump( -1)
       else
         fallback()
       end
