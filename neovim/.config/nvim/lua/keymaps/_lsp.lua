@@ -6,6 +6,8 @@ local window_style = {
   border = "single",
 }
 
+local has_telescope, telescope = pcall(require, "telescope.builtin")
+
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 local bufmap = function(mode, lhs, rhs)
@@ -34,7 +36,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
     bufmap("n", "go", vim.lsp.buf.type_definition)
 
     -- Lists all the references
-    bufmap("n", "gr", vim.lsp.buf.references)
+    bufmap("n", "gr", function(ctx, opts)
+      if has_telescope then
+        return telescope.lsp_references(opts)
+      else
+        return vim.lsp.buf.references(ctx, opts)
+      end
+    end)
 
     -- Displays a function's signature information
     -- bufmap("n", "<C-k>", vim.lsp.buf.signature_help)
