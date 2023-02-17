@@ -110,22 +110,23 @@ M.plugins = {
 
   -- lsp
   { "neovim/nvim-lspconfig" },
-  { "hrsh7th/nvim-cmp" },
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-buffer" },
-  { "hrsh7th/cmp-path" },
-  { "hrsh7th/cmp-cmdline" },
-  { "hrsh7th/cmp-nvim-lua" },
-  { "L3MON4D3/LuaSnip" },
-  { "saadparwaiz1/cmp_luasnip" },
-  { "rafamadriz/friendly-snippets" },
+  { "hrsh7th/nvim-cmp",                    event = "LspAttach" },
+  { "hrsh7th/cmp-nvim-lsp",                event = "LspAttach" },
+  { "hrsh7th/cmp-buffer",                  event = "LspAttach" },
+  { "hrsh7th/cmp-path",                    event = "LspAttach" },
+  { "hrsh7th/cmp-cmdline",                 event = "LspAttach" },
+  { "hrsh7th/cmp-nvim-lua",                event = "LspAttach" },
+  { "L3MON4D3/LuaSnip",                    event = "LspAttach" },
+  { "saadparwaiz1/cmp_luasnip",            event = "LspAttach" },
+  { "rafamadriz/friendly-snippets",        event = "LspAttach" },
   { "williamboman/mason-lspconfig.nvim" },
-  { "hrsh7th/cmp-nvim-lsp-signature-help" },
+  { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
     "SmiteshP/nvim-navic",
     config = function()
       require("nvim-navic").setup()
     end,
+    event = "LspAttach",
   },
   {
     "uga-rosa/cmp-dictionary",
@@ -139,6 +140,14 @@ M.plugins = {
         },
       })
     end,
+    event = "LspAttach",
+  },
+  {
+    "Davidyz/lsp-location-handler.nvim",
+    config = function()
+      require("location-handler").setup()
+    end,
+    event = "LspAttach",
   },
 
   -- dap
@@ -147,6 +156,7 @@ M.plugins = {
   "rcarriga/nvim-dap-ui",
   "jbyuki/one-small-step-for-vimkind",
   { "mfussenegger/nvim-jdtls",     ft = { "java" } },
+  { "jay-babu/mason-nvim-dap.nvim" },
 
   -- vimspector
   -- "puremourning/vimspector",
@@ -194,7 +204,7 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons" },
   "itchyny/vim-gitbranch",
-  { "Yggdroot/indentLine",    ft = SOURCE_CODE },
+  { "Yggdroot/indentLine",         ft = SOURCE_CODE },
   {
     "preservim/nerdcommenter",
   },
@@ -215,7 +225,7 @@ M.plugins = {
     "Davidyz/make.nvim",
     branch = "main",
   },
-  { "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode },
+  { "Davidyz/md-code.nvim",   ft = { "markdown" }, cond = no_vscode },
   {
     "mhinz/vim-startify",
     cond = no_vscode,
@@ -224,12 +234,6 @@ M.plugins = {
     "gpanders/editorconfig.nvim",
     cond = function()
       return vim.version().major < 1 and vim.version().minor < 9
-    end,
-  },
-  {
-    "Davidyz/lsp-location-handler.nvim",
-    config = function()
-      require("location-handler").setup()
     end,
   },
 }
