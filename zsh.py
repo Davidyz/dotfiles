@@ -51,7 +51,7 @@ if __name__ == "__main__":
         if ZSH is None:
             if shutil.which("zsh"):
                 os.system(
-                    'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+                    'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
                 )
             else:
                 print("zsh not found. Exitting.")

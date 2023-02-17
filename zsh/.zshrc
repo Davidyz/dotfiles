@@ -111,6 +111,7 @@ plugins=(
     colored-man-pages
 )
 
+
 if command -v fzf > /dev/null ; then
     export FZF_BASE=`which fzf`
     plugins+=(fzf)
