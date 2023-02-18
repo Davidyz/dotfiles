@@ -4,7 +4,10 @@ local virtual_text = require("nvim-dap-virtual-text")
 local utils = require("_utils")
 local scan = require("plenary.scandir")
 
-vim.api.nvim_create_autocmd("BufEnter", { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach })
+vim.api.nvim_create_autocmd(
+  "BufEnter",
+  { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach }
+)
 
 dapui.setup({
   icons = { expanded = "▾", collapsed = "▸" },

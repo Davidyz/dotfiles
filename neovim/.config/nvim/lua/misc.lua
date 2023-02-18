@@ -34,7 +34,10 @@ if vim.fn.has("unix") ~= 0 then
   elseif vim.fn.executable("/usr/bin/python") then
     vim.g.python3_host_prog = "/usr/bin/python"
   end
-elseif (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and vim.fn.executable("py") == 1 then
+elseif
+  (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1)
+  and vim.fn.executable("py") == 1
+then
   vim.g.python3_host_prog = "py"
 end
 
@@ -70,34 +73,36 @@ end
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
   callback = function()
-    vim.b.editting_vim_config = (vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil)
+    vim.b.editting_vim_config = (
+        vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil
+      )
   end,
 })
 
 for command, package in pairs({ nvr = "neovim-remote", ipython = "ipython" }) do
   if type(command) == "number" or vim.fn.executable(command) == 0 then
     job
-        :new({
-          command = "python",
-          args = { "-m", "pip", "install", package },
-          on_exit = function()
-            print(package .. " has been installed.")
-          end,
-        })
-        :start()
+      :new({
+        command = "python",
+        args = { "-m", "pip", "install", package },
+        on_exit = function()
+          print(package .. " has been installed.")
+        end,
+      })
+      :start()
   end
 end
 
 if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
   job
-      :new({
-        command = "luarocks",
-        args = { "install", "--local", "stylua" },
-        on_exit = function()
-          print("stylua has been installed.")
-        end,
-      })
-      :start()
+    :new({
+      command = "luarocks",
+      args = { "install", "--local", "stylua" },
+      on_exit = function()
+        print("stylua has been installed.")
+      end,
+    })
+    :start()
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)

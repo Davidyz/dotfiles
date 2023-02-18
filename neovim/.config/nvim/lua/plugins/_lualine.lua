@@ -11,7 +11,10 @@ local function file_path()
 end
 
 local function devicon()
-  return string.sub(nvim_devicon.get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}), 1)
+  return string.sub(
+    nvim_devicon.get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}),
+    1
+  )
 end
 
 local function get_context()

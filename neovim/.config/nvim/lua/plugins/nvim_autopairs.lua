@@ -27,4 +27,9 @@ npairs.add_rule(Rule("$${", "}$$", "tex"))
 npairs.add_rule(Rule("if then", "fi", "make"))
 npairs.add_rule(Rule("for do", "done", "make"))
 
-vim.api.nvim_set_keymap("i", "<CR>", "", { expr = true, noremap = true, callback = MUtils.completion_confirm })
+vim.api.nvim_set_keymap(
+  "i",
+  "<CR>",
+  "",
+  { expr = true, noremap = true, callback = MUtils.completion_confirm }
+)

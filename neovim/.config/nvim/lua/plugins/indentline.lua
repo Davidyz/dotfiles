@@ -13,11 +13,17 @@ vim.g.markdown_syntax_conceal = 0
 if vim.fn.exists(":IndentLinesToggle") ~= 0 then
   local noIndentLineFt = { "startup", "packer", "startify", "help" }
   for _, ft in ipairs(noIndentLineFt) do
-    vim.api.nvim_create_autocmd("FileType", { pattern = ft, command = ":IndentLinesDisable" })
+    vim.api.nvim_create_autocmd(
+      "FileType",
+      { pattern = ft, command = ":IndentLinesDisable" }
+    )
   end
 
   for _, ft in ipairs(SOURCE_CODE) do
-    vim.api.nvim_create_autocmd("FileType", { pattern = ft, command = ":IndentLinesEnable" })
+    vim.api.nvim_create_autocmd(
+      "FileType",
+      { pattern = ft, command = ":IndentLinesEnable" }
+    )
   end
 
   vim.api.nvim_create_autocmd("TermEnter", { command = ":IndentLinesDisable" })

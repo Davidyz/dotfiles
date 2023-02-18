@@ -57,28 +57,27 @@ M.plugins = {
       "xml",
     },
   },
-  { "vim-scripts/crontab.vim",  ft = { "crontab" } },
+  { "vim-scripts/crontab.vim", ft = { "crontab" } },
 
   -- markdown
   { "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } },
   {
     "iamcco/markdown-preview.nvim",
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
+    build = vim.fn["mkdp#util#install"],
     ft = { "markdown", "pandoc" },
   },
 
   -- color schemes.
   {
     "olimorris/onedarkpro.nvim",
+    priority = 100,
   },
 
   -- tree sitter
   {
     "nvim-treesitter/nvim-treesitter",
     config = function(config, opts)
-      vim.api.nvim_command("TSUpdate")
+      require("nvim-treesitter.install").commands.TSUpdate.run()
     end,
   },
   "lewis6991/nvim-treesitter-context",
@@ -110,15 +109,15 @@ M.plugins = {
 
   -- lsp
   { "neovim/nvim-lspconfig" },
-  { "hrsh7th/nvim-cmp",                    event = "LspAttach" },
-  { "hrsh7th/cmp-nvim-lsp",                event = "LspAttach" },
-  { "hrsh7th/cmp-buffer",                  event = "LspAttach" },
-  { "hrsh7th/cmp-path",                    event = "LspAttach" },
-  { "hrsh7th/cmp-cmdline",                 event = "LspAttach" },
-  { "hrsh7th/cmp-nvim-lua",                event = "LspAttach" },
-  { "L3MON4D3/LuaSnip",                    event = "LspAttach" },
-  { "saadparwaiz1/cmp_luasnip",            event = "LspAttach" },
-  { "rafamadriz/friendly-snippets",        event = "LspAttach" },
+  { "hrsh7th/nvim-cmp", event = "LspAttach" },
+  { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
+  { "hrsh7th/cmp-buffer", event = "LspAttach" },
+  { "hrsh7th/cmp-path", event = "LspAttach" },
+  { "hrsh7th/cmp-cmdline", event = "LspAttach" },
+  { "hrsh7th/cmp-nvim-lua", event = "LspAttach" },
+  { "L3MON4D3/LuaSnip", event = "LspAttach" },
+  { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
+  { "rafamadriz/friendly-snippets", event = "LspAttach" },
   { "williamboman/mason-lspconfig.nvim" },
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
@@ -155,7 +154,7 @@ M.plugins = {
   "theHamsta/nvim-dap-virtual-text",
   "rcarriga/nvim-dap-ui",
   "jbyuki/one-small-step-for-vimkind",
-  { "mfussenegger/nvim-jdtls",     ft = { "java" } },
+  { "mfussenegger/nvim-jdtls", ft = { "java" } },
   { "jay-babu/mason-nvim-dap.nvim" },
 
   -- vimspector
@@ -167,6 +166,8 @@ M.plugins = {
   {
     "brenoprata10/nvim-highlight-colors",
     config = function()
+      require("nvim-highlight-colors.color.patterns").hex_regex =
+        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
   },
@@ -204,7 +205,7 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons" },
   "itchyny/vim-gitbranch",
-  { "Yggdroot/indentLine",         ft = SOURCE_CODE },
+  { "Yggdroot/indentLine", ft = SOURCE_CODE },
   {
     "preservim/nerdcommenter",
   },
@@ -225,7 +226,7 @@ M.plugins = {
     "Davidyz/make.nvim",
     branch = "main",
   },
-  { "Davidyz/md-code.nvim",   ft = { "markdown" }, cond = no_vscode },
+  { "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode },
   {
     "mhinz/vim-startify",
     cond = no_vscode,
