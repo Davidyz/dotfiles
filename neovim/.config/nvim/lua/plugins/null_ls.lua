@@ -3,6 +3,7 @@ return function()
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
   null_ls.setup({
+    border = "double",
     sources = {
       null_ls.builtins.formatting.stylua.with({
         extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
