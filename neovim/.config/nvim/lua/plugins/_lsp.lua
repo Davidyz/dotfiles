@@ -2,7 +2,7 @@ local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 
 lsp_defaults.capabilities =
-  vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+    vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 lsp_defaults.capabilities.offsetEncoding = "utf-8"
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -21,9 +21,8 @@ require("mason-lspconfig").setup_handlers({
       end,
     })
   end,
-
-  ["sumneko_lua"] = function()
-    require("lspconfig")["sumneko_lua"].setup({
+  ["lua_ls"] = function()
+    require("lspconfig")["lua_ls"].setup({
       flags = { debounce_text_changes = 150 },
       settings = {
         Lua = {
