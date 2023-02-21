@@ -15,11 +15,35 @@ local bufmap = function(mode, lhs, rhs)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+local show_docs = function()
+  if
+    (
+      vim.bo.ft == "lua"
+      and (
+        string.match(
+          vim.fn.getline("."),
+          "vim%." .. "%w+%." .. vim.fn.expand("<cword>")
+        )
+        or string.match(vim.fn.getline("."), "vim%." .. vim.fn.expand("<cword>"))
+      )
+    )
+    or vim.bo.ft == "vim"
+    or vim.bo.ft == "help"
+  then
+    local status, result = pcall(vim.api.nvim_command, "h " .. vim.fn.expand("<cword>"))
+    if status then
+      return
+    end
+  end
+  return vim.lsp.buf.hover()
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function()
     -- Displays hover information about the symbol under the cursor
-    bufmap("n", "K", vim.lsp.buf.hover)
+    -- bufmap("n", "K", vim.lsp.buf.hover)
+    bufmap("n", "K", show_docs)
 
     -- Jump to the definition
     bufmap("n", "gd", function()
