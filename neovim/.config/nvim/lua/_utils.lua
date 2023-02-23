@@ -195,4 +195,13 @@ M.cpu_count = function()
     return tonumber(numcpus, 10)
   end
 end
+
+M.line_length = function()
+  if vim.bo.textwidth == 0 then
+    return nil
+  else
+    return vim.bo.textwidth
+  end
+end
+
 return M

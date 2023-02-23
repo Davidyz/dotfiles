@@ -142,7 +142,7 @@ M.plugins = {
     event = "LspAttach",
   },
   {
-    "Davidyz/lsp-location-handler.nvim",
+    dir = "~/git/lsp-location-handler.nvim",
     config = function()
       require("location-handler").setup()
     end,

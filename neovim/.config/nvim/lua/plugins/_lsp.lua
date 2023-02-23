@@ -58,3 +58,10 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lspinfo",
+  callback = function()
+    vim.api.nvim_win_set_config(0, { border = "double" })
+  end,
+})

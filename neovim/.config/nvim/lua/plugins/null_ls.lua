@@ -1,3 +1,5 @@
+local utils = require("_utils")
+
 return function()
   local null_ls = require("null-ls")
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -16,26 +18,25 @@ return function()
         },
       }),
       null_ls.builtins.code_actions.gitsigns,
-      null_ls.builtins.formatting.black.with({
-        extra_args = {
-          "-l",
-          tostring(vim.opt.textwidth or 88),
-        },
+      null_ls.builtins.formatting.autopep8.with({
+        extra_args = { "--max-line-length", tostring(utils.line_length() or 88) },
       }),
+      null_ls.builtins.formatting.autoflake,
       null_ls.builtins.formatting.clang_format,
+      null_ls.builtins.formatting.cmake_format,
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.latexindent,
-      -- null_ls.builtins.formatting.jq,
       null_ls.builtins.formatting.jq.with({
         extra_args = {
           "--indent",
           tostring(vim.bo.sw),
         },
       }),
+      null_ls.builtins.formatting.isort,
       null_ls.builtins.diagnostics.flake8.with({
         extra_args = {
           "--max-line-length",
-          tostring(vim.opt.textwidth or 88),
+          tostring(utils.line_length() or 88),
         },
       }),
       null_ls.builtins.diagnostics.mypy,
