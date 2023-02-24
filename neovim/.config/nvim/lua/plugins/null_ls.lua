@@ -26,12 +26,7 @@ return function()
       null_ls.builtins.formatting.cmake_format,
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.latexindent,
-      null_ls.builtins.formatting.jq.with({
-        extra_args = {
-          "--indent",
-          tostring(vim.bo.sw),
-        },
-      }),
+      null_ls.builtins.formatting.jq,
       null_ls.builtins.formatting.isort,
       null_ls.builtins.diagnostics.flake8.with({
         extra_args = {
