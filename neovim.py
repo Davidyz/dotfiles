@@ -1,7 +1,7 @@
 import os
-import subprocess
 import platform
 import shutil
+import subprocess
 import sys
 import tarfile
 from ctypes import ArgumentError
@@ -76,13 +76,6 @@ def pre():
 
 
 def post():
-    if not platform.system() == "Windows":
-        os.system(
-            "git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
-        )
-    os.system(
-        "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
-    )
     if not platform.system() == "Windows":
         os.system("env EDITOR=nvim")
     elif isinstance(os.getenv("APPDATA"), str):
