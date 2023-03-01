@@ -8,7 +8,6 @@ local items = {
   -- "plugins.copilot",
   -- "plugins.fauxpilot",
   "plugins.haskell",
-  "plugins.indentline",
   "plugins.nvim_autopairs",
   "plugins.pandoc",
   "plugins.rainbow",

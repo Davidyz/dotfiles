@@ -1,5 +1,15 @@
 local utils = require("_utils")
-vim.api.nvim_create_autocmd("TabNewEntered", { pattern = "*", command = "Startify" })
+vim.api.nvim_create_autocmd("TabNewEntered", {
+  pattern = "*",
+  callback = function()
+    local pokemon = require("pokemon")
+    pokemon.setup({ size = "small" })
+    local header = pokemon.header()
+    table.insert(header, string.rep(" ", 3) .. pokemon.pokemon.name)
+    vim.g.startify_custom_header = header
+    vim.fn["startify#insane_in_the_membrane"](0)
+  end,
+})
 
 if vim.fn.exists(":Startify") ~= 0 then
   vim.api.nvim_command([[

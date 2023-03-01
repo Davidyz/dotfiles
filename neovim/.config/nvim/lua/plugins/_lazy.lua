@@ -205,7 +205,17 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons" },
   "itchyny/vim-gitbranch",
-  { "Yggdroot/indentLine", ft = SOURCE_CODE },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("indent_blankline").setup({
+        -- for example, context is off by default, use this to turn it on
+        show_current_context = true,
+        show_current_context_start = false,
+        show_end_of_line = false,
+      })
+    end,
+  },
   {
     "preservim/nerdcommenter",
   },
@@ -230,6 +240,16 @@ M.plugins = {
   {
     "mhinz/vim-startify",
     cond = no_vscode,
+    config = function()
+      local pokemon = require("pokemon")
+      pokemon.setup({ size = "small" })
+      local header = pokemon.header()
+      table.insert(header, string.rep(" ", 3) .. pokemon.pokemon.name)
+      vim.g.startify_custom_header = header
+    end,
+    dependencies = {
+      "ColaMint/pokemon.nvim",
+    },
   },
   {
     "gpanders/editorconfig.nvim",
