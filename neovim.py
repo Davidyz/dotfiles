@@ -58,12 +58,11 @@ elif shutil.which("dnf") != None or shutil.which("yum") != None:
 def pre():
     INIT_VIM = os.path.join(NVIM_CONFIG_ROOT, "init.vim")
     INIT_LUA = os.path.join(NVIM_CONFIG_ROOT, "init.lua")
-    COC_JSON = os.path.join(NVIM_CONFIG_ROOT, "coc-settings.json")
     if (not os.path.isdir(NVIM_CONFIG_ROOT)) or os.path.islink(NVIM_CONFIG_ROOT):
         if os.path.islink(NVIM_CONFIG_ROOT):
             os.remove(NVIM_CONFIG_ROOT)
         os.makedirs(NVIM_CONFIG_ROOT)
-    for file in (INIT_VIM, INIT_LUA, COC_JSON):
+    for file in (INIT_VIM, INIT_LUA):
         if os.path.isfile(file):
             if os.path.islink(file):
                 os.remove(file)
@@ -160,7 +159,7 @@ if __name__ == "__main__":
                 print("Neovim executable is not found.")
                 exit(1)
 
-        os.system("pip install -U neovim pynvim")
+        os.system("python -m pip install -U neovim pynvim")
         if subprocess.run("npm list -g neovim".split()) != 0:
             os.system("sudo npm install -g neovim")
         pre()
