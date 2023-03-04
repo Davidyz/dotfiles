@@ -1,12 +1,10 @@
 local utils = require("_utils")
+local plugin_utils = require("plugins.utils")
+
 vim.api.nvim_create_autocmd("TabNewEntered", {
   pattern = "*",
   callback = function()
-    local pokemon = require("pokemon")
-    pokemon.setup({ size = "small" })
-    local header = pokemon.header()
-    table.insert(header, string.rep(" ", 3) .. pokemon.pokemon.name)
-    vim.g.startify_custom_header = header
+    plugin_utils.make_pokemon()
     vim.fn["startify#insane_in_the_membrane"](0)
   end,
 })

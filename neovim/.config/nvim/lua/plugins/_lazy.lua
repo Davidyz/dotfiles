@@ -241,11 +241,7 @@ M.plugins = {
     "mhinz/vim-startify",
     cond = no_vscode,
     config = function()
-      local pokemon = require("pokemon")
-      pokemon.setup({ size = "small" })
-      local header = pokemon.header()
-      table.insert(header, string.rep(" ", 3) .. pokemon.pokemon.name)
-      vim.g.startify_custom_header = header
+      require("plugins.utils").make_pokemon()
     end,
     dependencies = {
       "ColaMint/pokemon.nvim",

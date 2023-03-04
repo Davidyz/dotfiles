@@ -43,4 +43,12 @@ for exe, ls in pairs(conditionals) do
   end
 end
 
+M.make_pokemon = function()
+  local pokemon = require("pokemon")
+  pokemon.setup({ size = "tiny" })
+  local header = pokemon.header()
+  table.insert(header, string.rep(" ", 3) .. pokemon.pokemon.name)
+  vim.g.startify_custom_header = header
+end
+
 return M
