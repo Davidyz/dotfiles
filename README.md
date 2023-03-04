@@ -31,7 +31,18 @@ command;
     * `make pc` will install all GUI related configurations, for example 
     [alacritty][alacritty_url] configuration.
 
+### Stowing a single target
+
+To create symbolic link for only one target, say `neovim`, run the following
+command:
+```bash
+make neovim
+```.
+This will create symbolic links of the configuration file for `neovim` only.
+This is useful if you want to use my config of only one of the projects.
+
 ### Hooks
+
 Hooks are executed before and/or after the installation of the dot files. The
 hooks are written in Python and the name has to match the name of the directory.
 

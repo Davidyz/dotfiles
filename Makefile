@@ -68,3 +68,11 @@ win:
 			python3 $$i.py pre && python3 $$i.py post; \
 		fi; \
 	done
+
+*:
+	@[ -d $@ ] || (echo $@ is not found. ; exit 1);
+	@[ -f $@.py ] && python3 $@.py pre;
+	@stow --adopt -vS -R -t $$HOME $@ --override=".*";
+	@[ -f $@.py ] && python3 $@.py post;
+
+.PHONY: $(PC)
