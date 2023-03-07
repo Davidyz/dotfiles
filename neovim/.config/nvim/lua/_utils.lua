@@ -24,20 +24,26 @@ SOURCE_CODE = {
 TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text", "tex" }
 
 M.gitModified = function()
+  local files = nil
   if vim.fn.has("unix") then
-    local files = vim.fn.systemlist("git ls-files -m 2> /dev/null")
-    if files then
-      return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
-    end
+    files = vim.fn.systemlist("git ls-files -m 2> /dev/null")
+  else
+    files = vim.fn.systemlist("git ls-files -m 2> nul")
+  end
+  if files then
+    return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
   end
 end
 
 M.gitUntracked = function()
+  local files = nil
   if vim.fn.has("unix") then
-    local files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> /dev/null")
-    if files then
-      return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
-    end
+    files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> /dev/null")
+  else
+    files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> nul")
+  end
+  if files then
+    return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
   end
 end
 
@@ -185,15 +191,7 @@ M.async_run = function(func, callback)
 end
 
 M.cpu_count = function()
-  if vim.fn.executable("grep") ~= 0 then
-    local file = io.popen("grep -c processor /proc/cpuinfo")
-    if file == nil then
-      return
-    end
-    local numcpus = file:read()
-    file:close()
-    return tonumber(numcpus, 10)
-  end
+  return #vim.loop.cpu_info()
 end
 
 M.line_length = function()
