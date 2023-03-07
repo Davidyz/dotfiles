@@ -350,6 +350,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
+  { "dstein64/vim-startuptime", event = "VeryLazy" },
 }
 
 M.config = {
