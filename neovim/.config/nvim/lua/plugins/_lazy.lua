@@ -1,9 +1,5 @@
 M = {}
-require("_utils")
-
-local function no_vscode()
-  return vim.fn.exists("g:vscode") == 0
-end
+local utils = require("_utils")
 
 M.plugins = {
   -- filetypes
@@ -12,43 +8,63 @@ M.plugins = {
     cond = function()
       return vim.fn.executable("objdump") ~= 0
     end,
+    event = "VeryLazy",
   },
   {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
+    config = function()
+      require("plugins.haskell")
+    end,
+    event = "VeryLazy",
   },
   {
     "chrisbra/csv.vim",
     ft = { "csv" },
+    event = "VeryLazy",
   },
   {
     "goerz/jupytext.vim",
     ft = { "jupyter", "notebook", "ipynb", "py", "json" },
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.jupytext")
+    end,
+    event = "VeryLazy",
   },
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
+    event = "VeryLazy",
   },
   {
     "vim-pandoc/vim-pandoc",
     ft = { "markdown", "pandoc", "latex" },
+    config = function()
+      require("plugins.pandoc")
+    end,
+    event = "VeryLazy",
   },
   {
     "vim-pandoc/vim-pandoc-syntax",
     ft = { "markdown", "pandoc", "latex" },
+    event = "VeryLazy",
   },
   {
     "vim-scripts/cup.vim",
     ft = { "cup" },
+    event = "VeryLazy",
   },
   {
     "udalov/javap-vim",
     ft = { "javap" },
+    event = "VeryLazy",
   },
   {
     "cespare/vim-toml",
     branch = "main",
     ft = { "toml" },
+    event = "VeryLazy",
   },
   {
     "mikelue/vim-maven-plugin",
@@ -56,15 +72,21 @@ M.plugins = {
       "maven",
       "xml",
     },
+    event = "VeryLazy",
   },
-  { "vim-scripts/crontab.vim", ft = { "crontab" } },
+  { "vim-scripts/crontab.vim", ft = { "crontab" }, event = "VeryLazy" },
 
   -- markdown
-  { "mzlogin/vim-markdown-toc", ft = { "markdown", "pandoc" } },
+  { "mzlogin/vim-markdown-toc", event = "VeryLazy", ft = { "markdown", "pandoc" } },
   {
     "iamcco/markdown-preview.nvim",
     build = vim.fn["mkdp#util#install"],
     ft = { "markdown", "pandoc" },
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.markdown_preview")
+    end,
+    event = "VeryLazy",
   },
 
   -- color schemes.
@@ -78,14 +100,28 @@ M.plugins = {
     "nvim-treesitter/nvim-treesitter",
     config = function(config, opts)
       require("nvim-treesitter.install").commands.TSUpdate.run()
+      require("plugins.tree_sitter")
     end,
+    event = "VeryLazy",
   },
-  "lewis6991/nvim-treesitter-context",
-  "nvim-treesitter/playground",
-  "nvim-treesitter/nvim-treesitter-refactor",
-  "windwp/nvim-autopairs",
-  "andymass/vim-matchup",
-  "https://gitlab.com/HiPhish/nvim-ts-rainbow2.git",
+  {
+    "lewis6991/nvim-treesitter-context",
+    config = function()
+      require("plugins.treesitter-context")
+    end,
+    event = "VeryLazy",
+  },
+  { "nvim-treesitter/playground", event = "VeryLazy" },
+  { "nvim-treesitter/nvim-treesitter-refactor", event = "VeryLazy" },
+  {
+    "windwp/nvim-autopairs",
+    config = function()
+      require("plugins.nvim_autopairs")
+    end,
+    event = "VeryLazy",
+  },
+  { "andymass/vim-matchup", event = "VeryLazy" },
+  { "https://gitlab.com/HiPhish/nvim-ts-rainbow2.git", event = "VeryLazy" },
 
   -- mason
   {
@@ -95,20 +131,29 @@ M.plugins = {
         ui = { border = "double" },
       })
     end,
+    event = "VeryLazy",
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     config = function()
       require("plugins.mason_tools")
     end,
+    event = "VeryLazy",
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
     config = require("plugins.null_ls"),
+    event = "VeryLazy",
   },
 
   -- lsp
-  { "neovim/nvim-lspconfig" },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("plugins._lsp")
+    end,
+    event = "VeryLazy",
+  },
   { "hrsh7th/nvim-cmp", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
   { "hrsh7th/cmp-buffer", event = "LspAttach" },
@@ -118,7 +163,7 @@ M.plugins = {
   { "L3MON4D3/LuaSnip", event = "LspAttach" },
   { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
   { "rafamadriz/friendly-snippets", event = "LspAttach" },
-  { "williamboman/mason-lspconfig.nvim" },
+  { "williamboman/mason-lspconfig.nvim", event = "VeryLazy" },
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
     "SmiteshP/nvim-navic",
@@ -150,12 +195,32 @@ M.plugins = {
   },
 
   -- dap
-  "mfussenegger/nvim-dap",
-  "theHamsta/nvim-dap-virtual-text",
-  "rcarriga/nvim-dap-ui",
-  "jbyuki/one-small-step-for-vimkind",
-  { "mfussenegger/nvim-jdtls", ft = { "java" } },
-  { "jay-babu/mason-nvim-dap.nvim" },
+  {
+    "mfussenegger/nvim-dap",
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.dap")
+    end,
+    event = "VeryLazy",
+  },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+  },
+  { "rcarriga/nvim-dap-ui", cond = utils.no_vscode, event = "VeryLazy" },
+  {
+    "jbyuki/one-small-step-for-vimkind",
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+  },
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = { "java" },
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+  },
+  { "jay-babu/mason-nvim-dap.nvim", cond = utils.no_vscode, event = "VeryLazy" },
 
   -- vimspector
   -- "puremourning/vimspector",
@@ -170,6 +235,7 @@ M.plugins = {
         "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
+    event = "VeryLazy",
   },
   {
     "ethanholz/nvim-lastplace",
@@ -180,6 +246,7 @@ M.plugins = {
         lastplace_open_folds = true,
       })
     end,
+    event = "VeryLazy",
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -196,15 +263,20 @@ M.plugins = {
         },
       })
     end,
+    event = "VeryLazy",
   },
-  "nvim-lua/plenary.nvim",
-  "easymotion/vim-easymotion",
-  "nvim-telescope/telescope.nvim",
+  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
+  { "easymotion/vim-easymotion", event = "VeryLazy" },
+  { "nvim-telescope/telescope.nvim", event = "VeryLazy" },
   {
     "nvim-lualine/lualine.nvim",
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins._lualine")
+    end,
   },
-  { "kyazdani42/nvim-web-devicons" },
-  "itchyny/vim-gitbranch",
+  { "kyazdani42/nvim-web-devicons", event = "VeryLazy" },
+  { "itchyny/vim-gitbranch", event = "VeryLazy" },
   {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
@@ -215,33 +287,57 @@ M.plugins = {
         show_end_of_line = false,
       })
     end,
+    event = "VeryLazy",
   },
   {
     "preservim/nerdcommenter",
+    event = "VeryLazy",
   },
-  "preservim/nerdtree",
-  "Xuyuanp/nerdtree-git-plugin",
+  {
+    "preservim/nerdtree",
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.NERDTree")
+    end,
+    event = "VeryLazy",
+  },
+  { "Xuyuanp/nerdtree-git-plugin", event = "VeryLazy" },
   {
     "kylechui/nvim-surround",
     config = function()
       require("nvim-surround").setup()
     end,
+    event = "VeryLazy",
   },
-  "psliwka/vim-smoothie",
-  "chaoren/vim-wordmotion",
-  "ryanoasis/vim-devicons",
-  "vim-scripts/restore_view.vim",
-  { "zhaocai/GoldenView.Vim", cond = no_vscode },
+  { "psliwka/vim-smoothie", event = "VeryLazy" },
+  { "chaoren/vim-wordmotion", event = "VeryLazy" },
+  { "ryanoasis/vim-devicons", event = "VeryLazy" },
+  { "vim-scripts/restore_view.vim", event = "VeryLazy" },
+  {
+    "zhaocai/GoldenView.Vim",
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.golden_view")
+    end,
+    event = "VeryLazy",
+  },
   {
     "Davidyz/make.nvim",
     branch = "main",
+    event = "VeryLazy",
   },
-  { "Davidyz/md-code.nvim", ft = { "markdown" }, cond = no_vscode },
+  {
+    "Davidyz/md-code.nvim",
+    ft = { "markdown" },
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+  },
   {
     "mhinz/vim-startify",
-    cond = no_vscode,
+    cond = utils.no_vscode,
     config = function()
       require("plugins.utils").make_pokemon()
+      require("plugins.startify")
     end,
     dependencies = {
       "ColaMint/pokemon.nvim",
@@ -252,6 +348,7 @@ M.plugins = {
     cond = function()
       return vim.version().major < 1 and vim.version().minor < 9
     end,
+    event = "VeryLazy",
   },
 }
 

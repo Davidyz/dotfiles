@@ -204,4 +204,8 @@ M.line_length = function()
   end
 end
 
+M.no_vscode = function()
+  return vim.g.vscode == nil
+end
+
 return M
