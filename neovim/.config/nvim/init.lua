@@ -1,4 +1,5 @@
 local utils = require("_utils")
+local lazy_config = require("plugins._lazy")
 
 if vim.fn.has("unix") ~= 0 then
   if
@@ -23,8 +24,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require("lazy").setup(lazy_config.plugins, lazy_config.config)
+
 local items = {
-  "plugins.main",
   "colorscheme.main",
   "keymaps.main",
   "filetype.main",
