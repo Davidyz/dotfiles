@@ -85,6 +85,7 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function()
       require("plugins.markdown_preview")
+      require("keymaps.markdown_preview")
     end,
     event = "VeryLazy",
   },
@@ -151,6 +152,7 @@ M.plugins = {
     "neovim/nvim-lspconfig",
     config = function()
       require("plugins._lsp")
+      require("keymaps._lsp")
     end,
     event = "VeryLazy",
   },
@@ -200,6 +202,7 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function()
       require("plugins.dap")
+      require("keymaps.dap")
     end,
     event = "VeryLazy",
   },
@@ -267,7 +270,13 @@ M.plugins = {
   },
   { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   { "easymotion/vim-easymotion", event = "VeryLazy" },
-  { "nvim-telescope/telescope.nvim", event = "VeryLazy" },
+  {
+    "nvim-telescope/telescope.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("keymaps.telescope")
+    end,
+  },
   {
     "nvim-lualine/lualine.nvim",
     cond = utils.no_vscode,
@@ -292,12 +301,16 @@ M.plugins = {
   {
     "preservim/nerdcommenter",
     event = "VeryLazy",
+    config = function()
+      require("keymaps.NERDCommenter")
+    end,
   },
   {
     "preservim/nerdtree",
     cond = utils.no_vscode,
     config = function()
       require("plugins.NERDTree")
+      require("keymaps.NERDTree")
     end,
     event = "VeryLazy",
   },
@@ -318,6 +331,7 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function()
       require("plugins.golden_view")
+      require("keymaps.golden_view")
     end,
     event = "VeryLazy",
   },
@@ -351,6 +365,19 @@ M.plugins = {
     event = "VeryLazy",
   },
   { "dstein64/vim-startuptime", event = "VeryLazy" },
+  {
+    "akinsho/toggleterm.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("toggleterm").setup({
+        open_mapping = "<C-\\>",
+        direction = "float",
+        float_opts = {
+          border = "curved",
+        },
+      })
+    end,
+  },
 }
 
 M.config = {
