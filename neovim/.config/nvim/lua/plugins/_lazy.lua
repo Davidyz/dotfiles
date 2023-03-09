@@ -151,10 +151,10 @@ M.plugins = {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      require("mason").setup()
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
-    event = "VeryLazy",
   },
   { "hrsh7th/nvim-cmp", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
@@ -188,6 +188,17 @@ M.plugins = {
     end,
     event = "LspAttach",
   },
+  {
+    "tamago324/cmp-zsh",
+    event = "LspAttach",
+    config = function()
+      if vim.fn.executable("zsh") then
+        io.popen('zsh -c "zmodload zsh/zpty"')
+      end
+      require("cmp_zsh").setup({ zshrc = true, filetypes = { "zsh" } })
+    end,
+  },
+  { "j-hui/fidget.nvim", event = "LspAttach", config = true },
   {
     "Davidyz/lsp-location-handler.nvim",
     config = function()

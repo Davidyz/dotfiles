@@ -10,7 +10,7 @@ lsp_defaults.capabilities.offsetEncoding = "utf-8"
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-require("mason-lspconfig").setup({})
+require("mason-lspconfig").setup({ autostart = true })
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
     require("lspconfig")[server_name].setup({

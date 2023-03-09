@@ -108,6 +108,7 @@ cmp.setup({
     { name = "buffer", keyword_length = 2 },
     { name = "luasnip", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
+    { name = "zsh" },
   },
   window = {
     documentation = cmp.config.window.bordered(window_style),
