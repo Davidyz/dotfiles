@@ -43,7 +43,7 @@ end
 
 vim.o.cursorline = true
 vim.o.cursorcolumn = true
-vim.api.nvim_set_hl(0, "CursorColumn", vim.api.nvim_get_hl_by_name("CursorLine", {}))
+vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
 vim.o.compatible = false
 
 -- recover cursor location from history
@@ -62,7 +62,7 @@ end
 
 vim.opt.foldlevel = 50
 
-vim.api.nvim_set_hl(0, "MatchParen", vim.api.nvim_get_hl_by_name("TermCursorNC", {}))
+vim.api.nvim_set_hl(0, "MatchParen", { link = "TermCursorNC" })
 
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.api.nvim_set_option("updatetime", 50)
@@ -74,8 +74,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
   callback = function()
     vim.b.editting_vim_config = (
-        vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil
-      )
+      vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil
+    )
   end,
 })
 

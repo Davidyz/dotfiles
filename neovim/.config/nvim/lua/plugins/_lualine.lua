@@ -105,6 +105,14 @@ require("lualine").setup({
         mode = 2,
       },
     },
+    lualine_y = {
+      function()
+        if vim.g.startup_time ~= nil then
+          return "Startup Time: " .. tostring(vim.g.startup_time.startup.mean / 1000)
+        end
+        return ""
+      end,
+    },
     lualine_z = {
       { navic.get_location, cond = navic.is_available },
     },

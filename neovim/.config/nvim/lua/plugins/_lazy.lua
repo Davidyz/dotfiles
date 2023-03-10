@@ -198,7 +198,19 @@ M.plugins = {
       require("cmp_zsh").setup({ zshrc = true, filetypes = { "zsh" } })
     end,
   },
-  { "j-hui/fidget.nvim", event = "LspAttach", config = true },
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    config = function()
+      vim.api.nvim_set_hl(0, "FidgetTitle", { link = "Exception" })
+      vim.api.nvim_set_hl(0, "FidgetTask", { link = "Tag" })
+      require("fidget").setup({
+        window = { blend = 0, border = "rounded" },
+        align = { bottom = false },
+        fmt = { stack_upwards = false },
+      })
+    end,
+  },
   {
     "Davidyz/lsp-location-handler.nvim",
     config = function()
@@ -300,6 +312,7 @@ M.plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
+      vim.g.indent_blankline_filetype_exclude = { "startify", "help", "nerdtree" }
       require("indent_blankline").setup({
         -- for example, context is off by default, use this to turn it on
         show_current_context = true,
@@ -344,7 +357,6 @@ M.plugins = {
       require("plugins.golden_view")
       require("keymaps.golden_view")
     end,
-    event = "VeryLazy",
   },
   {
     "Davidyz/make.nvim",
@@ -358,14 +370,21 @@ M.plugins = {
     event = "VeryLazy",
   },
   {
+    "dstein64/vim-startuptime",
+  },
+  {
     "mhinz/vim-startify",
     cond = utils.no_vscode,
     config = function()
+      if vim.fn.has("StartupTime") then
+        vim.api.nvim_command("StartupTime --save startup_time --hidden")
+      end
       require("plugins.utils").make_pokemon()
       require("plugins.startify")
     end,
     dependencies = {
       "ColaMint/pokemon.nvim",
+      "dstein64/vim-startuptime",
     },
   },
   {
@@ -375,7 +394,6 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "dstein64/vim-startuptime", event = "VeryLazy" },
   {
     "akinsho/toggleterm.nvim",
     event = "VeryLazy",
