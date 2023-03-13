@@ -100,7 +100,7 @@ M.plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     config = function(config, opts)
-      require("nvim-treesitter.install").commands.TSUpdate.run()
+      -- require("nvim-treesitter.install").commands.TSUpdate.run()
       require("plugins.tree_sitter")
     end,
     event = "VeryLazy",

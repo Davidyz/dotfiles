@@ -22,11 +22,10 @@ if utils.cpu_count() >= 4 then
     "rust",
     "lua",
     "toml",
-    "markdown",
+    "markdown_inline",
     "vim",
     "yaml",
     "help",
-    "gitignore",
     "git_rebase",
     "gitattributes",
   }
