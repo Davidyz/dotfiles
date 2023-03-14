@@ -80,7 +80,9 @@ M.plugins = {
   { "mzlogin/vim-markdown-toc", event = "VeryLazy", ft = { "markdown", "pandoc" } },
   {
     "iamcco/markdown-preview.nvim",
-    build = vim.fn["mkdp#util#install"],
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
     ft = { "markdown", "pandoc" },
     cond = utils.no_vscode,
     config = function()
@@ -94,6 +96,33 @@ M.plugins = {
   {
     "olimorris/onedarkpro.nvim",
     priority = 100,
+    config = function()
+      local onedark = require("onedarkpro")
+      onedark.setup({
+        theme = "onedark",
+        styles = {
+          strings = "NONE",
+          comments = "italic",
+          keywords = "NONE",
+          functions = "NONE",
+          variables = "NONE",
+          virtual_text = "NONE",
+          types = "bold",
+        },
+        options = {
+          bold = true,
+          italic = true,
+          underline = true,
+          undercurl = true,
+          cursorline = true,
+          transparency = true,
+          terminal_colors = true,
+          highlight_inactive_windows = true,
+        },
+        plugins = { treesitter = true },
+      })
+      onedark.load()
+    end,
   },
 
   -- tree sitter

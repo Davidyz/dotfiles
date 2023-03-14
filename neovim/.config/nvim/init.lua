@@ -27,7 +27,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup(lazy_config.plugins, lazy_config.config)
 
 local items = {
-  "colorscheme.main",
   "keymaps.main",
   "filetype.main",
   "misc",
