@@ -142,6 +142,8 @@ alias pandoc-pdf="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"
 alias pandoc-cn="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"NotoCJK\""
 alias alacritty="env WINIT_UNIX_BACKEND=x11 alacritty"
 alias unzip_gbk="unzip -O gbk "
+[ $USER = root ] && alias v2ray_install="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)"
+
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
