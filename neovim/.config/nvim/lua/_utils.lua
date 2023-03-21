@@ -28,7 +28,7 @@ M.gitModified = function()
   if vim.fn.has("unix") then
     files = vim.fn.systemlist("git ls-files -m 2> /dev/null")
   else
-    files = vim.fn.systemlist("git ls-files -m 2> nul")
+    files = vim.fn.systemlist("git ls-files -m")
   end
   if files then
     return vim.fn.map(files, "{'line': v:val, 'path': v:val}")
@@ -40,7 +40,7 @@ M.gitUntracked = function()
   if vim.fn.has("unix") then
     files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> /dev/null")
   else
-    files = vim.fn.systemlist("git ls-files -o --exclude-standard 2> nul")
+    files = vim.fn.systemlist("git ls-files -o --exclude-standard")
   end
   if files then
     return vim.fn.map(files, "{'line': v:val, 'path': v:val}")

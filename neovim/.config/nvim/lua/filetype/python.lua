@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
       then
         job
           :new({
-            command = "python",
+            command = vim.g.python3_host_prog,
             args = { "-m", "pip", "install", dep },
             on_exit = function()
               print(dep .. " has been installed.")

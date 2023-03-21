@@ -34,11 +34,10 @@ if vim.fn.has("unix") ~= 0 then
   elseif vim.fn.executable("/usr/bin/python") then
     vim.g.python3_host_prog = "/usr/bin/python"
   end
-elseif
-  (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1)
-  and vim.fn.executable("py") == 1
-then
-  vim.g.python3_host_prog = "py"
+elseif vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+  if vim.fn.executable("py") == 1 then
+    vim.g.python3_host_prog = "py"
+  end
 end
 
 vim.o.cursorline = true
@@ -83,7 +82,7 @@ for command, package in pairs({ nvr = "neovim-remote", ipython = "ipython" }) do
   if type(command) == "number" or vim.fn.executable(command) == 0 then
     job
       :new({
-        command = "python",
+        command = vim.g.python3_host_prog,
         args = { "-m", "pip", "install", package },
         on_exit = function()
           print(package .. " has been installed.")

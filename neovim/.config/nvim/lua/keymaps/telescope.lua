@@ -6,3 +6,11 @@ if vim.fn.executable("rg") ~= 0 then
 end
 vim.keymap.set("n", "<leader>b", builtin.buffers, {})
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "TelescopePrompt",
+  callback = function()
+    vim.keymap.set({ "i", "n" }, "<esc>", function()
+      vim.api.nvim_win_close(0, true)
+    end, { replace_keycodes = true, buffer = 0, expr = true })
+  end,
+})
