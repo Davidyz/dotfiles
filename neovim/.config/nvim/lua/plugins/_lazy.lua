@@ -152,6 +152,18 @@ M.plugins = {
   },
   { "andymass/vim-matchup", event = "VeryLazy" },
   { "https://gitlab.com/HiPhish/nvim-ts-rainbow2.git", event = "VeryLazy" },
+  {
+    "RRethy/vim-illuminate",
+    event = "VeryLazy",
+    config = function()
+      require("illuminate").configure({
+        providers = { "treesitter", "lsp" },
+      })
+      vim.api.nvim_set_hl(0, "illuminatedWordText", { link = "MatchParen" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "MatchParen" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "MatchParen" })
+    end,
+  },
 
   -- mason
   {
@@ -341,7 +353,8 @@ M.plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
-      vim.g.indent_blankline_filetype_exclude = { "startify", "help", "nerdtree" }
+      vim.g.indent_blankline_filetype_exclude =
+        { "startify", "help", "nerdtree", "alpha" }
       require("indent_blankline").setup({
         -- for example, context is off by default, use this to turn it on
         show_current_context = true,
@@ -401,21 +414,29 @@ M.plugins = {
   {
     "dstein64/vim-startuptime",
   },
+  { "ColaMint/pokemon.nvim", event = "VeryLazy" },
   {
-    "mhinz/vim-startify",
-    cond = utils.no_vscode,
+    "goolord/alpha-nvim",
     config = function()
-      if vim.fn.has("StartupTime") then
-        vim.api.nvim_command("StartupTime --save startup_time --hidden")
-      end
-      require("plugins.utils").make_pokemon()
-      require("plugins.startify")
+      require("plugins.alpha")
     end,
-    dependencies = {
-      "ColaMint/pokemon.nvim",
-      "dstein64/vim-startuptime",
-    },
+    dependencies = { "ColaMint/pokemon.nvim" },
   },
+  -- {
+  -- "mhinz/vim-startify",
+  -- cond = utils.no_vscode,
+  -- config = function()
+  -- if vim.fn.has("StartupTime") then
+  -- vim.api.nvim_command("StartupTime --save startup_time --hidden")
+  -- end
+  -- require("plugins.utils").make_pokemon()
+  -- require("plugins.startify")
+  -- end,
+  -- dependencies = {
+  -- "ColaMint/pokemon.nvim",
+  -- "dstein64/vim-startuptime",
+  -- },
+  -- },
   {
     "gpanders/editorconfig.nvim",
     cond = function()
@@ -456,6 +477,25 @@ M.plugins = {
       })
     end,
     event = "VeryLazy",
+  },
+  {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup({
+        window = {
+          border = "rounded",
+          margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
+        },
+        layout = { aligh = "left" },
+      })
+    end,
+  },
+  {
+    "wintermute-cell/gitignore.nvim",
+    cmd = "Gitignore",
+    dependencies = { "nvim-telescope/telescope.nvim" },
   },
 }
 
