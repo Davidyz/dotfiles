@@ -372,15 +372,35 @@ M.plugins = {
     end,
   },
   {
-    "preservim/nerdtree",
-    cond = utils.no_vscode,
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
     config = function()
-      require("plugins.NERDTree")
-      require("keymaps.NERDTree")
+      local neotree = require("neo-tree")
+      neotree.setup({
+        close_if_last_window = true,
+        sort_case_insensitive = true,
+        filesystem = {
+          filtered_items = { hide_hidden = false },
+        },
+        window = {
+          mappings = {
+            ["<cr>"] = "open_tab_drop",
+            ["<space>"] = "open_tab_drop",
+          },
+        },
+      })
+      vim.api.nvim_set_keymap("n", "<Leader>t", "", {
+        noremap = true,
+        callback = function()
+          neotree.show("", true)
+        end,
+      })
     end,
-    event = "VeryLazy",
   },
-  { "Xuyuanp/nerdtree-git-plugin", event = "VeryLazy" },
   {
     "kylechui/nvim-surround",
     config = function()
