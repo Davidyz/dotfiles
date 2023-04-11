@@ -80,4 +80,3 @@ mason_dap.setup({
   ensure_installed = { "python", "bash", "cppdbg" },
   automatic_setup = true,
 })
-mason_dap.setup_handlers({})
