@@ -388,8 +388,8 @@ M.plugins = {
         },
         window = {
           mappings = {
-            ["<cr>"] = "open_tab_drop",
-            ["<space>"] = "open_tab_drop",
+            ["<cr>"] = "open",
+            ["<space>"] = "open",
           },
         },
       })

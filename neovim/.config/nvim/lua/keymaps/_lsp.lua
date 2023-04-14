@@ -78,6 +78,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Lists all the references
     bufmap("n", "gr", function(ctx, opts)
+      opts = opts or {}
+      opts.jump_type = "tab"
       if has_telescope then
         return telescope.lsp_references(opts)
       else
