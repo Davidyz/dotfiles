@@ -517,6 +517,23 @@ M.plugins = {
     cmd = "Gitignore",
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
+  {
+    "f-person/git-blame.nvim",
+    keys = { "<Leader>gb", "<Leader>go", "<Leader>gc" },
+    config = function()
+      local gb = require("gitblame")
+      vim.g.gitblame_enabled = 0
+      vim.keymap.set("n", "<Leader>gb", vim.fn["GitBlameToggle"], { noremap = true })
+      vim.keymap.set("n", "<Leader>go", function()
+        vim.fn["GitBlameOpenCommitURL"]()
+        vim.fn["GitBlameDisable"]()
+      end, { noremap = true })
+      vim.keymap.set("n", "<Leader>gc", function()
+        vim.fn["GitBlameCopyCommitURL"]()
+        vim.fn["GitBlameDisable"]()
+      end, { noremap = true })
+    end,
+  },
 }
 
 M.config = {
