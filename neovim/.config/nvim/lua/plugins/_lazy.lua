@@ -384,14 +384,24 @@ M.plugins = {
         close_if_last_window = true,
         sort_case_insensitive = true,
         filesystem = {
-          filtered_items = { hide_hidden = false },
+          filtered_items = {
+            visible = true,
+            hide_hidden = false,
+            hide_dotfiles = false,
+          },
         },
         window = {
           mappings = {
             ["<cr>"] = "open",
             ["<space>"] = "open",
+            ["<left>"] = "navigate_up",
+            ["<right>"] = "set_root",
           },
         },
+        buffers = {
+          follow_current_file = true,
+        },
+        source_selector = { show_scrolled_off_parent_node = true },
       })
       vim.api.nvim_set_keymap("n", "<Leader>t", "", {
         noremap = true,

@@ -25,7 +25,7 @@ if utils.cpu_count() >= 4 then
     "markdown_inline",
     "vim",
     "yaml",
-    "help",
+    "vimdoc",
     "git_rebase",
     "gitattributes",
   }
