@@ -84,6 +84,7 @@ M.plugins = {
       vim.fn["mkdp#util#install"]()
     end,
     ft = { "markdown", "pandoc" },
+    keys = { "mp" },
     cond = utils.no_vscode,
     config = function()
       require("plugins.markdown_preview")
@@ -367,6 +368,7 @@ M.plugins = {
   {
     "preservim/nerdcommenter",
     event = "VeryLazy",
+    keys = { "<Leader>c<space>" },
     config = function()
       require("keymaps.NERDCommenter")
     end,
@@ -374,6 +376,7 @@ M.plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
+    keys = { "<Leader>t" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
@@ -477,6 +480,7 @@ M.plugins = {
   {
     "akinsho/toggleterm.nvim",
     event = "VeryLazy",
+    keys = { "<C-\\>" },
     config = function()
       require("toggleterm").setup({
         open_mapping = "<C-\\>",
