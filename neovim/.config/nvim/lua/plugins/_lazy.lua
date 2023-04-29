@@ -152,7 +152,7 @@ M.plugins = {
     event = "VeryLazy",
   },
   { "andymass/vim-matchup", event = "VeryLazy" },
-  { "https://gitlab.com/HiPhish/nvim-ts-rainbow2.git", event = "VeryLazy" },
+  { "HiPhish/nvim-ts-rainbow2", event = "VeryLazy" },
   {
     "RRethy/vim-illuminate",
     event = "VeryLazy",
@@ -197,6 +197,7 @@ M.plugins = {
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
+    dependencies = { "folke/neodev.nvim" },
   },
   { "hrsh7th/nvim-cmp", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
@@ -207,7 +208,11 @@ M.plugins = {
   { "L3MON4D3/LuaSnip", event = "LspAttach" },
   { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
   { "rafamadriz/friendly-snippets", event = "LspAttach" },
-  { "williamboman/mason-lspconfig.nvim", event = "VeryLazy" },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = "VeryLazy",
+    dependencies = { "folke/neodev.nvim" },
+  },
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
     "SmiteshP/nvim-navic",
@@ -260,6 +265,7 @@ M.plugins = {
     end,
     event = "LspAttach",
   },
+  { "folke/neodev.nvim", event = "LspAttach", config = true },
 
   -- dap
   {
@@ -455,21 +461,7 @@ M.plugins = {
     end,
     dependencies = { "ColaMint/pokemon.nvim" },
   },
-  -- {
-  -- "mhinz/vim-startify",
-  -- cond = utils.no_vscode,
-  -- config = function()
-  -- if vim.fn.has("StartupTime") then
-  -- vim.api.nvim_command("StartupTime --save startup_time --hidden")
-  -- end
-  -- require("plugins.utils").make_pokemon()
-  -- require("plugins.startify")
-  -- end,
-  -- dependencies = {
-  -- "ColaMint/pokemon.nvim",
-  -- "dstein64/vim-startuptime",
-  -- },
-  -- },
+  { "backdround/tabscope.nvim", config = true },
   {
     "gpanders/editorconfig.nvim",
     cond = function()

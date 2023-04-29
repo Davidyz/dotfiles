@@ -117,9 +117,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end,
       },
       sources = {
-        { name = "nvim_lsp", keyword_length = 1 },
-        { name = "nvim_lua" },
-        { name = "path" },
+        { name = "nvim_lsp", keyword_length = 1, priority = 9 },
+        { name = "nvim_lua", priority = 10 },
+        { name = "path", priority = 10 },
         { name = "dictionary", keyword_length = 2 },
         { name = "buffer", keyword_length = 2 },
         { name = "luasnip", keyword_length = 2 },
