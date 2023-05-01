@@ -1,6 +1,10 @@
 local utils = require("_utils")
 local lazy_config = require("plugins._lazy")
 
+if vim.loader ~= nil and type(vim.loader.enable) == "function" then
+  vim.loader.enable()
+end
+
 if vim.fn.has("unix") ~= 0 then
   if
     vim.fn.executable("python")

@@ -172,6 +172,7 @@ M.plugins = {
     config = function()
       require("mason").setup({
         ui = { border = "double" },
+        max_concurrent_jobs = math.min(4, utils.cpu_count()),
       })
     end,
     event = "VeryLazy",
