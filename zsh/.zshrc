@@ -142,7 +142,10 @@ alias pandoc-pdf="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"
 alias pandoc-cn="pandoc --template=eisvogel --pdf-engine=xelatex -V mainfont=\"NotoCJK\""
 alias alacritty="env WINIT_UNIX_BACKEND=x11 alacritty"
 alias unzip_gbk="unzip -O gbk "
-[ $USER = root ] && alias v2ray_install="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)"
+if [ $USER = root ]; then
+    alias v2ray_install="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)"
+    alias v2ray_update_data="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh)"
+fi
 
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
@@ -310,3 +313,14 @@ print_true_color(){
     printf "\n";
     }'
 }
+
+if command -v fzf > /dev/null 2> /dev/null ; then
+    function nvims(){
+        items=()
+        sub_dirs=$(ls ~/.config/)
+        for dir in $sub_dirs; do
+            [ -f ~/.config/$dir/init.lua ] && items+=($dir)
+        done
+        echo $items
+    }
+fi

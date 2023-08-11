@@ -173,6 +173,7 @@ M.plugins = {
       require("mason").setup({
         ui = { border = "double" },
         max_concurrent_jobs = math.min(4, utils.cpu_count()),
+        pip = { install_args = { "--proxy", "http://127.0.0.1:1081" } },
       })
     end,
     event = "VeryLazy",
@@ -248,6 +249,7 @@ M.plugins = {
   },
   {
     "j-hui/fidget.nvim",
+    tag = "legacy",
     event = "LspAttach",
     config = function()
       vim.api.nvim_set_hl(0, "FidgetTitle", { link = "Exception" })
@@ -441,9 +443,10 @@ M.plugins = {
     end,
   },
   {
-    "Davidyz/make.nvim",
-    branch = "main",
-    event = "VeryLazy",
+    dir = "~/git/make.nvim",
+    config = function()
+      require("md-code")
+    end,
   },
   {
     "Davidyz/md-code.nvim",
@@ -540,6 +543,11 @@ M.plugins = {
         vim.fn["GitBlameDisable"]()
       end, { noremap = true })
     end,
+  },
+  {
+    dir = "~/git/executable-checker.nvim",
+    opts = { executables = { "rg" } },
+    config = true,
   },
 }
 
