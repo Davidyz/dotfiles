@@ -443,16 +443,16 @@ M.plugins = {
     end,
   },
   {
-    dir = "~/git/make.nvim",
-    config = function()
-      require("md-code")
-    end,
+    dir = "Davidyz/make.nvim",
   },
   {
     "Davidyz/md-code.nvim",
     ft = { "markdown" },
     cond = utils.no_vscode,
     event = "VeryLazy",
+    config = function()
+      require("md-code")
+    end,
   },
   {
     "dstein64/vim-startuptime",
@@ -545,9 +545,10 @@ M.plugins = {
     end,
   },
   {
-    dir = "~/git/executable-checker.nvim",
-    opts = { executables = { "rg" } },
-    config = true,
+    "Davidyz/executable-checker.nvim",
+    config = function()
+      require("executable-checker").setup({ executables = { "rg", "node" } })
+    end,
   },
 }
 
