@@ -173,7 +173,6 @@ M.plugins = {
       require("mason").setup({
         ui = { border = "double" },
         max_concurrent_jobs = math.min(4, utils.cpu_count()),
-        pip = { install_args = { "--proxy", "http://127.0.0.1:1081" } },
       })
     end,
     event = "VeryLazy",
