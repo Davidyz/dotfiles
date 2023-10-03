@@ -361,14 +361,15 @@ M.plugins = {
   { "itchyny/vim-gitbranch", event = "VeryLazy" },
   {
     "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
     config = function()
       vim.g.indent_blankline_filetype_exclude =
         { "startify", "help", "nerdtree", "alpha" }
-      require("indent_blankline").setup({
+      require("ibl").setup({
         -- for example, context is off by default, use this to turn it on
-        show_current_context = true,
-        show_current_context_start = false,
-        show_end_of_line = false,
+        exclude = {
+          filetypes = { "startify", "help", "nerdtree", "alpha" },
+        },
       })
     end,
     event = "VeryLazy",

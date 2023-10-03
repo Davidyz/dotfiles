@@ -54,10 +54,6 @@ require("nvim-treesitter.configs").setup({
       clear_on_cursor_move = true,
     },
   },
-  rainbow = {
-    enable = true,
-    strategy = require("ts-rainbow").strategy["local"],
-  },
 })
 
 vim.opt.foldmethod = "expr"
