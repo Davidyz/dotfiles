@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Displays hover information about the symbol under the cursor
     -- bufmap("n", "K", vim.lsp.buf.hover)
     local has_telescope, telescope = pcall(require, "telescope.builtin")
-    bufmap("n", "K", show_docs)
+    --bufmap("n", "K", show_docs)
 
     -- Jump to the definition
     bufmap("n", "gd", function(ctx, opts)
@@ -94,7 +94,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     bufmap("n", "<Leader>r", vim.lsp.buf.rename)
 
     -- Selects a code action available at the current cursor position
-    bufmap("n", "<Leader>a", vim.lsp.buf.code_action)
+    --bufmap("n", "<Leader>a", vim.lsp.buf.code_action)
 
     -- Show diagnostics in a floating window
     bufmap("n", "gl", vim.diagnostic.open_float)

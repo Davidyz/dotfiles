@@ -152,7 +152,7 @@ M.plugins = {
     event = "VeryLazy",
   },
   { "andymass/vim-matchup", event = "VeryLazy" },
-  { "HiPhish/nvim-ts-rainbow2", event = "VeryLazy" },
+  --{ "HiPhish/nvim-ts-rainbow2", event = "VeryLazy" },
   {
     "RRethy/vim-illuminate",
     event = "VeryLazy",
@@ -268,6 +268,27 @@ M.plugins = {
     event = "LspAttach",
   },
   { "folke/neodev.nvim", event = "LspAttach", config = true },
+  {
+    "aznhe21/actions-preview.nvim",
+    config = function()
+      vim.keymap.set({ "v", "n" }, "<Leader>a", require("actions-preview").code_actions)
+      require("actions-preview").setup({
+        telescope = {
+          sorting_strategy = "ascending",
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.8,
+            height = 0.9,
+            prompt_position = "top",
+            preview_cutoff = 20,
+            preview_height = function(_, _, max_lines)
+              return max_lines - 15
+            end,
+          },
+        },
+      })
+    end,
+  },
 
   -- dap
   {
@@ -304,6 +325,38 @@ M.plugins = {
   -- misc
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("hover").setup({
+        init = function()
+          -- Require providers
+          require("hover.providers.lsp")
+          -- require('hover.providers.gh')
+          -- require('hover.providers.gh_user')
+          -- require('hover.providers.jira')
+          -- require('hover.providers.man')
+          require("hover.providers.dictionary")
+        end,
+        preview_opts = {
+          border = "double",
+        },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = false,
+        title = true,
+      })
+
+      -- Setup keymaps
+      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+      --vim.keymap.set(
+      --"n",
+      --"gK",
+      --require("hover").hover_select,
+      --{ desc = "hover.nvim (select)" }
+      --)
+    end,
+  },
   {
     "brenoprata10/nvim-highlight-colors",
     config = function()
@@ -359,6 +412,33 @@ M.plugins = {
   },
   { "kyazdani42/nvim-web-devicons", event = "VeryLazy" },
   { "itchyny/vim-gitbranch", event = "VeryLazy" },
+  {
+    "hiphish/rainbow-delimiters.nvim",
+    event = "VeryLazy",
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+      require("rainbow-delimiters.setup")({
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          commonlisp = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+        --blacklist = { "c", "cpp" },
+      })
+    end,
+  },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
