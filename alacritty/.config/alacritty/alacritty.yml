@@ -108,17 +108,17 @@ colors:
 font:
   # The normal (roman) font face to use.
   normal:
-    family: Caskaydia Cove Nerd Font
+    family: CaskaydiaCove NF
     style: Regular
 
   # The bold font face
   bold:
-    family: CaskaydiaCove Nerd Font
+    family: CaskaydiaCove NF
     style: Bold
 
   # The italic font face
   italic:
-    family: CaskaydiaCove Nerd Font
+    family: CaskaydiaCove NF
     style: Italic
   size: 13
 
