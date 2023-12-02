@@ -1,5 +1,5 @@
 SERVER = neovim zsh lsd
-PC = $(SERVER) alacritty chrome
+PC = $(SERVER) alacritty chrome wezterm
 DEPENDENCIES = stow git python3 pip npm fzf
 WINDOWS = neovim
 
