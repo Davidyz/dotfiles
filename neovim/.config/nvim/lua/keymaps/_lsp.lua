@@ -125,6 +125,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         { name = "luasnip", keyword_length = 2 },
         { name = "nvim_lsp_signature_help" },
         { name = "zsh" },
+        { name = "copilot", group_index = 2 },
       },
       window = {
         documentation = cmp.config.window.bordered(window_style),

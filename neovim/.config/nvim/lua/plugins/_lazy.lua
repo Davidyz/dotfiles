@@ -185,7 +185,7 @@ M.plugins = {
     event = "VeryLazy",
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     config = require("plugins.null_ls"),
     event = "VeryLazy",
   },
@@ -285,6 +285,81 @@ M.plugins = {
               return max_lines - 15
             end,
           },
+        },
+      })
+    end,
+  },
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup({
+        prompt_func_return_type = {
+          go = false,
+          java = false,
+
+          cpp = false,
+          c = false,
+          h = false,
+          hpp = false,
+          cxx = false,
+        },
+        prompt_func_param_type = {
+          go = false,
+          java = false,
+
+          cpp = false,
+          c = false,
+          h = false,
+          hpp = false,
+          cxx = false,
+        },
+        printf_statements = {},
+        print_var_statements = {},
+      })
+      require("telescope").load_extension("refactoring")
+
+      vim.keymap.set("x", "<leader>ef", function()
+        require("refactoring").refactor("Extract Function")
+      end)
+      vim.keymap.set("x", "<leader>ev", function()
+        require("refactoring").refactor("Extract Variable")
+      end)
+    end,
+    event = "LspAttach",
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    event = "LspAttach",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+  {
+    "onsails/lspkind.nvim",
+    event = "LspAttach",
+    config = function()
+      local lspkind = require("lspkind")
+      local cmp = require("cmp")
+      cmp.setup({
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol_text",
+            maxwidth = 50,
+            ellipsis_char = "...",
+          }),
         },
       })
     end,
