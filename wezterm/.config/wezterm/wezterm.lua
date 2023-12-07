@@ -6,7 +6,10 @@ if wezterm.config_builder then
 end
 
 --config.color_scheme = "OneHalfDark"
-config.colors, _ = wezterm.color.load_scheme("~/.config/wezterm/onedarkpro.toml")
+local onedark_colors, _ =
+  wezterm.color.load_scheme(os.getenv("HOME") .. "/.config/wezterm/onedarkpro.toml")
+
+config.colors = onedark_colors
 
 config.font = wezterm.font("CaskaydiaCove NF")
 config.font_size = 13
