@@ -283,3 +283,6 @@ cython_debug/
 #.idea/
 
 lazy-lock.json
+
+.dotter/cache*
+.dotter/local.toml
