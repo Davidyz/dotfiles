@@ -41,8 +41,12 @@ return
         }
         else{
             Run, wezterm-gui.exe, , UseErrorLevel
+            WinWaitActive, ahk_exe wezterm-gui.exe
+            WinSet, Top, , ahk_exe wezterm-gui.exe
             if (ErrorLevel = "ERROR") 
                 Run, wt.exe, , Max
+                WinWaitActive, ahk_exe WindowsTerminal.exe
+                WinSet, Top, , ahk_exe WindowsTerminal.exe
         }
     }
 return
