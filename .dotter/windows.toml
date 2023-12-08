@@ -1,0 +1,3 @@
+[neovim.files]
+"neovim/init.lua" = "~/AppData/Local/nvim/init.lua"
+"neovim/lua" = "~/AppData/Local/nvim/lua"
