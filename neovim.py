@@ -158,8 +158,11 @@ if __name__ == "__main__":
             else:
                 print("Neovim executable is not found.")
                 exit(1)
-
-        os.system("python -m pip install -U neovim pynvim")
+        
+        try:
+            import pynvim
+        except ImportError:
+            os.system("python -m pip install -U neovim pynvim")
         if subprocess.run("npm list -g neovim".split()).returncode != 0:
             os.system("sudo npm install -g neovim")
         pre()
