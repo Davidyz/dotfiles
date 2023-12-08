@@ -47,10 +47,20 @@ config.keys = {
   { key = "-", mods = "ALT", action = action.ScrollByLine(-1) },
   { key = "_", mods = "ALT|SHIFT", action = action.ScrollByPage(-1) },
   { key = "+", mods = "ALT|SHIFT", action = action.ScrollByPage(1) },
+  { key = "s", mods = "ALT", action = action.ShowLauncher },
 }
 wezterm.on("gui-startup", function(cmd)
   local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()
 end)
+
+if string.find(wezterm.target_triple, "windows") ~= nil then
+  config.default_prog = {
+    (os.getenv("SystemRoot") or "C:\\Windows\\")
+      .. "\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "-NoLogo",
+  }
+elseif string.find(wezterm.target_triple, "linux") ~= nil then
+end
 
 return config
