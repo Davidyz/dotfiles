@@ -1,0 +1,20 @@
+[neovim.files]
+"neovim/init.lua" = "~/.config/nvim/init.lua"
+"neovim/lua" = "~/.config/nvim/lua"
+
+[zsh.files]
+"zsh/.zshrc" = "~/.zshrc"
+"zsh/.p10k.zsh" = "~/.p10k.zsh"
+
+[alacritty.files]
+"alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
+
+[chrome.files]
+"chrome/chrome-flags.conf" = "~/.config/chrome-flags.conf"
+
+[lsd.files]
+"lsd/config.yaml" = "~/.config/lsd/config.yaml"
+
+[wezterm.files]
+"wezterm/wezterm.lua" = "~/.config/wezterm/wezterm.lua"
+"wezterm/onedarkpro.toml" = "~/.config/wezterm/onedarkpro.toml"
