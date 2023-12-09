@@ -25,6 +25,16 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
   ["lua_ls"] = function()
+    local runtime_path = vim.split(package.path, ";")
+    table.insert(runtime_path, "?.lua")
+    table.insert(runtime_path, "?/init.lua")
+    table.insert(runtime_path, "lua/?.lua")
+    table.insert(runtime_path, "lua/?/init.lua")
+
+    local libs = vim.api.nvim_get_runtime_file("", true)
+    if string.find(vim.fn.expand("%:p"), "wezterm") then
+      table.insert(libs, vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/"))
+    end
     require("lspconfig")["lua_ls"].setup({
       flags = { debounce_text_changes = 150 },
       settings = {
@@ -46,7 +56,7 @@ require("mason-lspconfig").setup_handlers({
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
+            library = libs,
             checkThirdParty = false,
           },
           -- Do not send telemetry data containing a randomized but unique identifier
