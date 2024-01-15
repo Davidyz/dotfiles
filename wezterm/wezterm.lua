@@ -13,8 +13,8 @@ local onedark_colors, _ = wezterm.color.load_scheme(
 config.colors = onedark_colors
 
 config.font = wezterm.font_with_fallback({
-  "Cascadia Mono PL",
   "CaskaydiaCove NF",
+  "Cascadia Mono PL",
   "Noto Sans Mono",
 })
 config.font_size = 13
