@@ -7,6 +7,10 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
   require("cmp_nvim_lsp").default_capabilities()
 )
 lsp_defaults.capabilities.offsetEncoding = "utf-8"
+lsp_defaults.capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
@@ -17,6 +21,7 @@ require("mason-lspconfig").setup_handlers({
       flags = { debounce_text_changes = 150 },
       single_file_support = true,
       capabilities = lsp_defaults.capabilities,
+
       on_attach = function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
           require("nvim-navic").attach(client, bufnr)

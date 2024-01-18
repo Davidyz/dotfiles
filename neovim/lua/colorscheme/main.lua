@@ -27,6 +27,6 @@ onedark.setup({
     terminal_colors = true,
     highlight_inactive_windows = true,
   },
-  plugins = { treesitter = true },
+  plugins = { treesitter = true, nvim_lsp = true, all = true },
 })
 onedark.load()

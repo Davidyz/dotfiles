@@ -124,6 +124,20 @@ M.plugins = {
       })
       onedark.load()
     end,
+    enabled = true,
+  },
+  {
+    "Mofiqul/vscode.nvim",
+    config = function()
+      local c = require("vscode.colors").get_colors()
+      require("vscode").setup({
+        transparent = true,
+        italic_comments = true,
+        disable_nvimtree_bg = true,
+      })
+      require("vscode").load()
+    end,
+    enabled = false,
   },
 
   -- tree sitter
@@ -152,7 +166,6 @@ M.plugins = {
     event = "VeryLazy",
   },
   { "andymass/vim-matchup", event = "VeryLazy" },
-  --{ "HiPhish/nvim-ts-rainbow2", event = "VeryLazy" },
   {
     "RRethy/vim-illuminate",
     event = "VeryLazy",
@@ -364,6 +377,14 @@ M.plugins = {
       })
     end,
   },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    config = function()
+      require("plugins._ufo")
+    end,
+    event = "LspAttach",
+  },
 
   -- dap
   {
@@ -400,6 +421,15 @@ M.plugins = {
   -- misc
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
+  --{ "altermo/nxwm" },
+  {
+    "gorbit99/codewindow.nvim",
+    config = function()
+      local codewindow = require("codewindow")
+      codewindow.setup({ window_border = "double" })
+      codewindow.apply_default_keybinds()
+    end,
+  },
   {
     "lewis6991/hover.nvim",
     config = function()
@@ -489,18 +519,23 @@ M.plugins = {
   { "itchyny/vim-gitbranch", event = "VeryLazy" },
   {
     "hiphish/rainbow-delimiters.nvim",
-    event = "VeryLazy",
+    --event = "VeryLazy",
     config = function()
       local rainbow_delimiters = require("rainbow-delimiters")
-      require("rainbow-delimiters.setup")({
+
+      vim.g.rainbow_delimiters = {
         strategy = {
           [""] = rainbow_delimiters.strategy["global"],
-          commonlisp = rainbow_delimiters.strategy["local"],
+          vim = rainbow_delimiters.strategy["local"],
         },
         query = {
           [""] = "rainbow-delimiters",
           lua = "rainbow-blocks",
         },
+        --priority = {
+        --[""] = 110,
+        --lua = 210,
+        --},
         highlight = {
           "RainbowDelimiterRed",
           "RainbowDelimiterYellow",
@@ -510,8 +545,7 @@ M.plugins = {
           "RainbowDelimiterViolet",
           "RainbowDelimiterCyan",
         },
-        --blacklist = { "c", "cpp" },
-      })
+      }
     end,
   },
   {
@@ -524,6 +558,12 @@ M.plugins = {
         -- for example, context is off by default, use this to turn it on
         exclude = {
           filetypes = { "startify", "help", "nerdtree", "alpha" },
+        },
+        scope = {
+          enabled = true,
+          show_exact_scope = false,
+          show_start = false,
+          show_end = false,
         },
       })
     end,
