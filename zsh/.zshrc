@@ -216,12 +216,6 @@ unsetopt null_glob
 unsetopt csh_null_glob
 setopt nonomatch
 
-if ! command -v thefuck > /dev/null && command -v pip3 > /dev/null ; then
-    pip3 install thefuck
-fi
-
-eval $(thefuck --alias)
-
 bindkey '^[[1;2C' forward-word
 bindkey '^[[1;2D' backward-word
 
@@ -352,4 +346,8 @@ if command -v pacman > /dev/null 2> /dev/null ; then
         fi
         return 127
     }
+fi
+
+if command -v sx > /dev/null && command -v wezterm > /dev/null; then
+    alias sx_nxwm="sx wezterm -n --config enable_tab_bar=false --config window_padding='{left=0,right=0,top=0,bottom=0}' start nvim -c 'lua require\"nxwm\".start()' "
 fi
