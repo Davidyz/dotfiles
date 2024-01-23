@@ -41,7 +41,7 @@ config.keys = {
   { key = "t", mods = "ALT", action = action.SpawnTab("CurrentPaneDomain") },
   { key = "PageUp", mods = "ALT|SHIFT", action = action.MoveTabRelative(-1) },
   { key = "PageDown", mods = "ALT|SHIFT", action = action.MoveTabRelative(1) },
-  { key = "w", mods = "CTRL", action = action.CloseCurrentTab({ confirm = false }) },
+  { key = "w", mods = "ALT", action = action.CloseCurrentTab({ confirm = false }) },
   { key = "+", mods = "CTRL", action = action.IncreaseFontSize },
   { key = "-", mods = "CTRL", action = action.DecreaseFontSize },
   { key = "0", mods = "CTRL", action = action.ResetFontSize },
