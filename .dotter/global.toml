@@ -21,3 +21,6 @@
 
 [ahk.files]
 "autohotkeys/app_runner.ahk" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/app_runner.ahk"
+
+[presenterm.files]
+"presenterm/config.yaml" = "~/.config/presenterm/config.yaml"
