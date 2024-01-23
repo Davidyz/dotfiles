@@ -3,4 +3,4 @@ options:
   command_prefix: "cmd:"
 
 defaults:
-  theme: dark
+  theme: 'dark'
