@@ -20,6 +20,7 @@ npairs.add_rule(Rule("```", "```", "pandoc"))
 npairs.add_rule(Rule("${", "}$", "markdown"))
 npairs.add_rule(Rule("$${", "}$$", "markdown"))
 npairs.add_rule(Rule("```", "```", "markdown"))
+npairs.add_rule(Rule("<!--", "-->", "markdown"))
 
 npairs.add_rule(Rule("${", "}$", "tex"))
 npairs.add_rule(Rule("$${", "}$$", "tex"))
