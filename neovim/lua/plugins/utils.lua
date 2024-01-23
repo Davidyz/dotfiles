@@ -1,10 +1,10 @@
 M = {}
 
 M.mason_packages = {
-  "autopep8",
-  "autoflake",
-  "black",
-  "flake8",
+  --"autopep8",
+  --"autoflake",
+  --"black",
+  --"flake8",
   "clang-format",
   "cmakelang",
   "shellcheck",
@@ -15,6 +15,7 @@ M.mason_packages = {
   "vim-language-server",
   "bash-language-server",
   "pyright",
+  "ruff",
   "isort",
   "jq",
   "clangd",
