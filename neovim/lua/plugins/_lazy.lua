@@ -775,6 +775,30 @@ M.plugins = {
       require("executable-checker").setup({ executables = { "rg", "node" } })
     end,
   },
+  {
+    "3rd/image.nvim",
+    filetypes = { "markdown" },
+    build = "luarocks --local --lua-version 5.1 install magick",
+    config = function()
+      package.path = package.path
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?/init.lua;"
+      package.path = package.path
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?.lua;"
+      require("image").setup({
+        backend = "kitty",
+        max_width_window_percentage = 200 / 3,
+        integrations = {
+          markdown = {
+            clear_in_insert_mode = true,
+          },
+        },
+      })
+    end,
+  },
 }
 
 M.config = {
