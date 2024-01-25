@@ -1,6 +1,3 @@
 options:
   implicit_slide_ends: true
   command_prefix: "cmd:"
-
-defaults:
-  theme: 'dark'
