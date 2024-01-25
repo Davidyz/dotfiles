@@ -219,7 +219,14 @@ M.plugins = {
   { "hrsh7th/cmp-path", event = "LspAttach" },
   { "hrsh7th/cmp-cmdline", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lua", event = "LspAttach" },
-  { "L3MON4D3/LuaSnip", event = "LspAttach" },
+  {
+    "L3MON4D3/LuaSnip",
+    event = "LspAttach",
+    config = function()
+      require("plugins.snippets")
+      require("keymaps.snippets")
+    end,
+  },
   { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
   { "rafamadriz/friendly-snippets", event = "LspAttach" },
   {
@@ -779,6 +786,10 @@ M.plugins = {
     "3rd/image.nvim",
     filetypes = { "markdown" },
     build = "luarocks --local --lua-version 5.1 install magick",
+    cond = function()
+      local ok, _ = pcall(require, "magick")
+      return ok and vim.fn.executable("magick") ~= 0 and utils.no_vscode()
+    end,
     config = function()
       package.path = package.path
         .. ";"

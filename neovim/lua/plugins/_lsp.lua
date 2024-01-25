@@ -1,5 +1,6 @@
 local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
+local lsp_utils = lspconfig.util
 
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   "force",
@@ -17,7 +18,7 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 require("mason-lspconfig").setup({ autostart = true })
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
-    require("lspconfig")[server_name].setup({
+    local server_config = {
       flags = { debounce_text_changes = 150 },
       single_file_support = true,
       capabilities = lsp_defaults.capabilities,
@@ -27,7 +28,11 @@ require("mason-lspconfig").setup_handlers({
           require("nvim-navic").attach(client, bufnr)
         end
       end,
-    })
+    }
+    if server_name == "rust_analyzer" then
+      server_config.root_dir = lsp_utils.root_pattern("Cargo.toml", ".git")
+    end
+    require("lspconfig")[server_name].setup(server_config)
   end,
   ["lua_ls"] = function()
     local runtime_path = vim.split(package.path, ";")

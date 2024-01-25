@@ -170,6 +170,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             cmp.select_next_item(select_opts)
           elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
             fallback()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
           else
             cmp.complete()
           end

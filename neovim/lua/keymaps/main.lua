@@ -3,6 +3,7 @@ local utils = require("_utils")
 local items = {
   "keymaps.global",
 
+  "keymaps.toggleterm",
   -- "keymaps.copilot",
   -- "keymaps.dap",
   -- "keymaps.golden_view",
