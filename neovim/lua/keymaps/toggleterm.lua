@@ -1,0 +1,27 @@
+local Terminal = require("toggleterm.terminal").Terminal
+--local ipython = function()
+--local command = "python"
+--if vim.fn.executable("ipython") ~= 0 then
+--command = "ipython"
+--end
+--Terminal:new({
+--cmd = command,
+--hidden = true,
+--on_open = function(term)
+--vim.cmd("startinsert!")
+--vim.api.nvim_buf_set_keymap(
+--term.bufnr,
+--"n",
+--"<C-|>",
+--"<cmd>close<CR>",
+--{ noremap = true, silent = true }
+--)
+--end,
+--}):toggle()
+--end
+
+--vim.api.nvim_set_keymap("n", "<C-|>", "", {
+--noremap = true,
+--silent = true,
+--callback = ipython,
+--})
