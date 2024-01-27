@@ -20,6 +20,7 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"
+export PATH="/home/davidyz/perl5/bin${PATH:+:${PATH}}"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -97,7 +98,6 @@ plugins=(
     zsh-syntax-highlighting
     extract
     sudo
-    pipenv
     virtualenv
     mvn
     ufw
@@ -109,6 +109,7 @@ plugins=(
     zsh-autopair
     yarn
     colored-man-pages
+    pipenv
 )
 
 
@@ -282,7 +283,6 @@ function omz_termsupport_preexec {
     title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
 }
 
-PATH="/home/davidyz/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/davidyz/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/davidyz/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/davidyz/perl5\""; export PERL_MB_OPT;
@@ -351,3 +351,5 @@ fi
 if command -v sx > /dev/null && command -v wezterm > /dev/null; then
     alias sx_nxwm="sx wezterm -n --config enable_tab_bar=false --config window_padding='{left=0,right=0,top=0,bottom=0}' start nvim -c 'lua require\"nxwm\".start()' "
 fi
+
+command -v ranger > /dev/null 2> /dev/null && export RANGER_LOAD_DEFAULT_RC=false

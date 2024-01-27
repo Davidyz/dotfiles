@@ -24,3 +24,7 @@
 
 [presenterm.files]
 "presenterm/config.yaml" = "~/.config/presenterm/config.yaml"
+"presenterm/themes" = "~/.config/presenterm/themes/"
+
+[ranger.files]
+"ranger/" = "~/.config/ranger/"
