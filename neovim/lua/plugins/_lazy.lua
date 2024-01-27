@@ -546,6 +546,15 @@ M.plugins = {
     end,
   },
   {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    cond = function()
+      return utils.no_vscode()
+        and os.execute("make") ~= 0
+        and (os.execute("gcc") + os.execute("clang") ~= 0)
+    end,
+  },
+  {
     "nvim-lualine/lualine.nvim",
     cond = utils.no_vscode,
     config = function()
