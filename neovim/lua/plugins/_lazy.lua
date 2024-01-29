@@ -551,7 +551,7 @@ M.plugins = {
     cond = function()
       return utils.no_vscode()
         and os.execute("make") ~= 0
-        and (os.execute("gcc") + os.execute("clang") ~= 0)
+        and (vim.fn.executable("gcc") + vim.fn.executable("clang") ~= 0)
     end,
   },
   {
