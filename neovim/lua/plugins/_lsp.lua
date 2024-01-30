@@ -24,6 +24,10 @@ require("mason-lspconfig").setup_handlers({
       capabilities = lsp_defaults.capabilities,
 
       on_attach = function(client, bufnr)
+        if client.server_capabilities.inlayHintProvider then
+          vim.g.inlay_hints_visible = true
+          vim.lsp.inlay_hint.enable(bufnr, true)
+        end
         if client.server_capabilities.documentSymbolProvider then
           require("nvim-navic").attach(client, bufnr)
         end
@@ -67,6 +71,7 @@ require("mason-lspconfig").setup_handlers({
           workspace = {
             -- Make the server aware of Neovim runtime files
             library = libs,
+            useGitIgnore = true,
             checkThirdParty = false,
           },
           -- Do not send telemetry data containing a randomized but unique identifier
