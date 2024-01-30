@@ -65,9 +65,9 @@ vim.opt.foldlevel = 50
 vim.api.nvim_set_hl(0, "MatchParen", { link = "TermCursorNC" })
 
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
-vim.api.nvim_set_option("updatetime", 50)
+vim.o.updatetime = 50
 if vim.fn.has("nvim-0.7") ~= 0 then
-  vim.api.nvim_set_option("laststatus", 3)
+  vim.o.laststatus = 3
 end
 
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -91,18 +91,6 @@ for command, package in pairs({ nvr = "neovim-remote", ipython = "ipython" }) do
       })
       :start()
   end
-end
-
-if vim.fn.executable("stylua") == 0 and vim.fn.executable("luarocks") > 0 then
-  job
-    :new({
-      command = "luarocks",
-      args = { "install", "--local", "stylua" },
-      on_exit = function()
-        print("stylua has been installed.")
-      end,
-    })
-    :start()
 end
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
