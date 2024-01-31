@@ -8,8 +8,6 @@ require("nvim-autopairs").setup({
   map_cr = false,
 })
 
-_G.MUtils = {}
-
 npairs.add_rule(Rule("'''", "'''", "python"))
 npairs.add_rule(Rule('"""', '"""', "python"))
 
@@ -28,9 +26,6 @@ npairs.add_rule(Rule("$${", "}$$", "tex"))
 npairs.add_rule(Rule("if then", "fi", "make"))
 npairs.add_rule(Rule("for do", "done", "make"))
 
-vim.api.nvim_set_keymap(
-  "i",
-  "<CR>",
-  "",
-  { expr = true, noremap = true, callback = MUtils.completion_confirm }
-)
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local cmp = require("cmp")
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())

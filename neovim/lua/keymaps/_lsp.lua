@@ -5,7 +5,6 @@ end
 local window_style = {
   border = "single",
 }
-
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 local bufmap = function(mode, lhs, rhs)
@@ -137,7 +136,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
       mapping = {
         ["<CR>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+            cmp.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            })
           else
             local cr = vim.api.nvim_replace_termcodes("<cr>", true, true, true)
             vim.api.nvim_feedkeys(cr, "n", false)
@@ -186,6 +188,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { "i", "s" }),
       },
     })
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
   end,
 })
