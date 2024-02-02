@@ -20,6 +20,7 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"
+export ZSH_CUSTOM="$ZSH/custom/"
 export PATH="/home/davidyz/perl5/bin${PATH:+:${PATH}}"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -82,6 +83,11 @@ HIST_STAMPS="dd/mm/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 #ZSH_CUSTOM=/path/to/new-custom-folder
 
+if command -v pdm > /dev/null 2> /dev/null && [ ! -d $ZSH_CUSTOM/plugins/pdm ]; then
+    mkdir $ZSH_CUSTOM/plugins/pdm
+    pdm completion zsh > $ZSH_CUSTOM/plugins/pdm/_pdm
+fi
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -110,6 +116,7 @@ plugins=(
     yarn
     colored-man-pages
     pipenv
+    pdm
 )
 
 
