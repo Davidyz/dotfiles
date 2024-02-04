@@ -11,7 +11,7 @@ local onedark_colors, _ = wezterm.color.load_scheme(
 )
 
 config.colors = onedark_colors
-
+config.front_end = "WebGpu"
 config.font = wezterm.font_with_fallback({
   "CaskaydiaCove NF",
   "Cascadia Mono PL",

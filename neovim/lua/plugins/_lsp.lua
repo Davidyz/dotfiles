@@ -90,3 +90,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.api.nvim_win_set_config(0, { border = "double" })
   end,
 })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "PKGBUILD",
+  callback = function()
+    if vim.fn.executable("termux-language-server") == 1 then
+      require("lspconfig").pkgbuild_language_server.setup({
+        cmd = { "termux-language-server", "--convert", "PKGBUILD" },
+        filetypes = { "sh" },
+      })
+    end
+  end,
+})
