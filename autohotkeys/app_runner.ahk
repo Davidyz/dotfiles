@@ -18,35 +18,29 @@ SetWinDelay, 0
     }
     else
         Run, firefox.exe ,,Max
+    WinShow, ahk_exe firefox.exe
 return
 
 #Enter::
-    terminal := WinExist("ahk_exe wezterm-gui.exe")
-    if (terminal) 
+EnvGet, path, Path ; Get the value of the PATH variable
+Loop, Parse, path, `; ; Loop through each path in the PATH variable
+{
+    If FileExist(A_LoopField "\wezterm.exe") ; Check if wezterm is in the current path
     {
-        active := WinActive("ahk_id " terminal)
-        if (active)
-            WinMinimize, ahk_id %active%
-        else
-            WinActivate, ahk_id %terminal%
+        Run, % A_LoopField "\wezterm.exe" ; Run wezterm
+        WinWait, ahk_exe wezterm.exe ; Wait for the window to appear
+        WinMaximize ; Maximize the window
+        DllCall("SetWindowPos", "uint", WinExist("A"), "uint", 0, "int", 0, "int", 0, "int", 0, "int", 0, "uint", 0x10) ; Set the window on the top without activating it
+        return ; Exit the loop
     }
-    else{
-        terminal := WinExist("ahk_exe WindowsTerminal.exe")
-        if (terminal){   
-            active := WinActive("ahk_id " terminal)
-            if (active)
-                WinMinimize, ahk_id %active%
-            else
-                WinActivate, ahk_id %terminal%
-        }
-        else{
-            Run, wezterm-gui.exe, , UseErrorLevel
-            WinWaitActive, ahk_exe wezterm-gui.exe
-            WinSet, Top, , ahk_exe wezterm-gui.exe
-            if (ErrorLevel = "ERROR") 
-                Run, wt.exe, , Max
-                WinWaitActive, ahk_exe WindowsTerminal.exe
-                WinSet, Top, , ahk_exe WindowsTerminal.exe
-        }
+    If FileExist(A_LoopField "\wt.exe") ; Check if windows terminal is in the current path
+    {
+        Run, % A_LoopField "\wt.exe" ; Run windows terminal
+        WinWait, ahk_exe wt.exe ; Wait for the window to appear
+        WinMaximize ; Maximize the window
+        DllCall("SetWindowPos", "uint", WinExist("A"), "uint", 0, "int", 0, "int", 0, "int", 0, "int", 0, "uint", 0x10) ; Set the window on the top without activating it
+        return ; Exit the loop
     }
+}
 return
+
