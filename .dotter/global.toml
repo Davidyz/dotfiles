@@ -21,6 +21,7 @@
 
 [ahk.files]
 "autohotkeys/app_runner.ahk" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/app_runner.ahk"
+"autohotkeys/tiling.ahk" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/tiling.ahk"
 
 [presenterm.files]
 "presenterm/config.yaml" = "~/.config/presenterm/config.yaml"
