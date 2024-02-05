@@ -25,9 +25,9 @@ return
 EnvGet, path, Path ; Get the value of the PATH variable
 Loop, Parse, path, `; ; Loop through each path in the PATH variable
 {
-    If FileExist(A_LoopField "\wezterm.exe") ; Check if wezterm is in the current path
+    If FileExist(A_LoopField "\wezterm-gui.exe") ; Check if wezterm is in the current path
     {
-        Run, % A_LoopField "\wezterm.exe" ; Run wezterm
+        Run, % A_LoopField "\wezterm-gui.exe" ; Run wezterm
         WinWait, ahk_exe wezterm.exe ; Wait for the window to appear
         WinMaximize ; Maximize the window
         DllCall("SetWindowPos", "uint", WinExist("A"), "uint", 0, "int", 0, "int", 0, "int", 0, "int", 0, "uint", 0x10) ; Set the window on the top without activating it
