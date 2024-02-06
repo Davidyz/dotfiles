@@ -4,6 +4,29 @@ local utils = require("_utils")
 M.plugins = {
   -- filetypes
   {
+    "lervag/vimtex",
+    ft = { "tex" },
+    lazy = true,
+    cond = utils.no_vscode,
+    config = function()
+      require("executable-checker").add_executable("zathura")
+      require("executable-checker").add_executable("xdotool")
+
+      if vim.fn.executable("zathura") then
+        vim.g.vimtex_view_method = "zathura"
+      else
+        vim.g.vimtex_view_method = "general"
+        vim.g.vimtex_view_general_viewer = "firefox"
+      end
+      vim.api.nvim_create_autocmd(
+        { "BufEnter", "BufWritePost" },
+        { command = "VimtexView", pattern = "*.tex" }
+      )
+      --vim.g.vimtex_view_general_viewer = "okular"
+      --vim.g.vimtex_view_general_options = "--unique file:@pdf#src:@line@tex"
+    end,
+  },
+  {
     "shiracamus/vim-syntax-x86-objdump-d",
     cond = function()
       return vim.fn.executable("objdump") ~= 0

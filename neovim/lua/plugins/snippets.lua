@@ -22,20 +22,32 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 ls.setup({})
 
 ls.add_snippets("markdown", {
-  snippet({ trig = "cmd:", dscr = "Insert a blank line." }, {
+  snippet({ trig = "cmd:new_line", dscr = "Insert a blank line." }, {
     text("<!-- cmd: new_line -->"),
     insert(0),
   }),
   snippet(
-    { trig = "cmd:", dscr = "Insert blank lines." },
-    fmt("<!-- cmd: new_lines: {} -->", insert(1, "x"))
+    { trig = "cmd:new_lines", dscr = "Insert blank lines." },
+    fmt("<!-- cmd: new_lines: {} -->", insert(1, "num_lines"))
   ),
-  snippet({ trig = "cmd:", dscr = "Insert a page break." }, {
+  snippet({ trig = "cmd:end_slide", dscr = "Insert a page break." }, {
     text("<!-- cmd: end_slide -->"),
     insert(0),
   }),
-  snippet({ trig = "cmd:", dscr = "Insert a pause." }, {
+  snippet({ trig = "cmd:pause", dscr = "Insert a pause." }, {
     text("<!-- cmd: pause -->"),
+    insert(0),
+  }),
+  snippet(
+    { trig = "cmd:col_layout", dscr = "Column layout" },
+    fmt("<!-- cmd: column_layout: [{}] -->", insert(1, "layout"))
+  ),
+  snippet(
+    { trig = "cmd:col", dscr = "Start a column" },
+    fmt("<!-- cmd: column: {} -->", insert(1, "column_id"))
+  ),
+  snippet({ trig = "cmd:reset_col", dscr = "Reset column layout" }, {
+    text("<!-- cmd: reset_layout -->"),
     insert(0),
   }),
   snippet(

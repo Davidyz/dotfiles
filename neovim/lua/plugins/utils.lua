@@ -25,6 +25,8 @@ M.mason_packages = {
   "yaml-language-server",
   "typescript-language-server",
   "html-lsp",
+  "latexindent",
+  "grammarly-languageserver",
 }
 
 local conditionals = {
@@ -33,14 +35,18 @@ local conditionals = {
   rustc = "rust-analyzer",
   javac = "jdtls",
   tex = "texlab",
-  pdflatex = "texlab",
+  pdflatex = { "texlab", "latexindent", "bibclean" },
   docker = "dockerfile-language-server",
   cmake = "cmake-language-server",
 }
 
 for exe, ls in pairs(conditionals) do
   if vim.fn.executable(exe) ~= 0 then
-    table.insert(M.mason_packages, ls)
+    if type(ls) == "string" then
+      table.insert(M.mason_packages, ls)
+    elseif type(ls) == "table" then
+      vim.tbl_extend("keep", M.mason_packages, ls)
+    end
   end
 end
 

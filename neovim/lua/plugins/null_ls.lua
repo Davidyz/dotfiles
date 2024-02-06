@@ -39,6 +39,7 @@ return function()
       --null_ls.builtins.diagnostics.mypy,
       null_ls.builtins.diagnostics.ruff,
       null_ls.builtins.diagnostics.clang_check,
+      null_ls.builtins.formatting.bibclean,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)

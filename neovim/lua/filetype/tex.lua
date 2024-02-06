@@ -1,3 +1,5 @@
+local utils = require("_utils")
+
 local tex_errors = function()
   local diags = vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
   if not diags then
@@ -44,3 +46,31 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     vim.wo.linebreak = true
   end,
 })
+
+if
+  utils.all({ "xargs", "pgrep", "zathura" }, function(arg)
+    return vim.fn.executable(arg) == 1
+  end)
+then
+  vim.api.nvim_create_autocmd({ "BufLeave", "VimLeave" }, {
+    pattern = "*.tex",
+    callback = function()
+      local tex_buffer_open = false
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if
+          --vim.api.nvim_buf_is_loaded(buf)
+          --and string.match(vim.api.nvim_buf_get_name(buf), "%.tex$")
+          string.match(vim.api.nvim_buf_get_name(buf), "%.tex$")
+        then
+          tex_buffer_open = true
+          break
+        end
+      end
+
+      if not tex_buffer_open then
+        local cmd = "pgrep zathura | xargs kill -9"
+        vim.fn.system(cmd)
+      end
+    end,
+  })
+end
