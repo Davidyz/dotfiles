@@ -20,7 +20,7 @@ local default_server_config = {
   capabilities = lsp_defaults.capabilities,
 
   on_attach = function(client, bufnr)
-    if client.server_capabilities.inlayHintProvider then
+    if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
       vim.g.inlay_hints_visible = true
       vim.lsp.inlay_hint.enable(bufnr, true)
     end
