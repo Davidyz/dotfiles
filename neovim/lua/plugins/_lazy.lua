@@ -203,35 +203,6 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "MatchParen" })
     end,
   },
-  {
-    "ofseed/dance.nvim",
-    filetypes = "python",
-    cond = function()
-      return vim.fn.executable("delance-langserver") ~= 0
-        and not (vim.tbl_contains({ vim.fs.pathjoin, vim.uv, vim.system }, nil))
-    end,
-    config = function()
-      require("dance").setup({})
-      local lspconfig = require("lspconfig")
-      lspconfig.pyright.setup({
-        cmd = { "delance-langserver", "--stdio" },
-        settings = {
-          python = {
-            analysis = {
-              typeCheckingMode = "off",
-              inlayHints = {
-                callArgumentNames = "all",
-                functionReturnTypes = true,
-                pytestParameters = true,
-                variableTypes = true,
-              },
-              autoFormatStrings = true,
-            },
-          },
-        },
-      })
-    end,
-  },
 
   -- mason
   {

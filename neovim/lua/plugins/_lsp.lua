@@ -79,6 +79,32 @@ require("mason-lspconfig").setup_handlers({
     })
     require("lspconfig")["lua_ls"].setup(lua_config)
   end,
+  ["pyright"] = function()
+    local lspconfig = require("lspconfig")
+    local lang_server = "pyright-langserver"
+    if vim.fn.executable("delance-langserver") ~= 0 then
+      lang_server = "delance-langserver"
+    end
+
+    local pyright_config = vim.tbl_deep_extend("force", default_server_config, {
+      cmd = { lang_server, "--stdio" },
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "off",
+            inlayHints = {
+              callArgumentNames = "all",
+              functionReturnTypes = true,
+              pytestParameters = true,
+              variableTypes = true,
+            },
+            autoFormatStrings = true,
+          },
+        },
+      },
+    })
+    lspconfig.pyright.setup(pyright_config)
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
