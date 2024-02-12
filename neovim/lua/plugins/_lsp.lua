@@ -14,60 +14,56 @@ lsp_defaults.capabilities.textDocument.foldingRange = {
 }
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
+local default_server_config = {
+  flags = { debounce_text_changes = 150 },
+  single_file_support = true,
+  capabilities = lsp_defaults.capabilities,
+
+  on_attach = function(client, bufnr)
+    if client.server_capabilities.inlayHintProvider then
+      vim.g.inlay_hints_visible = true
+      vim.lsp.inlay_hint.enable(bufnr, true)
+    end
+    if client.server_capabilities.documentSymbolProvider then
+      require("nvim-navic").attach(client, bufnr)
+    end
+  end,
+}
 
 require("mason-lspconfig").setup({ autostart = true })
 require("mason-lspconfig").setup_handlers({
   function(server_name) -- default handler (optional)
-    local server_config = {
-      flags = { debounce_text_changes = 150 },
-      single_file_support = true,
-      capabilities = lsp_defaults.capabilities,
-
-      on_attach = function(client, bufnr)
-        if client.server_capabilities.inlayHintProvider then
-          vim.g.inlay_hints_visible = true
-          vim.lsp.inlay_hint.enable(bufnr, true)
-        end
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, bufnr)
-        end
-      end,
-    }
     if server_name == "rust_analyzer" then
-      server_config.root_dir = lsp_utils.root_pattern("Cargo.toml", ".git")
+      default_server_config.root_dir = lsp_utils.root_pattern("Cargo.toml", ".git")
     end
-    require("lspconfig")[server_name].setup(server_config)
+    require("lspconfig")[server_name].setup(default_server_config)
+  end,
+  ["texlab"] = function()
+    default_server_config.settings = {
+      texlab = {
+        formatterLineLength = 88,
+        latexindent = {
+          ["local"] = ".latexindent.yaml",
+          modifyLineBreaks = true,
+        },
+      },
+    }
+    require("lspconfig")["texlab"].setup(default_server_config)
   end,
   ["lua_ls"] = function()
-    local runtime_path = vim.split(package.path, ";")
-    table.insert(runtime_path, "?.lua")
-    table.insert(runtime_path, "?/init.lua")
-    table.insert(runtime_path, "lua/?.lua")
-    table.insert(runtime_path, "lua/?/init.lua")
-
+    --local runtime_path = vim.split(package.path, ";")
+    --table.insert(runtime_path, "?.lua")
+    --table.insert(runtime_path, "?/init.lua")
+    --table.insert(runtime_path, "lua/?.lua")
+    --table.insert(runtime_path, "lua/?/init.lua")
     local libs = vim.api.nvim_get_runtime_file("", true)
     if string.find(vim.fn.expand("%:p"), "wezterm") then
       table.insert(libs, vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/"))
     end
-    require("lspconfig")["lua_ls"].setup({
+    local lua_config = vim.tbl_deep_extend("force", default_server_config, {
       flags = { debounce_text_changes = 150 },
       settings = {
         Lua = {
-          format = {
-            enable = false,
-            default_config = {
-              indent_style = "space",
-              indent_size = "2",
-            },
-          },
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = "LuaJIT",
-          },
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = { "vim" },
-          },
           workspace = {
             -- Make the server aware of Neovim runtime files
             library = libs,
@@ -81,6 +77,7 @@ require("mason-lspconfig").setup_handlers({
         },
       },
     })
+    require("lspconfig")["lua_ls"].setup(lua_config)
   end,
 })
 

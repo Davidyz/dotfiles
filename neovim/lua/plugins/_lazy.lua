@@ -173,7 +173,7 @@ M.plugins = {
     event = "VeryLazy",
   },
   {
-    "lewis6991/nvim-treesitter-context",
+    "nvim-treesitter/nvim-treesitter-context",
     config = function()
       require("plugins.treesitter-context")
     end,
@@ -481,6 +481,13 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
+  {
+    "NStefan002/2048.nvim",
+    cmd = "Play2048",
+    config = function()
+      require("2048").setup()
+    end,
+  },
   {
     "gorbit99/codewindow.nvim",
     config = function()

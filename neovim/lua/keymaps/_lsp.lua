@@ -120,11 +120,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         { name = "nvim_lua", priority = 10 },
         { name = "path", priority = 10 },
         { name = "dictionary", keyword_length = 2 },
-        { name = "buffer", keyword_length = 2 },
+        { name = "buffer", keyword_length = 2, priority = 3 },
         { name = "luasnip", keyword_length = 2 },
         { name = "nvim_lsp_signature_help" },
         { name = "zsh" },
-        { name = "copilot", group_index = 2 },
+        { name = "copilot", group_index = 2, priority = 1 },
       },
       window = {
         documentation = cmp.config.window.bordered(window_style),

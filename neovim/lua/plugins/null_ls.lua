@@ -27,7 +27,12 @@ return function()
       null_ls.builtins.formatting.clang_format,
       null_ls.builtins.formatting.cmake_format,
       null_ls.builtins.formatting.beautysh,
-      null_ls.builtins.formatting.latexindent,
+      null_ls.builtins.formatting.latexindent.with({
+        extra_args = {
+          "-m",
+          '-y="modifyLineBreaks:textWrapOptions:columns:88",modifyLineBreaks:textWrapOptions:perCodeBlockBasis:1,modifyLineBreaks:textWrapOptions:all:1,modifyLineBreaks:removeParagraphLineBreaks:all:1,',
+        },
+      }),
       null_ls.builtins.formatting.jq,
       null_ls.builtins.formatting.isort,
       --null_ls.builtins.diagnostics.flake8.with({

@@ -12,6 +12,8 @@ require("alpha").setup(startify.config)
 vim.api.nvim_create_autocmd("TabNewEntered", {
   pattern = "*",
   callback = function()
-    alpha.start(false)
+    if vim.fn.expand("%:t") ~= "lsp.log" then
+      alpha.start(false)
+    end
   end,
 })

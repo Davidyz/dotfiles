@@ -44,6 +44,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     vim.opt.textwidth = 88
     vim.wo.wrap = true
     vim.wo.linebreak = true
+    vim.bo.shiftwidth = 4
   end,
 })
 
