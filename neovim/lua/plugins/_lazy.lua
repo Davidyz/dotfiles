@@ -685,7 +685,6 @@ M.plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
-    keys = { "<Leader>t" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
@@ -710,6 +709,7 @@ M.plugins = {
             ["<right>"] = "set_root",
           },
         },
+        filesystem = { follow_current_file = { enabled = true } },
         buffers = {
           follow_current_file = true,
         },
@@ -718,7 +718,7 @@ M.plugins = {
       vim.api.nvim_set_keymap("n", "<Leader>t", "", {
         noremap = true,
         callback = function()
-          neotree.show("", true)
+          neotree.focus("", true)
         end,
       })
     end,
