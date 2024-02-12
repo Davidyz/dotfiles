@@ -11,7 +11,7 @@ M.plugins = {
     config = function()
       require("executable-checker").add_executable("zathura")
       require("executable-checker").add_executable("xdotool")
-
+      vim.g.vimtex_quickfix_mode = 0
       if vim.fn.executable("zathura") then
         vim.g.vimtex_view_method = "zathura"
       else
