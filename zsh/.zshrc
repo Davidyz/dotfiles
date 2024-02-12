@@ -83,10 +83,6 @@ HIST_STAMPS="dd/mm/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 #ZSH_CUSTOM=/path/to/new-custom-folder
 
-if command -v pdm > /dev/null 2> /dev/null && [ ! -d $ZSH_CUSTOM/plugins/pdm ]; then
-    mkdir $ZSH_CUSTOM/plugins/pdm
-    pdm completion zsh > $ZSH_CUSTOM/plugins/pdm/_pdm
-fi
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -116,10 +112,14 @@ plugins=(
     yarn
     colored-man-pages
     pipenv
-    pdm
 )
 
 
+if command -v pdm > /dev/null 2> /dev/null && [ ! -d $ZSH_CUSTOM/plugins/pdm ]; then
+    mkdir $ZSH_CUSTOM/plugins/pdm
+    pdm completion zsh > $ZSH_CUSTOM/plugins/pdm/_pdm
+    plugins+=(pdm)
+fi
 if command -v fzf > /dev/null ; then
     export FZF_BASE=`which fzf`
     plugins+=(fzf)
