@@ -691,7 +691,7 @@ M.plugins = {
       vim.api.nvim_set_keymap("n", "<Leader>t", "", {
         noremap = true,
         callback = function()
-          neotree.focus("", true)
+          neotree.focus("", true, true)
         end,
       })
     end,
@@ -817,6 +817,8 @@ M.plugins = {
       end, { noremap = true })
     end,
   },
+  { "akinsho/git-conflict.nvim", version = "*", config = true },
+  { "sindrets/diffview.nvim", config = true },
   {
     "Davidyz/executable-checker.nvim",
     config = function()

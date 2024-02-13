@@ -4,7 +4,8 @@ vim.keymap.set("n", "F", builtin.find_files, {})
 if vim.fn.executable("rg") ~= 0 then
   vim.keymap.set("n", "R", builtin.live_grep, {})
 end
-vim.keymap.set("n", "<leader>b", builtin.buffers, {})
+vim.keymap.set("n", "<Leader>b", builtin.buffers, {})
+vim.keymap.set("n", "<Leader>f", builtin.quickfix, {})
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "TelescopePrompt",
