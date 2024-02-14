@@ -18,16 +18,12 @@ return function()
         },
       }),
       null_ls.builtins.code_actions.gitsigns,
-      --null_ls.builtins.formatting.black,
-      --null_ls.builtins.formatting.autopep8.with({
-      --extra_args = { "--max-line-length", tostring(utils.line_length() or 80) },
-      --}),
-      --null_ls.builtins.formatting.autoflake,
       null_ls.builtins.formatting.ruff_format,
       null_ls.builtins.formatting.clang_format,
       null_ls.builtins.formatting.cmake_format,
       null_ls.builtins.formatting.beautysh,
       null_ls.builtins.formatting.latexindent.with({
+        filetypes = { "tex", "bib" },
         extra_args = {
           "-m",
           '-y="modifyLineBreaks:textWrapOptions:columns:88",modifyLineBreaks:textWrapOptions:perCodeBlockBasis:1,modifyLineBreaks:textWrapOptions:all:1,modifyLineBreaks:removeParagraphLineBreaks:all:1,',
@@ -35,16 +31,8 @@ return function()
       }),
       null_ls.builtins.formatting.jq,
       null_ls.builtins.formatting.isort,
-      --null_ls.builtins.diagnostics.flake8.with({
-      --extra_args = {
-      --"--max-line-length",
-      --tostring(utils.line_length() or 88),
-      --},
-      --}),
-      --null_ls.builtins.diagnostics.mypy,
       null_ls.builtins.diagnostics.ruff,
       null_ls.builtins.diagnostics.clang_check,
-      null_ls.builtins.formatting.bibclean,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)
