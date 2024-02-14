@@ -50,6 +50,21 @@ require("mason-lspconfig").setup_handlers({
     }
     require("lspconfig")["texlab"].setup(default_server_config)
   end,
+  ["arduino_language_server"] = function()
+    local arduino_config = vim.tbl_deep_extend("force", default_server_config, {
+      cmd = {
+        "arduino-language-server",
+        "-cli",
+        vim.fn.exepath("arduino-cli"),
+        "-clangd",
+        vim.fn.exepath("clangd"),
+        "-cli-config",
+        "~/.arduino15/arduino-cli.yaml",
+      },
+    })
+    arduino_config.capabilities.workspace.semanticTokens = nil
+    lspconfig["arduino_language_server"].setup(arduino_config)
+  end,
   ["lua_ls"] = function()
     --local runtime_path = vim.split(package.path, ";")
     --table.insert(runtime_path, "?.lua")
@@ -80,7 +95,6 @@ require("mason-lspconfig").setup_handlers({
     require("lspconfig")["lua_ls"].setup(lua_config)
   end,
   ["pyright"] = function()
-    local lspconfig = require("lspconfig")
     local lang_server = "pyright-langserver"
     if vim.fn.executable("delance-langserver") ~= 0 then
       lang_server = "delance-langserver"

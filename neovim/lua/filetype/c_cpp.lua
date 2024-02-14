@@ -1,5 +1,5 @@
 local ft_utils = require("filetype.utils")
-local types = { ["c"] = "*.c", ["cpp"] = "*.cpp" }
+local types = { ["c"] = "*.c", ["cpp"] = "*.cpp", arduino = "*.ino" }
 
 Clang_Format = ft_utils.format("clang-format")
 
