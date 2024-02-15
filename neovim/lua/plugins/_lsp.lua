@@ -119,23 +119,23 @@ require("mason-lspconfig").setup_handlers({
     })
     lspconfig.pyright.setup(pyright_config)
   end,
+  ["bashls"] = function()
+    local ls_executable = { "bash-language-server", "start" }
+    if
+      vim.fn.executable("termux-language-server")
+      and (vim.tbl_contains({ "PKGBUILD" }, vim.fn.expand("%:t")))
+    then
+      ls_executable = { "termux-language-server", "--indent", vim.bo.sts }
+    end
+    local bash_config =
+      vim.tbl_deep_extend("force", default_server_config, { cmd = ls_executable })
+    lspconfig["bashls"].setup(bash_config)
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lspinfo",
   callback = function()
     vim.api.nvim_win_set_config(0, { border = "double" })
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "PKGBUILD",
-  callback = function()
-    if vim.fn.executable("termux-language-server") == 1 then
-      require("lspconfig").pkgbuild_language_server.setup({
-        cmd = { "termux-language-server", "--convert", "PKGBUILD" },
-        filetypes = { "sh" },
-      })
-    end
   end,
 })

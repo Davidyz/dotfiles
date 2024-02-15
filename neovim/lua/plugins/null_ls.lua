@@ -23,7 +23,9 @@ return function()
         filetypes = { "c", "cpp", "arduino" },
       }),
       null_ls.builtins.formatting.cmake_format,
-      null_ls.builtins.formatting.beautysh,
+      null_ls.builtins.formatting.beautysh.with({
+        extra_args = { "-i", tostring(vim.bo.sts) },
+      }),
       null_ls.builtins.formatting.latexindent.with({
         filetypes = { "tex", "bib" },
         extra_args = {
