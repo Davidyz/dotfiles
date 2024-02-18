@@ -30,6 +30,7 @@ M.plugins = {
   },
   {
     "shiracamus/vim-syntax-x86-objdump-d",
+    lazy = true,
     cond = function()
       return vim.fn.executable("objdump") ~= 0
     end,
@@ -38,6 +39,7 @@ M.plugins = {
   {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
+    lazy = true,
     config = function()
       require("plugins.haskell")
     end,
@@ -45,11 +47,13 @@ M.plugins = {
   },
   {
     "chrisbra/csv.vim",
+    lazy = true,
     ft = { "csv" },
     event = "VeryLazy",
   },
   {
     "goerz/jupytext.vim",
+    lazy = true,
     ft = { "jupyter", "notebook", "ipynb", "py", "json" },
     cond = utils.no_vscode,
     config = function()
@@ -60,10 +64,12 @@ M.plugins = {
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
+    lazy = true,
     event = "VeryLazy",
   },
   {
     "vim-pandoc/vim-pandoc",
+    lazy = true,
     ft = { "markdown", "pandoc", "latex" },
     config = function()
       require("plugins.pandoc")
@@ -72,39 +78,55 @@ M.plugins = {
   },
   {
     "vim-pandoc/vim-pandoc-syntax",
+    lazy = true,
     ft = { "markdown", "pandoc", "latex" },
     event = "VeryLazy",
   },
   {
     "vim-scripts/cup.vim",
+    lazy = true,
     ft = { "cup" },
     event = "VeryLazy",
   },
   {
     "udalov/javap-vim",
+    lazy = true,
     ft = { "javap" },
     event = "VeryLazy",
   },
   {
     "cespare/vim-toml",
+    lazy = true,
     branch = "main",
     ft = { "toml" },
     event = "VeryLazy",
   },
   {
     "mikelue/vim-maven-plugin",
+    lazy = true,
     ft = {
       "maven",
       "xml",
     },
     event = "VeryLazy",
   },
-  { "vim-scripts/crontab.vim", ft = { "crontab" }, event = "VeryLazy" },
+  {
+    "vim-scripts/crontab.vim",
+    lazy = true,
+    ft = { "crontab" },
+    event = "VeryLazy",
+  },
 
   -- markdown
-  { "mzlogin/vim-markdown-toc", event = "VeryLazy", ft = { "markdown", "pandoc" } },
+  {
+    "mzlogin/vim-markdown-toc",
+    event = "VeryLazy",
+    lazy = true,
+    ft = { "markdown", "pandoc" },
+  },
   {
     "iamcco/markdown-preview.nvim",
+    lazy = true,
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
@@ -181,7 +203,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "nvim-treesitter/playground", event = "VeryLazy" },
+  { "nvim-treesitter/playground",               event = "VeryLazy" },
   { "nvim-treesitter/nvim-treesitter-refactor", event = "VeryLazy" },
   {
     "windwp/nvim-autopairs",
@@ -207,6 +229,8 @@ M.plugins = {
   -- mason
   {
     "williamboman/mason.nvim",
+    cmd = { "Mason" },
+    lazy = true,
     config = function()
       require("mason").setup({
         ui = { border = "double" },
@@ -252,11 +276,11 @@ M.plugins = {
     end,
     --dependencies = { "folke/neodev.nvim" },
   },
-  { "hrsh7th/nvim-cmp", event = "LspAttach" },
+  { "hrsh7th/nvim-cmp",     event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
-  { "hrsh7th/cmp-buffer", event = "LspAttach" },
-  { "hrsh7th/cmp-path", event = "LspAttach" },
-  { "hrsh7th/cmp-cmdline", event = "LspAttach" },
+  { "hrsh7th/cmp-buffer",   event = "LspAttach" },
+  { "hrsh7th/cmp-path",     event = "LspAttach" },
+  { "hrsh7th/cmp-cmdline",  event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lua", event = "LspAttach" },
   {
     "L3MON4D3/LuaSnip",
@@ -266,7 +290,7 @@ M.plugins = {
       require("keymaps.snippets")
     end,
   },
-  { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
+  { "saadparwaiz1/cmp_luasnip",     event = "LspAttach" },
   { "rafamadriz/friendly-snippets", event = "LspAttach" },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -276,9 +300,7 @@ M.plugins = {
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
     "SmiteshP/nvim-navic",
-    config = function()
-      require("nvim-navic").setup()
-    end,
+    config = true,
     event = "LspAttach",
   },
   {
@@ -314,25 +336,27 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "FidgetTask", { link = "Tag" })
       require("fidget").setup({
         window = { blend = 0, border = "rounded" },
-        align = { bottom = false },
+        align = { bottom = true },
         fmt = { stack_upwards = false },
       })
     end,
   },
   {
     "Davidyz/lsp-location-handler.nvim",
-    config = function()
-      require("location-handler").setup()
-    end,
+    config = true,
     event = "LspAttach",
   },
   {
     "folke/neodev.nvim",
     event = "LspAttach",
+    ft = { "lua" },
+    lazy = true,
     config = true,
   },
   {
     "aznhe21/actions-preview.nvim",
+    keys = { "<Leader>a" },
+    lazy = true,
     config = function()
       vim.keymap.set({ "v", "n" }, "<Leader>a", require("actions-preview").code_actions)
       require("actions-preview").setup({
@@ -393,6 +417,8 @@ M.plugins = {
       end)
     end,
     event = "LspAttach",
+    keys = { "<leader>ef", "<leader>ev" },
+    lazy = true,
   },
   {
     "zbirenbaum/copilot.lua",
@@ -435,11 +461,21 @@ M.plugins = {
     end,
     event = "LspAttach",
   },
+  {
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
+    keys = { -- Example mapping to toggle outline
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
+    opts = {},
+  },
 
   -- dap
   {
     "mfussenegger/nvim-dap",
     cond = utils.no_vscode,
+    lazy = true,
     config = function()
       require("plugins.dap")
       require("keymaps.dap")
@@ -450,10 +486,17 @@ M.plugins = {
     "theHamsta/nvim-dap-virtual-text",
     cond = utils.no_vscode,
     event = "VeryLazy",
+    lazy = true,
   },
-  { "rcarriga/nvim-dap-ui", cond = utils.no_vscode, event = "VeryLazy" },
+  {
+    "rcarriga/nvim-dap-ui",
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+    lazy = true,
+  },
   {
     "jbyuki/one-small-step-for-vimkind",
+    lazy = true,
     cond = utils.no_vscode,
     event = "VeryLazy",
   },
@@ -462,8 +505,14 @@ M.plugins = {
     ft = { "java" },
     cond = utils.no_vscode,
     event = "VeryLazy",
+    lazy = true,
   },
-  { "jay-babu/mason-nvim-dap.nvim", cond = utils.no_vscode, event = "VeryLazy" },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    cond = utils.no_vscode,
+    event = "VeryLazy",
+    lazy = true,
+  },
 
   -- vimspector
   -- "puremourning/vimspector",
@@ -477,10 +526,12 @@ M.plugins = {
     config = function()
       require("wrapping").setup()
     end,
+    lazy = true,
     ft = { "markdown", "pandoc", "tex" },
   },
   {
     "NStefan002/2048.nvim",
+    lazy = true,
     cmd = "Play2048",
     config = function()
       require("2048").setup()
@@ -493,6 +544,7 @@ M.plugins = {
       codewindow.setup({ window_border = "double" })
       codewindow.apply_default_keybinds()
     end,
+    lazy = true,
   },
   {
     "lewis6991/hover.nvim",
@@ -525,12 +577,14 @@ M.plugins = {
       --{ desc = "hover.nvim (select)" }
       --)
     end,
+    lazy = true,
+    keys = { "K" },
   },
   {
     "brenoprata10/nvim-highlight-colors",
     config = function()
       require("nvim-highlight-colors.color.patterns").hex_regex =
-        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
+      "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
     event = "VeryLazy",
@@ -545,6 +599,7 @@ M.plugins = {
       })
     end,
     event = "VeryLazy",
+    lazy = true,
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -563,9 +618,10 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim",               event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
+    lazy = true,
     config = function()
       local hop = require("hop")
       local directions = require("hop.hint").HintDirection
@@ -594,6 +650,7 @@ M.plugins = {
       end, { remap = true })
       hop.setup({})
     end,
+    keys = { "f", "F", "t", "T" },
   },
   {
     "nvim-telescope/telescope.nvim",
@@ -607,8 +664,8 @@ M.plugins = {
     build = "make",
     cond = function()
       return utils.no_vscode()
-        and vim.fn.executable("make") == 1
-        and (vim.fn.executable("gcc") + vim.fn.executable("clang") ~= 0)
+          and vim.fn.executable("make") == 1
+          and (vim.fn.executable("gcc") + vim.fn.executable("clang") ~= 0)
     end,
   },
   {
@@ -619,7 +676,7 @@ M.plugins = {
     end,
   },
   { "kyazdani42/nvim-web-devicons", event = "VeryLazy" },
-  { "itchyny/vim-gitbranch", event = "VeryLazy" },
+  { "itchyny/vim-gitbranch",        event = "VeryLazy" },
   {
     "hiphish/rainbow-delimiters.nvim",
     --event = "VeryLazy",
@@ -656,7 +713,7 @@ M.plugins = {
     main = "ibl",
     config = function()
       vim.g.indent_blankline_filetype_exclude =
-        { "startify", "help", "nerdtree", "alpha" }
+      { "startify", "help", "nerdtree", "alpha" }
       require("ibl").setup({
         -- for example, context is off by default, use this to turn it on
         exclude = {
@@ -675,6 +732,7 @@ M.plugins = {
   {
     "preservim/nerdcommenter",
     event = "VeryLazy",
+    lazy = true,
     keys = { "<Leader>c<space>" },
     config = function()
       require("keymaps.NERDCommenter")
@@ -698,6 +756,7 @@ M.plugins = {
             hide_hidden = false,
             hide_dotfiles = false,
           },
+          follow_current_file = { enabled = true },
         },
         window = {
           mappings = {
@@ -707,7 +766,6 @@ M.plugins = {
             ["<right>"] = "set_root",
           },
         },
-        filesystem = { follow_current_file = { enabled = true } },
         buffers = {
           follow_current_file = true,
         },
@@ -728,9 +786,9 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "psliwka/vim-smoothie", event = "VeryLazy" },
-  { "chaoren/vim-wordmotion", event = "VeryLazy" },
-  { "ryanoasis/vim-devicons", event = "VeryLazy" },
+  { "psliwka/vim-smoothie",         event = "VeryLazy" },
+  { "chaoren/vim-wordmotion",       event = "VeryLazy" },
+  { "ryanoasis/vim-devicons",       event = "VeryLazy" },
   { "vim-scripts/restore_view.vim", event = "VeryLazy" },
   {
     "zhaocai/GoldenView.Vim",
@@ -747,6 +805,7 @@ M.plugins = {
     "Davidyz/md-code.nvim",
     ft = { "markdown" },
     cond = utils.no_vscode,
+    lazy = true,
     event = "VeryLazy",
     config = function()
       require("md-code")
@@ -754,8 +813,10 @@ M.plugins = {
   },
   {
     "dstein64/vim-startuptime",
+    lazy = true,
   },
-  { "ColaMint/pokemon.nvim", event = "VeryLazy" },
+  { "ColaMint/pokemon.nvim",    event = "VeryLazy" },
+  lazy = true,
   {
     "goolord/alpha-nvim",
     config = function()
@@ -775,6 +836,7 @@ M.plugins = {
     "akinsho/toggleterm.nvim",
     event = "VeryLazy",
     keys = { "<C-\\>" },
+    lazy = true,
     config = function()
       require("toggleterm").setup({
         open_mapping = "<C-\\>",
@@ -788,6 +850,7 @@ M.plugins = {
   {
     "jim-fx/sudoku.nvim",
     cmd = "Sudoku",
+    lazy = true,
     config = function()
       require("sudoku").setup({
         mappings = {
@@ -823,10 +886,12 @@ M.plugins = {
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
+    lazy = true,
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
   {
     "f-person/git-blame.nvim",
+    lazy = true,
     keys = { "<Leader>gb", "<Leader>go", "<Leader>gc" },
     config = function()
       local gb = require("gitblame")
@@ -843,12 +908,11 @@ M.plugins = {
     end,
   },
   { "akinsho/git-conflict.nvim", version = "*", config = true },
-  { "sindrets/diffview.nvim", config = true },
+  { "sindrets/diffview.nvim",    config = true },
   {
     "Davidyz/executable-checker.nvim",
-    config = function()
-      require("executable-checker").setup({ executables = { "rg", "node" } })
-    end,
+    config = true,
+    opts = { executables = { "rg", "node" } },
   },
   {
     "3rd/image.nvim",
@@ -860,13 +924,13 @@ M.plugins = {
     end,
     config = function()
       package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?/init.lua;"
+          .. ";"
+          .. vim.fn.expand("$HOME")
+          .. "/.luarocks/share/lua/5.1/?/init.lua;"
       package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?.lua;"
+          .. ";"
+          .. vim.fn.expand("$HOME")
+          .. "/.luarocks/share/lua/5.1/?.lua;"
       require("image").setup({
         backend = "kitty",
         max_width_window_percentage = 200 / 3,
