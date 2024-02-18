@@ -236,7 +236,7 @@ M.plugins = {
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
-    dependencies = { "folke/neodev.nvim" },
+    --dependencies = { "folke/neodev.nvim" },
   },
   { "hrsh7th/nvim-cmp", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
@@ -257,7 +257,7 @@ M.plugins = {
   {
     "williamboman/mason-lspconfig.nvim",
     event = "VeryLazy",
-    dependencies = { "folke/neodev.nvim" },
+    --dependencies = { "folke/neodev.nvim" },
   },
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
   {
@@ -312,7 +312,11 @@ M.plugins = {
     end,
     event = "LspAttach",
   },
-  { "folke/neodev.nvim", event = "LspAttach", config = true },
+  {
+    "folke/neodev.nvim",
+    event = "LspAttach",
+    config = true,
+  },
   {
     "aznhe21/actions-preview.nvim",
     config = function()
@@ -454,6 +458,13 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
+  {
+    "andrewferrier/wrapping.nvim",
+    config = function()
+      require("wrapping").setup()
+    end,
+    ft = { "markdown", "pandoc", "tex" },
+  },
   {
     "NStefan002/2048.nvim",
     cmd = "Play2048",
@@ -806,14 +817,14 @@ M.plugins = {
     config = function()
       local gb = require("gitblame")
       vim.g.gitblame_enabled = 0
-      vim.keymap.set("n", "<Leader>gb", vim.fn["GitBlameToggle"], { noremap = true })
+      vim.keymap.set("n", "<Leader>gb", gb.toggle, { noremap = true })
       vim.keymap.set("n", "<Leader>go", function()
-        vim.fn["GitBlameOpenCommitURL"]()
-        vim.fn["GitBlameDisable"]()
+        gb.open_commit_url()
+        gb.disable()
       end, { noremap = true })
       vim.keymap.set("n", "<Leader>gc", function()
-        vim.fn["GitBlameCopyCommitURL"]()
-        vim.fn["GitBlameDisable"]()
+        gb.copy_commit_url_to_clipboard()
+        gb.disable()
       end, { noremap = true })
     end,
   },
