@@ -89,6 +89,7 @@ require("mason-lspconfig").setup_handlers({
           telemetry = {
             enable = false,
           },
+          hint = { enable = true },
         },
       },
     })

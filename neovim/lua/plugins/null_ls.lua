@@ -7,16 +7,7 @@ return function()
   null_ls.setup({
     border = "double",
     sources = {
-      null_ls.builtins.formatting.stylua.with({
-        extra_args = {
-          "--indent-type",
-          "Spaces",
-          "--indent-width",
-          "2",
-          "--column-width",
-          tostring(88),
-        },
-      }),
+      null_ls.builtins.formatting.stylua,
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.formatting.ruff_format,
       null_ls.builtins.formatting.clang_format.with({

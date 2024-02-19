@@ -203,7 +203,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "nvim-treesitter/playground",               event = "VeryLazy" },
+  { "nvim-treesitter/playground", event = "VeryLazy" },
   { "nvim-treesitter/nvim-treesitter-refactor", event = "VeryLazy" },
   {
     "windwp/nvim-autopairs",
@@ -276,11 +276,11 @@ M.plugins = {
     end,
     --dependencies = { "folke/neodev.nvim" },
   },
-  { "hrsh7th/nvim-cmp",     event = "LspAttach" },
+  { "hrsh7th/nvim-cmp" },
   { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
-  { "hrsh7th/cmp-buffer",   event = "LspAttach" },
-  { "hrsh7th/cmp-path",     event = "LspAttach" },
-  { "hrsh7th/cmp-cmdline",  event = "LspAttach" },
+  { "hrsh7th/cmp-buffer", event = "LspAttach" },
+  { "hrsh7th/cmp-path", event = "LspAttach" },
+  { "hrsh7th/cmp-cmdline", event = "LspAttach" },
   { "hrsh7th/cmp-nvim-lua", event = "LspAttach" },
   {
     "L3MON4D3/LuaSnip",
@@ -290,7 +290,7 @@ M.plugins = {
       require("keymaps.snippets")
     end,
   },
-  { "saadparwaiz1/cmp_luasnip",     event = "LspAttach" },
+  { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
   { "rafamadriz/friendly-snippets", event = "LspAttach" },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -530,12 +530,19 @@ M.plugins = {
     ft = { "markdown", "pandoc", "tex" },
   },
   {
-    "NStefan002/2048.nvim",
+    dir = "~/git/2048.nvim",
     lazy = true,
     cmd = "Play2048",
-    config = function()
-      require("2048").setup()
-    end,
+    config = true,
+    opts = {
+      keys = {
+        up = "<Up>",
+        down = "<Down>",
+        left = "<Left>",
+        right = "<Right>",
+        undo = "<C-z>",
+      },
+    },
   },
   {
     "gorbit99/codewindow.nvim",
@@ -584,7 +591,7 @@ M.plugins = {
     "brenoprata10/nvim-highlight-colors",
     config = function()
       require("nvim-highlight-colors.color.patterns").hex_regex =
-      "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
+        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
     event = "VeryLazy",
@@ -594,7 +601,12 @@ M.plugins = {
     config = function()
       require("nvim-lastplace").setup({
         lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
-        lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
+        lastplace_ignore_filetype = {
+          "gitcommit",
+          "gitrebase",
+          "svn",
+          "hgcommit",
+        },
         lastplace_open_folds = true,
       })
     end,
@@ -618,7 +630,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "nvim-lua/plenary.nvim",               event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
     lazy = true,
@@ -626,7 +638,10 @@ M.plugins = {
       local hop = require("hop")
       local directions = require("hop.hint").HintDirection
       vim.keymap.set("", "f", function()
-        hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+        hop.hint_char1({
+          direction = directions.AFTER_CURSOR,
+          current_line_only = true,
+        })
       end, { remap = true })
       vim.keymap.set("", "F", function()
         hop.hint_char1({
@@ -664,8 +679,8 @@ M.plugins = {
     build = "make",
     cond = function()
       return utils.no_vscode()
-          and vim.fn.executable("make") == 1
-          and (vim.fn.executable("gcc") + vim.fn.executable("clang") ~= 0)
+        and vim.fn.executable("make") == 1
+        and (vim.fn.executable("gcc") + vim.fn.executable("clang") ~= 0)
     end,
   },
   {
@@ -676,7 +691,7 @@ M.plugins = {
     end,
   },
   { "kyazdani42/nvim-web-devicons", event = "VeryLazy" },
-  { "itchyny/vim-gitbranch",        event = "VeryLazy" },
+  { "itchyny/vim-gitbranch", event = "VeryLazy" },
   {
     "hiphish/rainbow-delimiters.nvim",
     --event = "VeryLazy",
@@ -713,7 +728,7 @@ M.plugins = {
     main = "ibl",
     config = function()
       vim.g.indent_blankline_filetype_exclude =
-      { "startify", "help", "nerdtree", "alpha" }
+        { "startify", "help", "nerdtree", "alpha" }
       require("ibl").setup({
         -- for example, context is off by default, use this to turn it on
         exclude = {
@@ -786,9 +801,9 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "psliwka/vim-smoothie",         event = "VeryLazy" },
-  { "chaoren/vim-wordmotion",       event = "VeryLazy" },
-  { "ryanoasis/vim-devicons",       event = "VeryLazy" },
+  { "psliwka/vim-smoothie", event = "VeryLazy" },
+  { "chaoren/vim-wordmotion", event = "VeryLazy" },
+  { "ryanoasis/vim-devicons", event = "VeryLazy" },
   { "vim-scripts/restore_view.vim", event = "VeryLazy" },
   {
     "zhaocai/GoldenView.Vim",
@@ -815,7 +830,7 @@ M.plugins = {
     "dstein64/vim-startuptime",
     lazy = true,
   },
-  { "ColaMint/pokemon.nvim",    event = "VeryLazy" },
+  { "ColaMint/pokemon.nvim", event = "VeryLazy" },
   lazy = true,
   {
     "goolord/alpha-nvim",
@@ -908,7 +923,7 @@ M.plugins = {
     end,
   },
   { "akinsho/git-conflict.nvim", version = "*", config = true },
-  { "sindrets/diffview.nvim",    config = true },
+  { "sindrets/diffview.nvim", config = true },
   {
     "Davidyz/executable-checker.nvim",
     config = true,
@@ -924,13 +939,13 @@ M.plugins = {
     end,
     config = function()
       package.path = package.path
-          .. ";"
-          .. vim.fn.expand("$HOME")
-          .. "/.luarocks/share/lua/5.1/?/init.lua;"
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?/init.lua;"
       package.path = package.path
-          .. ";"
-          .. vim.fn.expand("$HOME")
-          .. "/.luarocks/share/lua/5.1/?.lua;"
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?.lua;"
       require("image").setup({
         backend = "kitty",
         max_width_window_percentage = 200 / 3,
