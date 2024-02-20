@@ -530,7 +530,7 @@ M.plugins = {
     ft = { "markdown", "pandoc", "tex" },
   },
   {
-    dir = "~/git/2048.nvim",
+    "NStefan002/2048.nvim",
     lazy = true,
     cmd = "Play2048",
     config = true,
