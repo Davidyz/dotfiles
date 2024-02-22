@@ -51,6 +51,12 @@ require("mason-lspconfig").setup_handlers({
     require("lspconfig")["texlab"].setup(default_server_config)
   end,
   ["arduino_language_server"] = function()
+    if
+      vim.fn.filereadable("~/.arduino15/arduino-cli.yaml") ~= 0
+      and vim.fn.executable("arduino-cli")
+    then
+      vim.fn.execute("arduino-cli config init")
+    end
     local arduino_config = vim.tbl_deep_extend("force", default_server_config, {
       cmd = {
         "arduino-language-server",

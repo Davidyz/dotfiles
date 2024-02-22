@@ -4,6 +4,14 @@ local utils = require("_utils")
 M.plugins = {
   -- filetypes
   {
+    "stevearc/vim-arduino",
+    ft = { "arduino" },
+    lazy = true,
+    cond = function()
+      return vim.fn.executable("arduino-cli") ~= 0 and utils.no_vscode()
+    end,
+  },
+  {
     "lervag/vimtex",
     ft = { "tex" },
     lazy = true,
@@ -521,6 +529,10 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
+  {
+    "stevearc/dressing.nvim",
+    opts = { input = { border = "rounded" } },
+  },
   {
     "andrewferrier/wrapping.nvim",
     config = function()

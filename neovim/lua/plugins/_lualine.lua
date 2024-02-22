@@ -55,6 +55,21 @@ local function wordCount()
   end
 end
 
+local function arduino_status()
+  if vim.bo.filetype ~= "arduino" then
+    return ""
+  end
+  local port = vim.fn["arduino#GetPort"]()
+  local line = string.format("[%s]", vim.g.arduino_board)
+  if vim.g.arduino_programmer ~= "" then
+    line = line .. string.format(" [%s]", vim.g.arduino_programmer)
+  end
+  if port ~= 0 then
+    line = line .. string.format(" (%s:%s)", port, vim.g.arduino_serial_baud)
+  end
+  return line
+end
+
 require("lualine").setup({
   options = {
     icons_enabled = true,
@@ -109,12 +124,12 @@ require("lualine").setup({
       { navic.get_location, cond = navic.is_available },
     },
     lualine_z = {
-      function()
-        if vim.g.startup_time ~= nil then
-          return "Startup Time: " .. tostring(vim.g.startup_time.startup.mean / 1000)
-        end
-        return ""
-      end,
+      {
+        arduino_status,
+        cond = function()
+          return vim.bo.filetype == "arduino"
+        end,
+      },
     },
   },
   extensions = {},
