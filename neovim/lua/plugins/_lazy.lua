@@ -471,12 +471,25 @@ M.plugins = {
   },
   {
     "hedyhli/outline.nvim",
-    lazy = true,
+    --lazy = true,
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
       { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
     },
     opts = {},
+    config = function()
+      local outline = require("outline")
+      outline.setup()
+      vim.keymap.set("n", "<Leader-o>", outline.toggle, { desc = "Toggle outline" })
+      vim.api.nvim_create_autocmd("BufEnter", {
+        nested = true,
+        callback = function()
+          if #vim.api.nvim_list_wins() == 1 and vim.bo.filetype == "Outline" then
+            vim.cmd("quit")
+          end
+        end,
+      })
+    end,
   },
 
   -- dap
@@ -867,7 +880,7 @@ M.plugins = {
     config = function()
       require("toggleterm").setup({
         open_mapping = "<C-\\>",
-        direction = "float",
+        direction = "horizontal",
         float_opts = {
           border = "curved",
         },

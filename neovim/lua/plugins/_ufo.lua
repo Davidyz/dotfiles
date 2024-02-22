@@ -40,6 +40,9 @@ end
 require("ufo").setup({
   fold_virt_text_handler = fold_virt_text_handler,
   provider_selector = function(bufnum, filetype, buftype)
+    if vim.bo.bt == "nofile" then
+      return ""
+    end
     local clients = vim.lsp.get_clients({ { bufnr = bufnum } })
     for k, v in pairs(clients) do
       if v.config.name == "null-ls" then
