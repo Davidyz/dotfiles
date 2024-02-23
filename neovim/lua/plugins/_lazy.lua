@@ -770,13 +770,13 @@ M.plugins = {
     event = "VeryLazy",
   },
   {
-    "preservim/nerdcommenter",
-    event = "VeryLazy",
+    "numToStr/Comment.nvim",
     lazy = true,
-    keys = { "<Leader>c<space>" },
-    config = function()
-      require("keymaps.NERDCommenter")
-    end,
+    keys = { "<Leader>c<Space>" },
+    opts = {
+      toggler = { line = "<Leader>c<Space>" },
+      opleader = { line = "<Leader>c<Space>" },
+    },
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
