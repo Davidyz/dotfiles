@@ -20,6 +20,16 @@ local default_server_config = {
   capabilities = lsp_defaults.capabilities,
 
   on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      -- format on save
+      vim.api.nvim_clear_autocmds({ buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format()
+        end,
+      })
+    end
     if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
       vim.g.inlay_hints_visible = true
       vim.lsp.inlay_hint.enable(bufnr, true)

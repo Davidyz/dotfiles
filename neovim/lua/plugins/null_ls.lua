@@ -9,25 +9,8 @@ return function()
     sources = {
       null_ls.builtins.formatting.stylua,
       null_ls.builtins.code_actions.gitsigns,
-      null_ls.builtins.formatting.ruff_format,
-      null_ls.builtins.formatting.clang_format.with({
-        filetypes = { "c", "cpp", "arduino" },
-      }),
       null_ls.builtins.formatting.cmake_format,
-      null_ls.builtins.formatting.beautysh.with({
-        extra_args = { "-i", tostring(vim.bo.sts) },
-      }),
-      null_ls.builtins.formatting.latexindent.with({
-        filetypes = { "tex", "bib" },
-        extra_args = {
-          "-m",
-          '-y="modifyLineBreaks:textWrapOptions:columns:88",modifyLineBreaks:textWrapOptions:perCodeBlockBasis:1,modifyLineBreaks:textWrapOptions:all:1,modifyLineBreaks:removeParagraphLineBreaks:all:1,',
-        },
-      }),
-      null_ls.builtins.formatting.jq,
       null_ls.builtins.formatting.isort,
-      null_ls.builtins.diagnostics.ruff,
-      null_ls.builtins.diagnostics.clang_check,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)
