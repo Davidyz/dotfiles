@@ -191,7 +191,10 @@ M.async_run = function(func, callback)
 end
 
 M.cpu_count = function()
-  return #vim.loop.cpu_info()
+  if vim.uv.cpu_info == nil then
+    return #vim.loop.cpu_info()
+  end
+  return #vim.uv.cpu_info()
 end
 
 M.line_length = function()

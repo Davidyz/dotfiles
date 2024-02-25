@@ -180,11 +180,11 @@ M.plugins = {
       onedark.load()
     end,
     enabled = true,
+    cond = utils.no_vscode,
   },
   {
     "Mofiqul/vscode.nvim",
     config = function()
-      local c = require("vscode.colors").get_colors()
       require("vscode").setup({
         transparent = true,
         italic_comments = true,
@@ -199,10 +199,11 @@ M.plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     config = function(config, opts)
-      -- require("nvim-treesitter.install").commands.TSUpdate.run()
       require("plugins.tree_sitter")
     end,
+    build = ":TSUpdate",
     event = "VeryLazy",
+    cond = utils.no_vscode,
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -210,19 +211,34 @@ M.plugins = {
       require("plugins.treesitter-context")
     end,
     event = "VeryLazy",
+    cond = utils.no_vscode,
   },
-  { "nvim-treesitter/playground", event = "VeryLazy" },
-  { "nvim-treesitter/nvim-treesitter-refactor", event = "VeryLazy" },
+  {
+    "nvim-treesitter/playground",
+    event = "VeryLazy",
+    cond = utils.no_vscode,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-refactor",
+    event = "VeryLazy",
+    cond = utils.no_vscode,
+  },
   {
     "windwp/nvim-autopairs",
+    cond = utils.no_vscode,
     config = function()
       require("plugins.nvim_autopairs")
     end,
     event = "VeryLazy",
   },
-  { "andymass/vim-matchup", event = "VeryLazy" },
+  {
+    "monkoose/matchparen.nvim",
+    config = true,
+    cond = utils.no_vscode,
+  },
   {
     "RRethy/vim-illuminate",
+    cond = utils.no_vscode,
     event = "VeryLazy",
     config = function()
       require("illuminate").configure({
@@ -239,12 +255,10 @@ M.plugins = {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
     lazy = true,
-    config = function()
-      require("mason").setup({
-        ui = { border = "double" },
-        max_concurrent_jobs = math.min(4, utils.cpu_count()),
-      })
-    end,
+    opts = {
+      ui = { border = "double" },
+      max_concurrent_jobs = math.min(4, utils.cpu_count()),
+    },
     event = "VeryLazy",
   },
   {
@@ -266,12 +280,11 @@ M.plugins = {
       "williamboman/mason.nvim",
       "nvimtools/none-ls.nvim",
     },
-    config = function()
-      require("mason-null-ls").setup({
-        ensure_installed = nil,
-        automatic_installation = true,
-      })
-    end,
+    opts = {
+      ensure_installed = nil,
+      automatic_installation = true,
+    },
+    config = true,
   },
 
   -- lsp
@@ -282,14 +295,38 @@ M.plugins = {
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
+    cond = utils.no_vscode,
     --dependencies = { "folke/neodev.nvim" },
   },
-  { "hrsh7th/nvim-cmp" },
-  { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
-  { "hrsh7th/cmp-buffer", event = "LspAttach" },
-  { "hrsh7th/cmp-path", event = "LspAttach" },
-  { "hrsh7th/cmp-cmdline", event = "LspAttach" },
-  { "hrsh7th/cmp-nvim-lua", event = "LspAttach" },
+  {
+    "hrsh7th/nvim-cmp",
+    cond = utils.no_vscode,
+  },
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
+  {
+    "hrsh7th/cmp-buffer",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
+  {
+    "hrsh7th/cmp-path",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
+  {
+    "hrsh7th/cmp-cmdline",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
+  {
+    "hrsh7th/cmp-nvim-lua",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
   {
     "L3MON4D3/LuaSnip",
     event = "LspAttach",
@@ -297,32 +334,46 @@ M.plugins = {
       require("plugins.snippets")
       require("keymaps.snippets")
     end,
+    cond = utils.no_vscode,
   },
-  { "saadparwaiz1/cmp_luasnip", event = "LspAttach" },
-  { "rafamadriz/friendly-snippets", event = "LspAttach" },
+  {
+    "saadparwaiz1/cmp_luasnip",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
+  {
+    "rafamadriz/friendly-snippets",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
   {
     "williamboman/mason-lspconfig.nvim",
+    cond = utils.no_vscode,
     event = "VeryLazy",
     --dependencies = { "folke/neodev.nvim" },
   },
-  { "hrsh7th/cmp-nvim-lsp-signature-help", event = "LspAttach" },
+  {
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    event = "LspAttach",
+    cond = utils.no_vscode,
+  },
   {
     "SmiteshP/nvim-navic",
     config = true,
     event = "LspAttach",
+    cond = utils.no_vscode,
   },
   {
     "uga-rosa/cmp-dictionary",
     cond = function()
       return vim.fn.filereadable("~/.local/lib/aspell/en.dict") ~= 0
+        and utils.no_vscode()
     end,
-    config = function()
-      require("cmd_dictionary").setup({
-        dic = {
-          ["*"] = "~/.local/lib/aspell/en.dict",
-        },
-      })
-    end,
+    opts = {
+      dic = {
+        ["*"] = "~/.local/lib/aspell/en.dict",
+      },
+    },
     event = "LspAttach",
   },
   {
@@ -334,24 +385,31 @@ M.plugins = {
       end
       require("cmp_zsh").setup({ zshrc = true, filetypes = { "zsh" } })
     end,
+    cond = utils.no_vscode,
   },
   {
     "j-hui/fidget.nvim",
-    tag = "legacy",
     event = "LspAttach",
     config = function()
       vim.api.nvim_set_hl(0, "FidgetTitle", { link = "Exception" })
       vim.api.nvim_set_hl(0, "FidgetTask", { link = "Tag" })
       require("fidget").setup({
-        window = { blend = 0, border = "rounded" },
-        align = { bottom = true },
-        fmt = { stack_upwards = false },
+        notification = {
+          window = {
+            winblend = 0,
+            border = "rounded",
+            align = "bottom",
+          },
+          view = { stack_upwards = false },
+        },
       })
     end,
+    cond = utils.no_vscode,
   },
   {
     "Davidyz/lsp-location-handler.nvim",
     config = true,
+    cond = utils.no_vscode,
     event = "LspAttach",
   },
   {
@@ -360,6 +418,7 @@ M.plugins = {
     ft = { "lua" },
     lazy = true,
     config = true,
+    cond = utils.no_vscode,
   },
   {
     "aznhe21/actions-preview.nvim",
@@ -383,6 +442,7 @@ M.plugins = {
         },
       })
     end,
+    cond = utils.no_vscode,
   },
   {
     "ThePrimeagen/refactoring.nvim",
@@ -390,6 +450,7 @@ M.plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
+    cond = utils.no_vscode,
     config = function()
       require("refactoring").setup({
         prompt_func_return_type = {
@@ -431,21 +492,20 @@ M.plugins = {
   {
     "zbirenbaum/copilot.lua",
     event = "LspAttach",
-    config = function()
-      require("copilot").setup({
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-      })
-    end,
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+    },
+    cond = utils.no_vscode,
   },
   {
     "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
+    config = true,
+    cond = utils.no_vscode,
   },
   {
     "onsails/lspkind.nvim",
+    cond = utils.no_vscode,
     event = "LspAttach",
     config = function()
       local lspkind = require("lspkind")
@@ -464,6 +524,7 @@ M.plugins = {
   {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
+    cond = utils.no_vscode,
     config = function()
       require("plugins._ufo")
     end,
@@ -471,7 +532,7 @@ M.plugins = {
   },
   {
     "hedyhli/outline.nvim",
-    --lazy = true,
+    cond = utils.no_vscode,
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
       { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
@@ -534,9 +595,6 @@ M.plugins = {
     event = "VeryLazy",
     lazy = true,
   },
-
-  -- vimspector
-  -- "puremourning/vimspector",
 
   -- misc
   -- "~/git/fauxpilot.nvim",
@@ -623,36 +681,33 @@ M.plugins = {
   },
   {
     "ethanholz/nvim-lastplace",
-    config = function()
-      require("nvim-lastplace").setup({
-        lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
-        lastplace_ignore_filetype = {
-          "gitcommit",
-          "gitrebase",
-          "svn",
-          "hgcommit",
-        },
-        lastplace_open_folds = true,
-      })
-    end,
+    opts = {
+      lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+      lastplace_ignore_filetype = {
+        "gitcommit",
+        "gitrebase",
+        "svn",
+        "hgcommit",
+      },
+      lastplace_open_folds = true,
+    },
+    config = true,
     event = "VeryLazy",
     lazy = true,
   },
   {
     "lewis6991/gitsigns.nvim",
     branch = "release",
-    config = function()
-      require("gitsigns").setup({
-        signs = {
-          add = { text = "+" },
-          change = { text = "~" },
-          delete = { text = "_" },
-          topdelete = { text = "‾" },
-          changedelete = { text = ">" },
-          untracked = { text = "┆" },
-        },
-      })
-    end,
+    opts = {
+      signs = {
+        add = { text = "+" },
+        change = { text = "~" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = ">" },
+        untracked = { text = "┆" },
+      },
+    },
     event = "VeryLazy",
   },
   { "nvim-lua/plenary.nvim", event = "VeryLazy" },
@@ -821,9 +876,7 @@ M.plugins = {
   },
   {
     "kylechui/nvim-surround",
-    config = function()
-      require("nvim-surround").setup()
-    end,
+    config = true,
     event = "VeryLazy",
   },
   { "psliwka/vim-smoothie", event = "VeryLazy" },
@@ -877,36 +930,32 @@ M.plugins = {
     event = "VeryLazy",
     keys = { "<C-\\>" },
     lazy = true,
-    config = function()
-      require("toggleterm").setup({
-        open_mapping = "<C-\\>",
-        direction = "horizontal",
-        float_opts = {
-          border = "curved",
-        },
-      })
-    end,
+    opts = {
+      open_mapping = "<C-\\>",
+      direction = "horizontal",
+      float_opts = {
+        border = "curved",
+      },
+    },
   },
   {
     "jim-fx/sudoku.nvim",
     cmd = "Sudoku",
     lazy = true,
-    config = function()
-      require("sudoku").setup({
-        mappings = {
-          { key = "1", action = "insert=1" },
-          { key = "2", action = "insert=2" },
-          { key = "3", action = "insert=3" },
-          { key = "4", action = "insert=4" },
-          { key = "5", action = "insert=5" },
-          { key = "6", action = "insert=6" },
-          { key = "7", action = "insert=7" },
-          { key = "8", action = "insert=8" },
-          { key = "9", action = "insert=9" },
-          { key = "0", action = "clear_cell" },
-        },
-      })
-    end,
+    opts = {
+      mappings = {
+        { key = "1", action = "insert=1" },
+        { key = "2", action = "insert=2" },
+        { key = "3", action = "insert=3" },
+        { key = "4", action = "insert=4" },
+        { key = "5", action = "insert=5" },
+        { key = "6", action = "insert=6" },
+        { key = "7", action = "insert=7" },
+        { key = "8", action = "insert=8" },
+        { key = "9", action = "insert=9" },
+        { key = "0", action = "clear_cell" },
+      },
+    },
     event = "VeryLazy",
   },
   {
