@@ -756,7 +756,7 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     cond = function()
       return utils.no_vscode()
         and vim.fn.executable("make") == 1
