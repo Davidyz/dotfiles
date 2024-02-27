@@ -1,3 +1,5 @@
 options:
   implicit_slide_ends: true
   command_prefix: "cmd:"
+typst:
+  ppi: 1000
