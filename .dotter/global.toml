@@ -1,6 +1,6 @@
 [neovim.files]
-"neovim/init.lua" = "~/.config/nvim/init.lua"
-"neovim/lua" = "~/.config/nvim/lua"
+# "neovim/init.lua" = "~/.config/nvim/init.lua"
+"neovim/" = "~/.config/nvim/"
 
 [zsh.files]
 "zsh/.zshrc" = "~/.zshrc"
