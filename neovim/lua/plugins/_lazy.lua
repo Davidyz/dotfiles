@@ -258,6 +258,7 @@ M.plugins = {
     opts = {
       ui = { border = "double" },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
+      PATH = "append",
     },
     event = "VeryLazy",
   },
