@@ -47,6 +47,8 @@ M.gitUntracked = function()
   end
 end
 
+---@param array table
+---@return boolean
 function M.contains(array, element)
   for _, value in pairs(array) do
     if value == element then
@@ -56,10 +58,13 @@ function M.contains(array, element)
   return false
 end
 
+---@param filetype
+---@return boolean
 function M.isSourceCode(filetype)
   return M.contains(SOURCE_CODE, filetype)
 end
 
+---@return string
 function M.getHostname()
   if vim.fn.hostname ~= nil then
     return vim.fn.hostname()
@@ -67,6 +72,7 @@ function M.getHostname()
   return ""
 end
 
+---@return string
 function M.getUserName()
   local username = vim.fn.getenv("USER")
   if username == nil then
@@ -79,6 +85,7 @@ function M.get_ColorCode(group, tag)
   return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), tag)
 end
 
+---@param str string
 function M.getTermCode(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
@@ -87,9 +94,10 @@ function M.sendKey(str, mode, escape)
   if escape == nil then
     escape = false
   end
-  return vim.api.nvim_feedkeys(string, mode, escape)
+  return vim.api.nvim_feedkeys(str, mode, escape)
 end
 
+---@param item string
 function M.Require(item)
   if not type(item) == "string" then
     return false
@@ -103,6 +111,8 @@ end
 
 local stat_height = vim.o.cmdheight
 
+---@param item string[]
+---@param retry_count integer
 function M.tryRequire(items, retry_count)
   if retry_count == 0 then
     stat_height = vim.o.cmdheight
@@ -130,6 +140,9 @@ function M.tryRequire(items, retry_count)
   end
 end
 
+---@param array table
+---@param func function
+---@return boolean
 function M.any(array, func)
   if type(func) ~= "function" then
     func = function(item)
@@ -144,6 +157,9 @@ function M.any(array, func)
   return false
 end
 
+---@param array table
+---@param func function
+---@return boolean
 function M.all(array, func)
   if type(func) ~= "function" then
     func = function(item)
@@ -173,6 +189,8 @@ function M.split(inputstr, sep)
   end
 end
 
+---@param func function
+---@param callback function
 M.async_run = function(func, callback)
   assert(type(func) == "function", "type error :: expected func")
   local thread = co.create(func)
@@ -190,6 +208,7 @@ M.async_run = function(func, callback)
   step()
 end
 
+---@return integer
 M.cpu_count = function()
   if vim.uv == nil or vim.uv.cpu_info == nil then
     return #vim.loop.cpu_info()
@@ -197,6 +216,7 @@ M.cpu_count = function()
   return #vim.uv.cpu_info()
 end
 
+---@return integer
 M.line_length = function()
   if vim.bo.textwidth == 0 then
     return nil
@@ -205,8 +225,19 @@ M.line_length = function()
   end
 end
 
+---@return boolean
 M.no_vscode = function()
   return vim.g.vscode == nil
+end
+
+---@return boolean
+M.is_treesitter_enabled = function()
+  local okay, parsers = pcall(require, "nvim-treesitter.parsers")
+  if not okay then
+    return false
+  end
+  local lang = parsers.get_buf_lang()
+  return parsers.has_parser(lang)
 end
 
 return M
