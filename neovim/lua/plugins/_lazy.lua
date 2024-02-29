@@ -11,6 +11,7 @@ M.plugins = {
       return vim.fn.executable("arduino-cli") ~= 0 and utils.no_vscode()
     end,
   },
+  { "theRealCarneiro/hyprland-vim-syntax" },
   {
     "lervag/vimtex",
     ft = { "tex" },
@@ -824,13 +825,20 @@ M.plugins = {
     event = "VeryLazy",
   },
   {
-    "numToStr/Comment.nvim",
-    lazy = true,
-    keys = { "<Leader>c<Space>" },
+    "terrortylor/nvim-comment",
     opts = {
-      toggler = { line = "<Leader>c<Space>" },
-      opleader = { line = "<Leader>c<Space>" },
+      marker_padding = true,
+      comment_empty = false,
+      comment_empty_trim_whitespace = true,
+      create_mappings = false,
+      line_mapping = nil,
+      operator_mapping = nil,
+      comment_chunk_text_object = "nil",
+      hook = nil,
     },
+    cmd = { "CommentToggle" },
+    main = "nvim_comment",
+    keys = { { "<Leader>c<Space>", ":CommentToggle<CR>", mode = { "n", "v" } } },
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
