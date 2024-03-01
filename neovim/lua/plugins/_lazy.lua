@@ -826,18 +826,26 @@ M.plugins = {
   },
   {
     "terrortylor/nvim-comment",
-    opts = {
-      marker_padding = true,
-      comment_empty = false,
-      comment_empty_trim_whitespace = true,
-      create_mappings = false,
-      line_mapping = nil,
-      operator_mapping = nil,
-      comment_chunk_text_object = "nil",
-      hook = nil,
-    },
     cmd = { "CommentToggle" },
     main = "nvim_comment",
+    config = function()
+      require("nvim_comment").setup({
+        marker_padding = true,
+        comment_empty = false,
+        comment_empty_trim_whitespace = true,
+        create_mappings = false,
+        line_mapping = nil,
+        operator_mapping = nil,
+        comment_chunk_text_object = "nil",
+        hook = nil,
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "arduino",
+        callback = function()
+          vim.bo.commentstring = "// %s"
+        end,
+      })
+    end,
     keys = { { "<Leader>c<Space>", ":CommentToggle<CR>", mode = { "n", "v" } } },
   },
   {
