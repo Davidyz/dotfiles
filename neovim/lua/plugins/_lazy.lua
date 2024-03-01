@@ -886,7 +886,11 @@ M.plugins = {
     config = true,
     event = "VeryLazy",
   },
-  { "psliwka/vim-smoothie", event = "VeryLazy" },
+  {
+    "declancm/cinnamon.nvim",
+    opts = {},
+    event = "VeryLazy",
+  },
   { "chaoren/vim-wordmotion", event = "VeryLazy" },
   { "ryanoasis/vim-devicons", event = "VeryLazy" },
   { "vim-scripts/restore_view.vim", event = "VeryLazy" },
