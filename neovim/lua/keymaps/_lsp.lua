@@ -105,7 +105,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     bufmap("n", "]d", vim.diagnostic.goto_next)
 
     local cmp = require("cmp")
-    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
     local luasnip = require("luasnip")
     local select_opts = { behavior = cmp.SelectBehavior.Insert }
 
@@ -119,7 +118,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         { name = "nvim_lsp", keyword_length = 1, priority = 9 },
         { name = "nvim_lua", priority = 10 },
         { name = "path", priority = 10 },
-        { name = "dictionary", keyword_length = 2 },
         { name = "buffer", keyword_length = 2, priority = 3 },
         { name = "luasnip", keyword_length = 2 },
         { name = "nvim_lsp_signature_help" },
@@ -187,6 +185,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
           end
         end, { "i", "s" }),
       },
+    })
+
+    cmp.setup.filetype({ "autohotkey" }, {
+      sources = { { name = "autohotkey" } },
+    })
+
+    cmp.setup.cmdline({ "/", "?" }, {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = {
+        { name = "buffer" },
+      },
+    })
+    cmp.setup.cmdline(":", {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = "path" },
+      }, {
+        { name = "cmdline" },
+      }),
     })
   end,
 })

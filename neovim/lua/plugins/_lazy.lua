@@ -330,6 +330,13 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
+    "DasGandlaf/nvim-autohotkey",
+    ft = { "autohotkey" },
+    config = function()
+      require("nvim-autohotkey")
+    end,
+  },
+  {
     "L3MON4D3/LuaSnip",
     event = "LspAttach",
     config = function()
@@ -366,28 +373,18 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "uga-rosa/cmp-dictionary",
-    cond = function()
-      return vim.fn.filereadable("~/.local/lib/aspell/en.dict") ~= 0
-        and utils.no_vscode()
-    end,
-    opts = {
-      dic = {
-        ["*"] = "~/.local/lib/aspell/en.dict",
-      },
-    },
-    event = "LspAttach",
-  },
-  {
     "tamago324/cmp-zsh",
     event = "LspAttach",
-    config = function()
+    build = function()
       if vim.fn.executable("zsh") then
         io.popen('zsh -c "zmodload zsh/zpty"')
       end
-      require("cmp_zsh").setup({ zshrc = true, filetypes = { "zsh" } })
     end,
-    cond = utils.no_vscode,
+    main = "cmp_zsh",
+    opts = { zshrc = true, filetypes = { "zsh" } },
+    cond = function()
+      return utils.no_vscode() and vim.fn.executable("zsh") ~= 0
+    end,
   },
   {
     "j-hui/fidget.nvim",
@@ -537,7 +534,7 @@ M.plugins = {
     cond = utils.no_vscode,
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
-      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+      { "<leader>o", ":Outline<CR>", desc = "Toggle outline" },
     },
     opts = {},
     config = function()
@@ -608,9 +605,7 @@ M.plugins = {
   },
   {
     "andrewferrier/wrapping.nvim",
-    config = function()
-      require("wrapping").setup()
-    end,
+    config = true,
     lazy = true,
     ft = { "markdown", "pandoc", "tex" },
   },
@@ -762,7 +757,22 @@ M.plugins = {
     cond = function()
       return utils.no_vscode() and vim.fn.executable("cmake") == 1
     end,
+    config = function()
+      require("telescope").setup({
+        extensions = {
+          fzf = {
+            fuzzy = true, -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+          },
+        },
+      })
+      require("telescope").load_extension("fzf")
+    end,
   },
+  { "kyazdani42/nvim-web-devicons", dependencies = { "nvim-lualine/lualine.nvim" } },
   {
     "nvim-lualine/lualine.nvim",
     cond = utils.no_vscode,
@@ -770,7 +780,6 @@ M.plugins = {
       require("plugins._lualine")
     end,
   },
-  { "kyazdani42/nvim-web-devicons", event = "VeryLazy" },
   { "itchyny/vim-gitbranch", event = "VeryLazy" },
   {
     "hiphish/rainbow-delimiters.nvim",

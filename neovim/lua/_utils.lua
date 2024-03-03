@@ -111,7 +111,7 @@ end
 
 local stat_height = vim.o.cmdheight
 
----@param item string[]
+---@param items string[]
 ---@param retry_count integer
 function M.tryRequire(items, retry_count)
   if retry_count == 0 then

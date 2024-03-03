@@ -20,16 +20,6 @@ if vim.fn.has("win32") == 1 then
   end
 end
 
-if vim.fn.has("unix") ~= 0 then
-  if
-    vim.fn.executable("python")
-    and os.execute('python -c "import neovim" 2> /dev/null') ~= 0
-  then
-    os.execute("python -m pip install neovim > /dev/null")
-    print("neovim Python API installed.")
-  end
-end
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -51,3 +41,13 @@ local items = {
   "misc",
 }
 utils.tryRequire(items)
+
+if vim.fn.has("unix") ~= 0 then
+  if
+    vim.fn.executable(vim.g.python3_host_prog)
+    and os.execute(vim.g.python3_host_prog .. ' -c "import neovim" 2> /dev/null') ~= 0
+  then
+    os.execute(vim.g.python3_host_prog .. " -m pip install neovim > /dev/null")
+    print("neovim Python API installed.")
+  end
+end
