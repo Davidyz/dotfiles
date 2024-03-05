@@ -207,14 +207,6 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "nvim-treesitter/nvim-treesitter-context",
-    config = function()
-      require("plugins.treesitter-context")
-    end,
-    event = "VeryLazy",
-    cond = utils.no_vscode,
-  },
-  {
     "nvim-treesitter/playground",
     event = "VeryLazy",
     cond = utils.no_vscode,
@@ -643,8 +635,8 @@ M.plugins = {
           -- require('hover.providers.gh')
           -- require('hover.providers.gh_user')
           -- require('hover.providers.jira')
-          -- require('hover.providers.man')
-          require("hover.providers.dictionary")
+          require("hover.providers.man")
+          -- require("hover.providers.dictionary")
         end,
         preview_opts = {
           border = "double",
@@ -653,16 +645,22 @@ M.plugins = {
         -- to a :h preview-window when pressing the hover keymap.
         preview_window = false,
         title = true,
+
+        mouse_providers = {
+          "LSP",
+        },
+        mouse_delay = 1000,
       })
 
       -- Setup keymaps
       vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
-      --vim.keymap.set(
-      --"n",
-      --"gK",
-      --require("hover").hover_select,
-      --{ desc = "hover.nvim (select)" }
-      --)
+      vim.keymap.set(
+        "n",
+        "<MouseMove>",
+        require("hover").hover_mouse,
+        { desc = "hover.nvim (mouse)" }
+      )
+      vim.o.mousemoveevent = true
     end,
     lazy = true,
     keys = { "K" },
@@ -986,20 +984,20 @@ M.plugins = {
     },
     event = "VeryLazy",
   },
-  {
-    "folke/which-key.nvim",
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-      require("which-key").setup({
-        window = {
-          border = "rounded",
-          margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
-        },
-        layout = { aligh = "left" },
-      })
-    end,
-  },
+  -- {
+  --   "folke/which-key.nvim",
+  --   config = function()
+  --     vim.o.timeout = true
+  --     vim.o.timeoutlen = 300
+  --     require("which-key").setup({
+  --       window = {
+  --         border = "rounded",
+  --         margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
+  --       },
+  --       layout = { aligh = "left" },
+  --     })
+  --   end,
+  -- },
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
