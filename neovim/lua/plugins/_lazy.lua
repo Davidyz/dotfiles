@@ -134,19 +134,28 @@ M.plugins = {
     ft = { "markdown", "pandoc" },
   },
   {
-    "iamcco/markdown-preview.nvim",
-    lazy = true,
-    build = function()
-      vim.fn["mkdp#util#install"]()
+    "toppair/peek.nvim",
+    ft = { "markdown" },
+    build = "deno task --quiet build:fast",
+    opts = { theme = "dark", filetype = { "markdown", "pandoc" }, app = "firefox" },
+    main = "peek",
+    keys = {
+      {
+        "mp",
+        function()
+          local peek = require("peek")
+          if peek.is_open() then
+            peek.close()
+          else
+            peek.open()
+          end
+        end,
+      },
+      mode = "n",
+    },
+    cond = function()
+      return utils.no_vscode() and vim.fn.executable("deno") ~= 0
     end,
-    ft = { "markdown", "pandoc" },
-    keys = { "mp" },
-    cond = utils.no_vscode,
-    config = function()
-      require("plugins.markdown_preview")
-      require("keymaps.markdown_preview")
-    end,
-    event = "VeryLazy",
   },
 
   -- color schemes.
@@ -1034,6 +1043,14 @@ M.plugins = {
     filetypes = { "markdown" },
     build = "luarocks --local --lua-version 5.1 install magick",
     cond = function()
+      package.path = package.path
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?/init.lua;"
+      package.path = package.path
+        .. ";"
+        .. vim.fn.expand("$HOME")
+        .. "/.luarocks/share/lua/5.1/?.lua;"
       local ok, _ = pcall(require, "magick")
       return ok and vim.fn.executable("magick") ~= 0 and utils.no_vscode()
     end,
