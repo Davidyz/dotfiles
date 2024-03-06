@@ -165,6 +165,8 @@ M.plugins = {
     config = function()
       local onedark = require("onedarkpro")
       onedark.setup({
+        colors = { onedark = { bg = "#0F111A" } },
+        highlights = {},
         theme = "onedark",
         styles = {
           strings = "NONE",
@@ -548,6 +550,12 @@ M.plugins = {
         end,
       })
     end,
+  },
+  {
+    "Zeioth/garbage-day.nvim",
+    event = "VeryLazy",
+    dependencies = "neovim/nvim-lspconfig",
+    opts = { excluded_lsp_clients = { "null-ls" } },
   },
 
   -- dap
