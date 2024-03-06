@@ -339,7 +339,6 @@ M.plugins = {
   },
   {
     "L3MON4D3/LuaSnip",
-    event = "LspAttach",
     config = function()
       require("plugins.snippets")
       require("keymaps.snippets")
@@ -348,12 +347,10 @@ M.plugins = {
   },
   {
     "saadparwaiz1/cmp_luasnip",
-    event = "LspAttach",
     cond = utils.no_vscode,
   },
   {
     "rafamadriz/friendly-snippets",
-    event = "LspAttach",
     cond = utils.no_vscode,
   },
   {
