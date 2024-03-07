@@ -112,6 +112,8 @@ plugins=(
     yarn
     colored-man-pages
     pipenv
+    poetry
+    poetry-env
 )
 
 
