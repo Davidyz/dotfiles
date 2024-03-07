@@ -1,6 +1,7 @@
 M = {}
 local utils = require("_utils")
 
+---@type LazyPluginSpec[]
 M.plugins = {
   -- filetypes
   {
@@ -74,21 +75,6 @@ M.plugins = {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
     lazy = true,
-    event = "VeryLazy",
-  },
-  {
-    "vim-pandoc/vim-pandoc",
-    lazy = true,
-    ft = { "markdown", "pandoc", "latex" },
-    config = function()
-      require("plugins.pandoc")
-    end,
-    event = "VeryLazy",
-  },
-  {
-    "vim-pandoc/vim-pandoc-syntax",
-    lazy = true,
-    ft = { "markdown", "pandoc", "latex" },
     event = "VeryLazy",
   },
   {
@@ -605,15 +591,10 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
+
   {
     "stevearc/dressing.nvim",
     opts = { input = { border = "rounded" } },
-  },
-  {
-    "andrewferrier/wrapping.nvim",
-    config = true,
-    lazy = true,
-    ft = { "markdown", "pandoc", "tex" },
   },
   {
     "NStefan002/2048.nvim",
