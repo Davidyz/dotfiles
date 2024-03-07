@@ -30,6 +30,10 @@ depends=(
     'zathura-pdf-mupdf'
     'biber'
     'xdotool'
+    'typst'
+    'autojump'
+    'rustup'
+    'lsd'
 )
 optdepends=(
 )
