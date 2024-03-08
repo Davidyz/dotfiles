@@ -30,6 +30,10 @@ ls.add_snippets("markdown", {
     { trig = "cmd:new_lines", dscr = "Insert blank lines." },
     fmt("<!-- cmd: new_lines: {} -->", insert(1, "num_lines"))
   ),
+  snippet(
+    { trig = "cmd:incremental_list", dscr = "Toggle incremental list (true/false)" },
+    fmt("<!-- cmd: incremental_lists: {} -->", insert(1, "true/false"))
+  ),
   snippet({ trig = "cmd:end_slide", dscr = "Insert a page break." }, {
     text("<!-- cmd: end_slide -->"),
     insert(0),
