@@ -43,7 +43,7 @@ ls.add_snippets("markdown", {
     fmt("<!-- cmd: column_layout: [{}] -->", insert(1, "layout"))
   ),
   snippet(
-    { trig = "cmd:col", dscr = "Start a column" },
+    { trig = "cmd:col", dscr = "Start a column (0-indexed)" },
     fmt("<!-- cmd: column: {} -->", insert(1, "column_id"))
   ),
   snippet({ trig = "cmd:reset_col", dscr = "Reset column layout" }, {
