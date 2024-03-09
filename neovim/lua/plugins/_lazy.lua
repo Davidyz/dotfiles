@@ -710,32 +710,16 @@ M.plugins = {
       vim.keymap.set("", "f", function()
         hop.hint_char1({
           direction = directions.AFTER_CURSOR,
-          current_line_only = true,
         })
-      end, { remap = true })
+      end, { remap = false })
       vim.keymap.set("", "F", function()
         hop.hint_char1({
           direction = directions.BEFORE_CURSOR,
-          current_line_only = true,
         })
-      end, { remap = true })
-      vim.keymap.set("", "t", function()
-        hop.hint_char1({
-          direction = directions.AFTER_CURSOR,
-          current_line_only = true,
-          hint_offset = -1,
-        })
-      end, { remap = true })
-      vim.keymap.set("", "T", function()
-        hop.hint_char1({
-          direction = directions.BEFORE_CURSOR,
-          current_line_only = true,
-          hint_offset = 1,
-        })
-      end, { remap = true })
-      hop.setup({})
+      end, { remap = false })
+      hop.setup({ uppercase = true })
     end,
-    keys = { "f", "F", "t", "T" },
+    keys = { "f", "F" },
   },
   {
     "nvim-telescope/telescope.nvim",
