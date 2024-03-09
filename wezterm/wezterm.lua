@@ -60,6 +60,7 @@ config.keys = {
     mods = "ALT",
     action = action.CloseCurrentTab({ confirm = false }),
   },
+  { key = "F11", mods = "ALT", action = action.ToggleFullScreen },
   { key = "+", mods = "CTRL", action = action.IncreaseFontSize },
   { key = "-", mods = "CTRL", action = action.DecreaseFontSize },
   { key = "0", mods = "CTRL", action = action.ResetFontSize },
