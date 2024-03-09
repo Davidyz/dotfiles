@@ -1059,6 +1059,7 @@ M.plugins = {
         },
       })
     end,
+    enabled = false,
   },
 }
 
