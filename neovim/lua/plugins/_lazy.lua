@@ -245,6 +245,7 @@ M.plugins = {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
     lazy = true,
+    ---@type MasonSettings
     opts = {
       ui = { border = "double" },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
