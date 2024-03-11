@@ -2,6 +2,9 @@
 # "neovim/init.lua" = "~/.config/nvim/init.lua"
 "neovim/" = "~/.config/nvim/"
 
+[hyprland.files]
+"hyprland/" = "~/.config/hypr/"
+
 [zsh.files]
 "zsh/.zshrc" = "~/.zshrc"
 "zsh/.p10k.zsh" = "~/.p10k.zsh"
