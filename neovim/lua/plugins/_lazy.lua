@@ -168,14 +168,16 @@ M.plugins = {
           italic = true,
           underline = true,
           undercurl = true,
-          cursorline = true,
+          cursorline = false,
           transparency = true,
           terminal_colors = true,
           highlight_inactive_windows = true,
         },
+        transparency = true,
         plugins = { treesitter = true },
       })
       onedark.load()
+      vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE" })
     end,
     enabled = true,
     cond = utils.no_vscode,
@@ -593,6 +595,7 @@ M.plugins = {
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
 
+  { "mawkler/modicator.nvim", opts = {} },
   {
     "stevearc/dressing.nvim",
     opts = { input = { border = "rounded" } },
@@ -713,14 +716,14 @@ M.plugins = {
           direction = directions.AFTER_CURSOR,
         })
       end, { remap = false })
-      vim.keymap.set("", "F", function()
+      vim.keymap.set("", "t", function()
         hop.hint_char1({
           direction = directions.BEFORE_CURSOR,
         })
       end, { remap = false })
       hop.setup({ uppercase = true })
     end,
-    keys = { "f", "F" },
+    keys = { "f", "t" },
   },
   {
     "nvim-telescope/telescope.nvim",
