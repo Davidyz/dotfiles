@@ -1,6 +1,5 @@
 local utils = require("_utils")
 local nvim_devicon = require("nvim-web-devicons")
-local navic = require("nvim-navic")
 
 if not nvim_devicon.has_loaded() then
   nvim_devicon.setup()
@@ -10,11 +9,16 @@ local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
 end
 
-local function devicon()
-  return string.sub(
-    nvim_devicon.get_icon(vim.fn.expand("%"), vim.fn.expand("%:e"), {}),
-    1
-  )
+local function get_devicon()
+  local full_name = vim.fn.expand("%")
+  if full_name == "" or full_name == nil then
+    return ""
+  end
+  local ft_name = vim.fn.expand("%:e")
+  if ft_name == "" or ft_name == nil then
+    return ""
+  end
+  return string.sub(nvim_devicon.get_icon(full_name, ft_name, {}), 1)
 end
 
 local function get_context()
@@ -88,7 +92,6 @@ require("lualine").setup({
         "diagnostics",
         sources = { "nvim_lsp" },
       },
-      devicon,
     },
     lualine_c = {
       get_context,
@@ -118,11 +121,17 @@ require("lualine").setup({
         max_length = vim.o.columns,
         "tabs",
         mode = 2,
+        fmt = function(str)
+          local ft_icon = get_devicon()
+          if ft_icon then
+            return ft_icon .. " " .. str:gsub(" ", "")
+          else
+            return str
+          end
+        end,
       },
     },
-    lualine_y = {
-      { navic.get_location, cond = navic.is_available },
-    },
+    lualine_y = { { "navic", color_correction = "dynamic" } },
     lualine_z = {
       {
         arduino_status,

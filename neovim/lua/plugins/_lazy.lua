@@ -357,7 +357,7 @@ M.plugins = {
   },
   {
     "SmiteshP/nvim-navic",
-    config = true,
+    opts = { lsp = { auto_attach = true } },
     event = "LspAttach",
     cond = utils.no_vscode,
   },
