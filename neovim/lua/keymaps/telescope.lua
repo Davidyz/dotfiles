@@ -6,6 +6,9 @@ if vim.fn.executable("rg") ~= 0 then
 end
 vim.keymap.set("n", "<Leader>b", builtin.buffers, {})
 vim.keymap.set("n", "<Leader>f", builtin.quickfix, {})
+vim.keymap.set("n", "<Leader>d", function()
+  builtin.diagnostics({ bufnr = 0 })
+end, {})
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "TelescopePrompt",
