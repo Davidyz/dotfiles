@@ -123,6 +123,8 @@ if string.find(wezterm.target_triple, "windows") ~= nil then
     "-NoLogo",
   }
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
+  config.window_decorations = "RESIZE"
 end
 
+config.hide_tab_bar_if_only_one_tab = true
 return config
