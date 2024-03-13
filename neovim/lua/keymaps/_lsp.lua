@@ -109,9 +109,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local select_opts = { behavior = cmp.SelectBehavior.Insert }
 
     cmp.setup({
-      experimental = {
-        ghost_text = true,
-      },
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
