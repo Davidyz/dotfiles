@@ -9,16 +9,17 @@ local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
 end
 
-local function get_devicon()
-  local full_name = vim.fn.expand("%")
+local function get_devicon_for_buf()
+  local full_name = vim.fn.expand("%") or ""
   if full_name == "" or full_name == nil then
     return ""
   end
-  local ft_name = vim.fn.expand("%:e")
+  local ft_name = vim.fn.expand("%:e") or ""
   if ft_name == "" or ft_name == nil then
     return ""
   end
-  return string.sub(nvim_devicon.get_icon(full_name, ft_name, {}), 1)
+  local icon = nvim_devicon.get_icon(full_name, ft_name, {}) or ""
+  return string.sub(icon, 1)
 end
 
 local function get_context()
@@ -122,9 +123,9 @@ require("lualine").setup({
         "tabs",
         mode = 2,
         fmt = function(str)
-          local ft_icon = get_devicon()
-          if ft_icon then
-            return ft_icon .. " " .. str:gsub(" ", "")
+          local ft_icon = get_devicon_for_buf()
+          if ft_icon ~= "" then
+            return ft_icon .. " " .. str
           else
             return str
           end

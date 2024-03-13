@@ -125,4 +125,10 @@ if string.find(wezterm.target_triple, "windows") ~= nil then
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
 end
 
+config.unix_domains = {
+  {
+    name = "ucl",
+    proxy_command = { "ssh", "-T", "UCL_VM_BARBURY", "wezterm", "cli", "proxy" },
+  },
+}
 return config

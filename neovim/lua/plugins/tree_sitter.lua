@@ -32,6 +32,10 @@ if utils.cpu_count() >= 4 then
 end
 
 require("nvim-treesitter.configs").setup({
+  auto_install = true,
+  sync_install = true,
+  ignore_install = {},
+  modules = { "highlight", "illuminate", "indent", "incremental_selection", "refactor" },
   ensure_installed = installed_list,
   playground = {
     enable = true,
@@ -44,14 +48,20 @@ require("nvim-treesitter.configs").setup({
     custom_captures = {},
     additional_vim_regex_highlighting = false,
   },
-  -- matchup = {
-  --   enable = true, -- mandatory, false will disable the whole extension
-  -- },
   indent = true,
   refactor = {
     highlight_definitions = {
       enable = true,
       clear_on_cursor_move = true,
+    },
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<CR>",
+      node_incremental = "<TAB>",
+      scope_incremental = false,
+      node_decremental = "<S-TAB>",
     },
   },
 })
