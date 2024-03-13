@@ -21,7 +21,7 @@ fi
 export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH/custom/"
-export PATH="/home/davidyz/perl5/bin${PATH:+:${PATH}}"
+export PATH="$HOME/perl5/bin${PATH:+:${PATH}}"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -89,6 +89,30 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+custom_plugins=(
+  Davidyz/ipython-selector
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-syntax-highlighting
+  chrissicool/zsh-256color
+  zsh-users/zsh-completions
+  srijanshetty/docker-zsh
+  hlissner/zsh-autopair
+  marlonrichert/zsh-autocomplete
+  TamCore/autoupdate-oh-my-zsh-plugins
+  ael-code/zsh-colored-man-pages
+)
+
+for i in "${custom_plugins[@]}"; do
+  plugin_dir="${i##*/}"
+  [ $plugin_dir = "autoupdate-oh-my-zsh-plugins" ] && plugin_dir=autoupdate
+  plugin_dir="$ZSH_CUSTOM/plugins/$plugin_dir"
+  if [ ! -d "$plugin_dir" ]; then
+    git clone https://github.com/$i.git $plugin_dir
+  fi
+done
+
+[ ! -d "$ZSH_CUSTOM/themes/powerlevel10k/" ] && git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
 autoload -Uz compinit
 compinit
 plugins=(
@@ -292,10 +316,10 @@ function omz_termsupport_preexec {
     title "$ZSH_THEME_TERM_TITLE_IDLE $CMD" "%100>...>$ZSH_THEME_TERM_TITLE_IDLE \$ $LINE%<<"
 }
 
-PERL5LIB="/home/davidyz/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/davidyz/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/davidyz/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/davidyz/perl5"; export PERL_MM_OPT;
+PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
 pip(){
     python -m pip "${@:1}"
