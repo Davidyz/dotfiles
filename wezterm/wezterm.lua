@@ -123,12 +123,8 @@ if string.find(wezterm.target_triple, "windows") ~= nil then
     "-NoLogo",
   }
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
+  config.window_decorations = "RESIZE"
 end
 
-config.unix_domains = {
-  {
-    name = "ucl",
-    proxy_command = { "ssh", "-T", "UCL_VM_BARBURY", "wezterm", "cli", "proxy" },
-  },
-}
+config.hide_tab_bar_if_only_one_tab = true
 return config
