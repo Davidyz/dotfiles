@@ -1,13 +1,11 @@
 [neovim.files]
-# "neovim/init.lua" = "~/.config/nvim/init.lua"
 "neovim/" = "~/.config/nvim/"
 
 [hyprland.files]
 "hyprland/" = "~/.config/hypr/"
 
 [zsh.files]
-"zsh/.zshrc" = "~/.zshrc"
-"zsh/.p10k.zsh" = "~/.p10k.zsh"
+"zsh/" = "~/"
 
 [alacritty.files]
 "alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
@@ -19,16 +17,13 @@
 "lsd/config.yaml" = "~/.config/lsd/config.yaml"
 
 [wezterm.files]
-"wezterm/wezterm.lua" = "~/.config/wezterm/wezterm.lua"
-"wezterm/onedarkpro.toml" = "~/.config/wezterm/onedarkpro.toml"
+"wezterm/" = "~/.config/wezterm/"
 
 [ahk.files]
-"autohotkeys/app_runner.ahk" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/app_runner.ahk"
-"autohotkeys/tiling.ahk" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/tiling.ahk"
+"autohotkeys/" = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
 [presenterm.files]
-"presenterm/config.yaml" = "~/.config/presenterm/config.yaml"
-"presenterm/themes" = "~/.config/presenterm/themes/"
+"presenterm/" = "~/.config/presenterm/"
 
 [ranger.files]
 "ranger/" = "~/.config/ranger/"
