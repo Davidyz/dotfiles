@@ -109,3 +109,9 @@ end
 if missing_packages ~= "" then
   print("Missing external command(s): " .. missing_packages)
 end
+
+vim.api.nvim_create_autocmd(
+  "BufEnter",
+  { command = "loadview", buffer = 0, once = true }
+)
+vim.api.nvim_create_autocmd("BufLeave", { command = "mkview", buffer = 0, once = true })
