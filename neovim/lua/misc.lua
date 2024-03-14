@@ -111,7 +111,7 @@ if missing_packages ~= "" then
 end
 
 vim.api.nvim_create_autocmd(
-  "BufEnter",
+  "BufReadPost",
   { command = "loadview", buffer = 0, once = true }
 )
 vim.api.nvim_create_autocmd("BufLeave", { command = "mkview", buffer = 0, once = true })

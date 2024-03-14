@@ -1,10 +1,6 @@
 M = {}
 
 M.mason_packages = {
-  --"autopep8",
-  --"autoflake",
-  --"black",
-  --"flake8",
   "clang-format",
   "cmakelang",
   "shellcheck",
