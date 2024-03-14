@@ -110,8 +110,18 @@ if missing_packages ~= "" then
   print("Missing external command(s): " .. missing_packages)
 end
 
+local fold_group = vim.api.nvim_create_augroup("AutoSaveFold", { clear = true })
 vim.api.nvim_create_autocmd(
   "BufReadPost",
-  { command = "loadview", buffer = 0, once = true }
+  { command = "loadview", buffer = 0, once = true, group = fold_group }
 )
-vim.api.nvim_create_autocmd("BufLeave", { command = "mkview", buffer = 0, once = true })
+vim.api.nvim_create_autocmd("BufLeave", {
+  callback = function()
+    if vim.fn.filereadable(vim.fn.expand("%")) == 1 then
+      vim.cmd("mkview")
+    end
+  end,
+  buffer = 0,
+  once = true,
+  group = fold_group,
+})
