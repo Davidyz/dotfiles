@@ -47,14 +47,14 @@ vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
 vim.o.compatible = false
 
 -- recover cursor location from history
-vim.api.nvim_create_autocmd({ "BufRead" }, {
-  pattern = { "*" },
-  callback = function()
-    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
-      vim.api.nvim_command("normal! g'\"")
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufRead" }, {
+--   pattern = { "*" },
+--   callback = function()
+--     if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+--       vim.api.nvim_command("normal! g'\"")
+--     end
+--   end,
+-- })
 
 if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option_value("t_Co", { 256 }, {})
@@ -111,14 +111,24 @@ if missing_packages ~= "" then
 end
 
 local fold_group = vim.api.nvim_create_augroup("AutoSaveFold", { clear = true })
-vim.api.nvim_create_autocmd(
-  "BufReadPost",
-  { command = "loadview", buffer = 0, once = true, group = fold_group }
-)
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    local file_name = vim.fn.expand("%")
+    if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
+      vim.cmd("set viewoptions-=curdir")
+      vim.cmd("silent! loadview")
+    end
+  end,
+  buffer = 0,
+  once = true,
+  group = fold_group,
+})
 vim.api.nvim_create_autocmd("BufLeave", {
   callback = function()
-    if vim.fn.filereadable(vim.fn.expand("%")) == 1 then
-      vim.cmd("mkview")
+    local file_name = vim.fn.expand("%")
+    if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
+      vim.cmd("set viewoptions-=curdir")
+      vim.cmd("silent! mkview")
     end
   end,
   buffer = 0,

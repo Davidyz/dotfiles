@@ -594,7 +594,55 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
-
+  {
+    "Zeioth/compiler.nvim",
+    cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+    keys = {
+      {
+        "<F6>",
+        "<cmd>CompilerOpen<CR>",
+        noremap = true,
+        mode = { "n" },
+        silent = true,
+      },
+      {
+        "<S-F6>",
+        "<cmd>CompilerStop<CR><cmd>CompilerRedo<CR>",
+        noremap = true,
+        mode = { "n" },
+        silent = true,
+      },
+      {
+        "<S-F7>",
+        "<cmd>CompilerToggleResults<cr>",
+        noremap = true,
+        mode = { "n" },
+        silent = true,
+      },
+    },
+    dependencies = {
+      {
+        "stevearc/overseer.nvim",
+        -- commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        opts = {
+          task_list = {
+            direction = "bottom",
+            min_height = 25,
+            max_height = 25,
+            default_detail = 1,
+            bindings = {
+              ["<C-h>"] = nil,
+              ["<C-j>"] = nil,
+              ["<C-k>"] = nil,
+              ["<C-l>"] = nil,
+            },
+          },
+        },
+      },
+    },
+    opts = {},
+  },
   { "mawkler/modicator.nvim", opts = {} },
   {
     "stevearc/dressing.nvim",
