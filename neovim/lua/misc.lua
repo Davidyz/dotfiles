@@ -113,6 +113,9 @@ end
 local fold_group = vim.api.nvim_create_augroup("AutoSaveFold", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
+    if vim.bo.filetype == "" then
+      return
+    end
     local file_name = vim.fn.expand("%")
     if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
       vim.cmd("set viewoptions-=curdir")
@@ -125,6 +128,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 vim.api.nvim_create_autocmd("BufLeave", {
   callback = function()
+    if vim.bo.filetype == "" then
+      return
+    end
     local file_name = vim.fn.expand("%")
     if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
       vim.cmd("set viewoptions-=curdir")

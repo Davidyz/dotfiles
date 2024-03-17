@@ -41,7 +41,8 @@ local default_server_config = {
 }
 
 require("mason-lspconfig").setup({ autostart = true })
-require("mason-lspconfig").setup_handlers({
+
+local handlers = {
   function(server_name) -- default handler (optional)
     if server_name == "rust_analyzer" then
       default_server_config.root_dir = lsp_utils.root_pattern("Cargo.toml", ".git")
@@ -82,11 +83,6 @@ require("mason-lspconfig").setup_handlers({
     lspconfig["arduino_language_server"].setup(arduino_config)
   end,
   ["lua_ls"] = function()
-    --local runtime_path = vim.split(package.path, ";")
-    --table.insert(runtime_path, "?.lua")
-    --table.insert(runtime_path, "?/init.lua")
-    --table.insert(runtime_path, "lua/?.lua")
-    --table.insert(runtime_path, "lua/?/init.lua")
     local libs = vim.api.nvim_get_runtime_file("", true)
     if string.find(vim.fn.expand("%:p"), "wezterm") then
       table.insert(libs, vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/"))
@@ -119,31 +115,6 @@ require("mason-lspconfig").setup_handlers({
     })
     require("lspconfig")["lua_ls"].setup(lua_config)
   end,
-  ["pyright"] = function()
-    local lang_server = "pyright-langserver"
-    if vim.fn.executable("delance-langserver") ~= 0 then
-      lang_server = "delance-langserver"
-    end
-
-    local pyright_config = vim.tbl_deep_extend("force", default_server_config, {
-      cmd = { lang_server, "--stdio" },
-      settings = {
-        python = {
-          analysis = {
-            typeCheckingMode = "off",
-            inlayHints = {
-              callArgumentNames = "all",
-              functionReturnTypes = true,
-              pytestParameters = true,
-              variableTypes = true,
-            },
-            autoFormatStrings = true,
-          },
-        },
-      },
-    })
-    lspconfig.pyright.setup(pyright_config)
-  end,
   ["bashls"] = function()
     local ls_executable = { "bash-language-server", "start" }
     if
@@ -156,7 +127,41 @@ require("mason-lspconfig").setup_handlers({
       vim.tbl_deep_extend("force", default_server_config, { cmd = ls_executable })
     lspconfig["bashls"].setup(bash_config)
   end,
+}
+local default_pyright_config = vim.tbl_deep_extend("force", default_server_config, {
+  settings = {
+    python = {
+      analysis = {
+        diagnosticMode = "off",
+        typeCheckingMode = "off",
+        inlayHints = {
+          callArgumentNames = "all",
+          functionReturnTypes = true,
+          pytestParameters = true,
+          variableTypes = true,
+        },
+        autoFormatStrings = true,
+        ignore = { "*" },
+      },
+      linting = { enabled = false },
+    },
+  },
 })
+if vim.fn.executable("basedpyright-langserver") == 1 then
+  lspconfig["basedpyright"].setup(default_pyright_config)
+else
+  local lang_server = "pyright-langserver"
+  if vim.fn.executable("delance-langserver") ~= 0 then
+    lang_server = "delance-langserver"
+  end
+
+  local pyright_config = vim.tbl_deep_extend("force", default_pyright_config, {
+    cmd = { lang_server, "--stdio" },
+  })
+  lspconfig.pyright.setup(pyright_config)
+end
+
+require("mason-lspconfig").setup_handlers(handlers)
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lspinfo",
