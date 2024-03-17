@@ -100,6 +100,7 @@ custom_plugins=(
   marlonrichert/zsh-autocomplete
   TamCore/autoupdate-oh-my-zsh-plugins
   ael-code/zsh-colored-man-pages
+  darvid/zsh-poetry
 )
 
 for i in "${custom_plugins[@]}"; do
@@ -137,7 +138,7 @@ plugins=(
     colored-man-pages
     pipenv
     poetry
-    poetry-env
+    zsh-poetry
 )
 
 
