@@ -202,8 +202,37 @@ M.plugins = {
       require("plugins.tree_sitter")
     end,
     build = ":TSUpdate",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     cond = utils.no_vscode,
+    dependencies = {
+      {
+        "hiphish/rainbow-delimiters.nvim",
+        --event = "VeryLazy",
+        config = function()
+          local rainbow_delimiters = require("rainbow-delimiters")
+
+          vim.g.rainbow_delimiters = {
+            strategy = {
+              [""] = rainbow_delimiters.strategy["global"],
+              vim = rainbow_delimiters.strategy["local"],
+            },
+            query = {
+              [""] = "rainbow-delimiters",
+              lua = "rainbow-blocks",
+            },
+            highlight = {
+              "RainbowDelimiterRed",
+              "RainbowDelimiterYellow",
+              "RainbowDelimiterBlue",
+              "RainbowDelimiterOrange",
+              "RainbowDelimiterGreen",
+              "RainbowDelimiterViolet",
+              "RainbowDelimiterCyan",
+            },
+          }
+        end,
+      },
+    },
   },
   {
     "nvim-treesitter/playground",
@@ -810,37 +839,7 @@ M.plugins = {
     end,
   },
   { "itchyny/vim-gitbranch", event = "VeryLazy" },
-  {
-    "hiphish/rainbow-delimiters.nvim",
-    --event = "VeryLazy",
-    config = function()
-      local rainbow_delimiters = require("rainbow-delimiters")
 
-      vim.g.rainbow_delimiters = {
-        strategy = {
-          [""] = rainbow_delimiters.strategy["global"],
-          vim = rainbow_delimiters.strategy["local"],
-        },
-        query = {
-          [""] = "rainbow-delimiters",
-          lua = "rainbow-blocks",
-        },
-        --priority = {
-        --[""] = 110,
-        --lua = 210,
-        --},
-        highlight = {
-          "RainbowDelimiterRed",
-          "RainbowDelimiterYellow",
-          "RainbowDelimiterBlue",
-          "RainbowDelimiterOrange",
-          "RainbowDelimiterGreen",
-          "RainbowDelimiterViolet",
-          "RainbowDelimiterCyan",
-        },
-      }
-    end,
-  },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
