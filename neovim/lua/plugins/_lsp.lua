@@ -132,8 +132,7 @@ local default_pyright_config = vim.tbl_deep_extend("force", default_server_confi
   settings = {
     python = {
       analysis = {
-        diagnosticMode = "off",
-        typeCheckingMode = "off",
+        typeCheckingMode = "basic",
         inlayHints = {
           callArgumentNames = "all",
           functionReturnTypes = true,
@@ -141,14 +140,20 @@ local default_pyright_config = vim.tbl_deep_extend("force", default_server_confi
           variableTypes = true,
         },
         autoFormatStrings = true,
-        ignore = { "*" },
       },
       linting = { enabled = false },
     },
   },
 })
+
 if vim.fn.executable("basedpyright-langserver") == 1 then
-  lspconfig["basedpyright"].setup(default_pyright_config)
+  lspconfig["basedpyright"].setup(
+    vim.tbl_deep_extend(
+      "force",
+      default_pyright_config,
+      { settings = { basedpyright = default_pyright_config.settings.python } }
+    )
+  )
 else
   local lang_server = "pyright-langserver"
   if vim.fn.executable("delance-langserver") ~= 0 then
