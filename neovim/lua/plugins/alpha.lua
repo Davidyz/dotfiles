@@ -8,12 +8,3 @@ startify.section.header.val = plugin_utils.make_pokemon()
 dashboard.section.header.val = plugin_utils.make_pokemon()
 
 require("alpha").setup(startify.config)
-
-vim.api.nvim_create_autocmd("TabNewEntered", {
-  pattern = "*",
-  callback = function()
-    if vim.fn.expand("%:t") ~= "lsp.log" then
-      alpha.start(false)
-    end
-  end,
-})

@@ -598,6 +598,7 @@ M.plugins = {
     cond = utils.no_vscode,
     event = "VeryLazy",
     lazy = true,
+    dependencies = { "nvim-neotest/nvim-nio" },
   },
   {
     "jbyuki/one-small-step-for-vimkind",
@@ -623,6 +624,25 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
+
+  {
+    "kawre/leetcode.nvim",
+
+    opts = { lang = "python3" },
+    init = function()
+      vim.g.use_alpha = false
+    end,
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim", -- required by telescope
+      "MunifTanjim/nui.nvim",
+
+      -- optional
+      "nvim-treesitter/nvim-treesitter",
+      "rcarriga/nvim-notify",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
   {
     "Zeioth/compiler.nvim",
     cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
@@ -965,7 +985,6 @@ M.plugins = {
     lazy = true,
   },
   { "ColaMint/pokemon.nvim", event = "VeryLazy" },
-  lazy = true,
   {
     "goolord/alpha-nvim",
     config = function()
