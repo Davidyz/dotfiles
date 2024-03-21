@@ -656,7 +656,11 @@ M.plugins = {
 
       -- optional
       "nvim-treesitter/nvim-treesitter",
-      { "rcarriga/nvim-notify", opts = { background = "#0F111A" }, config = true },
+      {
+        "rcarriga/nvim-notify",
+        opts = { background_colour = "#0F111A" },
+        config = true,
+      },
       "nvim-tree/nvim-web-devicons",
     },
   },
