@@ -797,7 +797,7 @@ M.plugins = {
         "svn",
         "hgcommit",
       },
-      lastplace_open_folds = true,
+      lastplace_open_folds = false,
     },
     config = true,
     event = "VeryLazy",
