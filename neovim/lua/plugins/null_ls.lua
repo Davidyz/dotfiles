@@ -11,7 +11,6 @@ return function()
       null_ls.builtins.formatting.black,
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.formatting.cmake_format,
-      null_ls.builtins.formatting.isort,
       null_ls.builtins.formatting.shfmt.with({
         filetypes = { "sh", "bash", "zsh" },
         extra_args = { "-i", vim.bo.sts },
