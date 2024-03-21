@@ -62,13 +62,12 @@ local handlers = {
     require("lspconfig")["texlab"].setup(default_server_config)
   end,
   ["ruff_lsp"] = function()
-    lspconfig["ruff_lsp"].setup(
-      vim.tbl_deep_extend(
-        "force",
-        default_server_config,
-        { capabilities = { document_formatting = false } }
-      )
-    )
+    lspconfig["ruff_lsp"].setup(vim.tbl_deep_extend("force", default_server_config, {
+      capabilities = {
+        -- only enable when black is not available
+        textDocument = { dynamicRegistration = vim.fn.executable("black") == 0 },
+      },
+    }))
   end,
   ["arduino_language_server"] = function()
     if
