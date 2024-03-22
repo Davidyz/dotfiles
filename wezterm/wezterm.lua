@@ -26,11 +26,11 @@ local onedark_colors, _ = wezterm.color.load_scheme(
 )
 
 config.background = {
-  {
-    source = { File = "~/Pictures/Wallpaper/_DSC0320.jpg" },
-    hsb = { brightness = 0.1 },
-    attachment = "Fixed",
-  },
+  -- {
+  --   source = { File = "~/Pictures/Wallpaper/_DSC0320.jpg" },
+  --   hsb = { brightness = 0.1 },
+  --   attachment = "Fixed",
+  -- },
 }
 
 for i, entry in ipairs(config.background) do
