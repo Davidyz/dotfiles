@@ -851,8 +851,27 @@ M.plugins = {
   {
     "nvim-telescope/telescope.nvim",
     event = "VeryLazy",
+    keys = {
+      { "F", "<cmd>Telescope find_files<cr>", remap = false, mode = "n" },
+      { "<Leader>b", "<cmd>Telescope buffers<cr>", remap = false, mode = "n" },
+      { "<Leader>f", "<cmd>Telescope quickfix<cr>", remap = false, mode = "n" },
+      { "<Leader>d", "<cmd>Telescope diagnostics<cr>", remap = false, mode = "n" },
+      { "<Leader>h", "<cmd>Telescope help_tags<cr>", remap = false, mode = "n" },
+      { "<C-f>", "<cmd>Telescope lsp_document_symbols<cr>", remap = false, mode = "n" },
+      "R",
+    },
     config = function()
-      require("keymaps.telescope")
+      if vim.fn.executable("rg") ~= 0 then
+        vim.keymap.set("n", "R", "<cmd>Telescope live_grep<cr>", {})
+      end
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "TelescopePrompt",
+        callback = function()
+          vim.keymap.set({ "i", "n" }, "<esc>", function()
+            vim.api.nvim_win_close(0, true)
+          end, { replace_keycodes = true, buffer = 0, expr = true })
+        end,
+      })
     end,
   },
   {
@@ -869,7 +888,6 @@ M.plugins = {
             override_generic_sorter = true, -- override the generic sorter
             override_file_sorter = true, -- override the file sorter
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-            -- the default case_mode is "smart_case"
           },
         },
       })
@@ -891,14 +909,12 @@ M.plugins = {
       vim.g.indent_blankline_filetype_exclude =
         { "startify", "help", "nerdtree", "alpha", "Outline" }
     end,
-    config = true,
-    opt = {
-      -- for example, context is off by default, use this to turn it on
+    opts = {
       exclude = {
-        filetypes = { "startify", "help", "nerdtree", "alpha" },
+        filetypes = { "startify", "help", "neo-tree", "alpha" },
       },
       scope = {
-        enabled = true,
+        enabled = false,
         show_exact_scope = false,
         show_start = false,
         show_end = false,
@@ -937,39 +953,38 @@ M.plugins = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
     },
-    config = function()
-      local neotree = require("neo-tree")
-      neotree.setup({
-        close_if_last_window = true,
-        sort_case_insensitive = true,
-        filesystem = {
-          filtered_items = {
-            visible = true,
-            hide_hidden = false,
-            hide_dotfiles = false,
-          },
-          follow_current_file = { enabled = true },
+    opts = {
+      close_if_last_window = true,
+      sort_case_insensitive = true,
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_hidden = false,
+          hide_dotfiles = false,
         },
-        window = {
-          mappings = {
-            ["<cr>"] = "open",
-            ["<space>"] = "open",
-            ["<left>"] = "navigate_up",
-            ["<right>"] = "set_root",
-          },
+        follow_current_file = { enabled = true },
+      },
+      window = {
+        mappings = {
+          ["<cr>"] = "open",
+          ["<space>"] = "open",
+          ["<left>"] = "navigate_up",
+          ["<right>"] = "set_root",
         },
-        buffers = {
-          follow_current_file = true,
-        },
-        source_selector = { show_scrolled_off_parent_node = true },
-      })
-      vim.api.nvim_set_keymap("n", "<Leader>t", "", {
-        noremap = true,
-        callback = function()
-          neotree.focus("", true, true)
-        end,
-      })
-    end,
+      },
+      buffers = {
+        follow_current_file = true,
+      },
+      source_selector = { show_scrolled_off_parent_node = true },
+    },
+    keys = {
+      {
+        "<Leader>t",
+        "<cmd>Neotree action=focus toggle<cr>",
+        mode = "n",
+        remap = true,
+      },
+    },
   },
   {
     "kylechui/nvim-surround",
@@ -1107,43 +1122,43 @@ M.plugins = {
     config = true,
     opts = { executables = { "rg", "node" } },
   },
-  {
-    "3rd/image.nvim",
-    filetypes = { "markdown" },
-    build = "luarocks --local --lua-version 5.1 install magick",
-    cond = function()
-      package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?/init.lua;"
-      package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?.lua;"
-      local ok, _ = pcall(require, "magick")
-      return ok and vim.fn.executable("magick") ~= 0 and utils.no_vscode()
-    end,
-    config = function()
-      package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?/init.lua;"
-      package.path = package.path
-        .. ";"
-        .. vim.fn.expand("$HOME")
-        .. "/.luarocks/share/lua/5.1/?.lua;"
-      require("image").setup({
-        backend = "kitty",
-        max_width_window_percentage = 200 / 3,
-        integrations = {
-          markdown = {
-            clear_in_insert_mode = true,
-          },
-        },
-      })
-    end,
-    enabled = false,
-  },
+  -- {
+  --   "3rd/image.nvim",
+  --   filetypes = { "markdown" },
+  --   build = "luarocks --local --lua-version 5.1 install magick",
+  --   cond = function()
+  --     package.path = package.path
+  --       .. ";"
+  --       .. vim.fn.expand("$HOME")
+  --       .. "/.luarocks/share/lua/5.1/?/init.lua;"
+  --     package.path = package.path
+  --       .. ";"
+  --       .. vim.fn.expand("$HOME")
+  --       .. "/.luarocks/share/lua/5.1/?.lua;"
+  --     local ok, _ = pcall(require, "magick")
+  --     return ok and vim.fn.executable("magick") ~= 0 and utils.no_vscode()
+  --   end,
+  --   config = function()
+  --     package.path = package.path
+  --       .. ";"
+  --       .. vim.fn.expand("$HOME")
+  --       .. "/.luarocks/share/lua/5.1/?/init.lua;"
+  --     package.path = package.path
+  --       .. ";"
+  --       .. vim.fn.expand("$HOME")
+  --       .. "/.luarocks/share/lua/5.1/?.lua;"
+  --     require("image").setup({
+  --       backend = "kitty",
+  --       max_width_window_percentage = 200 / 3,
+  --       integrations = {
+  --         markdown = {
+  --           clear_in_insert_mode = true,
+  --         },
+  --       },
+  --     })
+  --   end,
+  --   enabled = false,
+  -- },
 }
 
 M.config = {
