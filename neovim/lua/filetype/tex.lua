@@ -1,13 +1,5 @@
 local utils = require("_utils")
 
-local tex_errors = function()
-  local diags = vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-  if not diags then
-    return false
-  end
-  return true
-end
-
 local job = require("plenary.job")
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
   pattern = "*.tex",
@@ -17,23 +9,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
         vim.fn.system("texcount -inc -sum -1 " .. vim.fn.expand("%")),
         "%d+"
       )
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  pattern = "*.tex",
-  callback = function()
-    if not tex_errors() and vim.fn.executable("pdflatex") then
-      job
-        :new({
-          command = "pdflatex",
-          args = { vim.fn.expand("%:p") },
-          on_exit = function()
-            print("Latex build job finished.")
-          end,
-        })
-        :start()
     end
   end,
 })
