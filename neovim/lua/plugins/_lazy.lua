@@ -182,18 +182,6 @@ M.plugins = {
     enabled = true,
     cond = utils.no_vscode,
   },
-  {
-    "Mofiqul/vscode.nvim",
-    config = function()
-      require("vscode").setup({
-        transparent = true,
-        italic_comments = true,
-        disable_nvimtree_bg = true,
-      })
-      require("vscode").load()
-    end,
-    enabled = false,
-  },
 
   -- tree sitter
   {
@@ -207,7 +195,7 @@ M.plugins = {
     dependencies = {
       {
         "hiphish/rainbow-delimiters.nvim",
-        --event = "VeryLazy",
+        event = "VeryLazy",
         config = function()
           local rainbow_delimiters = require("rainbow-delimiters")
 
@@ -639,6 +627,7 @@ M.plugins = {
   },
   {
     "kawre/leetcode.nvim",
+    cmd = "Leet",
 
     config = function()
       local lc = require("leetcode")
@@ -895,44 +884,32 @@ M.plugins = {
       require("plugins._lualine")
     end,
   },
-  { "itchyny/vim-gitbranch", event = "VeryLazy" },
-
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    config = function()
+    init = function()
       vim.g.indent_blankline_filetype_exclude =
-        { "startify", "help", "nerdtree", "alpha" }
-      require("ibl").setup({
-        -- for example, context is off by default, use this to turn it on
-        exclude = {
-          filetypes = { "startify", "help", "nerdtree", "alpha" },
-        },
-        scope = {
-          enabled = true,
-          show_exact_scope = false,
-          show_start = false,
-          show_end = false,
-        },
-      })
+        { "startify", "help", "nerdtree", "alpha", "Outline" }
     end,
-    event = "VeryLazy",
+    config = true,
+    opt = {
+      -- for example, context is off by default, use this to turn it on
+      exclude = {
+        filetypes = { "startify", "help", "nerdtree", "alpha" },
+      },
+      scope = {
+        enabled = true,
+        show_exact_scope = false,
+        show_start = false,
+        show_end = false,
+      },
+    },
   },
   {
     "terrortylor/nvim-comment",
     cmd = { "CommentToggle" },
     main = "nvim_comment",
-    config = function()
-      require("nvim_comment").setup({
-        marker_padding = true,
-        comment_empty = false,
-        comment_empty_trim_whitespace = true,
-        create_mappings = false,
-        line_mapping = nil,
-        operator_mapping = nil,
-        comment_chunk_text_object = "nil",
-        hook = nil,
-      })
+    init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "arduino",
         callback = function()
@@ -940,6 +917,17 @@ M.plugins = {
         end,
       })
     end,
+    config = true,
+    opt = {
+      marker_padding = true,
+      comment_empty = false,
+      comment_empty_trim_whitespace = true,
+      create_mappings = false,
+      line_mapping = nil,
+      operator_mapping = nil,
+      comment_chunk_text_object = "nil",
+      hook = nil,
+    },
     keys = { { "<Leader>c<Space>", ":CommentToggle<CR>", mode = { "n", "v" } } },
   },
   {
@@ -993,34 +981,42 @@ M.plugins = {
     opts = {},
     event = "VeryLazy",
   },
-  { "chaoren/vim-wordmotion", event = "VeryLazy" },
-  { "ryanoasis/vim-devicons", event = "VeryLazy" },
-  { "vim-scripts/restore_view.vim", event = "VeryLazy" },
   {
-    "zhaocai/GoldenView.Vim",
-    cond = utils.no_vscode,
-    config = function()
-      require("plugins.golden_view")
-      require("keymaps.golden_view")
+    "nvim-focus/focus.nvim",
+    opts = {},
+    config = true,
+    init = function()
+      local ignore_filetypes = { "neo-tree", "Outline" }
+      local ignore_buftypes = { "nofile", "prompt", "popup" }
+
+      local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
+
+      vim.api.nvim_create_autocmd("WinEnter", {
+        group = augroup,
+        callback = function(_)
+          if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
+            vim.w.focus_disable = true
+          else
+            vim.w.focus_disable = false
+          end
+        end,
+        desc = "Disable focus autoresize for BufType",
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = augroup,
+        callback = function(_)
+          if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
+            vim.b.focus_disable = true
+          else
+            vim.b.focus_disable = false
+          end
+        end,
+        desc = "Disable focus autoresize for FileType",
+      })
     end,
   },
-  {
-    dir = "Davidyz/make.nvim",
-  },
-  {
-    "Davidyz/md-code.nvim",
-    ft = { "markdown" },
-    cond = utils.no_vscode,
-    lazy = true,
-    event = "VeryLazy",
-    config = function()
-      require("md-code")
-    end,
-  },
-  {
-    "dstein64/vim-startuptime",
-    lazy = true,
-  },
+
   { "ColaMint/pokemon.nvim", event = "VeryLazy" },
   {
     "goolord/alpha-nvim",
@@ -1030,13 +1026,7 @@ M.plugins = {
     dependencies = { "ColaMint/pokemon.nvim" },
   },
   { "backdround/tabscope.nvim", config = true },
-  {
-    "gpanders/editorconfig.nvim",
-    cond = function()
-      return vim.version().major < 1 and vim.version().minor < 9
-    end,
-    event = "VeryLazy",
-  },
+
   {
     "akinsho/toggleterm.nvim",
     event = "VeryLazy",
@@ -1093,19 +1083,21 @@ M.plugins = {
   {
     "f-person/git-blame.nvim",
     lazy = true,
-    keys = { "<Leader>gb", "<Leader>go", "<Leader>gc" },
-    config = function()
-      local gb = require("gitblame")
+    keys = {
+      { "<Leader>gb", "<cmd>GitBlameToggle<cr>", noremap = true },
+      {
+        "<Leader>go",
+        "<cmd>GitBlameOpenCommitURL<cr><cmd>GitBlameDisable<cr>",
+        noremap = true,
+      },
+      {
+        "<Leader>gc",
+        "<cmd>GitBlameCopyCommitURL<cr><cmd>GitBlameDisable<cr>",
+        noremap = true,
+      },
+    },
+    init = function()
       vim.g.gitblame_enabled = 0
-      vim.keymap.set("n", "<Leader>gb", gb.toggle, { noremap = true })
-      vim.keymap.set("n", "<Leader>go", function()
-        gb.open_commit_url()
-        gb.disable()
-      end, { noremap = true })
-      vim.keymap.set("n", "<Leader>gc", function()
-        gb.copy_commit_url_to_clipboard()
-        gb.disable()
-      end, { noremap = true })
     end,
   },
   { "akinsho/git-conflict.nvim", version = "*", config = true },
