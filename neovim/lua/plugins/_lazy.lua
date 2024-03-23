@@ -640,7 +640,7 @@ M.plugins = {
       local default_python_imports = require("leetcode.config.imports").python3
       for i, v in ipairs(default_python_imports) do
         if string.find(v, "import") ~= nil then
-          default_python_imports[i] = v .. " # noqa: F401"
+          default_python_imports[i] = v .. " # noqa: F401,F403"
         end
       end
       vim.list_extend(python_imports, default_python_imports)
