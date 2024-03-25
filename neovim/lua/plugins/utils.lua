@@ -10,7 +10,6 @@ M.mason_packages = {
   "lua-language-server",
   "vim-language-server",
   "bash-language-server",
-  "pyright",
   "ruff-lsp",
   "isort",
   "jsonls",

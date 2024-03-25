@@ -155,13 +155,13 @@ local default_pyright_config = vim.tbl_deep_extend("force", default_server_confi
 })
 
 if vim.fn.executable("basedpyright-langserver") == 1 then
-  lspconfig["basedpyright"].setup(
-    vim.tbl_deep_extend(
-      "force",
-      default_pyright_config,
-      { settings = { basedpyright = default_pyright_config.settings.python } }
-    )
+  local based_config = vim.tbl_deep_extend(
+    "force",
+    default_pyright_config,
+    { settings = { basedpyright = default_pyright_config.settings.python } }
   )
+  based_config.settings.basedpyright.typeCheckingMode = "standard"
+  lspconfig["basedpyright"].setup(based_config)
 else
   local lang_server = "pyright-langserver"
   if vim.fn.executable("delance-langserver") ~= 0 then
