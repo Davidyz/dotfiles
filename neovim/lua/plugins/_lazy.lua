@@ -418,35 +418,31 @@ M.plugins = {
     event = "LspAttach",
   },
   {
-    "folke/neodev.nvim",
-    event = "LspAttach",
-    ft = { "lua" },
-    lazy = true,
-    config = true,
-    cond = utils.no_vscode,
-  },
-  {
     "aznhe21/actions-preview.nvim",
-    keys = { "<Leader>a" },
+    keys = {
+      {
+        "<Leader>a",
+        [[<cmd>lua require("actions-preview").code_actions()<cr>]],
+        mode = { "v", "n" },
+        desc = "Code Actions",
+      },
+    },
     lazy = true,
-    config = function()
-      vim.keymap.set({ "v", "n" }, "<Leader>a", require("actions-preview").code_actions)
-      require("actions-preview").setup({
-        telescope = {
-          sorting_strategy = "ascending",
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
+    opts = {
+      telescope = {
+        sorting_strategy = "ascending",
+        layout_strategy = "vertical",
+        layout_config = {
+          width = 0.8,
+          height = 0.9,
+          prompt_position = "top",
+          preview_cutoff = 20,
+          preview_height = function(_, _, max_lines)
+            return max_lines - 15
+          end,
         },
-      })
-    end,
+      },
+    },
     cond = utils.no_vscode,
   },
   {
@@ -485,10 +481,10 @@ M.plugins = {
 
       vim.keymap.set("x", "<leader>ef", function()
         require("refactoring").refactor("Extract Function")
-      end)
+      end, { desc = "Extract Function", noremap = true })
       vim.keymap.set("x", "<leader>ev", function()
         require("refactoring").refactor("Extract Variable")
-      end)
+      end, { desc = "Extract Variable", noremap = true })
     end,
     event = "LspAttach",
     keys = { "<leader>ef", "<leader>ev" },
@@ -543,10 +539,7 @@ M.plugins = {
       { "<leader>o", ":Outline<CR>", desc = "Toggle outline" },
     },
     opts = {},
-    config = function()
-      local outline = require("outline")
-      outline.setup()
-      vim.keymap.set("n", "<Leader-o>", outline.toggle, { desc = "Toggle outline" })
+    init = function()
       vim.api.nvim_create_autocmd("BufEnter", {
         nested = true,
         callback = function()
@@ -749,43 +742,34 @@ M.plugins = {
   },
   {
     "lewis6991/hover.nvim",
-    config = function()
-      require("hover").setup({
-        init = function()
-          -- Require providers
-          require("hover.providers.lsp")
-          -- require('hover.providers.gh')
-          -- require('hover.providers.gh_user')
-          -- require('hover.providers.jira')
-          require("hover.providers.man")
-          -- require("hover.providers.dictionary")
-        end,
-        preview_opts = {
-          border = "double",
-        },
-        -- Whether the contents of a currently open hover window should be moved
-        -- to a :h preview-window when pressing the hover keymap.
-        preview_window = false,
-        title = true,
+    opts = {
+      init = function()
+        require("hover.providers.lsp")
+        require("hover.providers.man")
+      end,
+      preview_opts = {
+        border = "double",
+      },
+      -- Whether the contents of a currently open hover window should be moved
+      -- to a :h preview-window when pressing the hover keymap.
+      preview_window = false,
+      title = true,
 
-        mouse_providers = {
-          "LSP",
-        },
-        mouse_delay = 1000,
-      })
-
-      -- Setup keymaps
-      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
-      vim.keymap.set(
-        "n",
-        "<MouseMove>",
-        require("hover").hover_mouse,
-        { desc = "hover.nvim (mouse)" }
-      )
-      vim.o.mousemoveevent = true
-    end,
+      mouse_providers = {
+        "LSP",
+      },
+      mouse_delay = 1000,
+    },
     lazy = true,
-    keys = { "K" },
+    keys = {
+      {
+        "K",
+        [[<cmd>lua require("hover").hover()<cr>]],
+        desc = "hover.nvim",
+        mode = "n",
+        noremap = true,
+      },
+    },
   },
   {
     "brenoprata10/nvim-highlight-colors",
@@ -894,7 +878,6 @@ M.plugins = {
       require("telescope").load_extension("fzf")
     end,
   },
-  { "kyazdani42/nvim-web-devicons", dependencies = { "nvim-lualine/lualine.nvim" } },
   {
     "nvim-lualine/lualine.nvim",
     cond = utils.no_vscode,
@@ -1075,20 +1058,20 @@ M.plugins = {
     },
     event = "VeryLazy",
   },
-  -- {
-  --   "folke/which-key.nvim",
-  --   config = function()
-  --     vim.o.timeout = true
-  --     vim.o.timeoutlen = 300
-  --     require("which-key").setup({
-  --       window = {
-  --         border = "rounded",
-  --         margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
-  --       },
-  --       layout = { aligh = "left" },
-  --     })
-  --   end,
-  -- },
+  {
+    "folke/which-key.nvim",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {
+      window = {
+        border = "rounded",
+        margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
+      },
+      layout = { aligh = "left" },
+    },
+  },
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
