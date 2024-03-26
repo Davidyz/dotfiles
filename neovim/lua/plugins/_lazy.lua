@@ -177,7 +177,6 @@ M.plugins = {
         plugins = { treesitter = true },
       })
       onedark.load()
-      vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE" })
     end,
     enabled = true,
     cond = utils.no_vscode,
@@ -246,17 +245,19 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "RRethy/vim-illuminate",
-    cond = utils.no_vscode,
-    event = "VeryLazy",
-    config = function()
-      require("illuminate").configure({
-        providers = { "treesitter", "lsp" },
-      })
-      vim.api.nvim_set_hl(0, "illuminatedWordText", { link = "MatchParen" })
-      vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "MatchParen" })
-      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "MatchParen" })
-    end,
+    "yamatsum/nvim-cursorline",
+    config = true,
+    opts = {
+      cursorword = {
+        enable = true,
+        min_length = 1,
+        hl = vim.tbl_extend(
+          "force",
+          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
+          { underline = false, bold = false }
+        ),
+      },
+    },
   },
 
   -- mason
@@ -977,6 +978,7 @@ M.plugins = {
   {
     "declancm/cinnamon.nvim",
     opts = {},
+    config = true,
     event = "VeryLazy",
   },
   {
