@@ -151,7 +151,7 @@ M.plugins = {
     config = function()
       local onedark = require("onedarkpro")
       onedark.setup({
-        colors = { onedark = { bg = "#0F111A" } },
+        -- colors = { onedark = { bg = "#0F111A" } },
         highlights = {},
         theme = "onedark",
         styles = {
