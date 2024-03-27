@@ -307,6 +307,7 @@ M.plugins = {
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
     --dependencies = { "folke/neodev.nvim" },
   },
@@ -352,6 +353,7 @@ M.plugins = {
       require("plugins.snippets")
       require("keymaps.snippets")
     end,
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
   },
   {
@@ -365,7 +367,7 @@ M.plugins = {
   {
     "williamboman/mason-lspconfig.nvim",
     cond = utils.no_vscode,
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     --dependencies = { "folke/neodev.nvim" },
   },
   {
@@ -553,7 +555,7 @@ M.plugins = {
   },
   {
     "Zeioth/garbage-day.nvim",
-    event = "VeryLazy",
+    event = "LspAttach",
     dependencies = "neovim/nvim-lspconfig",
     opts = { excluded_lsp_clients = { "null-ls" } },
   },
@@ -567,6 +569,7 @@ M.plugins = {
       require("plugins.dap")
       require("keymaps.dap")
     end,
+    keys = { "<leader>d" },
     event = "VeryLazy",
   },
   {
@@ -657,7 +660,7 @@ M.plugins = {
       "nvim-treesitter/nvim-treesitter",
       {
         "rcarriga/nvim-notify",
-        opts = { background_colour = "#0F111A" },
+        opts = {},
         config = true,
       },
       "nvim-tree/nvim-web-devicons",
@@ -731,15 +734,6 @@ M.plugins = {
         undo = "<C-z>",
       },
     },
-  },
-  {
-    "gorbit99/codewindow.nvim",
-    config = function()
-      local codewindow = require("codewindow")
-      codewindow.setup({ window_border = "double" })
-      codewindow.apply_default_keybinds()
-    end,
-    lazy = true,
   },
   {
     "lewis6991/hover.nvim",
@@ -885,6 +879,7 @@ M.plugins = {
     config = function()
       require("plugins._lualine")
     end,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -1100,8 +1095,12 @@ M.plugins = {
       vim.g.gitblame_enabled = 0
     end,
   },
-  { "akinsho/git-conflict.nvim", version = "*", config = true },
-  { "sindrets/diffview.nvim", config = true },
+  {
+    "akinsho/git-conflict.nvim",
+    version = "*",
+    config = true,
+  },
+  { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
   {
     "Davidyz/executable-checker.nvim",
     config = true,

@@ -1,9 +1,9 @@
 local utils = require("_utils")
 local nvim_devicon = require("nvim-web-devicons")
 
-if not nvim_devicon.has_loaded() then
-  nvim_devicon.setup()
-end
+-- if not nvim_devicon.has_loaded() then
+--   nvim_devicon.setup()
+-- end
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
@@ -75,7 +75,7 @@ local function arduino_status()
   return line
 end
 
-require("lualine").setup({
+local lualine_config = {
   options = {
     icons_enabled = true,
     theme = "auto",
@@ -143,4 +143,5 @@ require("lualine").setup({
     },
   },
   extensions = {},
-})
+}
+require("lualine").setup(lualine_config)
