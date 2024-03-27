@@ -168,7 +168,7 @@ M.plugins = {
           italic = true,
           underline = true,
           undercurl = true,
-          cursorline = false,
+          cursorline = true,
           transparency = true,
           terminal_colors = true,
           highlight_inactive_windows = true,
@@ -248,6 +248,14 @@ M.plugins = {
     "yamatsum/nvim-cursorline",
     config = true,
     opts = {
+      cursorline = {
+        enabled = true,
+        hl = vim.tbl_extend(
+          "force",
+          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
+          { underline = false, bold = false }
+        ),
+      },
       cursorword = {
         enable = true,
         min_length = 1,
