@@ -44,7 +44,6 @@ M.plugins = {
     cond = function()
       return vim.fn.executable("objdump") ~= 0
     end,
-    event = "VeryLazy",
   },
   {
     "neovimhaskell/haskell-vim",
@@ -53,13 +52,11 @@ M.plugins = {
     config = function()
       require("plugins.haskell")
     end,
-    event = "VeryLazy",
   },
   {
     "chrisbra/csv.vim",
     lazy = true,
     ft = { "csv" },
-    event = "VeryLazy",
   },
   {
     "goerz/jupytext.vim",
@@ -69,32 +66,27 @@ M.plugins = {
     config = function()
       require("plugins.jupytext")
     end,
-    event = "VeryLazy",
   },
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
     lazy = true,
-    event = "VeryLazy",
   },
   {
     "vim-scripts/cup.vim",
     lazy = true,
     ft = { "cup" },
-    event = "VeryLazy",
   },
   {
     "udalov/javap-vim",
     lazy = true,
     ft = { "javap" },
-    event = "VeryLazy",
   },
   {
     "cespare/vim-toml",
     lazy = true,
     branch = "main",
     ft = { "toml" },
-    event = "VeryLazy",
   },
   {
     "mikelue/vim-maven-plugin",
@@ -103,19 +95,16 @@ M.plugins = {
       "maven",
       "xml",
     },
-    event = "VeryLazy",
   },
   {
     "vim-scripts/crontab.vim",
     lazy = true,
     ft = { "crontab" },
-    event = "VeryLazy",
   },
 
   -- markdown
   {
     "mzlogin/vim-markdown-toc",
-    event = "VeryLazy",
     lazy = true,
     ft = { "markdown", "pandoc" },
   },
@@ -151,7 +140,6 @@ M.plugins = {
     config = function()
       local onedark = require("onedarkpro")
       onedark.setup({
-        -- colors = { onedark = { bg = "#0F111A" } },
         highlights = {},
         theme = "onedark",
         styles = {
@@ -194,7 +182,6 @@ M.plugins = {
     dependencies = {
       {
         "hiphish/rainbow-delimiters.nvim",
-        event = "VeryLazy",
         config = function()
           local rainbow_delimiters = require("rainbow-delimiters")
 
@@ -578,18 +565,15 @@ M.plugins = {
       require("keymaps.dap")
     end,
     keys = { "<leader>d" },
-    event = "VeryLazy",
   },
   {
     "theHamsta/nvim-dap-virtual-text",
     cond = utils.no_vscode,
-    event = "VeryLazy",
     lazy = true,
   },
   {
     "rcarriga/nvim-dap-ui",
     cond = utils.no_vscode,
-    event = "VeryLazy",
     lazy = true,
     dependencies = { "nvim-neotest/nvim-nio" },
   },
@@ -597,19 +581,16 @@ M.plugins = {
     "jbyuki/one-small-step-for-vimkind",
     lazy = true,
     cond = utils.no_vscode,
-    event = "VeryLazy",
   },
   {
     "mfussenegger/nvim-jdtls",
     ft = { "java" },
     cond = utils.no_vscode,
-    event = "VeryLazy",
     lazy = true,
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
     cond = utils.no_vscode,
-    event = "VeryLazy",
     lazy = true,
   },
 
@@ -781,7 +762,6 @@ M.plugins = {
         "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
-    event = "VeryLazy",
   },
   {
     "ethanholz/nvim-lastplace",
@@ -796,7 +776,6 @@ M.plugins = {
       lastplace_open_folds = false,
     },
     config = true,
-    event = "VeryLazy",
     lazy = true,
   },
   {
@@ -812,7 +791,6 @@ M.plugins = {
         untracked = { text = "┆" },
       },
     },
-    event = "VeryLazy",
   },
   { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   {
@@ -1020,19 +998,17 @@ M.plugins = {
     end,
   },
 
-  { "ColaMint/pokemon.nvim", event = "VeryLazy" },
   {
     "goolord/alpha-nvim",
     config = function()
       require("plugins.alpha")
     end,
-    dependencies = { "ColaMint/pokemon.nvim" },
+    dependencies = { { "ColaMint/pokemon.nvim", event = "VeryLazy" } },
   },
   { "backdround/tabscope.nvim", config = true },
 
   {
     "akinsho/toggleterm.nvim",
-    event = "VeryLazy",
     keys = { "<C-\\>" },
     lazy = true,
     opts = {
@@ -1061,7 +1037,6 @@ M.plugins = {
         { key = "0", action = "clear_cell" },
       },
     },
-    event = "VeryLazy",
   },
   {
     "folke/which-key.nvim",
