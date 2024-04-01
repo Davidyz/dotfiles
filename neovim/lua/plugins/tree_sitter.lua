@@ -20,6 +20,7 @@ if utils.cpu_count() >= 4 then
     "make",
     "php",
     "rust",
+    "regex",
     "lua",
     "toml",
     "markdown_inline",
