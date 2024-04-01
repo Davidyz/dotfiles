@@ -1089,6 +1089,11 @@ M.plugins = {
     config = true,
     opts = { executables = { "rg", "node" } },
   },
+  {
+    "Sam-programs/cmdline-hl.nvim",
+    event = "VimEnter",
+    opts = { inline_ghost_text = true },
+  },
   -- {
   --   "3rd/image.nvim",
   --   filetypes = { "markdown" },
