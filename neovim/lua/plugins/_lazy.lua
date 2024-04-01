@@ -1092,6 +1092,10 @@ M.plugins = {
   {
     "Sam-programs/cmdline-hl.nvim",
     event = "VimEnter",
+    build = function()
+      vim.cmd("TSInstall regex")
+      vim.cmd("TSInstall vim")
+    end,
     opts = { inline_ghost_text = true },
   },
   -- {
