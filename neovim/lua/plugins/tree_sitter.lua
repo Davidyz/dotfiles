@@ -35,7 +35,7 @@ end
 require("nvim-treesitter.configs").setup({
   auto_install = true,
   sync_install = true,
-  ignore_install = {},
+  ignore_install = { "csv" },
   modules = { "highlight", "illuminate", "indent", "incremental_selection", "refactor" },
   ensure_installed = installed_list,
   playground = {
