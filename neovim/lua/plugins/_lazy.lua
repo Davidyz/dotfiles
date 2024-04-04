@@ -649,7 +649,15 @@ M.plugins = {
       "nvim-treesitter/nvim-treesitter",
       {
         "rcarriga/nvim-notify",
-        opts = { ui = { background_colour = "Normal" } },
+        opts = {
+          ui = {
+            background_colour = "Normal",
+            -- background_colour = vim.api.nvim_get_hl(
+            --   0,
+            --   { name = "Normal", link = true }
+            -- ),
+          },
+        },
         config = true,
       },
       "nvim-tree/nvim-web-devicons",
