@@ -902,10 +902,12 @@ M.plugins = {
         filetypes = { "startify", "help", "neo-tree", "alpha" },
       },
       scope = {
-        enabled = false,
+        enabled = true,
         show_exact_scope = false,
         show_start = false,
         show_end = false,
+        include = { node_type = { ["*"] = "*" } },
+        highlight = "@character.special",
       },
     },
   },
@@ -976,12 +978,6 @@ M.plugins = {
   },
   {
     "kylechui/nvim-surround",
-    config = true,
-    event = "VeryLazy",
-  },
-  {
-    "declancm/cinnamon.nvim",
-    opts = {},
     config = true,
     event = "VeryLazy",
   },
