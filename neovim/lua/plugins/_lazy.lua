@@ -287,6 +287,7 @@ M.plugins = {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     config = function()
       require("plugins.mason_tools")
+      require("mason-tool-installer").clean()
     end,
     event = "VeryLazy",
   },
@@ -571,43 +572,43 @@ M.plugins = {
   },
 
   -- dap
-  {
-    "mfussenegger/nvim-dap",
-    cond = utils.no_vscode,
-    lazy = true,
-    config = function()
-      require("plugins.dap")
-      require("keymaps.dap")
-    end,
-    keys = { "<leader>d" },
-  },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    cond = utils.no_vscode,
-    lazy = true,
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    cond = utils.no_vscode,
-    lazy = true,
-    dependencies = { "nvim-neotest/nvim-nio" },
-  },
-  {
-    "jbyuki/one-small-step-for-vimkind",
-    lazy = true,
-    cond = utils.no_vscode,
-  },
-  {
-    "mfussenegger/nvim-jdtls",
-    ft = { "java" },
-    cond = utils.no_vscode,
-    lazy = true,
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    cond = utils.no_vscode,
-    lazy = true,
-  },
+  -- {
+  --   "mfussenegger/nvim-dap",
+  --   cond = utils.no_vscode,
+  --   lazy = true,
+  --   config = function()
+  --     require("plugins.dap")
+  --     require("keymaps.dap")
+  --   end,
+  --   keys = { "<leader>d" },
+  -- },
+  -- {
+  --   "theHamsta/nvim-dap-virtual-text",
+  --   cond = utils.no_vscode,
+  --   lazy = true,
+  -- },
+  -- {
+  --   "rcarriga/nvim-dap-ui",
+  --   cond = utils.no_vscode,
+  --   lazy = true,
+  --   dependencies = { "nvim-neotest/nvim-nio" },
+  -- },
+  -- {
+  --   "jbyuki/one-small-step-for-vimkind",
+  --   lazy = true,
+  --   cond = utils.no_vscode,
+  -- },
+  -- {
+  --   "mfussenegger/nvim-jdtls",
+  --   ft = { "java" },
+  --   cond = utils.no_vscode,
+  --   lazy = true,
+  -- },
+  -- {
+  --   "jay-babu/mason-nvim-dap.nvim",
+  --   cond = utils.no_vscode,
+  --   lazy = true,
+  -- },
 
   -- misc
   -- "~/git/fauxpilot.nvim",
