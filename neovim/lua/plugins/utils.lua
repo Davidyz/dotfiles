@@ -17,6 +17,7 @@ M.mason_packages = {
   "beautysh",
   "mypy",
   "debugpy",
+  "shfmt",
   "yaml-language-server",
   "typescript-language-server",
   "html-lsp",

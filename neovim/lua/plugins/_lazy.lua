@@ -1029,14 +1029,19 @@ M.plugins = {
 
   {
     "akinsho/toggleterm.nvim",
-    keys = { "<C-\\>" },
+    keys = {
+      {
+        "<C-\\>",
+        '<Esc><Cmd>execute v:count . "ToggleTerm"<CR>',
+        mode = { "i", "n" },
+        desc = "Toggle terminal.",
+      },
+    },
     lazy = true,
+    config = true,
     opts = {
       open_mapping = "<C-\\>",
-      direction = "horizontal",
-      float_opts = {
-        border = "curved",
-      },
+      -- direction = "horizontal",
     },
   },
   {
