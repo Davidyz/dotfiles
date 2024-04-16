@@ -2,7 +2,6 @@ local utils = require("_utils")
 local job = require("plenary.job")
 
 vim.opt.smartcase = true
-vim.api.nvim_set_option("filetype", "detect")
 vim.opt.encoding = "utf-8"
 -- vim.opt.shadafile = "~/.local/share/nvim/shada/main.shada"
 
@@ -10,12 +9,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
-
-if vim.bo.filetype ~= "fstab" then
-  vim.opt.expandtab = true
-else
-  vim.opt.expandtab = false
-end
+vim.opt.shiftwidth = 0
 
 vim.opt.mouse = "a"
 vim.opt.swapfile = false
@@ -80,20 +74,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-for command, package in pairs({ nvr = "neovim-remote", ipython = "ipython" }) do
-  if type(command) == "number" or vim.fn.executable(command) == 0 then
-    job
-      :new({
-        command = vim.g.python3_host_prog,
-        args = { "-m", "pip", "install", package },
-        on_exit = function()
-          print(package .. " has been installed.")
-        end,
-      })
-      :start()
-  end
-end
-
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
 
 local external_deps = { "rg", "python3", "node", "npm" }
@@ -110,35 +90,3 @@ end
 if missing_packages ~= "" then
   print("Missing external command(s): " .. missing_packages)
 end
-
-local fold_group = vim.api.nvim_create_augroup("AutoSaveFold", { clear = true })
-vim.api.nvim_create_autocmd("BufEnter", {
-  callback = function()
-    if vim.bo.filetype == "" then
-      return
-    end
-    local file_name = vim.fn.expand("%")
-    if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
-      vim.cmd("set viewoptions-=curdir")
-      vim.cmd("silent! loadview")
-    end
-  end,
-  buffer = 0,
-  once = true,
-  group = fold_group,
-})
-vim.api.nvim_create_autocmd("BufLeave", {
-  callback = function()
-    if vim.bo.filetype == "" then
-      return
-    end
-    local file_name = vim.fn.expand("%")
-    if file_name ~= "" and vim.fn.filereadable(file_name) == 1 then
-      vim.cmd("set viewoptions-=curdir")
-      vim.cmd("silent! mkview")
-    end
-  end,
-  buffer = 0,
-  once = true,
-  group = fold_group,
-})
