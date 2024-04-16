@@ -7,7 +7,6 @@ arch=('any')
 license=('GPL')
 depends=(
     'zsh'
-    'neovim-nightly-bin'
     'npm'
     'nodejs'
     'git'
@@ -36,4 +35,7 @@ depends=(
     'lsd'
 )
 optdepends=(
+)
+conflicts=(
+    'black'
 )
