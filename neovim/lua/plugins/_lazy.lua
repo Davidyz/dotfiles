@@ -1119,6 +1119,26 @@ M.plugins = {
     event = "VimEnter",
     opts = { inline_ghost_text = true },
   },
+  {
+    "NStefan002/screenkey.nvim",
+    config = true,
+    cmd = "Screenkey",
+    opts = {
+      win_opts = {
+        relative = "editor",
+        anchor = "SE",
+        width = 40,
+        height = 3,
+        border = "single",
+      },
+      compress_after = 3,
+      clear_after = 3,
+      disable = {
+        filetypes = { "toggleterm" },
+        buftypes = { "terminal" },
+      },
+    },
+  },
 
   -- {
   --   "3rd/image.nvim",
