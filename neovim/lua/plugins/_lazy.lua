@@ -815,23 +815,26 @@ M.plugins = {
   { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
-    lazy = true,
-    config = function()
-      local hop = require("hop")
-      local directions = require("hop.hint").HintDirection
-      vim.keymap.set("", "f", function()
-        hop.hint_char1({
-          direction = directions.AFTER_CURSOR,
-        })
-      end, { remap = false })
-      vim.keymap.set("", "t", function()
-        hop.hint_char1({
-          direction = directions.BEFORE_CURSOR,
-        })
-      end, { remap = false })
-      hop.setup({ uppercase = true })
-    end,
-    keys = { "f", "t" },
+    -- config = function()
+    --   local hop = require("hop")
+    --   local directions = require("hop.hint").HintDirection
+    --   vim.keymap.set("", "f", function()
+    --     hop.hint_char1({
+    --       direction = directions.AFTER_CURSOR,
+    --     })
+    --   end, { remap = false })
+    --   vim.keymap.set("", "t", function()
+    --     hop.hint_char1({
+    --       direction = directions.BEFORE_CURSOR,
+    --     })
+    --   end, { remap = false })
+    --   hop.setup({ uppercase = true })
+    -- end,
+    opts = {},
+    keys = {
+      { "fc", ":HopChar1<CR>", remap = false, mode = "n", desc = "Hop to character." },
+      { "fn", ":HopNodes<CR>", remap = false, mode = "n", desc = "Hop to node." },
+    },
   },
   {
     "nvim-telescope/telescope.nvim",
