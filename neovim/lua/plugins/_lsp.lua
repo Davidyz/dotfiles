@@ -32,7 +32,10 @@ local default_server_config = {
     end
     if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
       vim.g.inlay_hints_visible = true
-      vim.lsp.inlay_hint.enable(bufnr, true)
+      local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+      if not status then
+        vim.lsp.inlay_hint.enable(bufnr, true)
+      end
     end
     if client.server_capabilities.documentSymbolProvider then
       require("nvim-navic").attach(client, bufnr)

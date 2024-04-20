@@ -241,11 +241,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  {
-    "monkoose/matchparen.nvim",
-    config = true,
-    cond = utils.no_vscode,
-  },
+  { "andymass/vim-matchup", event = "UIEnter" },
   {
     "yamatsum/nvim-cursorline",
     config = true,
