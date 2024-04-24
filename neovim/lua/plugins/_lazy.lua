@@ -815,36 +815,21 @@ M.plugins = {
   { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
-    -- config = function()
-    --   local hop = require("hop")
-    --   local directions = require("hop.hint").HintDirection
-    --   vim.keymap.set("", "f", function()
-    --     hop.hint_char1({
-    --       direction = directions.AFTER_CURSOR,
-    --     })
-    --   end, { remap = false })
-    --   vim.keymap.set("", "t", function()
-    --     hop.hint_char1({
-    --       direction = directions.BEFORE_CURSOR,
-    --     })
-    --   end, { remap = false })
-    --   hop.setup({ uppercase = true })
-    -- end,
     opts = {},
     keys = {
-      { "fc", ":HopChar1<CR>", remap = false, mode = "n", desc = "Hop to character." },
-      { "fn", ":HopNodes<CR>", remap = false, mode = "n", desc = "Hop to node." },
+      { "f", ":HopChar1<CR>", remap = false, mode = "n", desc = "Hop to character." },
+      { "F", ":HopNodes<CR>", remap = false, mode = "n", desc = "Hop to node." },
     },
   },
   {
     "nvim-telescope/telescope.nvim",
     event = "VeryLazy",
     keys = {
-      { "F", "<cmd>Telescope find_files<cr>", remap = false, mode = "n" },
-      { "<Leader>b", "<cmd>Telescope buffers<cr>", remap = false, mode = "n" },
-      { "<Leader>f", "<cmd>Telescope quickfix<cr>", remap = false, mode = "n" },
-      { "<Leader>d", "<cmd>Telescope diagnostics<cr>", remap = false, mode = "n" },
-      { "<Leader>h", "<cmd>Telescope help_tags<cr>", remap = false, mode = "n" },
+      { "<Leader>tf", "<cmd>Telescope find_files<cr>", remap = false, mode = "n" },
+      { "<Leader>tb", "<cmd>Telescope buffers<cr>", remap = false, mode = "n" },
+      { "<Leader>tq", "<cmd>Telescope quickfix<cr>", remap = false, mode = "n" },
+      { "<Leader>td", "<cmd>Telescope diagnostics<cr>", remap = false, mode = "n" },
+      { "<Leader>th", "<cmd>Telescope help_tags<cr>", remap = false, mode = "n" },
       { "<C-f>", "<cmd>Telescope lsp_document_symbols<cr>", remap = false, mode = "n" },
       "R",
     },
