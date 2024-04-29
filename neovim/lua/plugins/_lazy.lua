@@ -182,6 +182,7 @@ M.plugins = {
       onedark.load()
     end,
     enabled = true,
+    lazy = false,
     cond = utils.no_vscode,
   },
 
@@ -873,10 +874,12 @@ M.plugins = {
     config = function()
       require("plugins._lualine")
     end,
+    lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "lukas-reineke/indent-blankline.nvim",
+    lazy = false,
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
@@ -954,7 +957,7 @@ M.plugins = {
     },
     keys = {
       {
-        "<Leader>t",
+        "<Leader>T",
         "<cmd>Neotree action=focus toggle<cr>",
         mode = "n",
         remap = true,
@@ -1007,6 +1010,7 @@ M.plugins = {
     config = function()
       require("plugins.alpha")
     end,
+    lazy = false,
     dependencies = { { "ColaMint/pokemon.nvim", event = "VeryLazy" } },
   },
   { "backdround/tabscope.nvim", config = true },
@@ -1163,10 +1167,13 @@ M.plugins = {
   -- },
 }
 
+---@type LazyConfig
 M.config = {
+  defaults = { lazy = true },
   ui = {
     border = "double",
   },
+  install = { colorscheme = { "onedarkpro" } },
 }
 
 return M
