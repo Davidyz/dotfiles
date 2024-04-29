@@ -7,7 +7,7 @@ M.plugins = {
   {
     "stevearc/vim-arduino",
     ft = { "arduino" },
-    lazy = true,
+
     cond = function()
       return vim.fn.executable("arduino-cli") ~= 0 and utils.no_vscode()
     end,
@@ -16,7 +16,7 @@ M.plugins = {
   {
     "lervag/vimtex",
     ft = { "tex" },
-    lazy = true,
+
     cond = utils.no_vscode,
     config = function()
       require("executable-checker").add_executable("zathura")
@@ -40,7 +40,7 @@ M.plugins = {
   },
   {
     "shiracamus/vim-syntax-x86-objdump-d",
-    lazy = true,
+
     cond = function()
       return vim.fn.executable("objdump") ~= 0
     end,
@@ -48,7 +48,7 @@ M.plugins = {
   {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
-    lazy = true,
+
     init = function()
       vim.g.haskell_enable_quantification = 1
       vim.g.haskell_enable_recursivedo = 1
@@ -72,7 +72,7 @@ M.plugins = {
   },
   {
     "cameron-wags/rainbow_csv.nvim",
-    lazy = true,
+
     config = true,
     ft = {
       "csv",
@@ -94,27 +94,26 @@ M.plugins = {
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
-    lazy = true,
   },
   {
     "vim-scripts/cup.vim",
-    lazy = true,
+
     ft = { "cup" },
   },
   {
     "udalov/javap-vim",
-    lazy = true,
+
     ft = { "javap" },
   },
   {
     "cespare/vim-toml",
-    lazy = true,
+
     branch = "main",
     ft = { "toml" },
   },
   {
     "mikelue/vim-maven-plugin",
-    lazy = true,
+
     ft = {
       "maven",
       "xml",
@@ -122,14 +121,14 @@ M.plugins = {
   },
   {
     "vim-scripts/crontab.vim",
-    lazy = true,
+
     ft = { "crontab" },
   },
 
   -- markdown
   {
     "mzlogin/vim-markdown-toc",
-    lazy = true,
+
     ft = { "markdown", "pandoc" },
   },
   {
@@ -280,7 +279,7 @@ M.plugins = {
   {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
-    lazy = true,
+
     ---@type MasonSettings
     opts = {
       ui = { border = "double" },
@@ -447,7 +446,7 @@ M.plugins = {
         desc = "Code Actions",
       },
     },
-    lazy = true,
+
     opts = {
       telescope = {
         sorting_strategy = "ascending",
@@ -508,7 +507,6 @@ M.plugins = {
     end,
     event = "LspAttach",
     keys = { "<leader>ef", "<leader>ev" },
-    lazy = true,
   },
   {
     "zbirenbaum/copilot.lua",
@@ -581,7 +579,7 @@ M.plugins = {
   -- {
   --   "mfussenegger/nvim-dap",
   --   cond = utils.no_vscode,
-  --   lazy = true,
+  --
   --   config = function()
   --     require("plugins.dap")
   --     require("keymaps.dap")
@@ -591,29 +589,29 @@ M.plugins = {
   -- {
   --   "theHamsta/nvim-dap-virtual-text",
   --   cond = utils.no_vscode,
-  --   lazy = true,
+  --
   -- },
   -- {
   --   "rcarriga/nvim-dap-ui",
   --   cond = utils.no_vscode,
-  --   lazy = true,
+  --
   --   dependencies = { "nvim-neotest/nvim-nio" },
   -- },
   -- {
   --   "jbyuki/one-small-step-for-vimkind",
-  --   lazy = true,
+  --
   --   cond = utils.no_vscode,
   -- },
   -- {
   --   "mfussenegger/nvim-jdtls",
   --   ft = { "java" },
   --   cond = utils.no_vscode,
-  --   lazy = true,
+  --
   -- },
   -- {
   --   "jay-babu/mason-nvim-dap.nvim",
   --   cond = utils.no_vscode,
-  --   lazy = true,
+  --
   -- },
 
   -- misc
@@ -741,7 +739,7 @@ M.plugins = {
   },
   {
     "NStefan002/2048.nvim",
-    lazy = true,
+
     cmd = "Play2048",
     config = true,
     opts = {
@@ -774,7 +772,7 @@ M.plugins = {
       },
       mouse_delay = 1000,
     },
-    lazy = true,
+
     keys = {
       {
         "K",
@@ -806,7 +804,6 @@ M.plugins = {
       lastplace_open_folds = false,
     },
     config = true,
-    lazy = true,
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -1034,7 +1031,7 @@ M.plugins = {
         desc = "Toggle terminal.",
       },
     },
-    lazy = true,
+
     config = true,
     opts = {
       open_mapping = "<C-\\>",
@@ -1044,7 +1041,7 @@ M.plugins = {
   {
     "jim-fx/sudoku.nvim",
     cmd = "Sudoku",
-    lazy = true,
+
     opts = {
       mappings = {
         { key = "1", action = "insert=1" },
@@ -1077,12 +1074,12 @@ M.plugins = {
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
-    lazy = true,
+
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
   {
     "f-person/git-blame.nvim",
-    lazy = true,
+
     keys = {
       { "<Leader>gb", "<cmd>GitBlameToggle<cr>", noremap = true },
       {
@@ -1183,6 +1180,7 @@ M.config = {
     border = "double",
   },
   install = { colorscheme = { "onedarkpro" } },
+  profiling = { loader = true, require = true },
 }
 
 return M

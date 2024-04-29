@@ -18,7 +18,6 @@ depends=(
     'make'
     'vlc'
     'bluedevil'
-    'nerd-fonts'
     'texlive'
     'texlive-binextra'
     'python-pynvim'
@@ -33,6 +32,7 @@ depends=(
     'autojump'
     'rustup'
     'lsd'
+    'tree-sitter-cli'
 )
 optdepends=(
 )
