@@ -4,7 +4,6 @@ M.mason_packages = {
   "clang-format",
   "cmakelang",
   "shellcheck",
-  "stylua",
   "clangd",
   "isort",
   "lua-language-server",

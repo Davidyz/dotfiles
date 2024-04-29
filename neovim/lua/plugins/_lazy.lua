@@ -250,7 +250,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "andymass/vim-matchup", event = "UIEnter" },
+  { "andymass/vim-matchup",               event = "UIEnter" },
   {
     "yamatsum/nvim-cursorline",
     config = true,
@@ -787,7 +787,7 @@ M.plugins = {
     "brenoprata10/nvim-highlight-colors",
     config = function()
       require("nvim-highlight-colors.color.patterns").hex_regex =
-        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
+      "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
   },
@@ -818,8 +818,9 @@ M.plugins = {
         untracked = { text = "┆" },
       },
     },
+    lazy = false,
   },
-  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim",  event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
     opts = {},
@@ -832,12 +833,42 @@ M.plugins = {
     "nvim-telescope/telescope.nvim",
     event = "VeryLazy",
     keys = {
-      { "<Leader>tf", "<cmd>Telescope find_files<cr>", remap = false, mode = "n" },
-      { "<Leader>tb", "<cmd>Telescope buffers<cr>", remap = false, mode = "n" },
-      { "<Leader>tq", "<cmd>Telescope quickfix<cr>", remap = false, mode = "n" },
-      { "<Leader>td", "<cmd>Telescope diagnostics<cr>", remap = false, mode = "n" },
-      { "<Leader>th", "<cmd>Telescope help_tags<cr>", remap = false, mode = "n" },
-      { "<C-f>", "<cmd>Telescope lsp_document_symbols<cr>", remap = false, mode = "n" },
+      {
+        "<Leader>tf",
+        "<cmd>Telescope find_files<cr>",
+        remap = false,
+        mode = "n",
+      },
+      {
+        "<Leader>tb",
+        "<cmd>Telescope buffers<cr>",
+        remap = false,
+        mode = "n",
+      },
+      {
+        "<Leader>tq",
+        "<cmd>Telescope quickfix<cr>",
+        remap = false,
+        mode = "n",
+      },
+      {
+        "<Leader>td",
+        "<cmd>Telescope diagnostics<cr>",
+        remap = false,
+        mode = "n",
+      },
+      {
+        "<Leader>th",
+        "<cmd>Telescope help_tags<cr>",
+        remap = false,
+        mode = "n",
+      },
+      {
+        "<C-f>",
+        "<cmd>Telescope lsp_document_symbols<cr>",
+        remap = false,
+        mode = "n",
+      },
       "R",
     },
     config = function()
@@ -856,7 +887,8 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build =
+    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     cond = function()
       return utils.no_vscode() and vim.fn.executable("cmake") == 1
     end,
@@ -864,10 +896,10 @@ M.plugins = {
       require("telescope").setup({
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
           },
         },
       })
@@ -889,7 +921,7 @@ M.plugins = {
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
-        { "startify", "help", "nerdtree", "alpha", "Outline" }
+      { "startify", "help", "nerdtree", "alpha", "Outline" }
     end,
     opts = {
       exclude = {
@@ -1102,7 +1134,7 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
+  { "sindrets/diffview.nvim",   config = true, cmd = { "DiffviewOpen" } },
   {
     "Davidyz/executable-checker.nvim",
     config = true,
