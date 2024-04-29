@@ -49,8 +49,25 @@ M.plugins = {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
     lazy = true,
-    config = function()
-      require("plugins.haskell")
+    init = function()
+      vim.g.haskell_enable_quantification = 1
+      vim.g.haskell_enable_recursivedo = 1
+      vim.g.haskell_enable_arrowsyntax = 1
+      vim.g.haskell_enable_pattern_synonyms = 1
+      vim.g.haskell_enable_typeroles = 1
+      vim.g.haskell_enable_static_pointers = 1
+      vim.g.haskell_backpack = 1
+      vim.g.haskell_indent_if = 3
+      vim.g.haskell_indent_case = 2
+      vim.g.haskell_indent_let = 4
+      vim.g.haskell_indent_where = 6
+      vim.g.haskell_indent_before_where = 2
+      vim.g.haskell_indent_after_bare_where = 2
+      vim.g.haskell_indent_do = 3
+      vim.g.haskell_indent_in = 1
+      vim.g.haskell_indent_guard = 2
+      vim.g.haskell_indent_case_alternative = 1
+      vim.g.cabal_indent_section = 2
     end,
   },
   {
@@ -73,15 +90,7 @@ M.plugins = {
       "RainbowMultiDelim",
     },
   },
-  {
-    "goerz/jupytext.vim",
-    lazy = true,
-    ft = { "jupyter", "notebook", "ipynb", "py", "json" },
-    cond = utils.no_vscode,
-    config = function()
-      require("plugins.jupytext")
-    end,
-  },
+
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },

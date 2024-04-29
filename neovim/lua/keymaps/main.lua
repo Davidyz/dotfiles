@@ -5,7 +5,6 @@ local items = {
 
   -- "keymaps.copilot",
   -- "keymaps.dap",
-  -- "keymaps.golden_view",
   -- "keymaps._lsp",
   -- "keymaps.markdown_preview",
   -- "keymaps.NERDTree",
