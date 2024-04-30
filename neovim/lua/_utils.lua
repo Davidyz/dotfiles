@@ -240,4 +240,23 @@ M.is_treesitter_enabled = function()
   return parsers.has_parser(lang)
 end
 
+---@return Range4
+M.has_selection = function()
+  local mode = vim.fn.mode()
+  if mode == 'v' or mode == 'V' or mode == '\22' then -- Normal, Line, or Block visual mode
+    local mark_start = vim.api.nvim_buf_get_mark(0, '<')
+    local mark_end = vim.api.nvim_buf_get_mark(0, '>')
+
+    if mark_start[1] ~= mark_end[1] or mark_start[2] ~= mark_end[2] then
+      return {
+        mark_start[1],
+        mark_start[2],
+        mark_end[1],
+        mark_end[2]
+      }
+    end
+  end
+  return nil
+end
+
 return M

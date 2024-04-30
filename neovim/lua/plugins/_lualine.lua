@@ -1,9 +1,6 @@
 local utils = require("_utils")
 local nvim_devicon = require("nvim-web-devicons")
 
--- if not nvim_devicon.has_loaded() then
---   nvim_devicon.setup()
--- end
 
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(os.getenv("HOME"), "~")
@@ -33,12 +30,12 @@ local function get_context()
   end
   if vim.bo.filetype == "startify" and result ~= "" then
     result = result
-      .. ": v"
-      .. tostring(vim.version().major)
-      .. "."
-      .. tostring(vim.version().minor)
-      .. "."
-      .. tostring(vim.version().patch)
+        .. ": v"
+        .. tostring(vim.version().major)
+        .. "."
+        .. tostring(vim.version().minor)
+        .. "."
+        .. tostring(vim.version().patch)
   end
   return result
 end
@@ -48,8 +45,16 @@ local function is_text()
 end
 
 local function wordCount()
-  if type(vim.b.latex_wc) == "string" then
-    return ("wc: " .. vim.b.latex_wc) or ""
+  if vim.bo.ft == "tex" and vim.fn["vimtex#misc#wordcount"] then
+    local nerd_icon = nvim_devicon.get_icon_by_filetype('tex')
+    local opts = { detailed = 0, count_letters = 0 }
+    local selection_range = utils.has_selection()
+    if selection_range == nil then
+      return "wc" .. nerd_icon .. " : " .. tostring(vim.fn["vimtex#misc#wordcount"](opts))
+    else
+      opts.range = { selection_range[1], selection_range[3] }
+      return "wc" .. nerd_icon .. " : " .. tostring(vim.fn["vimtex#misc#wordcount"](opts))
+    end
   end
 
   local wc = vim.fn["wordcount"]()
