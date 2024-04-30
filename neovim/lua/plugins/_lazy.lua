@@ -182,10 +182,8 @@ M.plugins = {
           cursorline = true,
           transparency = true,
           terminal_colors = true,
-          highlight_inactive_windows = true,
+          highlight_inactive_windows = false,
         },
-        transparency = true,
-        plugins = { treesitter = true },
       })
       onedark.load()
     end,
@@ -286,20 +284,27 @@ M.plugins = {
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
       PATH = "append",
     },
-    event = "VeryLazy",
+    -- event = "VeryLazy",
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    cmd = {
+      "MasonToolsClean",
+      "MasonToolsInstall",
+      "MasonToolsInstallSync",
+      "MasonToolsUpdate",
+      "MasonToolsUpdateSync",
+    },
     config = function()
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
     end,
-    event = "VeryLazy",
+    -- event = "VeryLazy",
   },
   {
     "nvimtools/none-ls.nvim",
     config = require("plugins.null_ls"),
-    event = "VeryLazy",
+    -- event = "VeryLazy",
   },
   {
     "jay-babu/mason-null-ls.nvim",
