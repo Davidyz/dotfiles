@@ -674,6 +674,9 @@ M.plugins = {
       "nvim-treesitter/nvim-treesitter",
       {
         "rcarriga/nvim-notify",
+        init = function()
+          vim.api.nvim_set_hl(0, 'NotifyBackground', { bg = "#000000" })
+        end,
         opts = {
           ui = {
             background_colour = "Normal",
