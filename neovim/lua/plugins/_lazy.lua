@@ -187,9 +187,32 @@ M.plugins = {
       })
       onedark.load()
     end,
-    enabled = true,
+    enabled = false,
     lazy = false,
     cond = utils.no_vscode,
+  },
+  {
+    'catppuccin/nvim',
+    main = 'catppuccin',
+    config = function()
+      require(
+        "catppuccin").setup({ flavour = 'mocha', dim_inactive = { enabled = true }, integrations = { notify = true } })
+      vim.cmd("colorscheme catppuccin")
+    end,
+    lazy = false,
+    enabled = true,
+  },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        style = 'night', dim_inactive = true })
+      vim.cmd [[colorscheme tokyonight-night]]
+    end,
+    opts = {},
+    enabled = false,
   },
 
   -- tree sitter

@@ -3,3 +3,5 @@ options:
   command_prefix: "cmd:"
 typst:
   ppi: 1000
+defaults:
+  theme: catppuccin-mocha
