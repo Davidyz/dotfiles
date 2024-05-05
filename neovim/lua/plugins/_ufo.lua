@@ -49,9 +49,9 @@ require("ufo").setup({
         clients[k] = nil
       end
     end
-    -- if next(clients) ~= nil then
-    --   return { "treesitter", "lsp" }
-    -- end
+    if #clients ~= 0 then
+      return { "treesitter", "lsp" }
+    end
     return { "treesitter", "indent" }
   end,
 })
