@@ -757,13 +757,7 @@ function Window:set_right_status(status) end
 ---@param message string
 ---@param url? string | nil
 ---@param timeout_milliseconds? number
-function Window:toast_notification(
-  title,
-  message,
-  url,
-  timeout_milliseconds
-)
-end
+function Window:toast_notification(title, message, url, timeout_milliseconds) end
 
 function Window:toggle_fullscreen() end
 

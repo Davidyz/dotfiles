@@ -24,25 +24,25 @@ local wezterm = {
   action = {},
 
   ---@type string
-  config_dir = '',
+  config_dir = "",
 
   ---@type string
-  config_file = '',
+  config_file = "",
 
   ---@type string
-  executable_dir = '',
+  executable_dir = "",
 
   ---@type string
-  home_dir = '',
+  home_dir = "",
 
   ---@type table<string, string>
   nerdfonts = {},
 
   ---@type string
-  target_triple = '',
+  target_triple = "",
 
   ---@type string
-  version = '',
+  version = "",
 
   ---@param callback _.wezterm.ActionCallback
   ---@return _.wezterm._CallbackAction

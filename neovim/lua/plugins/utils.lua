@@ -35,11 +35,11 @@ local conditionals = {
   cmake = "cmake-language-server",
 }
 
-if vim.fn.executable('java') then
-  local output = vim.fn.execute('!java -version')
-  local java_ver_num = string.match(output, 'build (%d+)')
+if vim.fn.executable("java") then
+  local output = vim.fn.execute("!java -version")
+  local java_ver_num = string.match(output, "build (%d+)")
   if tonumber(java_ver_num) > 11 then
-    table.insert(M.mason_packages, 'ltex-ls')
+    table.insert(M.mason_packages, "ltex-ls")
   end
 end
 

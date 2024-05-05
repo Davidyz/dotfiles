@@ -192,11 +192,15 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    'catppuccin/nvim',
-    main = 'catppuccin',
+    "catppuccin/nvim",
+    main = "catppuccin",
     config = function()
-      require(
-        "catppuccin").setup({ flavour = 'mocha', dim_inactive = { enabled = true }, integrations = { notify = true } })
+      require("catppuccin").setup({
+        flavour = "mocha",
+        transparent_background = false,
+        dim_inactive = { enabled = true },
+        integrations = { notify = true },
+      })
       vim.cmd("colorscheme catppuccin")
     end,
     lazy = false,
@@ -208,8 +212,10 @@ M.plugins = {
     priority = 1000,
     config = function()
       require("tokyonight").setup({
-        style = 'night', dim_inactive = true })
-      vim.cmd [[colorscheme tokyonight-night]]
+        style = "night",
+        dim_inactive = true,
+      })
+      vim.cmd([[colorscheme tokyonight-night]])
     end,
     opts = {},
     enabled = false,
@@ -271,7 +277,7 @@ M.plugins = {
     end,
     event = "VeryLazy",
   },
-  { "andymass/vim-matchup",               event = "UIEnter" },
+  { "andymass/vim-matchup", event = "UIEnter" },
   {
     "yamatsum/nvim-cursorline",
     config = true,
@@ -698,7 +704,7 @@ M.plugins = {
       {
         "rcarriga/nvim-notify",
         init = function()
-          vim.api.nvim_set_hl(0, 'NotifyBackground', { bg = "#000000" })
+          vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
         end,
         opts = {
           ui = {
@@ -818,7 +824,7 @@ M.plugins = {
     "brenoprata10/nvim-highlight-colors",
     config = function()
       require("nvim-highlight-colors.color.patterns").hex_regex =
-      "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
+        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
   },
@@ -851,7 +857,7 @@ M.plugins = {
     },
     lazy = false,
   },
-  { "nvim-lua/plenary.nvim",  event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
   {
     "smoka7/hop.nvim",
     opts = {},
@@ -918,8 +924,7 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build =
-    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     cond = function()
       return utils.no_vscode() and vim.fn.executable("cmake") == 1
     end,
@@ -927,10 +932,10 @@ M.plugins = {
       require("telescope").setup({
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
         },
       })
@@ -952,7 +957,7 @@ M.plugins = {
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
-      { "startify", "help", "nerdtree", "alpha", "Outline" }
+        { "startify", "help", "nerdtree", "alpha", "Outline" }
     end,
     opts = {
       exclude = {
@@ -1165,7 +1170,7 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  { "sindrets/diffview.nvim",   config = true, cmd = { "DiffviewOpen" } },
+  { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
   {
     "Davidyz/executable-checker.nvim",
     config = true,
