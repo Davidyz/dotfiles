@@ -195,11 +195,18 @@ M.plugins = {
     "catppuccin/nvim",
     main = "catppuccin",
     config = function()
-      require("catppuccin").setup({
+      local cp = require("catppuccin")
+      cp.setup({
         flavour = "mocha",
-        transparent_background = false,
         dim_inactive = { enabled = true },
         integrations = { notify = true },
+        custom_highlights = function()
+          return {
+            NormalFloat = { bg = cp.crust },
+            Pmenu = { bg = cp.crust },
+            PmenuSel = { fg = cp.text, bg = cp.surface0, style = { "bold" } },
+          }
+        end,
       })
       vim.cmd("colorscheme catppuccin")
     end,
@@ -211,7 +218,8 @@ M.plugins = {
     lazy = false,
     priority = 1000,
     config = function()
-      require("tokyonight").setup({
+      local tn = require("tokyonight")
+      tn.setup({
         style = "night",
         dim_inactive = true,
       })
@@ -654,14 +662,16 @@ M.plugins = {
   --{ "altermo/nxwm" },
   {
     "folke/todo-comments.nvim",
+    event = "BufEnter",
     config = function()
-      require("todo-comments").setup()
+      local tc = require("todo-comments")
+      tc.setup()
       vim.keymap.set("n", "]t", function()
-        require("todo-comments").jump_next()
+        tc.jump_next()
       end, { desc = "Next todo comment" })
 
       vim.keymap.set("n", "[t", function()
-        require("todo-comments").jump_prev()
+        tc.jump_prev()
       end, { desc = "Previous todo comment" })
     end,
   },
