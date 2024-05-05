@@ -3,11 +3,10 @@ local utils = require("_utils")
 
 ---@type LazyPluginSpec[]
 M.plugins = {
-  -- filetypes
+  -- NOTE: filetypes
   {
     "stevearc/vim-arduino",
     ft = { "arduino" },
-
     cond = function()
       return vim.fn.executable("arduino-cli") ~= 0 and utils.no_vscode()
     end,
@@ -16,7 +15,6 @@ M.plugins = {
   {
     "lervag/vimtex",
     ft = { "tex" },
-
     cond = utils.no_vscode,
     config = function()
       require("executable-checker").add_executable("zathura")
@@ -40,7 +38,6 @@ M.plugins = {
   },
   {
     "shiracamus/vim-syntax-x86-objdump-d",
-
     cond = function()
       return vim.fn.executable("objdump") ~= 0
     end,
@@ -48,7 +45,6 @@ M.plugins = {
   {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "hs" },
-
     init = function()
       vim.g.haskell_enable_quantification = 1
       vim.g.haskell_enable_recursivedo = 1
@@ -97,38 +93,25 @@ M.plugins = {
   },
   {
     "vim-scripts/cup.vim",
-
     ft = { "cup" },
   },
   {
     "udalov/javap-vim",
-
     ft = { "javap" },
   },
   {
     "cespare/vim-toml",
-
     branch = "main",
     ft = { "toml" },
   },
   {
-    "mikelue/vim-maven-plugin",
-
-    ft = {
-      "maven",
-      "xml",
-    },
-  },
-  {
     "vim-scripts/crontab.vim",
-
     ft = { "crontab" },
   },
 
-  -- markdown
+  -- NOTE: markdown
   {
     "mzlogin/vim-markdown-toc",
-
     ft = { "markdown", "pandoc" },
   },
   {
@@ -229,7 +212,7 @@ M.plugins = {
     enabled = false,
   },
 
-  -- tree sitter
+  -- NOTE: tree sitter
   {
     "nvim-treesitter/nvim-treesitter",
     config = function(config, opts)
@@ -243,7 +226,6 @@ M.plugins = {
         "hiphish/rainbow-delimiters.nvim",
         config = function()
           local rainbow_delimiters = require("rainbow-delimiters")
-
           vim.g.rainbow_delimiters = {
             strategy = {
               [""] = rainbow_delimiters.strategy["global"],
@@ -310,18 +292,16 @@ M.plugins = {
     },
   },
 
-  -- mason
+  -- NOTE: mason
   {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
-
     ---@type MasonSettings
     opts = {
       ui = { border = "double" },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
       PATH = "append",
     },
-    -- event = "VeryLazy",
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -336,12 +316,10 @@ M.plugins = {
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
     end,
-    -- event = "VeryLazy",
   },
   {
     "nvimtools/none-ls.nvim",
     config = require("plugins.null_ls"),
-    -- event = "VeryLazy",
   },
   {
     "jay-babu/mason-null-ls.nvim",
@@ -357,17 +335,16 @@ M.plugins = {
     config = true,
   },
 
-  -- lsp
+  -- NOTE: lsp
   {
     "neovim/nvim-lspconfig",
     config = function()
-      require("mason").setup()
       require("plugins._lsp")
       require("keymaps._lsp")
     end,
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
-    --dependencies = { "folke/neodev.nvim" },
+    dependencies = { "nvim-telescope/telescope.nvim", "williamboman/mason.nvim" },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -397,6 +374,7 @@ M.plugins = {
     "hrsh7th/cmp-nvim-lua",
     event = "LspAttach",
     cond = utils.no_vscode,
+    ft = { "lua" },
   },
   {
     "DasGandlaf/nvim-autohotkey",
@@ -452,6 +430,7 @@ M.plugins = {
     cond = function()
       return utils.no_vscode() and vim.fn.executable("zsh") ~= 0
     end,
+    ft = { "zsh" },
   },
   {
     "j-hui/fidget.nvim",
@@ -471,12 +450,6 @@ M.plugins = {
       })
     end,
     cond = utils.no_vscode,
-  },
-  {
-    "Davidyz/lsp-location-handler.nvim",
-    config = true,
-    cond = utils.no_vscode,
-    event = "LspAttach",
   },
   {
     "aznhe21/actions-preview.nvim",
@@ -518,7 +491,6 @@ M.plugins = {
         prompt_func_return_type = {
           go = false,
           java = false,
-
           cpp = false,
           c = false,
           h = false,
@@ -528,7 +500,6 @@ M.plugins = {
         prompt_func_param_type = {
           go = false,
           java = false,
-
           cpp = false,
           c = false,
           h = false,
@@ -539,7 +510,6 @@ M.plugins = {
         print_var_statements = {},
       })
       require("telescope").load_extension("refactoring")
-
       vim.keymap.set("x", "<leader>ef", function()
         require("refactoring").refactor("Extract Function")
       end, { desc = "Extract Function", noremap = true })
@@ -584,7 +554,7 @@ M.plugins = {
   },
   {
     "kevinhwang91/nvim-ufo",
-    dependencies = "kevinhwang91/promise-async",
+    dependencies = { "kevinhwang91/promise-async", "nvim-treesitter/nvim-treesitter" },
     cond = utils.no_vscode,
     config = function()
       require("plugins._ufo")
@@ -617,7 +587,7 @@ M.plugins = {
     opts = { excluded_lsp_clients = { "null-ls" } },
   },
 
-  -- dap
+  -- NOTE: dap
   -- {
   --   "mfussenegger/nvim-dap",
   --   cond = utils.no_vscode,
@@ -656,7 +626,8 @@ M.plugins = {
   --
   -- },
 
-  -- misc
+  -- NOTE: misc
+
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
@@ -669,7 +640,6 @@ M.plugins = {
       vim.keymap.set("n", "]t", function()
         tc.jump_next()
       end, { desc = "Next todo comment" })
-
       vim.keymap.set("n", "[t", function()
         tc.jump_prev()
       end, { desc = "Previous todo comment" })
@@ -678,7 +648,6 @@ M.plugins = {
   {
     "kawre/leetcode.nvim",
     cmd = "Leet",
-
     config = function()
       local lc = require("leetcode")
       local python_imports = {
@@ -719,10 +688,6 @@ M.plugins = {
         opts = {
           ui = {
             background_colour = "Normal",
-            -- background_colour = vim.api.nvim_get_hl(
-            --   0,
-            --   { name = "Normal", link = true }
-            -- ),
           },
         },
         config = true,
@@ -759,7 +724,6 @@ M.plugins = {
     dependencies = {
       {
         "stevearc/overseer.nvim",
-        -- commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         opts = {
           task_list = {
@@ -786,7 +750,6 @@ M.plugins = {
   },
   {
     "NStefan002/2048.nvim",
-
     cmd = "Play2048",
     config = true,
     opts = {
@@ -809,17 +772,13 @@ M.plugins = {
       preview_opts = {
         border = "double",
       },
-      -- Whether the contents of a currently open hover window should be moved
-      -- to a :h preview-window when pressing the hover keymap.
       preview_window = false,
       title = true,
-
       mouse_providers = {
         "LSP",
       },
       mouse_delay = 1000,
     },
-
     keys = {
       {
         "K",
@@ -1095,10 +1054,9 @@ M.plugins = {
       require("plugins.alpha")
     end,
     lazy = false,
-    dependencies = { { "ColaMint/pokemon.nvim", event = "VeryLazy" } },
+    dependencies = { { "ColaMint/pokemon.nvim" } },
   },
   { "backdround/tabscope.nvim", config = true },
-
   {
     "akinsho/toggleterm.nvim",
     keys = {
@@ -1109,11 +1067,9 @@ M.plugins = {
         desc = "Toggle terminal.",
       },
     },
-
     config = true,
     opts = {
       open_mapping = "<C-\\>",
-      -- direction = "horizontal",
     },
   },
   {
