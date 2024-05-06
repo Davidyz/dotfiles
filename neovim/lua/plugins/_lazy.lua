@@ -559,7 +559,7 @@ M.plugins = {
     config = function()
       require("plugins._ufo")
     end,
-    event = "LspAttach",
+    event = "BufEnter",
   },
   {
     "hedyhli/outline.nvim",
@@ -1181,7 +1181,7 @@ M.plugins = {
   {
     "Sam-programs/cmdline-hl.nvim",
     event = "VimEnter",
-    opts = { inline_ghost_text = true },
+    opts = { inline_ghost_text = false },
   },
   {
     "NStefan002/screenkey.nvim",
