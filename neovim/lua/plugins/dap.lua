@@ -79,4 +79,9 @@ local mason_dap = require("mason-nvim-dap")
 mason_dap.setup({
   ensure_installed = { "python", "bash", "cppdbg" },
   automatic_setup = true,
+  handlers = {
+    function(config)
+      mason_dap.default_setup(config)
+    end,
+  },
 })

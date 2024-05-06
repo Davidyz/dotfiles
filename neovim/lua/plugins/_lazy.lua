@@ -588,43 +588,52 @@ M.plugins = {
   },
 
   -- NOTE: dap
-  -- {
-  --   "mfussenegger/nvim-dap",
-  --   cond = utils.no_vscode,
-  --
-  --   config = function()
-  --     require("plugins.dap")
-  --     require("keymaps.dap")
-  --   end,
-  --   keys = { "<leader>d" },
-  -- },
-  -- {
-  --   "theHamsta/nvim-dap-virtual-text",
-  --   cond = utils.no_vscode,
-  --
-  -- },
-  -- {
-  --   "rcarriga/nvim-dap-ui",
-  --   cond = utils.no_vscode,
-  --
-  --   dependencies = { "nvim-neotest/nvim-nio" },
-  -- },
-  -- {
-  --   "jbyuki/one-small-step-for-vimkind",
-  --
-  --   cond = utils.no_vscode,
-  -- },
-  -- {
-  --   "mfussenegger/nvim-jdtls",
-  --   ft = { "java" },
-  --   cond = utils.no_vscode,
-  --
-  -- },
-  -- {
-  --   "jay-babu/mason-nvim-dap.nvim",
-  --   cond = utils.no_vscode,
-  --
-  -- },
+  {
+    "mfussenegger/nvim-dap",
+    cond = utils.no_vscode,
+    config = function()
+      require("plugins.dap")
+      -- require("keymaps.dap")
+    end,
+    keys = {
+      {
+        "<leader>d",
+        function()
+          require("dapui").toggle()
+        end,
+        desc = "Toggle DAP UI.",
+      },
+      { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
+      { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
+      { "<Space>i", "<cmd>DapStepOver<CR>", desc = "DAP Step [I]nto.", noremap = true },
+      { "<Space>q", "<cmd>DapStepOut<CR>", desc = "DAP Step Out.", noremap = true },
+      {
+        "<Space>b",
+        "<cmd>DapToggleBreakpoint<CR>",
+        desc = "DAP Toggle [B]reakpoint.",
+        noremap = true,
+      },
+    },
+    dependencies = {
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        cond = utils.no_vscode,
+      },
+      {
+        "rcarriga/nvim-dap-ui",
+        cond = utils.no_vscode,
+        dependencies = { "nvim-neotest/nvim-nio" },
+      },
+      {
+        "jbyuki/one-small-step-for-vimkind",
+        cond = utils.no_vscode,
+      },
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        cond = utils.no_vscode,
+      },
+    },
+  },
 
   -- NOTE: misc
 
@@ -633,17 +642,30 @@ M.plugins = {
   --{ "altermo/nxwm" },
   {
     "folke/todo-comments.nvim",
+    config = true,
+    keys = {
+      {
+        "<Leader>tt",
+        "<cmd>TodoTelescope<CR>",
+        mode = "n",
+        desc = "[T]odo Comments.",
+      },
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next todo comment.",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Previous todo comment.",
+      },
+    },
     event = "BufEnter",
-    config = function()
-      local tc = require("todo-comments")
-      tc.setup()
-      vim.keymap.set("n", "]t", function()
-        tc.jump_next()
-      end, { desc = "Next todo comment" })
-      vim.keymap.set("n", "[t", function()
-        tc.jump_prev()
-      end, { desc = "Previous todo comment" })
-    end,
   },
   {
     "kawre/leetcode.nvim",
