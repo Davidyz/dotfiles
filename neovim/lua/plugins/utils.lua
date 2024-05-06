@@ -36,8 +36,8 @@ local conditionals = {
 }
 
 if vim.fn.executable("java") then
-  local output = vim.fn.execute("!java -version")
-  local java_ver_num = string.match(output, "build (%d+)")
+  local output = vim.fn.execute("!java -version") or ""
+  local java_ver_num = string.match(output, "build (%d+)") or 0
   if tonumber(java_ver_num) > 11 then
     table.insert(M.mason_packages, "ltex-ls")
   end
