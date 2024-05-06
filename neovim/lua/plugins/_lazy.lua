@@ -1189,6 +1189,22 @@ M.plugins = {
       },
     },
   },
+  {
+    "keaising/im-select.nvim",
+    cond = function()
+      return utils.any(
+        { "fcitx5-remote", "fcitx-remote", "im-select", "im-select.exe" },
+        function(arg)
+          return vim.fn.executable(arg) == 1
+        end
+      )
+    end,
+    opts = {
+      async_switch_im = false,
+      set_previous_events = { "InsertEnter" },
+    },
+    lazy = false,
+  },
 
   -- {
   --   "3rd/image.nvim",
