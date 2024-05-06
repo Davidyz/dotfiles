@@ -614,6 +614,20 @@ M.plugins = {
         noremap = true,
       },
     },
+    cmd = {
+      "DapShowLog",
+      "DapContinue",
+      "DapToggleBreakpoint",
+      "DapToggleRepl",
+      "DapStepOver",
+      "DapStepInto",
+      "DapStepOut",
+      "DapTerminate",
+      "DapLoadLaunchJSON",
+      "DapRestartFrame",
+      "DapInstall",
+      "DapUninstall",
+    },
     dependencies = {
       {
         "theHamsta/nvim-dap-virtual-text",
