@@ -7,6 +7,7 @@ M.mason_packages = {
   "clangd",
   "isort",
   "lua-language-server",
+  "stylua",
   "vim-language-server",
   "bash-language-server",
   "ruff-lsp",

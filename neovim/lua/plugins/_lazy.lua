@@ -182,7 +182,12 @@ M.plugins = {
       cp.setup({
         flavour = "mocha",
         dim_inactive = { enabled = true },
-        integrations = { notify = true },
+        integrations = {
+          notify = true,
+          semantic_tokens = true,
+          neotree = true,
+          mason = true,
+        },
         custom_highlights = function()
           return {
             NormalFloat = { bg = cp.crust },
