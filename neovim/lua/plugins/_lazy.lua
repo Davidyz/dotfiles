@@ -437,6 +437,8 @@ M.plugins = {
     end,
     ft = { "zsh" },
   },
+  { "hrsh7th/cmp-emoji", event = "LspAttach" },
+  { "kdheepak/cmp-latex-symbols", event = "LspAttach" },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
