@@ -18,6 +18,7 @@ M.mason_packages = {
   "mypy",
   "debugpy",
   "shfmt",
+  "prettier",
   "yaml-language-server",
   "typescript-language-server",
   "html-lsp",
