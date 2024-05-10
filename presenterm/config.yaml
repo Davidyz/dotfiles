@@ -4,4 +4,4 @@ options:
 typst:
   ppi: 1000
 defaults:
-  theme: catppuccin-mocha
+  theme: tokyonight-storm

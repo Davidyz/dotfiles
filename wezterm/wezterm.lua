@@ -20,10 +20,11 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.color_scheme = "Catppuccin Mocha"
--- local onedark_colors, _ = wezterm.color.load_scheme(
---   (os.getenv("HOME") or os.getenv("UserProfile")) .. "/.config/wezterm/tokyonight-night.toml"
--- )
+-- config.color_scheme = "Catppuccin Mocha"
+local external_color, _ = wezterm.color.load_scheme(
+  (os.getenv("HOME") or os.getenv("UserProfile"))
+    .. "/.config/wezterm/tokyonight-storm.toml"
+)
 
 config.background = {
   -- {
@@ -45,7 +46,7 @@ for i, entry in ipairs(config.background) do
 end
 
 config.enable_scroll_bar = true
-config.colors = onedark_colors
+config.colors = external_color
 config.font = wezterm.font_with_fallback({
   "CaskaydiaCove NF",
   "Cascadia Mono PL",

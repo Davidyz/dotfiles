@@ -199,7 +199,7 @@ M.plugins = {
       vim.cmd("colorscheme catppuccin")
     end,
     lazy = false,
-    enabled = true,
+    enabled = false,
   },
   {
     "folke/tokyonight.nvim",
@@ -208,13 +208,47 @@ M.plugins = {
     config = function()
       local tn = require("tokyonight")
       tn.setup({
-        style = "night",
-        dim_inactive = true,
+        style = "storm",
+        -- dim_inactive = true,
+        sidebars = { "qf", "help", "neo-tree", "terminal", "toggleterm", "telescope" },
+        on_highlights = function(hl, c)
+          local prompt = require("tokyonight.colors").moon().bg_dark
+          -- local prompt = "#2d3149"
+          hl.TelescopeNormal = {
+            bg = c.bg_dark,
+            fg = c.fg_dark,
+          }
+          hl.TelescopeBorder = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+          }
+          hl.TelescopePromptNormal = {
+            bg = prompt,
+          }
+          hl.TelescopePromptBorder = {
+            bg = prompt,
+            fg = prompt,
+          }
+          hl.TelescopePromptTitle = {
+            bg = prompt,
+            fg = prompt,
+          }
+          hl.TelescopePreviewTitle = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+          }
+          hl.TelescopeResultsTitle = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+          }
+          hl.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
+          hl.LspInfoBorder = { fg = c.bg_dark, bg = c.bg_dark }
+        end,
       })
-      vim.cmd([[colorscheme tokyonight-night]])
+      vim.cmd([[colorscheme tokyonight-storm]])
     end,
     opts = {},
-    enabled = false,
+    enabled = true,
   },
 
   -- NOTE: tree sitter
@@ -442,20 +476,15 @@ M.plugins = {
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
-    config = function()
-      vim.api.nvim_set_hl(0, "FidgetTitle", { link = "Exception" })
-      vim.api.nvim_set_hl(0, "FidgetTask", { link = "Tag" })
-      require("fidget").setup({
-        notification = {
-          window = {
-            winblend = 0,
-            border = "rounded",
-            align = "bottom",
-          },
-          view = { stack_upwards = false },
+    opts = {
+      notification = {
+        window = {
+          winblend = 0,
+          align = "bottom",
         },
-      })
-    end,
+        view = { stack_upwards = false },
+      },
+    },
     cond = utils.no_vscode,
   },
   {
