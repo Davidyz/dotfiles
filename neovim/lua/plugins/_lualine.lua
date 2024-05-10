@@ -1,6 +1,8 @@
 local utils = require("_utils")
 local nvim_devicon = require("nvim-web-devicons")
 
+vim.opt.laststatus = 3
+
 local function file_path()
   return vim.api.nvim_buf_get_name(0):gsub(tostring(os.getenv("HOME")), "~")
 end

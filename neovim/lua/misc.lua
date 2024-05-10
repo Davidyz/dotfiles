@@ -14,8 +14,6 @@ vim.opt.shiftwidth = 0
 vim.opt.mouse = "a"
 vim.opt.swapfile = false
 
-vim.opt.laststatus = 2
-
 vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
@@ -61,9 +59,7 @@ vim.api.nvim_set_hl(0, "MatchParen", { link = "TermCursorNC" })
 
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
-if vim.fn.has("nvim-0.7") ~= 0 then
-  vim.o.laststatus = 3
-end
+vim.o.laststatus = 3
 
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",

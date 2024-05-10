@@ -209,8 +209,20 @@ M.plugins = {
       local tn = require("tokyonight")
       tn.setup({
         style = "storm",
-        -- dim_inactive = true,
-        sidebars = { "qf", "help", "neo-tree", "terminal", "toggleterm", "telescope" },
+        sidebars = {
+          "qf",
+          "help",
+          "neo-tree",
+          "terminal",
+          "toggleterm",
+          "telescope",
+          "Outline",
+          "dapui_stacks",
+          "dapui_watches",
+          "dapui_breakpoints",
+          "dapui_scopes",
+          "dapui_repl",
+        },
         on_highlights = function(hl, c)
           local prompt = require("tokyonight.colors").moon().bg_dark
           -- local prompt = "#2d3149"
@@ -601,7 +613,7 @@ M.plugins = {
     "hedyhli/outline.nvim",
     cond = utils.no_vscode,
     cmd = { "Outline", "OutlineOpen" },
-    keys = { -- Example mapping to toggle outline
+    keys = {
       { "<leader>o", ":Outline<CR>", desc = "Toggle outline" },
     },
     opts = {},
