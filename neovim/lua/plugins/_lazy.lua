@@ -337,7 +337,7 @@ M.plugins = {
     cmd = { "Mason" },
     ---@type MasonSettings
     opts = {
-      ui = { border = "double" },
+      ui = { height = 0.8 },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
       PATH = "append",
     },
