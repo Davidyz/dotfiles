@@ -224,8 +224,7 @@ M.plugins = {
           "dapui_repl",
         },
         on_highlights = function(hl, c)
-          local prompt = require("tokyonight.colors").moon().bg_dark
-          -- local prompt = "#2d3149"
+          local prompt = require("tokyonight.colors").night
           hl.TelescopeNormal = {
             bg = c.bg_dark,
             fg = c.fg_dark,
@@ -235,15 +234,16 @@ M.plugins = {
             fg = c.bg_dark,
           }
           hl.TelescopePromptNormal = {
-            bg = prompt,
+            bg = prompt.bg_dark,
+            fg = prompt.fg_dark,
           }
           hl.TelescopePromptBorder = {
-            bg = prompt,
-            fg = prompt,
+            bg = prompt.bg_dark,
+            fg = prompt.bg_dark,
           }
           hl.TelescopePromptTitle = {
-            bg = prompt,
-            fg = prompt,
+            bg = prompt.bg_dark,
+            fg = prompt.bg_dark,
           }
           hl.TelescopePreviewTitle = {
             bg = c.bg_dark,
@@ -347,6 +347,14 @@ M.plugins = {
   {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "mason",
+        callback = function()
+          vim.o.cursorline = false
+        end,
+      })
+    end,
     ---@type MasonSettings
     opts = {
       ui = { height = 0.8 },
