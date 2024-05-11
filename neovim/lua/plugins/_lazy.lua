@@ -477,17 +477,17 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-buffer",
-    event = "LspAttach",
+    event = "BufEnter",
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-path",
-    event = "LspAttach",
+    event = "BufEnter",
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-cmdline",
-    event = "LspAttach",
+    event = "UIEnter",
     cond = utils.no_vscode,
   },
   {
