@@ -907,6 +907,7 @@ M.plugins = {
       },
     },
   },
+  { "rktjmp/playtime.nvim", cmd = { "Playtime" }, opts = { fps = 60 } },
   {
     "lewis6991/hover.nvim",
     opts = {
