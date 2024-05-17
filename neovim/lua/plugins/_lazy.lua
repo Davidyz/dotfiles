@@ -388,16 +388,6 @@ M.plugins = {
         if vim.bo.bt == "nofile" then
           return ""
         end
-        local clients = vim.lsp.get_clients({ { bufnr = bufnum } })
-        for k, v in pairs(clients) do
-          if v.config.name == "null-ls" then
-            -- ignore null-ls
-            clients[k] = nil
-          end
-        end
-        if #clients ~= 0 then
-          return { "treesitter", "lsp" }
-        end
         return { "treesitter", "indent" }
       end,
     },
@@ -1152,6 +1142,12 @@ M.plugins = {
         remap = true,
       },
     },
+  },
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = { "Oil" },
   },
   {
     "kylechui/nvim-surround",
