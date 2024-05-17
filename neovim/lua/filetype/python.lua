@@ -1,5 +1,4 @@
 local ft_utils = require("filetype.utils")
-local job = require("plenary.job")
 
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.py",
