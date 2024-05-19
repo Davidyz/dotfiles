@@ -389,3 +389,5 @@ if command -v sx > /dev/null && command -v wezterm > /dev/null; then
 fi
 
 command -v ranger > /dev/null 2> /dev/null && export RANGER_LOAD_DEFAULT_RC=false
+
+[ -d ~/.local/share/bob/nvim-bin/ ] && export PATH=~/.local/share/bob/nvim-bin/:$PATH
