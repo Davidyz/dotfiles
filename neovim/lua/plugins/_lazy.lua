@@ -928,10 +928,15 @@ M.plugins = {
   {
     "brenoprata10/nvim-highlight-colors",
     config = function()
+      require("nvim-highlight-colors").setup({
+        render = "virtual",
+        enable_tailwind = true,
+      })
       require("nvim-highlight-colors.color.patterns").hex_regex =
         "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
       require("nvim-highlight-colors").turnOn()
     end,
+    lazy = false,
   },
   {
     "ethanholz/nvim-lastplace",
@@ -1325,7 +1330,14 @@ M.plugins = {
     },
     lazy = false,
   },
-
+  {
+    "rachartier/tiny-devicons-auto-colors.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    event = "VeryLazy",
+    opts = {},
+  },
   -- {
   --   "3rd/image.nvim",
   --   filetypes = { "markdown" },
