@@ -71,18 +71,3 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)
-
-local external_deps = { "rg", "python3", "node", "npm" }
-local missing_packages = ""
-for _, cmd in ipairs(external_deps) do
-  if vim.fn.executable(cmd) == 0 then
-    if missing_packages == "" then
-      missing_packages = cmd
-    else
-      missing_packages = missing_packages .. " " .. cmd
-    end
-  end
-end
-if missing_packages ~= "" then
-  print("Missing external command(s): " .. missing_packages)
-end
