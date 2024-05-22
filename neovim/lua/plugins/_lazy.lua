@@ -628,18 +628,17 @@ M.plugins = {
     keys = { "<leader>ef", "<leader>ev" },
   },
   {
-    "zbirenbaum/copilot.lua",
+    "Exafunction/codeium.nvim",
+    cond = function()
+      return utils.no_vscode()
+    end,
     event = "LspAttach",
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
     },
-    cond = utils.no_vscode,
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = true,
-    cond = utils.no_vscode,
+    opts = { enable_chat = true, detect_proxy = true },
+    cmd = { "Codeium" },
   },
   {
     "onsails/lspkind.nvim",
@@ -932,8 +931,7 @@ M.plugins = {
         render = "virtual",
         enable_tailwind = true,
       })
-      require("nvim-highlight-colors.color.patterns").hex_regex =
-        "#[%a%d][%a%d][%a%d][%a%d][%a%d][%a%d]"
+      require("nvim-highlight-colors.color.patterns").hex_regex = "#%x%x%x%x%x%x"
       require("nvim-highlight-colors").turnOn()
     end,
     lazy = false,
