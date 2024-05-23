@@ -30,7 +30,7 @@ return function()
           callback = function()
             vim.lsp.buf.format({
               bufnr = bufnr,
-              async = true,
+              async = false,
             })
           end,
         })

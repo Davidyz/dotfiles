@@ -7,7 +7,6 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
   lsp_defaults.capabilities,
   require("cmp_nvim_lsp").default_capabilities()
 )
-lsp_defaults.capabilities.offsetEncoding = "utf-8"
 lsp_defaults.capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
@@ -63,6 +62,28 @@ local handlers = {
       },
     }
     require("lspconfig")["texlab"].setup(default_server_config)
+  end,
+  ["basedpyright"] = function()
+    lspconfig["basedpyright"].setup(
+      vim.tbl_deep_extend("force", default_server_config, {
+        settings = {
+          basedpyright = {
+            analysis = {
+              typeCheckingMode = "basic",
+              inlayHints = {
+                callArgumentNames = "all",
+                functionReturnTypes = true,
+                pytestParameters = true,
+                variableTypes = true,
+              },
+              autoFormatStrings = true,
+            },
+            linting = { enabled = false },
+            typeCheckingMode = "standard",
+          },
+        },
+      })
+    )
   end,
   ["ruff_lsp"] = function()
     lspconfig["ruff_lsp"].setup(vim.tbl_deep_extend("force", default_server_config, {
@@ -139,49 +160,5 @@ local handlers = {
     lspconfig["bashls"].setup(bash_config)
   end,
 }
-local default_pyright_config = vim.tbl_deep_extend("force", default_server_config, {
-  settings = {
-    python = {
-      analysis = {
-        typeCheckingMode = "basic",
-        inlayHints = {
-          callArgumentNames = "all",
-          functionReturnTypes = true,
-          pytestParameters = true,
-          variableTypes = true,
-        },
-        autoFormatStrings = true,
-      },
-      linting = { enabled = false },
-    },
-  },
-})
-
-if vim.fn.executable("basedpyright-langserver") == 1 then
-  local based_config = vim.tbl_deep_extend(
-    "force",
-    default_pyright_config,
-    { settings = { basedpyright = default_pyright_config.settings.python } }
-  )
-  based_config.settings.basedpyright.typeCheckingMode = "standard"
-  lspconfig["basedpyright"].setup(based_config)
-else
-  local lang_server = "pyright-langserver"
-  if vim.fn.executable("delance-langserver") ~= 0 then
-    lang_server = "delance-langserver"
-  end
-
-  local pyright_config = vim.tbl_deep_extend("force", default_pyright_config, {
-    cmd = { lang_server, "--stdio" },
-  })
-  lspconfig.pyright.setup(pyright_config)
-end
 
 require("mason-lspconfig").setup_handlers(handlers)
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "lspinfo",
-  callback = function()
-    vim.api.nvim_win_set_config(0, { border = "double" })
-  end,
-})

@@ -11,6 +11,7 @@ M.mason_packages = {
   "vim-language-server",
   "bash-language-server",
   "ruff-lsp",
+  "basedpyright",
   "isort",
   "jsonls",
   "clangd",
