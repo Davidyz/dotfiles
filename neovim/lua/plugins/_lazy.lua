@@ -207,6 +207,7 @@ M.plugins = {
     priority = 1000,
     config = function()
       local tn = require("tokyonight")
+      local prompt = require("tokyonight.colors").night
       tn.setup({
         style = "storm",
         sidebars = {
@@ -224,7 +225,6 @@ M.plugins = {
           "dapui_repl",
         },
         on_highlights = function(hl, c)
-          local prompt = require("tokyonight.colors").night
           hl.TelescopeNormal = {
             bg = c.bg_dark,
             fg = c.fg_dark,
