@@ -1061,7 +1061,7 @@ M.plugins = {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    lazy = false,
+    event = { "LspAttach" },
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
