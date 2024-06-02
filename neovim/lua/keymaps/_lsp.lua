@@ -91,8 +91,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end,
       },
       sources = {
+        {
+          name = "lazydev",
+          group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+        },
         { name = "nvim_lsp", keyword_length = 1, priority = 9 },
-        { name = "nvim_lua", priority = 10 },
+        -- { name = "nvim_lua", priority = 10 },
         { name = "path", priority = 10 },
         { name = "buffer", keyword_length = 2, priority = 3 },
         { name = "luasnip", keyword_length = 2 },

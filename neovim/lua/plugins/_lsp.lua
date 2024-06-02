@@ -125,15 +125,15 @@ local handlers = {
         Lua = {
           format = {
             enable = false,
-            -- defaultConfig = {
-            --   indent_style = "space",
-            --   indent_size = 2,
-            --   quote_style = "double",
-            -- },
+            defaultConfig = {
+              indent_style = "space",
+              indent_size = 2,
+              quote_style = "double",
+            },
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            library = libs,
+            -- library = libs,
             useGitIgnore = true,
             checkThirdParty = false,
           },

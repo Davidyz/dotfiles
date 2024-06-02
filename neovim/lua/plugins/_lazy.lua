@@ -514,7 +514,6 @@ M.plugins = {
     "williamboman/mason-lspconfig.nvim",
     cond = utils.no_vscode,
     event = { "BufReadPost", "BufNewFile" },
-    --dependencies = { "folke/neodev.nvim" },
   },
   {
     "hrsh7th/cmp-nvim-lsp-signature-help",
@@ -658,7 +657,6 @@ M.plugins = {
       })
     end,
   },
-
   {
     "hedyhli/outline.nvim",
     cond = utils.no_vscode,
@@ -684,6 +682,16 @@ M.plugins = {
     dependencies = "neovim/nvim-lspconfig",
     opts = { excluded_lsp_clients = { "null-ls" } },
   },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        "luvit-meta/library", -- see below
+      },
+    },
+  },
+  { "Bilal2453/luvit-meta", lazy = true },
 
   -- NOTE: dap
   {
