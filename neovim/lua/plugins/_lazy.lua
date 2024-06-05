@@ -1344,6 +1344,26 @@ M.plugins = {
     event = "VeryLazy",
     opts = {},
   },
+  {
+    "amitds1997/remote-nvim.nvim",
+    cond = function()
+      return utils.no_vscode() and utils.cpu_count() >= 2
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- For standard functions
+      "MunifTanjim/nui.nvim", -- To build the plugin UI
+      "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+    },
+    opt = {},
+    config = true,
+    cmd = {
+      "RemoteStart",
+      "RemoteInfo",
+      "RemoteCleanup",
+      "RemoteLog",
+      "RemoteConfigDel",
+    },
+  },
   -- {
   --   "3rd/image.nvim",
   --   filetypes = { "markdown" },
