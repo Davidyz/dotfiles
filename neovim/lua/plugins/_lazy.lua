@@ -594,6 +594,7 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function()
       require("refactoring").setup({
+        show_success_message = true,
         prompt_func_return_type = {
           go = false,
           java = false,
