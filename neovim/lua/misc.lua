@@ -1,6 +1,3 @@
-local utils = require("_utils")
-local job = require("plenary.job")
-
 vim.opt.smartcase = true
 vim.opt.encoding = "utf-8"
 -- vim.opt.shadafile = "~/.local/share/nvim/shada/main.shada"

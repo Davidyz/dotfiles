@@ -942,6 +942,7 @@ M.plugins = {
       require("nvim-highlight-colors.color.patterns").hex_regex = "#%x%x%x%x%x%x"
       require("nvim-highlight-colors").turnOn()
     end,
+    event = "BufEnter *",
     lazy = false,
   },
   {
@@ -973,7 +974,7 @@ M.plugins = {
     },
     lazy = false,
   },
-  { "nvim-lua/plenary.nvim", event = "VeryLazy" },
+  { "nvim-lua/plenary.nvim" },
   {
     "smoka7/hop.nvim",
     opts = {},

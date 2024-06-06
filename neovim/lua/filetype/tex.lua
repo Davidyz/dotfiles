@@ -1,6 +1,5 @@
 local utils = require("_utils")
 
-local job = require("plenary.job")
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
   pattern = "*.tex",
   callback = function()
