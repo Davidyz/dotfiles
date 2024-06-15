@@ -819,9 +819,6 @@ M.plugins = {
         },
       })
     end,
-    init = function()
-      vim.g.use_alpha = false
-    end,
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
@@ -1081,11 +1078,11 @@ M.plugins = {
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
-        { "startify", "help", "nerdtree", "alpha", "Outline" }
+        { "startify", "help", "nerdtree", "Outline", "dashboard" }
     end,
     opts = {
       exclude = {
-        filetypes = { "startify", "help", "neo-tree", "alpha" },
+        filetypes = { "startify", "help", "neo-tree", "dashboard" },
       },
       scope = {
         enabled = true,
@@ -1184,12 +1181,23 @@ M.plugins = {
   },
 
   {
-    "goolord/alpha-nvim",
+    "nvimdev/dashboard-nvim",
+    event = "VimEnter",
     config = function()
-      require("plugins.alpha")
+      require("dashboard").setup({
+        shortcut_type = "number",
+        theme = "hyper",
+
+        change_to_vcs_root = true,
+        hide = { tabline = true },
+      })
+      vim.api.nvim_set_hl(
+        0,
+        "DashboardFiles",
+        vim.api.nvim_get_hl(0, { name = "@lsp.type.keyword" })
+      )
     end,
-    lazy = false,
-    dependencies = { { "ColaMint/pokemon.nvim" } },
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
   },
   { "backdround/tabscope.nvim", config = true },
   {

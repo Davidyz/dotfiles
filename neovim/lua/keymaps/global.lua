@@ -35,6 +35,6 @@ km_utils.setKeymap("", "<C-PageDown>", "<Esc>:tabnext<CR>", false)
 km_utils.setKeymap("", "<C-S-PageUp>", "<Esc>:-tabmove<CR>", false)
 km_utils.setKeymap("", "<C-S-PageDown>", "<Esc>:+tabmove<CR>", false)
 -- km_utils.setKeymap("", "<C-w>", "<Esc>:tabclose<CR>", false)
-km_utils.setKeymap("", "<C-t>", "<Esc>:tabnew +Alpha<CR>")
+km_utils.setKeymap("", "<C-t>", "<Esc>:tabnew +Dashboard<CR>")
 
 -- km_utils.setKeymap("n", "q", ":q<CR>", { noremap = true })
