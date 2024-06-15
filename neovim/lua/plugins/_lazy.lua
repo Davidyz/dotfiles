@@ -1196,6 +1196,12 @@ M.plugins = {
         "DashboardFiles",
         vim.api.nvim_get_hl(0, { name = "@lsp.type.keyword" })
       )
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "dashboard",
+        callback = function()
+          vim.api.nvim_buf_set_keymap(0, "n", "q", ":exit<CR>", { noremap = true })
+        end,
+      })
     end,
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
   },
