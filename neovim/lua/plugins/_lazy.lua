@@ -391,7 +391,7 @@ M.plugins = {
         return { "treesitter", "indent" }
       end,
     },
-    event = "BufEnter",
+    event = "LspAttach",
   },
 
   -- NOTE: mason
