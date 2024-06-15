@@ -426,23 +426,26 @@ M.plugins = {
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
     end,
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+      {
+        "jay-babu/mason-null-ls.nvim",
+        dependencies = {
+          "williamboman/mason.nvim",
+          "nvimtools/none-ls.nvim",
+        },
+        opts = {
+          ensure_installed = nil,
+          automatic_installation = true,
+        },
+        config = true,
+      },
+    },
   },
   {
     "nvimtools/none-ls.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     config = require("plugins.null_ls"),
-  },
-  {
-    "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "nvimtools/none-ls.nvim",
-    },
-    opts = {
-      ensure_installed = nil,
-      automatic_installation = true,
-    },
-    config = true,
   },
 
   -- NOTE: lsp
@@ -454,7 +457,15 @@ M.plugins = {
     end,
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
-    dependencies = { "nvim-telescope/telescope.nvim", "williamboman/mason.nvim" },
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    },
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    cond = utils.no_vscode,
   },
   {
     "hrsh7th/nvim-cmp",
@@ -509,11 +520,6 @@ M.plugins = {
   {
     "rafamadriz/friendly-snippets",
     cond = utils.no_vscode,
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    cond = utils.no_vscode,
-    event = { "BufReadPost", "BufNewFile" },
   },
   {
     "hrsh7th/cmp-nvim-lsp-signature-help",
