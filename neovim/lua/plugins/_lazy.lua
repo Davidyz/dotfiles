@@ -1092,33 +1092,7 @@ M.plugins = {
     },
   },
   {
-    "terrortylor/nvim-comment",
-    cmd = { "CommentToggle" },
-    main = "nvim_comment",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "arduino",
-        callback = function()
-          vim.bo.commentstring = "// %s"
-        end,
-      })
-    end,
-    config = true,
-    opts = {
-      marker_padding = true,
-      comment_empty = false,
-      comment_empty_trim_whitespace = true,
-      create_mappings = false,
-      line_mapping = nil,
-      operator_mapping = nil,
-      comment_chunk_text_object = "nil",
-      hook = nil,
-    },
-    keys = { { "<Leader>c<Space>", ":CommentToggle<CR>", mode = { "n", "v" } } },
-  },
-  {
     "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
