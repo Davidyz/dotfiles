@@ -1405,7 +1405,6 @@ M.config = {
   ui = {
     border = "double",
   },
-  install = { colorscheme = { "onedarkpro" } },
   profiling = { loader = true, require = true },
 }
 
