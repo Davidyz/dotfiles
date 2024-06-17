@@ -316,12 +316,19 @@ M.plugins = {
     config = function()
       require("plugins.nvim_autopairs")
     end,
-    event = "VeryLazy",
+    event = "LspAttach",
   },
-  { "andymass/vim-matchup", event = "UIEnter" },
+  {
+    "andymass/vim-matchup",
+    event = "BufEnter",
+    init = function()
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
+  },
   {
     "yamatsum/nvim-cursorline",
     config = true,
+    event = "LspAttach",
     opts = {
       cursorline = {
         enabled = true,
@@ -1314,6 +1321,33 @@ M.plugins = {
         filetypes = { "toggleterm" },
         buftypes = { "terminal" },
       },
+    },
+  },
+  {
+    "tris203/precognition.nvim",
+    event = "BufEnter",
+    config = {
+      -- startVisible = true,
+      -- showBlankVirtLine = true,
+      -- highlightColor = { link = "Comment" },
+      -- hints = {
+      --      Caret = { text = "^", prio = 2 },
+      --      Dollar = { text = "$", prio = 1 },
+      --      MatchingPair = { text = "%", prio = 5 },
+      --      Zero = { text = "0", prio = 1 },
+      --      w = { text = "w", prio = 10 },
+      --      b = { text = "b", prio = 9 },
+      --      e = { text = "e", prio = 8 },
+      --      W = { text = "W", prio = 7 },
+      --      B = { text = "B", prio = 6 },
+      --      E = { text = "E", prio = 5 },
+      -- },
+      -- gutterHints = {
+      --     G = { text = "G", prio = 10 },
+      --     gg = { text = "gg", prio = 9 },
+      --     PrevParagraph = { text = "{", prio = 8 },
+      --     NextParagraph = { text = "}", prio = 8 },
+      -- },
     },
   },
   {
