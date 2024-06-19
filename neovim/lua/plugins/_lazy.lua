@@ -1325,7 +1325,7 @@ M.plugins = {
   },
   {
     "tris203/precognition.nvim",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile" },
     config = {
       -- startVisible = true,
       -- showBlankVirtLine = true,
