@@ -20,6 +20,14 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
+  if gpu.backend == "Vulkan" then
+    config.webgpu_preferred_adapter = gpu
+    config.front_end = "WebGpu"
+    break
+  end
+end
+
 -- config.color_scheme = "Catppuccin Mocha"
 local external_color, _ = wezterm.color.load_scheme(
   (os.getenv("HOME") or os.getenv("UserProfile"))
