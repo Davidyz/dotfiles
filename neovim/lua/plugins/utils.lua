@@ -24,7 +24,6 @@ M.mason_packages = {
   "typescript-language-server",
   "html-lsp",
   "latexindent",
-  "grammarly-languageserver",
 }
 
 local conditionals = {
