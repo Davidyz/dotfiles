@@ -1127,7 +1127,7 @@ M.plugins = {
         },
       },
       buffers = {
-        follow_current_file = true,
+        follow_current_file = { enabled = true },
       },
       source_selector = { show_scrolled_off_parent_node = true },
     },

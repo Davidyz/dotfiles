@@ -49,19 +49,9 @@ local function wordCount()
   if vim.bo.ft == "tex" and vim.fn["vimtex#misc#wordcount"] then
     local nerd_icon = nvim_devicon.get_icon_by_filetype("tex")
     local opts = { detailed = 0, count_letters = 0 }
-    local selection_range = utils.has_selection()
-    if selection_range == nil then
-      return "wc"
-        .. nerd_icon
-        .. " : "
-        .. tostring(vim.fn["vimtex#misc#wordcount"](opts))
-    else
-      opts.range = { selection_range[1], selection_range[3] }
-      return "wc"
-        .. nerd_icon
-        .. " : "
-        .. tostring(vim.fn["vimtex#misc#wordcount"](opts))
-    end
+    return nerd_icon
+      .. " : "
+      .. tostring(vim.fn["vimtex#misc#wordcount"](opts)):gsub(" *%(errors:%d+%)", "")
   end
 
   local wc = vim.fn["wordcount"]()
@@ -91,10 +81,13 @@ local lualine_config = {
   options = {
     icons_enabled = true,
     theme = "auto",
-    component_separators = { left = "", right = "" },
-    section_separators = { left = "", right = "" },
+    -- component_separators = { left = "", right = "" },
+    -- section_separators = { left = "", right = "" },
+    section_separators = { left = "", right = "" },
+    component_separators = { left = "│", right = "│" },
     disabled_filetypes = {},
     always_divide_middle = true,
+    globalstatus = true,
   },
   sections = {
     lualine_a = { "mode" },
@@ -110,7 +103,7 @@ local lualine_config = {
       get_context,
       file_path,
     },
-    lualine_x = { "progress" },
+    lualine_x = { { "progress" } },
     lualine_y = { "encoding", "fileformat" },
     lualine_z = {
       "location",
@@ -142,6 +135,7 @@ local lualine_config = {
             return str
           end
         end,
+        use_mode_colors = true,
       },
     },
     lualine_y = { { "navic", color_correction = "dynamic" } },
@@ -154,6 +148,15 @@ local lualine_config = {
       },
     },
   },
-  extensions = {},
+  extensions = {
+    "overseer",
+    "lazy",
+    "mason",
+    "man",
+    "oil",
+    "neo-tree",
+    "toggleterm",
+    "nvim-dap-ui",
+  },
 }
 require("lualine").setup(lualine_config)
