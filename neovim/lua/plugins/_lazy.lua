@@ -1326,7 +1326,7 @@ M.plugins = {
   {
     "tris203/precognition.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    config = {
+    opts = {
       -- startVisible = true,
       -- showBlankVirtLine = true,
       -- highlightColor = { link = "Comment" },
