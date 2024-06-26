@@ -1089,7 +1089,7 @@ M.plugins = {
     end,
     opts = {
       exclude = {
-        filetypes = { "startify", "help", "neo-tree", "dashboard" },
+        filetypes = { "help", "neo-tree", "dashboard" },
       },
       scope = {
         enabled = true,
@@ -1196,13 +1196,43 @@ M.plugins = {
         theme = "hyper",
 
         change_to_vcs_root = true,
-        hide = { tabline = true },
+        hide = { tabline = false, statusline = false },
+        config = {
+          shortcut = {
+            {
+              desc = "Find file",
+              key = "f",
+              action = function()
+                require("telescope.builtin").find_files()
+              end,
+            },
+            {
+              desc = "Live grep",
+              key = "r",
+              action = function()
+                require("telescope.builtin").live_grep()
+              end,
+            },
+            {
+              desc = "Man pages",
+              key = "m",
+              action = function()
+                require("telescope.builtin").man_pages()
+              end,
+            },
+            {
+              desc = "vim help",
+              key = "h",
+              action = function()
+                require("telescope.builtin").help_tags()
+              end,
+            },
+          },
+        },
       })
-      vim.api.nvim_set_hl(
-        0,
-        "DashboardFiles",
-        vim.api.nvim_get_hl(0, { name = "@lsp.type.keyword" })
-      )
+      vim.api.nvim_set_hl(0, "DashboardFiles", { link = "@keyword" })
+      vim.api.nvim_set_hl(0, "DashboardProjectTitle", { link = "Keyword" })
+      vim.api.nvim_set_hl(0, "DashboardMruTitle", { link = "Keyword" })
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "dashboard",
         callback = function()
