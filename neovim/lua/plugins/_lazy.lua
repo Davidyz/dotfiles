@@ -706,6 +706,12 @@ M.plugins = {
     },
   },
   { "Bilal2453/luvit-meta", lazy = true },
+  {
+    "barreiroleo/ltex_extra.nvim",
+    ft = { "markdown", "tex" },
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = false,
+  },
 
   -- NOTE: dap
   {
@@ -921,7 +927,8 @@ M.plugins = {
     opts = {
       init = function()
         require("hover.providers.lsp")
-        require("hover.providers.man")
+        -- require("hover.providers.man")
+        require("hover.providers.diagnostic")
       end,
       preview_opts = {
         border = "double",
@@ -936,7 +943,9 @@ M.plugins = {
     keys = {
       {
         "K",
-        [[<cmd>lua require("hover").hover()<cr>]],
+        function()
+          require("hover").hover()
+        end,
         desc = "hover.nvim",
         mode = "n",
         noremap = true,
