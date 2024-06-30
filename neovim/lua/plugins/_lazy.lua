@@ -711,6 +711,14 @@ M.plugins = {
     ft = { "markdown", "tex" },
     dependencies = { "neovim/nvim-lspconfig" },
     config = false,
+    cond = function()
+      if vim.fn.executable("java") then
+        local output = vim.fn.execute("!java -version") or ""
+        local java_ver_num = string.match(output, "build (%d+)") or 0
+        return tonumber(java_ver_num) > 11
+      end
+      return false
+    end,
   },
 
   -- NOTE: dap
