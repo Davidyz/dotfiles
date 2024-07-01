@@ -261,6 +261,7 @@ M.plugins = {
     end,
     opts = {},
     enabled = true,
+    commit = "30d7be361a7fbf187a881f17e574e9213d5108ea",
   },
 
   -- NOTE: tree sitter
@@ -325,30 +326,24 @@ M.plugins = {
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
     end,
   },
-  {
-    "yamatsum/nvim-cursorline",
-    config = true,
-    event = "LspAttach",
-    opts = {
-      cursorline = {
-        enabled = true,
-        hl = vim.tbl_extend(
-          "force",
-          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
-          { underline = false, bold = false }
-        ),
-      },
-      cursorword = {
-        enable = true,
-        min_length = 1,
-        hl = vim.tbl_extend(
-          "force",
-          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
-          { underline = false, bold = false }
-        ),
-      },
-    },
-  },
+  -- {
+  --   "yamatsum/nvim-cursorline",
+  --   config = true,
+  --   event = "LspAttach",
+  --   main = "nvim-cursorline",
+  --   opts = {
+  --     cursorline = {
+  --       enable = true,
+  --       timeout = 0,
+  --       hl = { underline = false, bold = false },
+  --     },
+  --     cursorword = {
+  --       enable = false,
+  --       min_length = 1,
+  --       hl = { underline = true, bold = false },
+  --     },
+  --   },
+  -- },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async", "nvim-treesitter/nvim-treesitter" },
