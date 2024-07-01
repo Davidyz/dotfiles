@@ -207,7 +207,8 @@ M.plugins = {
     priority = 1000,
     config = function()
       local tn = require("tokyonight")
-      local prompt = require("tokyonight.colors").night
+      local prompt = require("tokyonight.colors.storm")
+      -- local prompt = "#2d3149"
       tn.setup({
         style = "storm",
         sidebars = {
@@ -261,7 +262,6 @@ M.plugins = {
     end,
     opts = {},
     enabled = true,
-    commit = "30d7be361a7fbf187a881f17e574e9213d5108ea",
   },
 
   -- NOTE: tree sitter
