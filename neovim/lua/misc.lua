@@ -7,6 +7,7 @@ vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 0
+vim.opt.hlsearch = false
 
 vim.opt.mouse = "a"
 vim.opt.swapfile = false
@@ -57,14 +58,5 @@ vim.api.nvim_set_hl(0, "MatchParen", { link = "TermCursorNC" })
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*",
-  callback = function()
-    vim.b.editting_vim_config = (
-      vim.fn.expand("%:p"):gmatch("%.*/.config/nvim/%.*")() ~= nil
-    )
-  end,
-})
 
 vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)

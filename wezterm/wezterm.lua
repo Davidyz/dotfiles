@@ -20,6 +20,7 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+config.front_end = "OpenGL"
 for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
   if gpu.backend == "Vulkan" then
     config.webgpu_preferred_adapter = gpu

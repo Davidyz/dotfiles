@@ -326,24 +326,6 @@ M.plugins = {
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
     end,
   },
-  -- {
-  --   "yamatsum/nvim-cursorline",
-  --   config = true,
-  --   event = "LspAttach",
-  --   main = "nvim-cursorline",
-  --   opts = {
-  --     cursorline = {
-  --       enable = true,
-  --       timeout = 0,
-  --       hl = { underline = false, bold = false },
-  --     },
-  --     cursorword = {
-  --       enable = false,
-  --       min_length = 1,
-  --       hl = { underline = true, bold = false },
-  --     },
-  --   },
-  -- },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async", "nvim-treesitter/nvim-treesitter" },
@@ -394,6 +376,27 @@ M.plugins = {
       end,
     },
     event = "LspAttach",
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    init = function()
+      vim.diagnostic.config({
+        -- virtual_text = {
+        --   format = function(diagnostic)
+        --     -- return diagnostic.message
+        --     if vim.api.nvim_win_get_cursor(0)[1] == diagnostic.lnum then
+        --       return diagnostic.message
+        --     else
+        --       return ""
+        --     end
+        --   end,
+        -- },
+        virtual_text = false,
+      })
+    end,
+    main = "tiny-inline-diagnostic",
+    opts = {},
   },
 
   -- NOTE: mason
@@ -934,7 +937,7 @@ M.plugins = {
         require("hover.providers.diagnostic")
       end,
       preview_opts = {
-        border = "double",
+        -- border = "double",
       },
       preview_window = false,
       title = true,
@@ -949,7 +952,25 @@ M.plugins = {
         function()
           require("hover").hover()
         end,
-        desc = "hover.nvim",
+        desc = "Trigger hover.",
+        mode = "n",
+        noremap = true,
+      },
+      {
+        "[h",
+        function()
+          require("hover").hover_switch("previous")
+        end,
+        desc = "Previous hover provider.",
+        mode = "n",
+        noremap = true,
+      },
+      {
+        "]h",
+        function()
+          require("hover").hover_switch("next")
+        end,
+        desc = "Next hover provider.",
         mode = "n",
         noremap = true,
       },
@@ -1029,10 +1050,22 @@ M.plugins = {
         mode = "n",
       },
       {
-        "<Leader>td",
-        "<cmd>Telescope diagnostics<cr>",
+        "<Leader>tD",
+        function()
+          require("telescope.builtin").diagnostics()
+        end,
         remap = false,
         mode = "n",
+        desc = "Project-wise diagnostics.",
+      },
+      {
+        "<Leader>td",
+        function()
+          require("telescope.builtin").diagnostics({ bufnr = 0 })
+        end,
+        remap = false,
+        mode = "n",
+        desc = "Buffer diagnostics.",
       },
       {
         "<Leader>th",
@@ -1210,6 +1243,7 @@ M.plugins = {
         change_to_vcs_root = true,
         hide = { tabline = false, statusline = false },
         config = {
+          mru = { limit = 10, cwd_only = true },
           shortcut = {
             {
               desc = "Find file",
@@ -1402,6 +1436,7 @@ M.plugins = {
         end
       )
     end,
+    main = "im_select",
     opts = {
       async_switch_im = false,
       set_previous_events = { "InsertEnter" },

@@ -133,7 +133,7 @@ local handlers = {
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            -- library = libs,
+            library = libs,
             useGitIgnore = true,
             checkThirdParty = false,
           },
