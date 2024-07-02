@@ -475,6 +475,7 @@ M.plugins = {
   {
     "hrsh7th/nvim-cmp",
     cond = utils.no_vscode,
+    dependencies = { "onsails/lspkind.nvim", "brenoprata10/nvim-highlight-colors" },
   },
   {
     "hrsh7th/cmp-nvim-lsp",
@@ -654,20 +655,6 @@ M.plugins = {
   {
     "onsails/lspkind.nvim",
     cond = utils.no_vscode,
-    event = "LspAttach",
-    config = function()
-      local lspkind = require("lspkind")
-      local cmp = require("cmp")
-      cmp.setup({
-        formatting = {
-          format = lspkind.cmp_format({
-            mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
-          }),
-        },
-      })
-    end,
   },
   {
     "hedyhli/outline.nvim",
@@ -933,7 +920,7 @@ M.plugins = {
     opts = {
       init = function()
         require("hover.providers.lsp")
-        -- require("hover.providers.man")
+        require("hover.providers.man")
         require("hover.providers.diagnostic")
       end,
       preview_opts = {
@@ -1404,7 +1391,7 @@ M.plugins = {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       -- startVisible = true,
-      -- showBlankVirtLine = true,
+      showBlankVirtLine = false,
       -- highlightColor = { link = "Comment" },
       -- hints = {
       --      Caret = { text = "^", prio = 2 },
@@ -1418,12 +1405,12 @@ M.plugins = {
       --      B = { text = "B", prio = 6 },
       --      E = { text = "E", prio = 5 },
       -- },
-      -- gutterHints = {
-      --     G = { text = "G", prio = 10 },
-      --     gg = { text = "gg", prio = 9 },
-      --     PrevParagraph = { text = "{", prio = 8 },
-      --     NextParagraph = { text = "}", prio = 8 },
-      -- },
+      gutterHints = {
+        G = { prio = 0 },
+        gg = { prio = 0 },
+        PrevParagraph = { prio = 0 },
+        NextParagraph = { prio = 0 },
+      },
     },
   },
   {

@@ -74,10 +74,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
     bufmap("n", "gl", vim.diagnostic.open_float)
 
     -- Move to the previous diagnostic
-    bufmap("n", "[d", vim.diagnostic.goto_prev)
+    bufmap("n", "[d", function()
+      vim.diagnostic.goto_prev({ float = false })
+    end)
 
     -- Move to the next diagnostic
-    bufmap("n", "]d", vim.diagnostic.goto_next)
+    bufmap("n", "]d", function()
+      vim.diagnostic.goto_next({ float = false })
+    end)
 
     local cmp = require("cmp")
     local luasnip = require("luasnip")
@@ -117,6 +121,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
       },
       formatting = {
         fields = { "abbr", "menu", "kind" },
+        expandable_indicator = true,
+        format = function(entry, item)
+          local color_item =
+            require("nvim-highlight-colors").format(entry, { kind = item.kind })
+
+          item = require("lspkind").cmp_format({})(entry, item)
+          if color_item.abbr_hl_group then
+            item.kind_hl_group = color_item.abbr_hl_group
+            item.kind = color_item.abbr
+          end
+          return item
+        end,
       },
       mapping = {
         ["<CR>"] = cmp.mapping(function(fallback)

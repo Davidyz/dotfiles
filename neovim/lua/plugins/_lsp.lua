@@ -178,5 +178,26 @@ local handlers = {
 }
 
 require("mason-lspconfig").setup_handlers(handlers)
-vim.api.nvim_create_autocmd("CursorHold", { callback = vim.lsp.buf.document_highlight })
-vim.api.nvim_create_autocmd("CursorMoved", { callback = vim.lsp.buf.clear_references })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if
+      #clients > 0
+      and require("_utils").any(clients, function(c)
+        return c.capabilities.textDocument.documentHighlight ~= nil
+      end)
+    then
+      vim.api.nvim_create_autocmd("CursorHold", {
+        callback = function()
+          pcall(vim.lsp.buf.document_highlight)
+        end,
+      })
+      vim.api.nvim_create_autocmd("CursorMoved", {
+        callback = function()
+          pcall(vim.lsp.buf.clear_references)
+        end,
+      })
+    end
+  end,
+})
