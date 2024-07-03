@@ -379,24 +379,16 @@ M.plugins = {
     event = "LspAttach",
   },
   {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    "Davidyz/tiny-inline-diagnostic.nvim",
+    event = { "LspAttach" },
+    dependencies = { "folke/tokyonight.nvim", "neovim/nvim-lspconfig" },
     init = function()
       vim.diagnostic.config({
-        -- virtual_text = {
-        --   format = function(diagnostic)
-        --     -- return diagnostic.message
-        --     if vim.api.nvim_win_get_cursor(0)[1] == diagnostic.lnum then
-        --       return diagnostic.message
-        --     else
-        --       return ""
-        --     end
-        --   end,
-        -- },
         virtual_text = false,
       })
     end,
     main = "tiny-inline-diagnostic",
+    cond = utils.no_vscode,
     opts = {},
   },
 
