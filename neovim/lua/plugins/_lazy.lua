@@ -225,6 +225,7 @@ M.plugins = {
           "dapui_scopes",
           "dapui_repl",
         },
+        on_colors = function(colors) end,
         on_highlights = function(hl, c)
           hl.TelescopeNormal = {
             bg = c.bg_dark,
@@ -254,7 +255,7 @@ M.plugins = {
             bg = c.bg_dark,
             fg = c.bg_dark,
           }
-          hl.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
+          hl.FloatBorder = { fg = c.cyan, bg = c.bg_dark }
           hl.LspInfoBorder = { fg = c.bg_dark, bg = c.bg_dark }
         end,
       })
@@ -895,10 +896,11 @@ M.plugins = {
     },
     opts = {},
   },
-  { "mawkler/modicator.nvim", opts = {} },
+  { "mawkler/modicator.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "stevearc/dressing.nvim",
-    opts = { input = { border = "rounded" } },
+    event = "VeryLazy",
+    opts = { input = { title_pos = "center", border = "rounded" } },
   },
   {
     "NStefan002/2048.nvim",
