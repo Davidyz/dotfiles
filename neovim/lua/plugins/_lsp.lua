@@ -1,6 +1,7 @@
 local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 local lsp_utils = lspconfig.util
+local utils = require("_utils")
 
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   "force",
@@ -179,26 +180,16 @@ local handlers = {
 
 require("mason-lspconfig").setup_handlers(handlers)
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  desc = "Highlight symbol references on cursor hold.",
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorMoved" }, {
   callback = function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
-    if
-      #clients > 1
-      and require("_utils").any(clients, function(c)
-        return c.server_capabilities.documentHighlightProvider == true
-      end)
-    then
-      vim.api.nvim_create_autocmd("CursorHold", {
-        callback = function()
-          pcall(vim.lsp.buf.document_highlight)
-        end,
-      })
-      vim.api.nvim_create_autocmd("CursorMoved", {
-        callback = function()
-          pcall(vim.lsp.buf.clear_references)
-        end,
-      })
+    local server_supported = utils.any(clients, function(c)
+      local capability = c.server_capabilities.documentHighlightProvider
+      return capability ~= nil and capability ~= false
+    end)
+    if #clients > 1 and server_supported then
+      vim.lsp.buf.clear_references()
+      vim.lsp.buf.document_highlight()
     end
   end,
 })
