@@ -255,7 +255,7 @@ M.plugins = {
             bg = c.bg_dark,
             fg = c.bg_dark,
           }
-          hl.FloatBorder = { fg = c.cyan, bg = c.bg_dark }
+          hl.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
           hl.LspInfoBorder = { fg = c.bg_dark, bg = c.bg_dark }
         end,
       })
@@ -380,6 +380,7 @@ M.plugins = {
   },
   {
     "Davidyz/tiny-inline-diagnostic.nvim",
+    dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
     event = { "LspAttach" },
     dependencies = { "folke/tokyonight.nvim", "neovim/nvim-lspconfig" },
     init = function()
@@ -1382,6 +1383,7 @@ M.plugins = {
   },
   {
     "tris203/precognition.nvim",
+    enabled = false,
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       -- startVisible = true,
