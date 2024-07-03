@@ -179,13 +179,14 @@ local handlers = {
 
 require("mason-lspconfig").setup_handlers(handlers)
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "Highlight symbol references on cursor hold.",
   callback = function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if
-      #clients > 0
+      #clients > 1
       and require("_utils").any(clients, function(c)
-        return c.capabilities.textDocument.documentHighlight ~= nil
+        return c.server_capabilities.documentHighlightProvider == true
       end)
     then
       vim.api.nvim_create_autocmd("CursorHold", {
