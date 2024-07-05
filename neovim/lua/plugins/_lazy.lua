@@ -380,7 +380,7 @@ M.plugins = {
   },
   {
     "Davidyz/tiny-inline-diagnostic.nvim",
-    dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
+    -- dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
     event = { "LspAttach" },
     dependencies = { "folke/tokyonight.nvim", "neovim/nvim-lspconfig" },
     init = function()
