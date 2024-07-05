@@ -2,7 +2,33 @@ M = {}
 local utils = require("_utils")
 
 ---@type LazyPluginSpec[]
+local icon_provider = "echasnovski/mini.icons"
 M.plugins = {
+  -- NOTE: icons
+  {
+    "echasnovski/mini.icons",
+    opts = {},
+    lazy = true,
+    specs = {
+      { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
+    },
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
+    cond = function()
+      return icon_provider == "echasnovski/mini.icons"
+    end,
+  },
+  {
+    "nvim-tree/nvim-web-devicons",
+    cond = function()
+      return icon_provider == "nvim-tree/nvim-web-devicons"
+    end,
+  },
+
   -- NOTE: filetypes
   {
     "stevearc/vim-arduino",
@@ -872,7 +898,7 @@ M.plugins = {
         },
         config = true,
       },
-      "nvim-tree/nvim-web-devicons",
+      icon_provider,
     },
   },
   {
@@ -1138,7 +1164,7 @@ M.plugins = {
       require("plugins._lualine")
     end,
     lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { icon_provider },
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -1204,7 +1230,7 @@ M.plugins = {
   {
     "stevearc/oil.nvim",
     opts = {},
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { icon_provider },
     cmd = { "Oil" },
   },
   {
@@ -1302,7 +1328,7 @@ M.plugins = {
         end,
       })
     end,
-    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    dependencies = { { icon_provider } },
   },
   { "backdround/tabscope.nvim", config = true },
   {
@@ -1463,7 +1489,7 @@ M.plugins = {
   {
     "rachartier/tiny-devicons-auto-colors.nvim",
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      icon_provider,
     },
     event = "VeryLazy",
     opts = {},
