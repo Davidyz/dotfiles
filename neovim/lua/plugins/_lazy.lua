@@ -373,6 +373,15 @@ M.plugins = {
         if vim.bo.bt == "nofile" then
           return ""
         end
+        local servers = vim.lsp.get_clients({ bufnr = bufnum })
+        if
+          #servers > 1
+          and utils.any(servers, function(server)
+            return server.server_capabilities.foldingRangeProvider == true
+          end)
+        then
+          return { "lsp", "indent" }
+        end
         return { "treesitter", "indent" }
       end,
     },
@@ -380,6 +389,7 @@ M.plugins = {
   },
   {
     "Davidyz/tiny-inline-diagnostic.nvim",
+    -- "rachartier/tiny-inline-diagnostic.nvim",
     -- dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
     event = { "LspAttach" },
     dependencies = { "folke/tokyonight.nvim", "neovim/nvim-lspconfig" },
