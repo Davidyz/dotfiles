@@ -27,6 +27,13 @@ M.plugins = {
     cond = function()
       return icon_provider == "nvim-tree/nvim-web-devicons"
     end,
+    dependencies = {
+      {
+        "rachartier/tiny-devicons-auto-colors.nvim",
+        event = "VeryLazy",
+        opts = {},
+      },
+    },
   },
 
   -- NOTE: filetypes
@@ -1485,14 +1492,6 @@ M.plugins = {
       set_previous_events = { "InsertEnter" },
     },
     lazy = false,
-  },
-  {
-    "rachartier/tiny-devicons-auto-colors.nvim",
-    dependencies = {
-      icon_provider,
-    },
-    event = "VeryLazy",
-    opts = {},
   },
   {
     "amitds1997/remote-nvim.nvim",
