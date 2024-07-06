@@ -778,6 +778,30 @@ M.plugins = {
   -- "github/copilot.vim",
   --{ "altermo/nxwm" },
   {
+    "mistricky/codesnap.nvim",
+    build = "make",
+    cond = function()
+      return utils.no_vscode() and vim.fn.executable("make")
+    end,
+    init = function()
+      local path = vim.fn.expand("~/Pictures/nvim/")
+      if vim.fn.isdirectory(path) ~= 1 then
+        vim.fn.mkdir(path, "p")
+      end
+    end,
+    opts = {
+      mac_window_bar = false,
+      save_path = vim.fn.expand("~/Pictures/nvim/"),
+      has_breadcrumbs = true,
+      has_line_number = true,
+      show_workspace = false,
+      watermark = "Davidyz @ github.com",
+      bg_color = "grape",
+      -- bg_color = "#23273b",
+    },
+    cmd = { "CodeSnap", "CodeSnapSave", "CodeSnapASCII" },
+  },
+  {
     "folke/todo-comments.nvim",
     config = true,
     keys = {
