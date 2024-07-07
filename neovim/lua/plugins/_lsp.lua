@@ -28,7 +28,7 @@ local default_server_config = {
         callback = function()
           vim.lsp.buf.format({
             filter = function(c)
-              return c.name ~= "basedpyright"
+              return not vim.list_contains({ "basedpyright" }, c.name)
             end,
           })
         end,
@@ -91,6 +91,7 @@ local handlers = {
                 variableTypes = true,
               },
               autoFormatStrings = true,
+              autoImportCompletions = true,
             },
             linting = { enabled = false },
             typeCheckingMode = "standard",
@@ -104,7 +105,10 @@ local handlers = {
     lspconfig["ruff"].setup(vim.tbl_deep_extend("force", default_server_config, {
       capabilities = {
         -- only enable when black is not available
-        textDocument = { dynamicRegistration = vim.fn.executable("black") == 0 },
+        textDocument = {
+          formatting = { dynamicRegistration = vim.fn.executable("black") == 0 },
+          rangeFormatting = { dynamicRegistration = vim.fn.executable("black") == 0 },
+        },
       },
     }))
   end,
