@@ -16,6 +16,7 @@ return function()
         filetypes = { "sh", "bash", "zsh" },
         extra_args = { "-i", vim.bo.sts },
       }),
+      null_ls.builtins.code_actions.refactoring,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)
@@ -39,11 +40,8 @@ return function()
   }
 
   if vim.fn.executable("black") == 1 then
-    mason_config.sources = vim.tbl_extend(
-      "keep",
-      mason_config.sources,
-      { null_ls.builtins.formatting.black }
-    )
+    mason_config.sources =
+      vim.list_extend(mason_config.sources, { null_ls.builtins.formatting.black })
   end
   null_ls.setup(mason_config)
 end
