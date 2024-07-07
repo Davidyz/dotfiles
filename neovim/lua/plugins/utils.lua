@@ -2,28 +2,23 @@ M = {}
 
 M.mason_packages = {
   "clang-format",
-  "cmakelang",
   "shellcheck",
   "clangd",
-  "isort",
   "lua-language-server",
   "stylua",
   "vim-language-server",
   "bash-language-server",
-  "ruff-lsp",
+  "ruff",
   "basedpyright",
-  "isort",
   "jsonls",
   "clangd",
-  "beautysh",
   "mypy",
   "debugpy",
   "shfmt",
   "prettierd",
   "yaml-language-server",
-  "typescript-language-server",
   "html-lsp",
-  "latexindent",
+  "taplo",
 }
 
 local conditionals = {
@@ -32,9 +27,10 @@ local conditionals = {
   rustc = "rust-analyzer",
   javac = "jdtls",
   tex = "texlab",
-  pdflatex = { "texlab", "latexindent", "bibclean" },
-  docker = "dockerfile-language-server",
-  cmake = "cmake-language-server",
+  pdflatex = { "texlab", "latexindent" },
+  docker = { "dockerfile-language-server", "docker-compose-language-service" },
+  cmake = { "cmakelang", "cmake-language-server" },
+  node = { "typescript-language-server" },
 }
 
 if vim.fn.executable("java") then
@@ -50,7 +46,7 @@ for exe, ls in pairs(conditionals) do
     if type(ls) == "string" then
       table.insert(M.mason_packages, ls)
     elseif type(ls) == "table" then
-      vim.tbl_extend("keep", M.mason_packages, ls)
+      vim.list_extend(M.mason_packages, ls)
     end
   end
 end
