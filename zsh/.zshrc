@@ -397,6 +397,7 @@ export POETRY_VIRTUALENVS_IN_PROJECT=true
 [ -x wezterm ] && alias imgcat='wezterm imgcat'
 
 git_delete_merged_branches() {
+	local original_branch=$(git status | grep '^On branch' | sed "s/^On branch //" | sed "s/ //g")
 	# Fetch all remote branches and prune deleted branches
 	git fetch --all --prune
 
@@ -417,4 +418,6 @@ git_delete_merged_branches() {
 	else
 	    echo "No merged branches to delete."
 	fi
+
+	git checkout $original_branch
 }
