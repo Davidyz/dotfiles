@@ -259,4 +259,16 @@ M.has_selection = function()
   return nil
 end
 
+---@return 'linux'|'mac'|'win'|'unknown'
+M.platform = function()
+  if vim.fn.has("linux") == 1 then
+    return "linux"
+  elseif vim.fn.has("mac") == 1 then
+    return "mac"
+  elseif vim.fn.has("win32") == 1 then
+    return "win"
+  else
+    return "unknown"
+  end
+end
 return M
