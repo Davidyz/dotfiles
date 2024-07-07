@@ -395,3 +395,26 @@ command -v ranger > /dev/null 2> /dev/null && export RANGER_LOAD_DEFAULT_RC=fals
 export POETRY_VIRTUALENVS_IN_PROJECT=true
 
 [ -x wezterm ] && alias imgcat='wezterm imgcat'
+
+git_delete_merged_branches() {
+	# Fetch all remote branches and prune deleted branches
+	git fetch --all --prune
+
+	# Detect the default branch
+	local default_branch=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+
+	# Switch to the default branch
+	git checkout "$default_branch" || echo "You have unsaved changes!!! Commit or stash them before proceeding!"
+
+	# Make sure the default branch is up to date
+	git pull origin "$default_branch"
+
+	# List all branches that have been merged into the default branch and delete them
+	local branches_to_delete=$(git branch --merged | egrep -v "(^\*|$default_branch)")
+
+	if [[ -n "$branches_to_delete" ]]; then
+	    echo "$branches_to_delete" | xargs -n 1 git branch -d
+	else
+	    echo "No merged branches to delete."
+	fi
+}
