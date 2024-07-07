@@ -13,7 +13,7 @@ lsp_defaults.capabilities.textDocument.foldingRange = {
   lineFoldingOnly = true,
 }
 
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "popup" }
 local default_server_config = {
   flags = { debounce_text_changes = 150 },
   single_file_support = true,
