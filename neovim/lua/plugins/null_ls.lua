@@ -1,5 +1,3 @@
-local utils = require("_utils")
-
 return function()
   local null_ls = require("null-ls")
   local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -31,6 +29,9 @@ return function()
             vim.lsp.buf.format({
               bufnr = bufnr,
               async = false,
+              filter = function(c)
+                return c.name ~= "basedpyright"
+              end,
             })
           end,
         })

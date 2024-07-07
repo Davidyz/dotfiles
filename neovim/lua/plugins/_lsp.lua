@@ -26,14 +26,20 @@ local default_server_config = {
       vim.api.nvim_create_autocmd("BufWritePre", {
         buffer = bufnr,
         callback = function()
-          vim.lsp.buf.format()
+          vim.lsp.buf.format({
+            filter = function(c)
+              return c.name ~= "basedpyright"
+            end,
+          })
         end,
       })
     end
     if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
       vim.g.inlay_hints_visible = true
+      ---@diagnostic disable-next-line: unused-local
       local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
       if not status then
+        ---@diagnostic disable-next-line: param-type-mismatch
         vim.lsp.inlay_hint.enable(bufnr, true)
       end
     end
@@ -88,13 +94,14 @@ local handlers = {
             },
             linting = { enabled = false },
             typeCheckingMode = "standard",
+            disableOrganizeImports = true,
           },
         },
       })
     )
   end,
-  ["ruff_lsp"] = function()
-    lspconfig["ruff_lsp"].setup(vim.tbl_deep_extend("force", default_server_config, {
+  ["ruff"] = function()
+    lspconfig["ruff"].setup(vim.tbl_deep_extend("force", default_server_config, {
       capabilities = {
         -- only enable when black is not available
         textDocument = { dynamicRegistration = vim.fn.executable("black") == 0 },

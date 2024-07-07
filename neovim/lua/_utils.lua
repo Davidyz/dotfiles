@@ -187,6 +187,7 @@ function M.split(inputstr, sep)
       return t
     end
   end
+  return {}
 end
 
 ---@param func function
