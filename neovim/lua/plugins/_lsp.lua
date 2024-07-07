@@ -47,22 +47,29 @@ require("mason-lspconfig").setup({ autostart = true })
 
 local handlers = {
   function(server_name) -- default handler (optional)
-    if server_name == "rust_analyzer" then
-      default_server_config.root_dir = lsp_utils.root_pattern("Cargo.toml", ".git")
-    end
     require("lspconfig")[server_name].setup(default_server_config)
   end,
+  ["rust_analyzer"] = function()
+    require("lspconfig")["rust_analyzer"].setup(
+      vim.tbl_deep_extend(
+        "force",
+        default_server_config,
+        { root_dir = lsp_utils.root_pattern("Cargo.toml", ".git") }
+      )
+    )
+  end,
   ["texlab"] = function()
-    default_server_config.settings = {
-      texlab = {
-        formatterLineLength = 88,
-        latexindent = {
-          ["local"] = ".latexindent.yaml",
-          modifyLineBreaks = true,
+    require("lspconfig")["texlab"].setup(
+      vim.tbl_deep_extend("force", default_server_config, {
+        texlab = {
+          formatterLineLength = 88,
+          latexindent = {
+            ["local"] = ".latexindent.yaml",
+            modifyLineBreaks = true,
+          },
         },
-      },
-    }
-    require("lspconfig")["texlab"].setup(default_server_config)
+      })
+    )
   end,
   ["basedpyright"] = function()
     lspconfig["basedpyright"].setup(
@@ -96,10 +103,10 @@ local handlers = {
   end,
   ["arduino_language_server"] = function()
     if
-      vim.fn.filereadable("~/.arduino15/arduino-cli.yaml") ~= 0
+      vim.fn.filereadable(vim.fn.expand("~/.arduino15/arduino-cli.yaml")) == 0
       and vim.fn.executable("arduino-cli")
     then
-      vim.fn.execute("arduino-cli config init")
+      vim.fn.system("arduino-cli config init")
     end
     local arduino_config = vim.tbl_deep_extend("force", default_server_config, {
       cmd = {
@@ -111,15 +118,11 @@ local handlers = {
         "-cli-config",
         "~/.arduino15/arduino-cli.yaml",
       },
+      capabilities = { workspace = { semanticTokens = nil } },
     })
-    arduino_config.capabilities.workspace.semanticTokens = nil
     lspconfig["arduino_language_server"].setup(arduino_config)
   end,
   ["lua_ls"] = function()
-    local libs = vim.api.nvim_get_runtime_file("", true)
-    if string.find(vim.fn.expand("%:p"), "wezterm") then
-      table.insert(libs, vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/"))
-    end
     local lua_config = vim.tbl_deep_extend("force", default_server_config, {
       flags = { debounce_text_changes = 150 },
       settings = {
@@ -134,7 +137,7 @@ local handlers = {
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            library = libs,
+            library = { vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/") },
             useGitIgnore = true,
             checkThirdParty = false,
           },
@@ -161,11 +164,14 @@ local handlers = {
     lspconfig["bashls"].setup(bash_config)
   end,
   ["ltex"] = function()
+    if vim.fn.isdirectory(vim.fn.expand("~/.local/share/ltex/")) ~= 1 then
+      vim.fn.mkdir(vim.fn.expand("~/.local/share/ltex/"), "p")
+    end
     local ltex_config = vim.tbl_deep_extend("force", default_server_config, {
       on_attach = function(client, bufnr)
         default_server_config.on_attach(client, bufnr)
         require("ltex_extra").setup({
-          load_langs = { "en-GB" },
+          load_langs = { "en-GB", "zh-CN" },
           init_check = true,
           path = vim.fn.expand("~") .. "/.local/share/ltex",
           log_level = "none",
@@ -180,16 +186,19 @@ local handlers = {
 
 require("mason-lspconfig").setup_handlers(handlers)
 
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorMoved" }, {
-  callback = function()
-    local clients = vim.lsp.get_clients({ bufnr = 0 })
-    local server_supported = utils.any(clients, function(c)
-      local capability = c.server_capabilities.documentHighlightProvider
-      return capability ~= nil and capability ~= false
-    end)
-    if #clients > 1 and server_supported then
-      vim.lsp.buf.clear_references()
-      vim.lsp.buf.document_highlight()
-    end
-  end,
-})
+vim.api.nvim_create_autocmd(
+  { "CursorHold", "CursorMoved", "CursorHoldI", "CursorMovedI" },
+  {
+    callback = function()
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      local server_supported = utils.any(clients, function(c)
+        local capability = c.server_capabilities.documentHighlightProvider
+        return capability ~= nil and capability ~= false
+      end)
+      if #clients > 1 and server_supported then
+        vim.lsp.buf.clear_references()
+        vim.lsp.buf.document_highlight()
+      end
+    end,
+  }
+)
