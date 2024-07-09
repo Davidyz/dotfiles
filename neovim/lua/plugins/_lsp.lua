@@ -178,18 +178,27 @@ local handlers = {
     if vim.fn.isdirectory(vim.fn.expand("~/.local/share/ltex/")) ~= 1 then
       vim.fn.mkdir(vim.fn.expand("~/.local/share/ltex/"), "p")
     end
+    local original_on_attach = default_server_config.on_attach
     local ltex_config = vim.tbl_deep_extend("force", default_server_config, {
       on_attach = function(client, bufnr)
-        default_server_config.on_attach(client, bufnr)
-        require("ltex_extra").setup({
-          load_langs = { "en-GB", "zh-CN" },
-          init_check = true,
-          path = vim.fn.expand("~") .. "/.local/share/ltex",
-          log_level = "none",
-          server_opts = nil,
-        })
+        original_on_attach(client, bufnr)
+        if client.name == "ltex" then
+          require("ltex_extra").setup({
+            load_langs = { "en-GB" },
+            init_check = true,
+            path = vim.fn.expand("~/.local/share/ltex"),
+            log_level = "none",
+            server_opts = nil,
+          })
+        end
       end,
-      ltex = { language = "en-GB" },
+      settings = {
+        ltex = {
+          language = { "en-GB" },
+          completionEnabled = true,
+          additionalRules = { motherTongue = "en-GB" },
+        },
+      },
     })
     lspconfig["ltex"].setup(ltex_config)
   end,
