@@ -147,8 +147,6 @@ local handlers = {
             },
           },
           workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = { vim.fn.expand("~/.config/nvim/lua/user/types/wezterm/") },
             useGitIgnore = true,
             checkThirdParty = false,
           },

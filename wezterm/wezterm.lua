@@ -1,3 +1,4 @@
+---@type Wezterm
 local wezterm = require("wezterm")
 
 ---@param path string
@@ -14,9 +15,10 @@ local function exists(path)
   return true
 end
 
+---@type Config
+---@diagnostic disable-next-line: missing-fields
 local config = {}
 if wezterm.config_builder then
-  ---@type _.wezterm.ConfigBuilder
   config = wezterm.config_builder()
 end
 
@@ -34,25 +36,6 @@ local external_color, _ = wezterm.color.load_scheme(
   (os.getenv("HOME") or os.getenv("UserProfile"))
     .. "/.config/wezterm/tokyonight-storm.toml"
 )
-
-config.background = {
-  -- {
-  --   source = { File = "~/Pictures/Wallpaper/_DSC0320.jpg" },
-  --   hsb = { brightness = 0.1 },
-  --   attachment = "Fixed",
-  -- },
-}
-
-for i, entry in ipairs(config.background) do
-  if entry.source and type(entry.source.File) == "string" then
-    ---@diagnostic disable-next-line: param-type-mismatch
-    entry.source.File = string.gsub(entry.source.File, "~", os.getenv("HOME"), 1)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    if not exists(entry.source.File) then
-      config.background[i] = nil
-    end
-  end
-end
 
 config.enable_scroll_bar = true
 config.colors = external_color

@@ -723,11 +723,15 @@ M.plugins = {
     ft = "lua", -- only load on lua files
     opts = {
       library = {
-        "luvit-meta/library", -- see below
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "wezterm-types", mods = { "wezterm" } },
       },
     },
+    dependencies = {
+      { "Bilal2453/luvit-meta" },
+      { "justinsgithub/wezterm-types" },
+    },
   },
-  { "Bilal2453/luvit-meta", lazy = true },
   {
     "barreiroleo/ltex_extra.nvim",
     ft = { "markdown", "tex" },
@@ -809,7 +813,32 @@ M.plugins = {
 
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
-  --{ "altermo/nxwm" },
+  -- { "altermo/nxwm" },
+  {
+    "echasnovski/mini.animate",
+    init = function()
+      vim.o.mousescroll = "ver:1,hor:6"
+    end,
+    config = function()
+      require("mini.animate").setup({
+        cursor = {
+          timing = require("mini.animate").gen_timing.quadratic({
+            duration = 200,
+            unit = "total",
+            easing = "in-out",
+          }),
+        },
+        scroll = {
+          timing = require("mini.animate").gen_timing.exponential({
+            duration = 250,
+            unit = "total",
+            easing = "in-out",
+          }),
+        },
+      })
+    end,
+    lazy = false,
+  },
   {
     "mistricky/codesnap.nvim",
     build = "make",
