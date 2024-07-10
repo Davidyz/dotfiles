@@ -19,6 +19,7 @@ M.mason_packages = {
   "yaml-language-server",
   "html-lsp",
   "taplo",
+  "editorconfig-checker",
 }
 
 local conditionals = {

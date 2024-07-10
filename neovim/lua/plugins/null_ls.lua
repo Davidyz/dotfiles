@@ -14,6 +14,7 @@ return function()
         extra_args = { "-i", vim.bo.sts },
       }),
       null_ls.builtins.code_actions.refactoring,
+      null_ls.builtins.diagnostics.editorconfig_checker,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)
