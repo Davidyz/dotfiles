@@ -2,7 +2,6 @@ local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 local lsp_utils = lspconfig.util
 local utils = require("_utils")
-
 lsp_defaults.capabilities = vim.tbl_deep_extend(
   "force",
   lsp_defaults.capabilities,
@@ -14,41 +13,46 @@ lsp_defaults.capabilities.textDocument.foldingRange = {
 }
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
+
+local original_on_attach = function(client, bufnr)
+  if client.supports_method("textDocument/formatting") then
+    -- format on save
+    vim.api.nvim_clear_autocmds({ buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({
+          filter = function(c)
+            local blacklisted_formatter = { "basedpyright" }
+            if vim.fn.executable("black") == 1 then
+              vim.list_extend(blacklisted_formatter, { "ruff" })
+            end
+            return not vim.list_contains(blacklisted_formatter, c.name)
+          end,
+        })
+      end,
+    })
+  end
+  if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
+    vim.g.inlay_hints_visible = true
+    ---@diagnostic disable-next-line: unused-local
+    local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+    if not status then
+      ---@diagnostic disable-next-line: param-type-mismatch
+      vim.lsp.inlay_hint.enable(bufnr, true)
+    end
+  end
+  if client.server_capabilities.documentSymbolProvider then
+    require("nvim-navic").attach(client, bufnr)
+  end
+end
+
 local default_server_config = {
   flags = { debounce_text_changes = 150 },
   single_file_support = true,
   capabilities = lsp_defaults.capabilities,
-
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      -- format on save
-      vim.api.nvim_clear_autocmds({ buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({
-            filter = function(c)
-              return not vim.list_contains({ "basedpyright" }, c.name)
-            end,
-          })
-        end,
-      })
-    end
-    if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
-      vim.g.inlay_hints_visible = true
-      ---@diagnostic disable-next-line: unused-local
-      local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
-      if not status then
-        ---@diagnostic disable-next-line: param-type-mismatch
-        vim.lsp.inlay_hint.enable(bufnr, true)
-      end
-    end
-    if client.server_capabilities.documentSymbolProvider then
-      require("nvim-navic").attach(client, bufnr)
-    end
-  end,
+  on_attach = original_on_attach,
 }
-
 require("mason-lspconfig").setup({ autostart = true })
 
 local handlers = {
@@ -100,17 +104,6 @@ local handlers = {
         },
       })
     )
-  end,
-  ["ruff"] = function()
-    lspconfig["ruff"].setup(vim.tbl_deep_extend("force", default_server_config, {
-      capabilities = {
-        -- only enable when black is not available
-        textDocument = {
-          formatting = { dynamicRegistration = vim.fn.executable("black") == 0 },
-          rangeFormatting = { dynamicRegistration = vim.fn.executable("black") == 0 },
-        },
-      },
-    }))
   end,
   ["arduino_language_server"] = function()
     if
@@ -176,7 +169,7 @@ local handlers = {
     if vim.fn.isdirectory(vim.fn.expand("~/.local/share/ltex/")) ~= 1 then
       vim.fn.mkdir(vim.fn.expand("~/.local/share/ltex/"), "p")
     end
-    local original_on_attach = default_server_config.on_attach
+
     local ltex_config = vim.tbl_deep_extend("force", default_server_config, {
       on_attach = function(client, bufnr)
         original_on_attach(client, bufnr)
