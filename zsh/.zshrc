@@ -262,11 +262,6 @@ if [ ! -z $VIRTUAL_ENV ] && command -v pip > /dev/null; then
     fi
 fi
 
-if command -v nvr > /dev/null && [ ! -z $NVIM_LISTEN_ADDRESS ]; then
-    alias nvim="nvr -cc :tabnew --remote "
-    alias nvim-vs="nvr -O "
-    alias nvim-sp="nvr -o "
-fi
 
 function omz_termsupport_preexec {
     [[ "${DISABLE_AUTO_TITLE:-}" != true ]] || return

@@ -174,75 +174,12 @@ M.plugins = {
 
   -- color schemes.
   {
-    "olimorris/onedarkpro.nvim",
-    priority = 100,
-    config = function()
-      local onedark = require("onedarkpro")
-      onedark.setup({
-        highlights = {},
-        theme = "onedark",
-        styles = {
-          strings = "NONE",
-          comments = "italic",
-          keywords = "NONE",
-          functions = "NONE",
-          variables = "NONE",
-          virtual_text = "NONE",
-          types = "bold",
-        },
-        options = {
-          bold = true,
-          italic = true,
-          underline = true,
-          undercurl = true,
-          cursorline = true,
-          transparency = true,
-          terminal_colors = true,
-          highlight_inactive_windows = false,
-        },
-      })
-      onedark.load()
-    end,
-    enabled = false,
-    lazy = false,
-    cond = utils.no_vscode,
-  },
-  {
-    "catppuccin/nvim",
-    main = "catppuccin",
-    config = function()
-      local cp = require("catppuccin")
-      cp.setup({
-        flavour = "mocha",
-        dim_inactive = { enabled = true },
-        integrations = {
-          notify = true,
-          semantic_tokens = true,
-          neotree = true,
-          mason = true,
-        },
-        custom_highlights = function()
-          return {
-            NormalFloat = { bg = cp.crust },
-            Pmenu = { bg = cp.crust },
-            PmenuSel = { fg = cp.text, bg = cp.surface0, style = { "bold" } },
-          }
-        end,
-      })
-      vim.cmd("colorscheme catppuccin")
-    end,
-    lazy = false,
-    enabled = false,
-  },
-  {
     "folke/tokyonight.nvim",
     lazy = false,
-    priority = 1000,
-    config = function()
-      local tn = require("tokyonight")
+    priority = 10000,
+    opts = function()
       local prompt = require("tokyonight.colors.storm")
-      -- local prompt = "#2d3149"
-      tn.setup({
+      return {
         style = "storm",
         sidebars = {
           "qf",
@@ -291,11 +228,12 @@ M.plugins = {
           hl.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
           hl.LspInfoBorder = { fg = c.bg_dark, bg = c.bg_dark }
         end,
-      })
-      vim.cmd([[colorscheme tokyonight-storm]])
+      }
     end,
-    opts = {},
-    enabled = true,
+    config = function(plugin, opts)
+      require("tokyonight").setup(opts)
+      vim.cmd("colorscheme tokyonight")
+    end,
   },
 
   -- NOTE: tree sitter
@@ -819,8 +757,9 @@ M.plugins = {
     init = function()
       vim.o.mousescroll = "ver:1,hor:6"
     end,
-    config = function()
-      require("mini.animate").setup({
+    priority = 1001,
+    opts = function()
+      return {
         cursor = {
           timing = require("mini.animate").gen_timing.quadratic({
             duration = 200,
@@ -835,7 +774,7 @@ M.plugins = {
             easing = "in-out",
           }),
         },
-      })
+      }
     end,
     lazy = false,
   },
@@ -1540,6 +1479,12 @@ M.plugins = {
       "RemoteLog",
       "RemoteConfigDel",
     },
+  },
+  {
+    "willothy/flatten.nvim",
+    opts = { window = { open = "tab" } },
+    lazy = false,
+    priority = 1001,
   },
   -- {
   --   "3rd/image.nvim",
