@@ -1,10 +1,34 @@
 if vim.fn.exists("g:vscode") ~= 0 then
   return
 end
-
-local window_style = {
-  border = "single",
+local cmp_kinds = {
+  Text = "  ",
+  Method = "  ",
+  Function = "  ",
+  Constructor = "  ",
+  Field = "  ",
+  Variable = "  ",
+  Class = "  ",
+  Interface = "  ",
+  Module = "  ",
+  Property = "  ",
+  Unit = "  ",
+  Value = "  ",
+  Enum = "  ",
+  Keyword = "  ",
+  Snippet = "  ",
+  Color = "  ",
+  File = "  ",
+  Reference = "  ",
+  Folder = "  ",
+  EnumMember = "  ",
+  Constant = "  ",
+  Struct = "  ",
+  Event = "  ",
+  Operator = "  ",
+  TypeParameter = "  ",
 }
+
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 local bufmap = function(mode, lhs, rhs)
@@ -84,6 +108,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end)
 
     local cmp = require("cmp")
+    local compare = require("cmp.config.compare")
     local luasnip = require("luasnip")
     local select_opts = { behavior = cmp.SelectBehavior.Insert }
 
@@ -115,22 +140,34 @@ vim.api.nvim_create_autocmd("LspAttach", {
           },
         },
       },
-      window = {
-        -- documentation = cmp.config.window.bordered(window_style),
-        -- completion = cmp.config.window.bordered(window_style),
+      sorting = {
+        priority_weight = 1,
+        comparators = {
+          compare.recently_used,
+          compare.locality,
+          compare.score,
+          compare.order,
+        },
       },
+      window = {},
       formatting = {
         fields = { "abbr", "menu", "kind" },
         expandable_indicator = true,
         format = function(entry, item)
           local color_item =
             require("nvim-highlight-colors").format(entry, { kind = item.kind })
-
-          item = require("lspkind").cmp_format({})(entry, item)
+          item = require("lspkind").cmp_format({
+            maxwidth = function()
+              return math.floor(vim.o.columns * 0.4)
+            end,
+            ellipsis_char = "...",
+          })(entry, item)
           if color_item.abbr_hl_group then
             item.kind_hl_group = color_item.abbr_hl_group
             item.kind = color_item.abbr
           end
+
+          item.kind = (cmp_kinds[item.kind] or "") .. item.kind
           return item
         end,
       },
