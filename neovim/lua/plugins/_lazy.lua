@@ -999,7 +999,6 @@ M.plugins = {
         render = "virtual",
         enable_tailwind = true,
       })
-      require("nvim-highlight-colors.color.patterns").hex_regex = "#%x%x%x%x%x%x"
       require("nvim-highlight-colors").turnOn()
     end,
     event = "BufEnter *",
