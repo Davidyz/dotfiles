@@ -293,9 +293,19 @@ M.plugins = {
   },
   {
     "andymass/vim-matchup",
-    event = "BufEnter",
+    lazy = false,
     init = function()
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        callback = function()
+          vim.api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
+          vim.api.nvim_set_hl(0, "MatchupVirtualText", {
+            bold = true,
+            italic = true,
+            fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg,
+          })
+        end,
+      })
     end,
   },
   {

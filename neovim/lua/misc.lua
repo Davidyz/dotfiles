@@ -53,10 +53,12 @@ end
 
 vim.opt.foldlevel = 50
 
-vim.api.nvim_set_hl(0, "MatchParen", { link = "TermCursorNC" })
+vim.api.nvim_set_hl(
+  0,
+  "MatchParen",
+  { bold = true, bg = vim.api.nvim_get_hl(0, { name = "LspReferenceText" }).bg }
+)
 
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
-
-vim.fn.setenv("NVIM_LISTEN_ADDRESS", vim.v.servername)

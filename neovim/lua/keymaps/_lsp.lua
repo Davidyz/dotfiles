@@ -154,23 +154,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
         fields = { "abbr", "menu", "kind" },
         expandable_indicator = true,
         format = function(entry, item)
-          local color_item =
-            require("nvim-highlight-colors").format(entry, { kind = item.kind })
+          local color_item = require("nvim-highlight-colors").format(
+            entry,
+            { kind = item.kind, abbr = item.abbr }
+          )
           item = require("lspkind").cmp_format({
+            mode = "text",
             maxwidth = function()
-              return math.floor(vim.o.columns * 0.4)
+              return math.floor(vim.o.columns * 0.3)
             end,
-            ellipsis_char = "...",
+            ellipsis_char = "…",
           })(entry, item)
           if color_item.abbr_hl_group then
             item.kind_hl_group = color_item.abbr_hl_group
             item.kind = color_item.abbr
           end
-
+          if
+            item.menu
+            and #item.abbr + #item.kind + #item.menu > math.floor(vim.o.columns * 0.3)
+          then
+            -- truncate long menu items
+            item.menu = string.sub(
+              item.menu,
+              1,
+              math.floor(vim.o.columns * 0.3) - #item.abbr - #item.kind
+            ) .. "…"
+          end
           item.kind = (cmp_kinds[item.kind] or "") .. item.kind
           return item
         end,
       },
+      view = { entries = { name = "custom" } },
       mapping = {
         ["<CR>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
