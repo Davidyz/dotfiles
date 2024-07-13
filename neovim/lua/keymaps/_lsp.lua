@@ -131,7 +131,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         { name = "luasnip", keyword_length = 2 },
         { name = "nvim_lsp_signature_help" },
         { name = "zsh" },
-        { name = "codeium", group_index = 2, priority = 1 },
         { name = "emoji" },
         {
           name = "latex_symbols",
@@ -240,6 +239,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { "i", "s" }),
       },
     }
+
     cmp.setup(cmp_config)
 
     cmp.setup.filetype({ "autohotkey" }, {

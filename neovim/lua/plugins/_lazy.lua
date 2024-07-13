@@ -483,12 +483,6 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "hrsh7th/cmp-nvim-lua",
-    event = "LspAttach",
-    cond = utils.no_vscode,
-    ft = { "lua" },
-  },
-  {
     "DasGandlaf/nvim-autohotkey",
     ft = { "autohotkey" },
     config = function()
@@ -623,19 +617,6 @@ M.plugins = {
     end,
     event = "LspAttach",
     keys = { "<leader>ef", "<leader>ev" },
-  },
-  {
-    "Exafunction/codeium.nvim",
-    cond = function()
-      return utils.no_vscode()
-    end,
-    event = "LspAttach",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    opts = { enable_chat = true, detect_proxy = true },
-    cmd = { "Codeium" },
   },
   {
     "onsails/lspkind.nvim",
