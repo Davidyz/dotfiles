@@ -540,8 +540,11 @@ M.plugins = {
     opts = {
       notification = {
         window = {
+          normal_hl = "TelescopeBorder",
           winblend = 0,
           align = "bottom",
+          x_padding = 0,
+          border = { "" },
         },
         view = { stack_upwards = false },
       },
@@ -575,6 +578,21 @@ M.plugins = {
       },
     },
     cond = utils.no_vscode,
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    opts = {
+      Breadcrumbs = { enabled = false },
+      ui = {
+        code_action = "",
+        actionfix = "",
+      },
+    },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter", -- optional
+      icon_provider, -- optional
+    },
   },
   {
     "ThePrimeagen/refactoring.nvim",

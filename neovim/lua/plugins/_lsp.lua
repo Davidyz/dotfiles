@@ -25,7 +25,7 @@ local original_on_attach = function(client, bufnr)
           filter = function(c)
             local blacklisted_formatter = { "basedpyright" }
             if vim.fn.executable("black") == 1 then
-              vim.list_extend(blacklisted_formatter, { "ruff" })
+              vim.list_extend(blacklisted_formatter, { "ruff", "ruff_lsp" })
             end
             return not vim.list_contains(blacklisted_formatter, c.name)
           end,
@@ -84,6 +84,12 @@ local handlers = {
   ["basedpyright"] = function()
     lspconfig["basedpyright"].setup(
       vim.tbl_deep_extend("force", default_server_config, {
+        capabilities = {
+          textDocument = {
+            formatting = { dynamicRegistration = false },
+            rangeFormatting = { dynamicRegistration = false },
+          },
+        },
         settings = {
           basedpyright = {
             analysis = {
@@ -104,6 +110,17 @@ local handlers = {
         },
       })
     )
+  end,
+  ["ruff"] = function()
+    local has_black = vim.fn.executable("black") == 1
+    lspconfig["ruff"].setup(vim.tbl_deep_extend("force", default_server_config, {
+      capabilities = {
+        textDocument = {
+          formatting = { dynamicRegistration = not has_black },
+          rangeFormatting = { dynamicRegistration = not has_black },
+        },
+      },
+    }))
   end,
   ["arduino_language_server"] = function()
     if
