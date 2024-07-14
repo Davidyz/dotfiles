@@ -34,7 +34,7 @@ end
 -- config.color_scheme = "Catppuccin Mocha"
 local external_color, _ = wezterm.color.load_scheme(
   (os.getenv("HOME") or os.getenv("UserProfile"))
-    .. "/.config/wezterm/tokyonight-storm.toml"
+    .. "/.config/wezterm/tokyonight-night.toml"
 )
 
 config.enable_scroll_bar = true

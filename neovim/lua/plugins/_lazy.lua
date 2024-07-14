@@ -178,9 +178,9 @@ M.plugins = {
     lazy = false,
     priority = 10000,
     opts = function()
-      local prompt = require("tokyonight.colors.storm")
+      local prompt = require("tokyonight.colors.night")
       return {
-        style = "storm",
+        style = "night",
         sidebars = {
           "qf",
           "help",
@@ -583,7 +583,7 @@ M.plugins = {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
     opts = {
-      Breadcrumbs = { enabled = false },
+      symbol_in_winbar = { enable = false },
       ui = {
         code_action = "",
         actionfix = "",
