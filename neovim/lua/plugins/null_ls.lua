@@ -39,7 +39,7 @@ return function()
       end
     end,
   }
-
+  require("mason-registry").get_package("black"):uninstall()
   if vim.fn.executable("black") == 1 then
     mason_config.sources =
       vim.list_extend(mason_config.sources, { null_ls.builtins.formatting.black })

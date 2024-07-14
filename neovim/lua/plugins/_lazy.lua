@@ -174,66 +174,64 @@ M.plugins = {
 
   -- color schemes.
   {
-    "folke/tokyonight.nvim",
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd([[colorscheme catppuccin]])
+    end,
     lazy = false,
-    priority = 10000,
-    opts = function()
-      local prompt = require("tokyonight.colors.night")
-      return {
-        style = "night",
-        sidebars = {
-          "qf",
-          "help",
-          "neo-tree",
-          "terminal",
-          "toggleterm",
-          "telescope",
-          "Outline",
-          "dapui_stacks",
-          "dapui_watches",
-          "dapui_breakpoints",
-          "dapui_scopes",
-          "dapui_repl",
-        },
-        on_colors = function(colors) end,
-        on_highlights = function(hl, c)
-          hl.TelescopeNormal = {
-            bg = c.bg_dark,
-            fg = c.fg_dark,
-          }
-          hl.TelescopeBorder = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-          hl.TelescopePromptNormal = {
-            bg = prompt.bg_dark,
-            fg = prompt.fg_dark,
-          }
-          hl.TelescopePromptBorder = {
-            bg = prompt.bg_dark,
-            fg = prompt.bg_dark,
-          }
-          hl.TelescopePromptTitle = {
-            bg = prompt.bg_dark,
-            fg = prompt.bg_dark,
-          }
-          hl.TelescopePreviewTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-          hl.TelescopeResultsTitle = {
-            bg = c.bg_dark,
-            fg = c.bg_dark,
-          }
-          hl.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
-          hl.LspInfoBorder = { fg = c.bg_dark, bg = c.bg_dark }
-        end,
-      }
-    end,
-    config = function(plugin, opts)
-      require("tokyonight").setup(opts)
-      vim.cmd("colorscheme tokyonight")
-    end,
+    opts = {
+      flavour = "mocha",
+      custom_highlights = function(colors)
+        return {
+          TelescopeNormal = {
+            bg = colors.mantle,
+            fg = colors.text,
+          },
+          TelescopeBorder = {
+            bg = colors.mantle,
+            fg = colors.mantle,
+          },
+          TelescopePromptNormal = {
+            bg = colors.crust,
+            fg = colors.lavender,
+          },
+          TelescopePromptBorder = {
+            bg = colors.crust,
+            fg = colors.crust,
+          },
+          TelescopePromptTitle = {
+            bg = colors.crust,
+            fg = colors.crust,
+          },
+          TelescopePreviewTitle = {
+            bg = colors.mantle,
+            fg = colors.mantle,
+          },
+          TelescopeResultsTitle = {
+            bg = colors.mantle,
+            fg = colors.mantle,
+          },
+          FloatBorder = { fg = colors.mantle, bg = colors.mantle },
+          FloatTitle = { fg = colors.lavender, bg = colors.mantle },
+          LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
+        }
+      end,
+      dim_inactive = { enabled = true },
+      default_integrations = {
+        diffview = true,
+        fidget = true,
+        hop = true,
+        lspsaga = true,
+        mason = true,
+        neotree = true,
+        navic = { enabled = true },
+        notify = true,
+        which_key = true,
+      },
+    },
   },
 
   -- NOTE: tree sitter
@@ -444,6 +442,7 @@ M.plugins = {
     config = function()
       require("plugins._lsp")
       require("keymaps._lsp")
+      require("lspconfig.ui.windows").default_options.border = { " " }
     end,
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
@@ -975,7 +974,7 @@ M.plugins = {
       {
         "K",
         function()
-          require("hover").hover()
+          require("hover").hoiver()
         end,
         desc = "Trigger hover.",
         mode = "n",

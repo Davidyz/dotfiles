@@ -31,14 +31,14 @@ for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
   end
 end
 
--- config.color_scheme = "Catppuccin Mocha"
-local external_color, _ = wezterm.color.load_scheme(
-  (os.getenv("HOME") or os.getenv("UserProfile"))
-    .. "/.config/wezterm/tokyonight-night.toml"
-)
+config.color_scheme = "Catppuccin Mocha"
+-- local external_color, _ = wezterm.color.load_scheme(
+--   (os.getenv("HOME") or os.getenv("UserProfile"))
+--     .. "/.config/wezterm/tokyonight-night.toml"
+-- )
 
 config.enable_scroll_bar = true
-config.colors = external_color
+-- config.colors = external_color
 config.font = wezterm.font_with_fallback({
   "CaskaydiaCove NF",
   "Cascadia Mono PL",
