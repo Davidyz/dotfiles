@@ -305,6 +305,7 @@ M.plugins = {
         end,
       })
     end,
+    dependencies = { "williamboman/mason.nvim" },
   },
   {
     "kevinhwang91/nvim-ufo",
