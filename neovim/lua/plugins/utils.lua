@@ -20,6 +20,7 @@ M.mason_packages = {
   "html-lsp",
   "taplo",
   "editorconfig-checker",
+  "tree-sitter-cli",
 }
 
 local conditionals = {
