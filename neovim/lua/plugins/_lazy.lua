@@ -974,7 +974,7 @@ M.plugins = {
       {
         "K",
         function()
-          require("hover").hoiver()
+          require("hover").hover()
         end,
         desc = "Trigger hover.",
         mode = "n",
