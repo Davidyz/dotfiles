@@ -33,6 +33,7 @@ depends=(
     'rustup'
     'lsd'
     'tree-sitter-cli'
+    'starship'
 )
 optdepends=(
 )
