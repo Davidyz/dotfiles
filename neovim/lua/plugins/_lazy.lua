@@ -219,7 +219,7 @@ M.plugins = {
           LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
         }
       end,
-      dim_inactive = { enabled = true },
+      dim_inactive = { enabled = false },
       default_integrations = {
         diffview = true,
         fidget = true,
@@ -870,13 +870,12 @@ M.plugins = {
       "nvim-treesitter/nvim-treesitter",
       {
         "rcarriga/nvim-notify",
-        init = function()
-          vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
-        end,
+        init = function() end,
         opts = {
-          ui = {
-            background_colour = "Normal",
-          },
+          fps = 60,
+          render = "compact",
+          background_colour = "Normal",
+          stages = "slide",
         },
         config = true,
       },
@@ -1029,14 +1028,39 @@ M.plugins = {
   {
     "lewis6991/gitsigns.nvim",
     branch = "release",
+    keys = {
+      {
+        "<Leader>gb",
+        function()
+          local gitsigns = require("gitsigns")
+          gitsigns.toggle_current_line_blame()
+          local msg = nil
+          if require("gitsigns.config").config.current_line_blame then
+            msg = "Enabled."
+          else
+            msg = "Disabled."
+          end
+          local notify = require("notify")
+          notify(msg, "info", { title = "Git Blame" })
+        end,
+        noremap = true,
+      },
+    },
     opts = {
       signs = {
-        add = { text = "+" },
-        change = { text = "~" },
-        delete = { text = "_" },
+        add = { text = "" },
+        change = { text = "" },
+        delete = { text = "" },
         topdelete = { text = "‾" },
         changedelete = { text = ">" },
         untracked = { text = "┆" },
+      },
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = "right_align",
+        delay = 10,
+        ignore_whitespace = false,
+        virt_text_priority = 100,
       },
     },
     lazy = false,
@@ -1368,9 +1392,7 @@ M.plugins = {
   },
   {
     "f-person/git-blame.nvim",
-
     keys = {
-      { "<Leader>gb", "<cmd>GitBlameToggle<cr>", noremap = true },
       {
         "<Leader>go",
         "<cmd>GitBlameOpenCommitURL<cr><cmd>GitBlameDisable<cr>",
@@ -1388,7 +1410,6 @@ M.plugins = {
   },
   {
     "akinsho/git-conflict.nvim",
-    version = "*",
     config = true,
   },
   { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
