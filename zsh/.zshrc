@@ -122,7 +122,6 @@ elif command -v neofetch > /dev/null ; then
 fi
 
 [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k/" ] && git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-[ ! -d "$ZSH_CUSTOM/themes/catppuccin/" ] && git clone https://github.com/catppuccin/zsh-syntax-highlighting.git $ZSH_CUSTOM/themes/catppuccin ; source $ZSH_CUSTOM/themes/catppuccin/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 autoload -Uz compinit
 compinit
 plugins=(
