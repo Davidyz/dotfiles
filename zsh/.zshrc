@@ -94,7 +94,7 @@ HIST_STAMPS="dd/mm/yyyy"
 custom_plugins=(
 	Davidyz/ipython-selector
 	zsh-users/zsh-autosuggestions
-	zsh-users/zsh-syntax-highlighting
+	zdharma-continuum/fast-syntax-highlighting
 	chrissicool/zsh-256color
 	zsh-users/zsh-completions
 	srijanshetty/docker-zsh
@@ -131,7 +131,7 @@ plugins=(
 	adb
 	git
 	zsh-autosuggestions
-	zsh-syntax-highlighting
+	fast-syntax-highlighting
 	extract
 	sudo
 	virtualenv
@@ -424,3 +424,7 @@ function omz_termsupport_preexec {
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
+[ -d "$HOME/.config/fsh/" ] || mkdir ~/.config/fsh -p
+[ -f "$HOME/.config/fsh/catppuccin-mocha.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O ~/.config/fsh/catppuccin-mocha.ini
+[ ! -z "$(fast-theme --show | grep catppuccin-mocha)" ] || fast-theme XDG:catppuccin-mocha
