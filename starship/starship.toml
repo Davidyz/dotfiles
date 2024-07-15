@@ -50,3 +50,9 @@ format = '[$user]($style)@'
 ahead = '⇡${count}'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
+
+[python]
+format = 'via [${symbol} ${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+detect_extensions = []
+style = 'blue'
+symbol = ""
