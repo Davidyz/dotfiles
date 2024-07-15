@@ -27,3 +27,6 @@
 
 [ranger.files]
 "ranger/" = "~/.config/ranger/"
+
+[starship.files]
+"starship/starship.toml" = "~/.config/starship.toml"
