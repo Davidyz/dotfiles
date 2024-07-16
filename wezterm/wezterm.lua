@@ -30,9 +30,20 @@ for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
   end
 end
 
-config.color_scheme = "Catppuccin Mocha"
+-- config.color_scheme = "Catppuccin Mocha"
 
-local color = wezterm.color.get_builtin_schemes()[config.color_scheme]
+local color = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
+
+for i = 1, 8 do
+  color.ansi[i] = wezterm.color.parse(color.ansi[i])
+  color.brights[i] = wezterm.color.parse(color.brights[i])
+  if color.ansi[i] == color.brights[i] then
+    color.brights[i] = color.brights[i]:lighten(0.3)
+    -- color.ansi[i] = wezterm.color.parse(color.brights[i]):darken(0.1)
+  end
+end
+
+config.colors = color
 
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
   local title = tab.active_pane.title
