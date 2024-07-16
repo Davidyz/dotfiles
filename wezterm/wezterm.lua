@@ -111,9 +111,10 @@ end)
 
 if string.find(wezterm.target_triple, "windows") ~= nil then
   config.default_prog = {
-    (os.getenv("SystemRoot") or "C:\\Windows\\")
-      .. "\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-    "-NoLogo",
+    -- (os.getenv("SystemRoot") or "C:\\Windows\\")
+    --   .. "\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    -- "-NoLogo",
+    "pwsh",
   }
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
   config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
