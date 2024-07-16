@@ -15,7 +15,6 @@ local function exists(path)
   return true
 end
 
----@type Config
 ---@diagnostic disable-next-line: missing-fields
 local config = {}
 if wezterm.config_builder then
@@ -32,13 +31,41 @@ for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
 end
 
 config.color_scheme = "Catppuccin Mocha"
--- local external_color, _ = wezterm.color.load_scheme(
---   (os.getenv("HOME") or os.getenv("UserProfile"))
---     .. "/.config/wezterm/tokyonight-night.toml"
--- )
 
+local color = wezterm.color.get_builtin_schemes()[config.color_scheme]
+
+wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
+  local title = tab.active_pane.title
+  local s_bg = color.ansi[5]
+  local s_fg = color.cursor_fg
+  if not tab.is_active then
+    s_bg = color.background
+    s_fg = color.selection_bg
+  end
+  local e_bg = color.background
+  local e_fg = color.foreground
+  return {
+    { Background = { Color = s_bg } },
+    { Foreground = { Color = s_fg } },
+    { Text = title },
+    -- { Background = { Color = e_bg } },
+    -- { Foreground = { Color = e_fg } },
+  }
+end)
+config.window_frame = {
+  active_titlebar_bg = color.background,
+  button_bg = color.background,
+  button_fg = color.foreground,
+  button_hover_bg = color.selection_bg,
+  button_hover_fg = color.selection_fg,
+  inactive_titlebar_bg = color.background,
+}
+config.show_new_tab_button_in_tab_bar = false
+config.switch_to_last_active_tab_when_closing_tab = true
+if config.show_close_tab_button_in_tabs ~= nil then
+  config.show_close_tab_button_in_tabs = false
+end
 config.enable_scroll_bar = true
--- config.colors = external_color
 config.font = wezterm.font_with_fallback({
   "CaskaydiaCove NF",
   "Cascadia Mono PL",
