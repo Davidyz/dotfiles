@@ -1,5 +1,5 @@
 if command -v starship > /dev/null 2> /dev/null; then
-  HAS_STARSHIP=1
+  export HAS_STARSHIP=1
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -432,4 +432,4 @@ function omz_termsupport_preexec {
 [ -f "$HOME/.config/fsh/catppuccin-mocha.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O ~/.config/fsh/catppuccin-mocha.ini
 [ ! -z "$(fast-theme --show | grep catppuccin-mocha)" ] || fast-theme XDG:catppuccin-mocha
 
-eval "$([ ! -z "$HAS_STARSHIP" ] && starship init zsh)"
+[ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
