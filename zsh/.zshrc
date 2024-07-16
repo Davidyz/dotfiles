@@ -1,3 +1,10 @@
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
+if [ -d $HOME/.cargo/bin ]
+then
+	export PATH=$PATH:$HOME/.cargo/bin
+fi
+
 if command -v starship > /dev/null 2> /dev/null; then
   export HAS_STARSHIP=1
 fi
@@ -9,12 +16,6 @@ if [ -z "$HAS_STARSHIP" ] && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
-if [ -d $HOME/.cargo/bin ]
-then
-	export PATH=$PATH:$HOME/.cargo/bin
-fi
 
 if [ -d /usr/lib/distcc/bin/ ]
 then
