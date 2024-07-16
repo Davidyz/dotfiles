@@ -56,3 +56,6 @@ format = 'via [${symbol} ${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)
 detect_extensions = []
 style = 'blue'
 symbol = ""
+
+[lua]
+disabled = true
