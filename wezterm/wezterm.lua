@@ -46,7 +46,7 @@ end
 config.colors = color
 
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
-  local title = tab.active_pane.title
+  local title = ("%s: %s").format(tab.panes_with_info().index, tab.active_pane.title)
   local s_bg = color.ansi[5]
   local s_fg = color.cursor_fg
   if not tab.is_active then
@@ -76,6 +76,7 @@ config.switch_to_last_active_tab_when_closing_tab = true
 if config.show_close_tab_button_in_tabs ~= nil then
   config.show_close_tab_button_in_tabs = false
 end
+
 config.enable_scroll_bar = true
 config.font = wezterm.font_with_fallback({
   "CaskaydiaCove NF",
