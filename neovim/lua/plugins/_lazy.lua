@@ -1041,6 +1041,7 @@ M.plugins = {
       },
     },
     opts = {
+      signs = {},
       signs_staged = {
         add = { text = "" },
         change = { text = "" },
@@ -1057,7 +1058,7 @@ M.plugins = {
         virt_text_priority = 100,
       },
     },
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
   },
   { "nvim-lua/plenary.nvim" },
   {
