@@ -403,7 +403,7 @@ M.plugins = {
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    event={"BufEnter", "BufNewFile"},
+    event = { "BufEnter", "BufNewFile" },
     config = function()
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
@@ -1041,7 +1041,7 @@ M.plugins = {
       },
     },
     opts = {
-      signs = {
+      signs_staged = {
         add = { text = "" },
         change = { text = "" },
         delete = { text = "" },
