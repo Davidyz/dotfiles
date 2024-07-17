@@ -386,7 +386,6 @@ M.plugins = {
   -- NOTE: mason
   {
     "williamboman/mason.nvim",
-    cmd = { "Mason" },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "mason",
@@ -404,13 +403,7 @@ M.plugins = {
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    cmd = {
-      "MasonToolsClean",
-      "MasonToolsInstall",
-      "MasonToolsInstallSync",
-      "MasonToolsUpdate",
-      "MasonToolsUpdateSync",
-    },
+    event={"BufEnter", "BufNewFile"},
     config = function()
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()

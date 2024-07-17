@@ -5,16 +5,8 @@ return function()
   local mason_config = {
     border = "double",
     sources = {
-      null_ls.builtins.formatting.stylua,
-      null_ls.builtins.formatting.prettierd,
       null_ls.builtins.code_actions.gitsigns,
-      null_ls.builtins.formatting.cmake_format,
-      null_ls.builtins.formatting.shfmt.with({
-        filetypes = { "sh", "bash", "zsh" },
-        extra_args = { "-i", vim.bo.sts },
-      }),
       null_ls.builtins.code_actions.refactoring,
-      null_ls.builtins.diagnostics.editorconfig_checker,
     },
     -- you can reuse a shared lspconfig on_attach callback here
     on_attach = function(client, bufnr)
