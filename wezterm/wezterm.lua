@@ -47,11 +47,11 @@ config.colors = color
 
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
   local title = ("%s: %s").format(tab.panes_with_info().index, tab.active_pane.title)
-  local s_bg = color.ansi[5]
-  local s_fg = color.cursor_fg
-  if not tab.is_active then
-    s_bg = color.background
-    s_fg = color.selection_bg
+  local s_bg = color.background
+  local s_fg = color.ansi[1]
+  if tab.is_active then
+    s_bg = color.ansi[5]
+    s_fg = color.cursor_fg
   end
   local e_bg = color.background
   local e_fg = color.foreground
