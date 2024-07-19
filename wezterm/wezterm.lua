@@ -66,16 +66,10 @@ wezterm.on("update-status", function(window, pane)
     if not window:is_focused() then
       overrides.colors.cursor_border = color.ansi[5]
       overrides.colors.cursor_bg = color.ansi[5]
-      overrides.colors.compose_cursor = color.ansi[5]
     else
       overrides.colors.cursor_border = color.ansi[3]
       overrides.colors.cursor_bg = color.ansi[3]
-      overrides.colors.compose_cursor = color.ansi[3]
     end
-  else
-    overrides.colors.cursor_border = color.cursor_border
-    overrides.colors.cursor_bg = color.cursor_bg
-    overrides.colors.compose_cursor = color.compose_cursor
   end
   window:set_config_overrides(overrides)
 end)
