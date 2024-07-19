@@ -30,11 +30,24 @@ for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
   end
 end
 
--- config.color_scheme = "Catppuccin Mocha"
-
 local color = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 
+local function deepcopy(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == "table" then
+    copy = {}
+    for orig_key, orig_value in next, orig, nil do
+      copy[deepcopy(orig_key)] = deepcopy(orig_value)
+    end
+    setmetatable(copy, deepcopy(getmetatable(orig)))
+  else -- number, string, boolean, etc
+    copy = orig
+  end
+  return copy
+end
 for i = 1, 8 do
+  -- NOTE: make `bright` colors actually brighter
   color.ansi[i] = wezterm.color.parse(color.ansi[i])
   color.brights[i] = wezterm.color.parse(color.brights[i])
   if color.ansi[i] == color.brights[i] then
@@ -43,26 +56,31 @@ for i = 1, 8 do
   end
 end
 
+config.status_update_interval = 1
+wezterm.on("update-status", function(window, pane)
+  -- changes color of sudo lock glyph when the window is not focused.
+  local mux_window = window:mux_window()
+  local meta = pane:get_metadata() or {}
+  local overrides = { colors = deepcopy(color) }
+  if meta.password_input then
+    if not window:is_focused() then
+      overrides.colors.cursor_border = color.ansi[5]
+      overrides.colors.cursor_bg = color.ansi[5]
+      overrides.colors.compose_cursor = color.ansi[5]
+    else
+      overrides.colors.cursor_border = color.ansi[3]
+      overrides.colors.cursor_bg = color.ansi[3]
+      overrides.colors.compose_cursor = color.ansi[3]
+    end
+  else
+    overrides.colors.cursor_border = color.cursor_border
+    overrides.colors.cursor_bg = color.cursor_bg
+    overrides.colors.compose_cursor = color.compose_cursor
+  end
+  window:set_config_overrides(overrides)
+end)
 config.colors = color
 
-wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
-  local title = ("%s: %s").format(tab.panes_with_info().index, tab.active_pane.title)
-  local s_bg = color.background
-  local s_fg = color.ansi[1]
-  if tab.is_active then
-    s_bg = color.ansi[5]
-    s_fg = color.cursor_fg
-  end
-  local e_bg = color.background
-  local e_fg = color.foreground
-  return {
-    { Background = { Color = s_bg } },
-    { Foreground = { Color = s_fg } },
-    { Text = title },
-    -- { Background = { Color = e_bg } },
-    -- { Foreground = { Color = e_fg } },
-  }
-end)
 config.window_frame = {
   active_titlebar_bg = color.background,
   button_bg = color.background,
@@ -70,7 +88,17 @@ config.window_frame = {
   button_hover_bg = color.selection_bg,
   button_hover_fg = color.selection_fg,
   inactive_titlebar_bg = color.background,
+
+  border_left_width = "0.2cell",
+  border_right_width = "0.2cell",
+  border_bottom_height = "0.1cell",
+  border_top_height = "0.1cell",
+  border_left_color = color.ansi[1],
+  border_right_color = color.ansi[1],
+  border_bottom_color = color.ansi[1],
+  border_top_color = color.ansi[1],
 }
+
 config.show_new_tab_button_in_tab_bar = false
 config.switch_to_last_active_tab_when_closing_tab = true
 if config.show_close_tab_button_in_tabs ~= nil then
