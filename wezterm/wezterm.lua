@@ -33,9 +33,8 @@ config.front_end = "OpenGL"
 local color = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 
 local function deepcopy(orig)
-  local orig_type = type(orig)
   local copy
-  if orig_type == "table" then
+  if type(orig) == "table" then
     copy = {}
     for orig_key, orig_value in next, orig, nil do
       copy[deepcopy(orig_key)] = deepcopy(orig_value)
@@ -56,6 +55,9 @@ for i = 1, 8 do
   end
 end
 
+color.cursor_bg = color.ansi[5]
+color.cursor_border = color.ansi[5]
+
 config.status_update_interval = 1
 wezterm.on("update-status", function(window, pane)
   -- changes color of sudo lock glyph when the window is not focused.
@@ -64,9 +66,11 @@ wezterm.on("update-status", function(window, pane)
   local overrides = { colors = deepcopy(color) }
   if meta.password_input then
     if not window:is_focused() then
-      overrides.colors.cursor_border = color.ansi[5]
-      overrides.colors.cursor_bg = color.ansi[5]
-    else
+      overrides.colors.cursor_border = color.ansi[2]
+      overrides.colors.cursor_bg = color.ansi[2]
+    end
+  else
+    if not window:is_focused() then
       overrides.colors.cursor_border = color.ansi[3]
       overrides.colors.cursor_bg = color.ansi[3]
     end
