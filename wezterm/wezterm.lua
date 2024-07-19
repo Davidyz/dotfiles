@@ -22,13 +22,13 @@ if wezterm.config_builder then
 end
 
 config.front_end = "OpenGL"
-for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
-  if gpu.backend == "Vulkan" then
-    config.webgpu_preferred_adapter = gpu
-    config.front_end = "WebGpu"
-    break
-  end
-end
+-- for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
+--   if gpu.backend == "Vulkan" then
+--     config.webgpu_preferred_adapter = gpu
+--     config.front_end = "WebGpu"
+--     break
+--   end
+-- end
 
 local color = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 
