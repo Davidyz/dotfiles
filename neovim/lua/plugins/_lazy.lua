@@ -754,6 +754,7 @@ M.plugins = {
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   -- { "altermo/nxwm" },
+  { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "echasnovski/mini.animate",
     init = function()
