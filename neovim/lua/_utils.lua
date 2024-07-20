@@ -272,4 +272,10 @@ M.platform = function()
     return "unknown"
   end
 end
+
+---@return boolean
+function M.is_basic_ssh()
+  return vim.fn.environ()["FANCY_TERM"] == nil
+    and vim.fn.environ()["SSH_CONNECTION"] ~= nil
+end
 return M
