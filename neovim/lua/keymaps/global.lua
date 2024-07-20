@@ -2,8 +2,30 @@ local km_utils = require("keymaps.utils")
 
 km_utils.setKeymap("n", "<space>", "za") -- fold
 
-km_utils.setKeymap("", "<Home>", "^") -- home
-km_utils.setKeymap("i", "<Home>", "<Esc>^i", { noremap = false })
+km_utils.setKeymap("", "<Home>", function()
+  local curr_line = vim.api.nvim_get_current_line()
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+  local pref_str = curr_line:sub(0, cursor_pos[2])
+  if pref_str:gsub("%s", "") == "" then
+    return vim.api.nvim_win_set_cursor(0, { cursor_pos[1], 0 })
+  else
+    return vim.api.nvim_feedkeys("^", "n", false)
+  end
+end) -- home
+km_utils.setKeymap("i", "<Home>", function()
+  local curr_line = vim.api.nvim_get_current_line()
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+  local pref_str = curr_line:sub(0, cursor_pos[2])
+  if pref_str:gsub("%s", "") == "" then
+    return vim.api.nvim_win_set_cursor(0, { cursor_pos[1], 0 })
+  else
+    for i = 0, cursor_pos[2] do
+      if curr_line:sub(0, cursor_pos[2] - i):gsub("%s", "") == "" then
+        return vim.api.nvim_win_set_cursor(0, { cursor_pos[1], cursor_pos[2] - i })
+      end
+    end
+  end
+end, { noremap = false })
 
 km_utils.setKeymap("t", "<A-Esc>", "<C-\\><C-n>") -- terminal
 km_utils.setKeymap("", "<A-Esc>", "<Esc>")
