@@ -309,7 +309,11 @@ M.plugins = {
   },
   {
     "kevinhwang91/nvim-ufo",
-    dependencies = { "kevinhwang91/promise-async", "nvim-treesitter/nvim-treesitter" },
+    dependencies = {
+      "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
+      "neovim/nvim-lspconfig",
+    },
     cond = utils.no_vscode,
     init = function()
       vim.o.foldenable = false
@@ -317,7 +321,20 @@ M.plugins = {
       vim.o.foldlevelstart = 99
       vim.o.foldcolumn = "0"
     end,
+    config = function(_, opts)
+      require("ufo").setup(opts)
+      vim.api.nvim_set_hl(0, "UfoCursorFoldedLine", { link = "CursorLine" })
+      vim.api.nvim_set_hl(0, "UfoPreviewBg", { link = "TelescopePreviewBorder" })
+      vim.api.nvim_set_hl(0, "UfoPreviewWinBar", { link = "TelescopePreviewBorder" })
+      vim.api.nvim_set_hl(0, "UfoFoldedBg", { link = "CursorLine" })
+      vim.keymap.set("n", "<C-p>", function()
+        require("ufo.preview"):peekFoldedLinesUnderCursor()
+      end, { noremap = true, desc = "Peek inside fold." })
+    end,
     opts = {
+      preview = {
+        win_config = { winhighlight = "Normal:TelescopePreviewBorder", winblend = 0 },
+      },
       fold_virt_text_handler = function(virt_text, lnum, end_lnum, width, truncate)
         local result = {}
         local _end = end_lnum - 1
@@ -360,12 +377,12 @@ M.plugins = {
             return server.server_capabilities.foldingRangeProvider == true
           end)
         then
-          return { "lsp", "indent" }
+          return { "lsp", "treesitter" }
         end
         return { "treesitter", "indent" }
       end,
     },
-    event = "LspAttach",
+    event = { "LspAttach", "BufReadPost", "BufNewFile" },
   },
   {
     "Davidyz/tiny-inline-diagnostic.nvim",
@@ -660,7 +677,8 @@ M.plugins = {
   },
   {
     "folke/lazydev.nvim",
-    ft = "lua", -- only load on lua files
+    event = "LspAttach",
+    ft = "lua",
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
