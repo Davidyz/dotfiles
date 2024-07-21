@@ -169,6 +169,14 @@ config.keys = {
   { key = "+", mods = "ALT|SHIFT", action = action.ScrollByPage(1) },
   { key = "s", mods = "ALT", action = action.ShowLauncher },
 }
+for i = 1, 9 do
+  -- F1 through F9 to activate that tab
+  table.insert(config.keys, {
+    key = tostring(i),
+    mods = "ALT",
+    action = action.ActivateTab(i - 1),
+  })
+end
 wezterm.on("gui-startup", function(cmd)
   local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()
