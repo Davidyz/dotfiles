@@ -1040,7 +1040,6 @@ M.plugins = {
   },
   {
     "lewis6991/gitsigns.nvim",
-    branch = "release",
     keys = {
       {
         "<Leader>gb",
