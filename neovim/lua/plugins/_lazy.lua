@@ -316,7 +316,7 @@ M.plugins = {
     },
     cond = utils.no_vscode,
     init = function()
-      vim.o.foldenable = false
+      vim.o.foldenable = true
       vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
       vim.o.foldcolumn = "0"
@@ -377,12 +377,12 @@ M.plugins = {
             return server.server_capabilities.foldingRangeProvider == true
           end)
         then
-          return { "lsp", "treesitter" }
+          return { "treesitter", "lsp" }
         end
         return { "treesitter", "indent" }
       end,
     },
-    event = { "LspAttach", "BufReadPost", "BufNewFile" },
+    event = { "LspAttach" },
   },
   {
     "Davidyz/tiny-inline-diagnostic.nvim",
@@ -1023,20 +1023,6 @@ M.plugins = {
     end,
     event = "BufEnter *",
     lazy = false,
-  },
-  {
-    "ethanholz/nvim-lastplace",
-    opts = {
-      lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
-      lastplace_ignore_filetype = {
-        "gitcommit",
-        "gitrebase",
-        "svn",
-        "hgcommit",
-      },
-      lastplace_open_folds = false,
-    },
-    config = true,
   },
   {
     "lewis6991/gitsigns.nvim",
