@@ -1,34 +1,16 @@
 if vim.fn.exists("g:vscode") ~= 0 then
   return
 end
-local cmp_kinds = {
-  Text = "  ",
-  Method = "  ",
-  Function = "  ",
-  Constructor = "  ",
-  Field = "  ",
-  Variable = "  ",
-  Class = "  ",
-  Interface = "  ",
-  Module = "  ",
-  Property = "  ",
-  Unit = "  ",
-  Value = "  ",
-  Enum = "  ",
-  Keyword = "  ",
-  Snippet = "  ",
-  Color = "  ",
-  File = "  ",
-  Reference = "  ",
-  Folder = "  ",
-  EnumMember = "  ",
-  Constant = "  ",
-  Struct = "  ",
-  Event = "  ",
-  Operator = "  ",
-  TypeParameter = "  ",
-}
 
+local lspkind = require("lspkind")
+lspkind.init({
+  mode = "symbol_text",
+  maxwidth = function()
+    return math.floor(vim.o.columns * 0.3)
+  end,
+  ellipsis_char = "…",
+  preset = "codicons",
+})
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 local bufmap = function(mode, lhs, rhs)
@@ -157,16 +139,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
             entry,
             { kind = item.kind, abbr = item.abbr }
           )
-          item = require("lspkind").cmp_format({
-            mode = "text",
-            maxwidth = function()
-              return math.floor(vim.o.columns * 0.3)
-            end,
-            ellipsis_char = "…",
-          })(entry, item)
+
+          item = lspkind.cmp_format()(entry, item)
           if color_item.abbr_hl_group then
             item.kind_hl_group = color_item.abbr_hl_group
             item.kind = color_item.abbr
+            return item
           end
           if
             item.menu
@@ -179,7 +157,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
               math.floor(vim.o.columns * 0.3) - #item.abbr - #item.kind
             ) .. "…"
           end
-          item.kind = (cmp_kinds[item.kind] or "") .. item.kind
           return item
         end,
       },
