@@ -42,12 +42,11 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
+require("misc")
 require("lazy").setup(lazy_config.plugins, lazy_config.config)
 
 local items = {
   "keymaps.main",
   "filetype.main",
-  "misc",
 }
 utils.tryRequire(items, 2)

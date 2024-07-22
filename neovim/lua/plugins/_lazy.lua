@@ -180,10 +180,12 @@ M.plugins = {
     config = function(_, opts)
       require("catppuccin").setup(opts)
       vim.cmd([[colorscheme catppuccin]])
+      vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
     end,
     lazy = false,
     opts = {
       flavour = "mocha",
+      term_colors = true,
       custom_highlights = function(colors)
         return {
           TelescopeNormal = {
