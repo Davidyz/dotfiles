@@ -8,6 +8,9 @@ fi
 if command -v starship > /dev/null 2> /dev/null; then
   export HAS_STARSHIP=1
 fi
+if command -v ollama > /dev/null 2> /dev/null; then
+	export HAS_OLLAMA=1
+fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -109,7 +112,8 @@ custom_plugins=(
 	ael-code/zsh-colored-man-pages
 	darvid/zsh-poetry
 )
-
+# [ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(plutowang/zsh-ollama-command)
+[ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(Davidyz/zsh-ollama-command)
 for i in "${custom_plugins[@]}"; do
 	plugin_dir="${i##*/}"
 	[ $plugin_dir = "autoupdate-oh-my-zsh-plugins" ] && plugin_dir=autoupdate
@@ -153,6 +157,7 @@ plugins=(
 	zsh-poetry
 )
 
+[ ! -z "$HAS_OLLAMA" ] && plugins+=(zsh-ollama-command)
 
 if command -v pdm > /dev/null 2> /dev/null && [ ! -d $ZSH_CUSTOM/plugins/pdm ]; then
 	mkdir $ZSH_CUSTOM/plugins/pdm
