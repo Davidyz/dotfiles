@@ -132,7 +132,6 @@ compinit
 plugins=(
 	ipython-selector
 	autoupdate
-	adb
 	git
 	zsh-autosuggestions
 	fast-syntax-highlighting
