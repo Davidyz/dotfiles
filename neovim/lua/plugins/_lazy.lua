@@ -391,7 +391,7 @@ M.plugins = {
     -- "rachartier/tiny-inline-diagnostic.nvim",
     -- dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
     event = { "LspAttach" },
-    dependencies = { "folke/tokyonight.nvim", "neovim/nvim-lspconfig" },
+    dependencies = { "neovim/nvim-lspconfig" },
     init = function()
       vim.diagnostic.config({
         virtual_text = false,
