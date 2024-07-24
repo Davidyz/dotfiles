@@ -387,9 +387,7 @@ M.plugins = {
     event = { "LspAttach" },
   },
   {
-    "Davidyz/tiny-inline-diagnostic.nvim",
-    -- "rachartier/tiny-inline-diagnostic.nvim",
-    -- dir = "/home/davidyz/git/tiny-inline-diagnostic.nvim/",
+    "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
     dependencies = { "neovim/nvim-lspconfig" },
     init = function()
@@ -400,6 +398,10 @@ M.plugins = {
     main = "tiny-inline-diagnostic",
     cond = utils.no_vscode,
     opts = {},
+    config = function(_, opts)
+      require("tiny-inline-diagnostic").setup(opts)
+      require("tiny-inline-diagnostic.highlights").setup_highlights = function() end
+    end,
   },
 
   -- NOTE: mason
@@ -849,7 +851,7 @@ M.plugins = {
         desc = "Previous todo comment.",
       },
     },
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile" },
   },
   {
     "kawre/leetcode.nvim",
@@ -1122,17 +1124,13 @@ M.plugins = {
         mode = "n",
       },
       {
-        "<C-f>",
-        "<cmd>Telescope lsp_document_symbols<cr>",
+        "R",
+        "<cmd>Telescope live_grep<cr>",
         remap = false,
         mode = "n",
       },
-      "R",
     },
     config = function()
-      if vim.fn.executable("rg") ~= 0 then
-        vim.keymap.set("n", "R", "<cmd>Telescope live_grep<cr>", {})
-      end
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "TelescopePrompt",
         callback = function()
@@ -1142,24 +1140,15 @@ M.plugins = {
         end,
       })
     end,
+    dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build = "make",
     cond = function()
       return utils.no_vscode() and vim.fn.executable("cmake") == 1
     end,
     config = function()
-      require("telescope").setup({
-        extensions = {
-          fzf = {
-            fuzzy = true, -- false will only do exact matching
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-          },
-        },
-      })
       require("telescope").load_extension("fzf")
     end,
   },
@@ -1292,6 +1281,7 @@ M.plugins = {
         hide = { tabline = false, statusline = false },
         config = {
           mru = { limit = 10, cwd_only = true },
+          project = { enable = true },
           shortcut = {
             {
               desc = "Find file",
@@ -1372,23 +1362,8 @@ M.plugins = {
     },
   },
   {
-    "folke/which-key.nvim",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
-    opts = {
-      window = {
-        border = "rounded",
-        margin = { 1, math.floor(2 * vim.o.winwidth / 3), 1, 1 },
-      },
-      layout = { aligh = "left" },
-    },
-  },
-  {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
-
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
   {

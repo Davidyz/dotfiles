@@ -143,6 +143,11 @@ config.keys = {
     mods = "CTRL|SHIFT",
     action = action.DisableDefaultAssignment,
   },
+  {
+    key = "f",
+    mods = "CTRL|SHIFT",
+    action = action.DisableDefaultAssignment,
+  },
   { key = "PageUp", mods = "ALT", action = action.ActivateTabRelative(-1) },
   { key = "PageDown", mods = "ALT", action = action.ActivateTabRelative(1) },
   {

@@ -34,6 +34,7 @@ end
 vim.o.cursorline = true
 vim.o.cursorcolumn = true
 vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
+vim.api.nvim_set_hl(0, "LazyBackdrop", { link = "Normal" })
 vim.api.nvim_set_hl(0, "Normal", { bg = "none", sp = "none" })
 vim.o.compatible = false
 

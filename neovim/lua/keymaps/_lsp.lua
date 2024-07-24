@@ -24,60 +24,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Displays hover information about the symbol under the cursor
     local has_telescope, telescope = pcall(require, "telescope.builtin")
 
-    -- Jump to the definition
     bufmap("n", "gd", function(ctx, opts)
       opts = opts or {}
       opts.jump_type = "tab"
-      if has_telescope then
-        return telescope.lsp_definitions(opts)
-      end
-      return vim.lsp.buf.definition({ reuse_win = false })
+      return telescope.lsp_definitions(opts)
     end)
 
-    bufmap("n", "ls", function(ctx, opts)
-      if has_telescope then
-        return telescope.lsp_document_symbols(opts)
-      end
+    bufmap("n", "gD", function(ctx, opts)
+      opts = opts or {}
+      opts.jump_type = "tab"
+      return telescope.lsp_type_definitions(opts)
     end)
 
-    -- Jump to declaration
-    bufmap("n", "gD", vim.lsp.buf.declaration)
-
-    -- Lists all the implementations for the symbol under the cursor
     bufmap("n", "gi", function(ctx, opts)
       opts = opts or {}
       opts.jump_type = "tab"
-      if has_telescope then
-        return telescope.lsp_implementations(opts)
-      end
-      return vim.lsp.buf.implementation()
+      return telescope.lsp_implementations(opts)
     end)
 
-    -- Jumps to the definition of the type symbol
-    bufmap("n", "go", vim.lsp.buf.type_definition)
-
-    -- Lists all the references
     bufmap("n", "gr", function(ctx, opts)
       opts = opts or {}
       opts.jump_type = "tab"
-      if has_telescope then
-        return telescope.lsp_references(opts)
-      else
-        return vim.lsp.buf.references(ctx, opts)
-      end
+      return telescope.lsp_references(opts)
     end)
-
-    -- Displays a function's signature information
-    -- bufmap("n", "<C-k>", vim.lsp.buf.signature_help)
-
+    bufmap({ "i", "n" }, "<C-f>", function(ctx, opts)
+      return telescope.lsp_document_symbols(opts)
+    end)
+    bufmap({ "i", "n" }, "<C-S-f>", function(ctx, opts)
+      return telescope.lsp_workspace_symbols(opts)
+    end)
     -- Renames all references to the symbol under the cursor
     bufmap("n", "<Leader>r", vim.lsp.buf.rename)
-
-    -- Selects a code action available at the current cursor position
-    --bufmap("n", "<Leader>a", vim.lsp.buf.code_action)
-
-    -- Show diagnostics in a floating window
-    bufmap("n", "gl", vim.diagnostic.open_float)
 
     -- Move to the previous diagnostic
     bufmap("n", "[d", function()
