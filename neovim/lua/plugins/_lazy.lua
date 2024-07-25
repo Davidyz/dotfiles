@@ -511,13 +511,16 @@ M.plugins = {
     end,
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
+    dependencies = {
+      {
+        "rafamadriz/friendly-snippets",
+        cond = utils.no_vscode,
+      },
+    },
   },
   {
     "saadparwaiz1/cmp_luasnip",
-    cond = utils.no_vscode,
-  },
-  {
-    "rafamadriz/friendly-snippets",
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
   },
   {
