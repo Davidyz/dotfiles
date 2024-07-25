@@ -21,6 +21,9 @@ local original_on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
       callback = function()
+        if vim.g.format_on_save == false then
+          return
+        end
         vim.lsp.buf.format({
           filter = function(c)
             local blacklisted_formatter = { "basedpyright" }

@@ -148,6 +148,12 @@ M.plugins = {
     ft = { "markdown", "pandoc" },
   },
   {
+    "Myzel394/easytables.nvim",
+    dir = "/home/davidyz/git/easytables.nvim",
+    cmd = { "EasyTablesCreateNew", "EasyTablesImportThisTable" },
+    opts = {},
+  },
+  {
     "toppair/peek.nvim",
     ft = { "markdown" },
     build = "deno task --quiet build:fast",
@@ -504,23 +510,15 @@ M.plugins = {
     end,
   },
   {
-    "L3MON4D3/LuaSnip",
-    config = function()
-      require("plugins.snippets")
-      require("keymaps.snippets")
+    "garymjr/nvim-snippets",
+    dir = "/home/davidyz/git/nvim-snippets",
+    -- custom snippets by filetypes at ~/.config/nvim/snippets/
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { friendly_snippets = true },
+    config = function(_, opts)
+      require("snippets").setup(opts)
     end,
-    event = { "BufReadPost", "BufNewFile" },
-    cond = utils.no_vscode,
-    dependencies = {
-      {
-        "rafamadriz/friendly-snippets",
-        cond = utils.no_vscode,
-      },
-    },
-  },
-  {
-    "saadparwaiz1/cmp_luasnip",
-    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "rafamadriz/friendly-snippets" },
     cond = utils.no_vscode,
   },
   {

@@ -8,28 +8,6 @@ return function()
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.code_actions.refactoring,
     },
-    -- you can reuse a shared lspconfig on_attach callback here
-    on_attach = function(client, bufnr)
-      if client.supports_method("textDocument/formatting") then
-        vim.api.nvim_clear_autocmds({
-          group = augroup,
-          buffer = bufnr,
-        })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = augroup,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format({
-              bufnr = bufnr,
-              async = false,
-              filter = function(c)
-                return c.name ~= "basedpyright"
-              end,
-            })
-          end,
-        })
-      end
-    end,
   }
   require("mason-registry").get_package("black"):uninstall()
   if vim.fn.executable("black") == 1 then

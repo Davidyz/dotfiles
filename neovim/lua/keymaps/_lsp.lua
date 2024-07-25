@@ -68,14 +68,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     local cmp = require("cmp")
     local compare = require("cmp.config.compare")
-    local luasnip = require("luasnip")
-    local select_opts = { behavior = cmp.SelectBehavior.Insert }
+    local select_opts = { behavior = cmp.SelectBehavior.Select }
 
     ---@type cmp.ConfigSchema
     local cmp_config = {
       snippet = {
         expand = function(args)
-          luasnip.lsp_expand(args.body)
+          vim.snippet.expand(args.body)
         end,
       },
       sources = {
@@ -84,10 +83,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
           group_index = 0, -- set group index to 0 to skip loading LuaLS completions
         },
         { name = "nvim_lsp", keyword_length = 1, priority = 9 },
-        -- { name = "nvim_lua", priority = 10 },
         { name = "path", priority = 10 },
         { name = "buffer", keyword_length = 2, priority = 3 },
-        { name = "luasnip", keyword_length = 2 },
+        { name = "snippets", keyword_length = 2 },
         { name = "nvim_lsp_signature_help" },
         { name = "zsh" },
         { name = "emoji" },
@@ -156,29 +154,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-d>"] = cmp.mapping(function(fallback)
-          if luasnip.jumpable(1) then
-            luasnip.jump(1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<C-b>"] = cmp.mapping(function(fallback)
-          if luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
+
         ["<Tab>"] = cmp.mapping(function(fallback)
           local col = vim.fn.col(".") - 1
-
           if cmp.visible() then
             cmp.select_next_item(select_opts)
           elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
             fallback()
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
+          elseif vim.snippet.active({ direction = 1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(1)
+            end)
           else
             cmp.complete()
           end
@@ -187,6 +173,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item(select_opts)
+          elseif vim.snippet.active({ direction = -1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(-1)
+            end)
           else
             fallback()
           end
