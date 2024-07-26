@@ -506,7 +506,6 @@ M.plugins = {
   },
   {
     "garymjr/nvim-snippets",
-    dir = "~/git/nvim-snippets",
     -- custom snippets by filetypes at ~/.config/nvim/snippets/
     event = { "BufReadPost", "BufNewFile" },
     opts = { friendly_snippets = true },
@@ -1408,7 +1407,6 @@ M.plugins = {
   { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
   {
     "Davidyz/executable-checker.nvim",
-    dir = "~/git/executable-checker.nvim/",
     opts = {},
     event = "VeryLazy",
   },
