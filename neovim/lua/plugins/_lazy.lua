@@ -249,44 +249,44 @@ M.plugins = {
       require("plugins.tree_sitter")
     end,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
     cond = utils.no_vscode,
-    dependencies = {
-      {
-        "hiphish/rainbow-delimiters.nvim",
-        config = function()
-          local rainbow_delimiters = require("rainbow-delimiters")
-          vim.g.rainbow_delimiters = {
-            strategy = {
-              [""] = rainbow_delimiters.strategy["global"],
-              vim = rainbow_delimiters.strategy["local"],
-            },
-            query = {
-              [""] = "rainbow-delimiters",
-              lua = "rainbow-blocks",
-            },
-            highlight = {
-              "RainbowDelimiterRed",
-              "RainbowDelimiterYellow",
-              "RainbowDelimiterBlue",
-              "RainbowDelimiterOrange",
-              "RainbowDelimiterGreen",
-              "RainbowDelimiterViolet",
-              "RainbowDelimiterCyan",
-            },
-          }
-        end,
-      },
-    },
+    dependencies = {},
+  },
+  {
+    "hiphish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
+    end,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
     "nvim-treesitter/playground",
-    event = "VeryLazy",
+    cmd = "TSPlaygroundToggle",
     cond = utils.no_vscode,
   },
   {
     "nvim-treesitter/nvim-treesitter-refactor",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
   },
   {
@@ -299,7 +299,7 @@ M.plugins = {
   },
   {
     "andymass/vim-matchup",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
     init = function()
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
       vim.api.nvim_create_autocmd("BufReadPost", {
@@ -313,7 +313,6 @@ M.plugins = {
         end,
       })
     end,
-    dependencies = { "williamboman/mason.nvim" },
   },
   {
     "kevinhwang91/nvim-ufo",
@@ -404,10 +403,6 @@ M.plugins = {
     main = "tiny-inline-diagnostic",
     cond = utils.no_vscode,
     opts = {},
-    config = function(_, opts)
-      require("tiny-inline-diagnostic").setup(opts)
-      require("tiny-inline-diagnostic.highlights").setup_highlights = function() end
-    end,
   },
 
   -- NOTE: mason
@@ -431,7 +426,7 @@ M.plugins = {
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    event = { "BufEnter", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
@@ -469,7 +464,6 @@ M.plugins = {
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
     dependencies = {
-      "nvim-telescope/telescope.nvim",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
@@ -490,17 +484,17 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-buffer",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-path",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-cmdline",
-    event = "UIEnter",
+    event = { "CmdlineChanged" },
     cond = utils.no_vscode,
   },
   {
@@ -532,6 +526,7 @@ M.plugins = {
     opts = { lsp = { auto_attach = true } },
     event = "LspAttach",
     cond = utils.no_vscode,
+    dependencies = { "neovim/nvim-lspconfig" },
   },
   {
     "tamago324/cmp-zsh",
@@ -642,15 +637,27 @@ M.plugins = {
         print_var_statements = {},
       })
       require("telescope").load_extension("refactoring")
-      vim.keymap.set("x", "<leader>ef", function()
-        require("refactoring").refactor("Extract Function")
-      end, { desc = "Extract Function", noremap = true })
-      vim.keymap.set("x", "<leader>ev", function()
-        require("refactoring").refactor("Extract Variable")
-      end, { desc = "Extract Variable", noremap = true })
     end,
-    event = "LspAttach",
-    keys = { "<leader>ef", "<leader>ev" },
+    keys = {
+      {
+        "<leader>ef",
+        function()
+          require("refactoring").refactor("Extract Function")
+        end,
+        desc = "Extract Function",
+        noremap = true,
+        mode = { "x" },
+      },
+      {
+        "<leader>ev",
+        function()
+          require("refactoring").refactor("Extract Variable")
+        end,
+        desc = "Extract Variable",
+        noremap = true,
+        mode = { "x" },
+      },
+    },
   },
   {
     "onsails/lspkind.nvim",
@@ -1027,8 +1034,7 @@ M.plugins = {
       })
       require("nvim-highlight-colors").turnOn()
     end,
-    event = "BufEnter *",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -1081,7 +1087,6 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    event = "VeryLazy",
     keys = {
       {
         "<Leader>tf",
@@ -1232,8 +1237,18 @@ M.plugins = {
   },
   {
     "kylechui/nvim-surround",
-    config = true,
-    event = "VeryLazy",
+    opts = {},
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
   },
   {
     "nvim-focus/focus.nvim",
@@ -1273,7 +1288,7 @@ M.plugins = {
 
   {
     "nvimdev/dashboard-nvim",
-    event = "VimEnter",
+    event = "BufEnter",
     config = function()
       require("dashboard").setup({
         shortcut_type = "number",
@@ -1399,8 +1414,9 @@ M.plugins = {
   },
   {
     "Sam-programs/cmdline-hl.nvim",
-    event = "VimEnter",
+    event = "CmdlineChanged",
     opts = { inline_ghost_text = false },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
     "NStefan002/screenkey.nvim",
@@ -1465,7 +1481,7 @@ M.plugins = {
       async_switch_im = false,
       set_previous_events = { "InsertEnter" },
     },
-    lazy = false,
+    cmd = { "BufReadPost", "BufNewFile" },
   },
   {
     "amitds1997/remote-nvim.nvim",
