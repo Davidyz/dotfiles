@@ -50,9 +50,10 @@ M.plugins = {
     ft = { "tex" },
     cond = utils.no_vscode,
     config = function()
-      require("executable-checker").add_executable("zathura")
-      require("executable-checker").add_executable("xdotool")
-      require("executable-checker").add_executable("biber")
+      require("executable-checker").add_executable(
+        { "zathura", "xdotool", "biber" },
+        "vimtex"
+      )
       vim.g.vimtex_quickfix_mode = 0
 
       if vim.fn.executable("zathura") then
@@ -149,7 +150,6 @@ M.plugins = {
   },
   {
     "Myzel394/easytables.nvim",
-    dir = "/home/davidyz/git/easytables.nvim",
     cmd = { "EasyTablesCreateNew", "EasyTablesImportThisTable" },
     opts = {},
   },
@@ -420,6 +420,7 @@ M.plugins = {
           vim.o.cursorline = false
         end,
       })
+      require("executable-checker").add_executable({ "python3", "npm" }, "mason")
     end,
     ---@type MasonSettings
     opts = {
@@ -511,7 +512,7 @@ M.plugins = {
   },
   {
     "garymjr/nvim-snippets",
-    dir = "/home/davidyz/git/nvim-snippets",
+    dir = "~/git/nvim-snippets",
     -- custom snippets by filetypes at ~/.config/nvim/snippets/
     event = { "BufReadPost", "BufNewFile" },
     opts = { friendly_snippets = true },
@@ -1392,8 +1393,9 @@ M.plugins = {
   { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
   {
     "Davidyz/executable-checker.nvim",
-    config = true,
-    opts = { executables = { "rg", "node" } },
+    dir = "~/git/executable-checker.nvim/",
+    opts = {},
+    event = "VeryLazy",
   },
   {
     "Sam-programs/cmdline-hl.nvim",
@@ -1529,6 +1531,12 @@ M.plugins = {
   --   enabled = false,
   -- },
 }
+
+for _, spec in pairs(M.plugins) do
+  if spec.dir ~= nil then
+    spec.dir = vim.fn.expand(spec.dir)
+  end
+end
 
 ---@type LazyConfig
 M.config = {
