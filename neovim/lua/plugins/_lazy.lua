@@ -427,6 +427,7 @@ M.plugins = {
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     event = { "BufReadPost", "BufNewFile" },
+    cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
     config = function()
       require("plugins.mason_tools")
       require("mason-tool-installer").clean()
