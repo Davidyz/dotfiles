@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return telescope.lsp_document_symbols(opts)
     end)
     bufmap({ "i", "n" }, "<C-S-f>", function(ctx, opts)
-      return telescope.lsp_workspace_symbols(opts)
+      return telescope.lsp_dynamic_workspace_symbols(opts)
     end)
     -- Renames all references to the symbol under the cursor
     bufmap("n", "<Leader>r", vim.lsp.buf.rename)
