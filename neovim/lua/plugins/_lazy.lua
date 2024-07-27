@@ -717,6 +717,12 @@ M.plugins = {
       return false
     end,
   },
+  {
+    "linux-cultist/venv-selector.nvim",
+    dependencies = { "neovim/nvim-lspconfig" },
+    cmd = { "VenvSelect", "VenvSelectCurrent" },
+    opts = { auto_refresh = true, name = { "venv", ".venv" } },
+  },
 
   -- NOTE: dap
   {
