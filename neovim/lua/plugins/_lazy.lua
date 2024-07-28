@@ -244,7 +244,7 @@ M.plugins = {
     end,
     build = ":TSUpdate",
     cond = utils.no_vscode,
-    dependencies = {},
+    dependencies = { "williamboman/mason.nvim" },
   },
   {
     "hiphish/rainbow-delimiters.nvim",
@@ -471,6 +471,9 @@ M.plugins = {
   {
     "hrsh7th/nvim-cmp",
     cond = utils.no_vscode,
+    config = function()
+      require("keymaps.cmp")
+    end,
     dependencies = { "onsails/lspkind.nvim", "brenoprata10/nvim-highlight-colors" },
   },
   {
@@ -490,8 +493,10 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-cmdline",
-    event = { "CmdlineChanged" },
+    event = "BufEnter",
+    -- event = { "CmdlineChanged", "CmdlineEnter" },
     cond = utils.no_vscode,
+    dependencies = { "hrsh7th/nvim-cmp" },
   },
   {
     "DasGandlaf/nvim-autohotkey",

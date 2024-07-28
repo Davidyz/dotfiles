@@ -438,3 +438,5 @@ git checkout $original_branch
 [ ! -z "$(fast-theme --show | grep catppuccin-mocha)" ] || fast-theme XDG:catppuccin-mocha
 
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
+
+[ ! -d ~/.config/nvim/lua ] || export MANPAGER='nvim +Man!'
