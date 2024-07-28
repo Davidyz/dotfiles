@@ -27,13 +27,7 @@ M.plugins = {
     cond = function()
       return icon_provider == "nvim-tree/nvim-web-devicons"
     end,
-    dependencies = {
-      {
-        "rachartier/tiny-devicons-auto-colors.nvim",
-        event = "VeryLazy",
-        opts = {},
-      },
-    },
+    dependencies = {},
   },
 
   -- NOTE: filetypes
@@ -394,7 +388,7 @@ M.plugins = {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
-    dependencies = { "neovim/nvim-lspconfig" },
+    dependencies = { "neovim/nvim-lspconfig", "nvimtools/none-ls.nvim" },
     init = function()
       vim.diagnostic.config({
         virtual_text = false,
@@ -452,6 +446,7 @@ M.plugins = {
     "nvimtools/none-ls.nvim",
     event = { "BufReadPost", "BufNewFile" },
     config = require("plugins.null_ls"),
+    dependencies = { "williamboman/mason.nvim" },
   },
 
   -- NOTE: lsp
