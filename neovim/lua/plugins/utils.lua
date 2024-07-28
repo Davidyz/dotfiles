@@ -12,7 +12,6 @@ M.mason_packages = {
   "basedpyright",
   "jsonls",
   "clangd",
-  "mypy",
   "debugpy",
   "shfmt",
   "prettierd",

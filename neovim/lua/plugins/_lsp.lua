@@ -107,7 +107,6 @@ local handlers = {
               autoImportCompletions = true,
             },
             linting = { enabled = false },
-            typeCheckingMode = "standard",
             disableOrganizeImports = true,
           },
         },

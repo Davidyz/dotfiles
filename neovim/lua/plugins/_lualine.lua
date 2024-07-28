@@ -101,10 +101,17 @@ local lualine_config = {
     },
     lualine_c = {
       get_context,
-      file_path,
+      { "filename", path = 3 },
     },
-    lualine_x = { { "progress" } },
-    lualine_y = { "encoding", "fileformat" },
+    lualine_x = { { "searchcount" }, { "progress" } },
+    lualine_y = {
+      {
+        "encoding",
+        padding = { left = 1, right = 0 },
+        separator = "",
+      },
+      "fileformat",
+    },
     lualine_z = {
       "location",
       {
