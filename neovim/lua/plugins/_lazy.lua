@@ -179,7 +179,7 @@ M.plugins = {
     priority = 1000,
     config = function(_, opts)
       require("catppuccin").setup(opts)
-      vim.cmd([[colorscheme catppuccin]])
+      vim.cmd.colorscheme("catppuccin")
       vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
     end,
     lazy = false,
@@ -635,6 +635,7 @@ M.plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim",
     },
     cond = utils.no_vscode,
     config = function()
@@ -1168,18 +1169,31 @@ M.plugins = {
         mode = "n",
       },
     },
-    config = function()
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "TelescopePrompt",
-        callback = function()
-          vim.keymap.set({ "i", "n" }, "<esc>", function()
-            vim.api.nvim_win_close(0, true)
-          end, { replace_keycodes = true, buffer = 0, expr = true })
-        end,
-      })
+    config = function(_, opts)
+      require("telescope").setup(opts)
     end,
-    dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
+
+    cmd = "Telescope",
+    opts = function()
+      return {
+        defaults = {
+          layout_strategy = "horizontal",
+          layout_config = { prompt_position = "top", preview_width = 0.6 },
+          sorting_strategy = "ascending",
+          mappings = {
+            i = {
+              ["<esc>"] = require("telescope.actions").close,
+            },
+          },
+        },
+      }
+    end,
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      "nvim-lua/plenary.nvim",
+    },
   },
+
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     build = "make",
