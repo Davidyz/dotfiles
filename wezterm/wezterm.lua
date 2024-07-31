@@ -1,6 +1,11 @@
 ---@type Wezterm
 local wezterm = require("wezterm")
 
+local using_polonium = false
+if os.getenv("HAS_POLONIUM") then
+  using_polonium = true
+end
+
 ---@param path string
 ---@return boolean
 local function exists(path)
@@ -182,10 +187,12 @@ for i = 1, 9 do
     action = action.ActivateTab(i - 1),
   })
 end
-wezterm.on("gui-startup", function(cmd)
-  local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
-  window:gui_window():maximize()
-end)
+if not using_polonium then
+  wezterm.on("gui-startup", function(cmd)
+    local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+    window:gui_window():maximize()
+  end)
+end
 
 if string.find(wezterm.target_triple, "windows") ~= nil then
   config.default_prog = {
@@ -195,7 +202,9 @@ if string.find(wezterm.target_triple, "windows") ~= nil then
     "pwsh",
   }
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
-  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  if not using_polonium then
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  end
 end
 
 config.hide_tab_bar_if_only_one_tab = true
