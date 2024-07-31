@@ -1242,13 +1242,16 @@ M.plugins = {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
+    event = "VimEnter",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
+      "3rd/image.nvim",
     },
     opts = {
       close_if_last_window = true,
       sort_case_insensitive = true,
+      use_libuv_file_watcher = true,
       filesystem = {
         filtered_items = {
           visible = true,
@@ -1593,7 +1596,6 @@ M.plugins = {
   --       },
   --     })
   --   end,
-  --   enabled = false,
   -- },
 }
 
