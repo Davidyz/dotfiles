@@ -84,23 +84,34 @@ wezterm.on("update-status", function(window, pane)
 end)
 config.colors = color
 
-config.window_frame = {
-  active_titlebar_bg = color.background,
-  button_bg = color.background,
-  button_fg = color.foreground,
-  button_hover_bg = color.selection_bg,
-  button_hover_fg = color.selection_fg,
-  inactive_titlebar_bg = color.background,
+if using_polonium then
+  config.window_frame = {
+    active_titlebar_bg = color.background,
+    button_bg = color.background,
+    button_fg = color.foreground,
+    button_hover_bg = color.selection_bg,
+    button_hover_fg = color.selection_fg,
+    inactive_titlebar_bg = color.background,
+  }
+else
+  config.window_frame = {
+    active_titlebar_bg = color.background,
+    button_bg = color.background,
+    button_fg = color.foreground,
+    button_hover_bg = color.selection_bg,
+    button_hover_fg = color.selection_fg,
+    inactive_titlebar_bg = color.background,
 
-  border_left_width = "0.2cell",
-  border_right_width = "0.2cell",
-  border_bottom_height = "0.1cell",
-  border_top_height = "0.1cell",
-  border_left_color = color.ansi[1],
-  border_right_color = color.ansi[1],
-  border_bottom_color = color.ansi[1],
-  border_top_color = color.ansi[1],
-}
+    border_left_width = "0.2cell",
+    border_right_width = "0.2cell",
+    border_bottom_height = "0.1cell",
+    border_top_height = "0.1cell",
+    border_left_color = color.ansi[1],
+    border_right_color = color.ansi[1],
+    border_bottom_color = color.ansi[1],
+    border_top_color = color.ansi[1],
+  }
+end
 
 config.show_new_tab_button_in_tab_bar = false
 config.switch_to_last_active_tab_when_closing_tab = true
