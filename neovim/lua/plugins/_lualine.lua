@@ -3,10 +3,6 @@ local nvim_devicon = require("nvim-web-devicons")
 
 vim.opt.laststatus = 3
 
-local function file_path()
-  return vim.api.nvim_buf_get_name(0):gsub(tostring(os.getenv("HOME")), "~")
-end
-
 local function get_devicon_for_buf()
   local full_name = vim.fn.expand("%") or ""
   if full_name == "" or full_name == nil then
@@ -145,7 +141,45 @@ local lualine_config = {
         use_mode_colors = true,
       },
     },
-    lualine_y = { { "navic", color_correction = "dynamic" } },
+  },
+  winbar = {
+    lualine_b = {
+      {
+        "navic",
+        color_correction = "dynamic",
+        navic_opts = {
+          icons = {
+            File = " ",
+            Module = " ",
+            Namespace = " ",
+            Package = " ",
+            Class = " ",
+            Method = " ",
+            Property = " ",
+            Field = " ",
+            Constructor = " ",
+            Enum = " ",
+            Interface = " ",
+            Function = " ",
+            Variable = " ",
+            Constant = " ",
+            String = " ",
+            Number = " ",
+            Boolean = " ",
+            Array = " ",
+            Object = " ",
+            Key = " ",
+            Null = " ",
+            EnumMember = " ",
+            Struct = " ",
+            Event = " ",
+            Operator = " ",
+            TypeParameter = " ",
+          },
+          separator = "  ",
+        },
+      },
+    },
     lualine_z = {
       {
         arduino_status,

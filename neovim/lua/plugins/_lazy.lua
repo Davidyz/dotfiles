@@ -602,22 +602,24 @@ M.plugins = {
         desc = "Code Actions",
       },
     },
-
-    opts = {
-      telescope = {
-        sorting_strategy = "ascending",
-        layout_strategy = "vertical",
-        layout_config = {
-          width = 0.8,
-          height = 0.9,
-          prompt_position = "top",
-          preview_cutoff = 20,
-          preview_height = function(_, _, max_lines)
-            return max_lines - 15
-          end,
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    opts = function()
+      return {
+        telescope = {
+          sorting_strategy = "ascending",
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.8,
+            height = 0.9,
+            prompt_position = "top",
+            preview_cutoff = 20,
+            preview_height = function(_, _, max_lines)
+              return max_lines - 15
+            end,
+          },
         },
-      },
-    },
+      }
+    end,
     cond = utils.no_vscode,
   },
   {
@@ -1183,7 +1185,8 @@ M.plugins = {
       return {
         defaults = {
           layout_strategy = "horizontal",
-          layout_config = { prompt_position = "top", preview_width = 0.6 },
+          -- layout_config = { prompt_position = "top", preview_width = 0.6 },
+          layout_config = { prompt_position = "top" },
           sorting_strategy = "ascending",
           mappings = {
             i = {
