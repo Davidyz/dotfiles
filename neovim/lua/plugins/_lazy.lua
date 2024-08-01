@@ -183,57 +183,71 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
     end,
     lazy = false,
-    opts = {
-      flavour = "mocha",
-      term_colors = true,
-      custom_highlights = function(colors)
-        return {
-          TelescopeNormal = {
-            bg = colors.mantle,
-            fg = colors.text,
-          },
-          TelescopeBorder = {
-            bg = colors.mantle,
-            fg = colors.mantle,
-          },
-          TelescopePromptNormal = {
-            bg = colors.crust,
-            fg = colors.lavender,
-          },
-          TelescopePromptBorder = {
-            bg = colors.crust,
-            fg = colors.crust,
-          },
-          TelescopePromptTitle = {
-            bg = colors.crust,
-            fg = colors.crust,
-          },
-          TelescopePreviewTitle = {
-            bg = colors.mantle,
-            fg = colors.mantle,
-          },
-          TelescopeResultsTitle = {
-            bg = colors.mantle,
-            fg = colors.mantle,
-          },
-          FloatBorder = { fg = colors.mantle, bg = colors.mantle },
-          FloatTitle = { fg = colors.lavender, bg = colors.mantle },
-          LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
-        }
-      end,
-      dim_inactive = { enabled = false },
-      default_integrations = {
-        diffview = true,
-        fidget = true,
-        hop = true,
-        lspsaga = true,
-        mason = true,
-        neotree = true,
-        navic = { enabled = true },
-        notify = true,
-        which_key = true,
-      },
-    },
+    opts = function()
+      local flavour = "mocha"
+      local cat = require("catppuccin.palettes." .. flavour)
+      return {
+        flavour = flavour,
+        term_colors = true,
+        custom_highlights = function(colors)
+          return {
+            TelescopeNormal = {
+              bg = colors.mantle,
+              fg = colors.text,
+            },
+            TelescopeBorder = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+            TelescopePromptNormal = {
+              bg = colors.crust,
+              fg = colors.lavender,
+            },
+            TelescopePromptBorder = {
+              bg = colors.crust,
+              fg = colors.crust,
+            },
+            TelescopePromptTitle = {
+              bg = colors.crust,
+              fg = colors.crust,
+            },
+            TelescopePreviewTitle = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+            TelescopeResultsTitle = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+            FloatBorder = { fg = colors.mantle, bg = colors.mantle },
+            FloatTitle = { fg = colors.lavender, bg = colors.mantle },
+            LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
+          }
+        end,
+        dim_inactive = { enabled = false },
+        default_integrations = {
+          diffview = true,
+          fidget = true,
+          hop = true,
+          lspsaga = true,
+          mason = true,
+          neotree = true,
+          navic = { enabled = true },
+          notify = true,
+          which_key = true,
+          nvim_surround = true,
+          rainbow_delimiters = true,
+          headlines = true,
+          mini = { enabled = true },
+        },
+      }
+    end,
+  },
+  {
+    "lukas-reineke/headlines.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    opts = {},
+    ft = { "markdown", "tex" },
   },
 
   -- NOTE: tree sitter
@@ -270,6 +284,15 @@ M.plugins = {
           "RainbowDelimiterCyan",
         },
       }
+      vim.api.nvim_set_hl(
+        0,
+        "MatchParen",
+        vim.tbl_deep_extend(
+          "force",
+          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
+          { fg = "NONE" }
+        )
+      )
     end,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
