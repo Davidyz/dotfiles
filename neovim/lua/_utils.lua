@@ -278,4 +278,34 @@ function M.is_basic_ssh()
   return vim.fn.environ()["FANCY_TERM"] == nil
     and vim.fn.environ()["SSH_CONNECTION"] ~= nil
 end
+
+M.codicons = {
+  File = " ",
+  Module = " ",
+  Namespace = " ",
+  Package = " ",
+  Class = " ",
+  Method = " ",
+  Property = " ",
+  Field = " ",
+  Constructor = " ",
+  Enum = " ",
+  Interface = " ",
+  Function = " ",
+  Variable = " ",
+  Constant = " ",
+  String = " ",
+  Number = " ",
+  Boolean = " ",
+  Array = " ",
+  Object = " ",
+  Key = " ",
+  Null = " ",
+  EnumMember = " ",
+  Struct = " ",
+  Event = " ",
+  Operator = " ",
+  TypeParameter = " ",
+}
+
 return M

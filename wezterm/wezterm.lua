@@ -93,6 +93,12 @@ if using_polonium then
     button_hover_fg = color.selection_fg,
     inactive_titlebar_bg = color.background,
   }
+  config.window_padding = {
+    left = "1cell",
+    right = "1cell",
+    top = 0,
+    bottom = 0,
+  }
 else
   config.window_frame = {
     active_titlebar_bg = color.background,

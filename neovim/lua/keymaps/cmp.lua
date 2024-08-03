@@ -1,16 +1,6 @@
 local cmp = require("cmp")
 local compare = require("cmp.config.compare")
 
-local lspkind = require("lspkind")
-lspkind.init({
-  mode = "symbol_text",
-  maxwidth = function()
-    return math.floor(vim.o.columns * 0.3)
-  end,
-  ellipsis_char = "…",
-  preset = "codicons",
-})
-
 local select_opts = { behavior = cmp.SelectBehavior.Select }
 ---@type cmp.ConfigSchema
 local cmp_config = {
@@ -56,8 +46,7 @@ local cmp_config = {
         entry,
         { kind = item.kind, abbr = item.abbr }
       )
-
-      item = lspkind.cmp_format()(entry, item)
+      item.kind = (require("_utils").codicons[item.kind] or "") .. item.kind
       if color_item.abbr_hl_group then
         item.kind_hl_group = color_item.abbr_hl_group
         item.kind = color_item.abbr

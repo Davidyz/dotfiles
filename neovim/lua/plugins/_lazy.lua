@@ -49,6 +49,7 @@ M.plugins = {
         "vimtex"
       )
       vim.g.vimtex_quickfix_mode = 0
+      vim.g.vimtex_syntax_enabled = 0
 
       if vim.fn.executable("zathura") then
         vim.g.vimtex_view_method = "zathura"
@@ -319,7 +320,7 @@ M.plugins = {
     event = { "BufReadPost", "BufNewFile" },
     init = function()
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      vim.api.nvim_create_autocmd("BufReadPost", {
+      vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         callback = function()
           vim.api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
           vim.api.nvim_set_hl(0, "MatchupVirtualText", {
@@ -497,7 +498,7 @@ M.plugins = {
     config = function()
       require("keymaps.cmp")
     end,
-    dependencies = { "onsails/lspkind.nvim", "brenoprata10/nvim-highlight-colors" },
+    dependencies = { "brenoprata10/nvim-highlight-colors" },
   },
   {
     "hrsh7th/cmp-nvim-lsp",
@@ -548,34 +549,7 @@ M.plugins = {
     "SmiteshP/nvim-navic",
     opts = {
       lsp = { auto_attach = true },
-      icons = {
-        File = " ",
-        Module = " ",
-        Namespace = " ",
-        Package = " ",
-        Class = " ",
-        Method = " ",
-        Property = " ",
-        Field = " ",
-        Constructor = " ",
-        Enum = " ",
-        Interface = " ",
-        Function = " ",
-        Variable = " ",
-        Constant = " ",
-        String = " ",
-        Number = " ",
-        Boolean = " ",
-        Array = " ",
-        Object = " ",
-        Key = " ",
-        Null = " ",
-        EnumMember = " ",
-        Struct = " ",
-        Event = " ",
-        Operator = " ",
-        TypeParameter = " ",
-      },
+      icons = require("_utils").codicons,
     },
     event = "LspAttach",
     cond = utils.no_vscode,
@@ -646,21 +620,6 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    opts = {
-      symbol_in_winbar = { enable = false },
-      ui = {
-        code_action = "",
-        actionfix = "",
-      },
-    },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter", -- optional
-      icon_provider, -- optional
-    },
-  },
-  {
     "ThePrimeagen/refactoring.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -714,10 +673,6 @@ M.plugins = {
         mode = { "x" },
       },
     },
-  },
-  {
-    "onsails/lspkind.nvim",
-    cond = utils.no_vscode,
   },
   {
     "hedyhli/outline.nvim",
@@ -855,16 +810,11 @@ M.plugins = {
     end,
     priority = 1001,
     opts = function()
+      local animate = require("mini.animate")
       return {
-        cursor = {
-          timing = require("mini.animate").gen_timing.quadratic({
-            duration = 200,
-            unit = "total",
-            easing = "in-out",
-          }),
-        },
+        cursor = { enable = false },
         scroll = {
-          timing = require("mini.animate").gen_timing.exponential({
+          timing = animate.gen_timing.exponential({
             duration = 250,
             unit = "total",
             easing = "in-out",
@@ -872,7 +822,7 @@ M.plugins = {
         },
       }
     end,
-    lazy = false,
+    event = { "BufNewFile", "BufReadPost" },
   },
   {
     "mistricky/codesnap.nvim",
