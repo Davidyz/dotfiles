@@ -217,7 +217,7 @@ local handlers = {
 require("mason-lspconfig").setup_handlers(handlers)
 
 vim.api.nvim_create_autocmd(
-  { "CursorHold", "CursorMoved", "CursorHoldI", "CursorMovedI" },
+  { "TextChanged", "TextChangedI", "CursorMoved", "CursorMovedI" },
   {
     callback = function()
       local clients = vim.lsp.get_clients({ bufnr = 0 })
