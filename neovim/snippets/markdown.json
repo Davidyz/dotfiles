@@ -1,0 +1,41 @@
+{
+  "Say hello to the world": {
+    "prefix": ["hw", "hello"],
+    "body": "Hello, ${1:world}!$0"
+  },
+  "New Line": {
+    "prefix": ["cmd:newline"],
+    "body": "<!-- cmd: new_line -->$0"
+  },
+  "New Lines": {
+    "prefix": ["cmd:newlines"],
+    "body": "<!-- cmd: new_lines: ${1:line_count} -->$0"
+  },
+  "Incremental List": {
+    "prefix": "cmd:incremental_list",
+    "body": "<!-- cmd: incremental_list: ${1:bool} -->"
+  },
+  "End Slide": {
+    "prefix": "cmd:end_slide",
+    "body": "<!-- cmd: end_slide -->"
+  },
+  "Pause": {
+    "prefix": "cmd:pause",
+    "body": "<!-- cmd: pause -->"
+  },
+  "Column Layout": {
+    "prefix": "cmd:col_layout",
+    "body": "<!-- cmd: column_layout: [${1: layout}] -->",
+    "description": "Create a multi-column layout."
+  },
+  "New Column": {
+    "prefix": "cmd:col",
+    "body": "<!-- cmd: column: ${1:column_id} -->",
+    "description": "Create a new column (0-indexed)"
+  },
+  "Reset Column": {
+    "prefix": "cmd:reset_col",
+    "body": "<!-- cmd: reset_layout -->",
+    "description": "Reset column layout"
+  }
+}

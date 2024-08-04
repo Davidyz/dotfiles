@@ -1,0 +1,13 @@
+{
+  "snippet_entry": {
+    "prefix": ["snippet_entry"],
+    "body": [
+      "\"${1:name}\": {",
+      "\"prefix\": \"${2:prefix}\",",
+      "\"body\": \"${3:body}\",",
+      "\"description\": \"${4:desc}\",",
+      "}$0"
+    ],
+    "description": "Create a new snippet."
+  }
+}
