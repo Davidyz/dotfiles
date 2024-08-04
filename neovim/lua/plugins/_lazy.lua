@@ -798,7 +798,20 @@ M.plugins = {
   },
 
   -- NOTE: misc
-
+  {
+    "rcarriga/nvim-notify",
+    config = function(_, opts)
+      require("notify").setup(opts)
+      vim.notify = require("notify")
+    end,
+    opts = {
+      fps = 60,
+      render = "compact",
+      background_colour = "Normal",
+      stages = "slide",
+    },
+    event = "BufEnter",
+  },
   -- "~/git/fauxpilot.nvim",
   -- "github/copilot.vim",
   -- { "altermo/nxwm" },
@@ -822,7 +835,7 @@ M.plugins = {
         },
       }
     end,
-    event = { "BufNewFile", "BufReadPost" },
+    event = { "BufNewFile", "BufReadPost", "FileType man" },
   },
   {
     "mistricky/codesnap.nvim",
@@ -906,17 +919,8 @@ M.plugins = {
 
       -- optional
       "nvim-treesitter/nvim-treesitter",
-      {
-        "rcarriga/nvim-notify",
-        init = function() end,
-        opts = {
-          fps = 60,
-          render = "compact",
-          background_colour = "Normal",
-          stages = "slide",
-        },
-        config = true,
-      },
+      "rcarriga/nvim-notify",
+
       icon_provider,
     },
   },

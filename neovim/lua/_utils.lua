@@ -306,6 +306,14 @@ M.codicons = {
   Event = " ",
   Operator = " ",
   TypeParameter = " ",
+  Text = "  ",
+  Unit = "  ",
+  Value = "  ",
+  Keyword = "  ",
+  Snippet = "  ",
+  Color = "  ",
+  Reference = "  ",
+  Folder = "  ",
 }
 
 return M
