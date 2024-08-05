@@ -1185,6 +1185,7 @@ M.plugins = {
     },
     config = function(_, opts)
       require("telescope").setup(opts)
+      require("telescope").load_extension("ui-select")
     end,
 
     cmd = "Telescope",
@@ -1201,11 +1202,15 @@ M.plugins = {
             },
           },
         },
+        extensions = {
+          ["ui-select"] = { require("telescope.themes").get_dropdown() },
+        },
       }
     end,
     dependencies = {
       "nvim-telescope/telescope-fzf-native.nvim",
       "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
     },
   },
 
@@ -1583,9 +1588,9 @@ M.plugins = {
       host = os.getenv("OLLAMA_ENTRY"),
       port = "11434",
       display_mode = "float",
-      show_prompt = false,
-      show_model = false,
-      no_auto_close = false,
+      show_prompt = true,
+      show_model = true,
+      no_auto_close = true,
       hidden = false,
       init = function(options) end,
       debug = false, -- Prints errors and the command which is run.
