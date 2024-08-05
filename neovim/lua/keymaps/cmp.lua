@@ -112,26 +112,16 @@ local cmp_config = {
         fallback()
       end
     end, { "i", "s" }),
+    ["<C-x>"] = cmp.mapping(
+      cmp.mapping.complete({
+        config = {
+          sources = cmp.config.sources({
+            { name = "cmp_ai" },
+          }),
+        },
+      }),
+      { "i" }
+    ),
   },
 }
-
-cmp.setup(cmp_config)
-
-cmp.setup.filetype({ "autohotkey" }, {
-  sources = { { name = "autohotkey" } },
-})
-
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
-})
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "path" },
-
-    { name = "cmdline" },
-  }),
-})
+return cmp_config

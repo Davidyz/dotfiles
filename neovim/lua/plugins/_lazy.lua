@@ -223,6 +223,7 @@ M.plugins = {
             FloatBorder = { fg = colors.mantle, bg = colors.mantle },
             FloatTitle = { fg = colors.lavender, bg = colors.mantle },
             LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
+            WinSeparator = { bg = colors.base, fg = colors.lavender },
           }
         end,
         dim_inactive = { enabled = false },
@@ -420,7 +421,12 @@ M.plugins = {
     end,
     main = "tiny-inline-diagnostic",
     cond = utils.no_vscode,
-    opts = {},
+    opts = {
+      options = {
+        multiple_diag_under_cursor = true,
+        show_source = true,
+      },
+    },
   },
 
   -- NOTE: mason
@@ -495,8 +501,8 @@ M.plugins = {
   {
     "hrsh7th/nvim-cmp",
     cond = utils.no_vscode,
-    config = function()
-      require("keymaps.cmp")
+    opts = function()
+      return require("keymaps.cmp")
     end,
     dependencies = { "brenoprata10/nvim-highlight-colors" },
   },
@@ -509,6 +515,15 @@ M.plugins = {
     "hrsh7th/cmp-buffer",
     event = { "BufReadPost", "BufNewFile" },
     cond = utils.no_vscode,
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup.cmdline({ "/", "?" }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
+      })
+    end,
   },
   {
     "hrsh7th/cmp-path",
@@ -521,12 +536,27 @@ M.plugins = {
     -- event = { "CmdlineChanged", "CmdlineEnter" },
     cond = utils.no_vscode,
     dependencies = { "hrsh7th/nvim-cmp" },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+
+          { name = "cmdline" },
+        }),
+      })
+    end,
   },
   {
     "DasGandlaf/nvim-autohotkey",
     ft = { "autohotkey" },
     config = function()
       require("nvim-autohotkey")
+
+      require("cmp").setup.filetype({ "autohotkey" }, {
+        sources = { { name = "autohotkey" } },
+      })
     end,
   },
   {
@@ -1287,6 +1317,7 @@ M.plugins = {
     "nvim-focus/focus.nvim",
     opts = {},
     config = true,
+    event = "WinNew",
     init = function()
       local ignore_filetypes = { "neo-tree", "Outline" }
       local ignore_buftypes = { "nofile", "prompt", "popup" }
@@ -1540,6 +1571,29 @@ M.plugins = {
     opts = { window = { open = "tab" } },
     lazy = false,
     priority = 1001,
+  },
+  {
+    "David-Kunz/gen.nvim",
+    cmd = { "Gen" },
+    opts = {
+      model = "deepseek-coder-v2:16b-lite-instruct-q8_0",
+      quit_map = "q",
+      retry_map = "<c-r>",
+      accept_map = "<c-cr>",
+      host = os.getenv("OLLAMA_ENTRY"),
+      port = "11434",
+      display_mode = "float",
+      show_prompt = false,
+      show_model = false,
+      no_auto_close = false,
+      hidden = false,
+      init = function(options) end,
+      debug = false, -- Prints errors and the command which is run.
+    },
+    cond = function()
+      return utils.no_vscode()
+        and (vim.fn.executable("ollama") == 1 or os.getenv("OLLAMA_ENTRY") ~= nil)
+    end,
   },
   -- {
   --   "3rd/image.nvim",
