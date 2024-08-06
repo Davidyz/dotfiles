@@ -1182,6 +1182,14 @@ M.plugins = {
         remap = false,
         mode = "n",
       },
+      {
+        "<Leader>f",
+        function()
+          require("telescope.builtin").current_buffer_fuzzy_find()
+        end,
+        remap = false,
+        mode = "n",
+      },
     },
     config = function(_, opts)
       require("telescope").setup(opts)

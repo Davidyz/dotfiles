@@ -46,7 +46,7 @@ local cmp_config = {
         entry,
         { kind = item.kind, abbr = item.abbr }
       )
-      item.kind = (require("_utils").codicons[item.kind] or "") .. item.kind
+      item.kind = (require("_utils").codicons[item.kind] or "") .. (item.kind or "")
       if color_item.abbr_hl_group then
         item.kind_hl_group = color_item.abbr_hl_group
         item.kind = color_item.abbr
