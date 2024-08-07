@@ -13,7 +13,25 @@ vim.opt.mouse = "a"
 vim.opt.swapfile = false
 
 vim.opt.showmode = false
-vim.opt.clipboard = "unnamedplus"
+if
+  vim.fn.environ()["SSH_TTY"] ~= nil
+  and (not vim.list_contains({ "unnamed", "unnamedplus" }, vim.o.clipboard))
+  and vim.g.clipboard == nil
+then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+else
+  vim.o.clipboard = "unnamedplus"
+end
 
 if vim.fn.has("unix") ~= 0 then
   if vim.fn.executable("python3") then
