@@ -8,7 +8,7 @@
 "zsh/" = "~/"
 
 [alacritty.files]
-"alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
+"alacritty/" = "~/.config/alacritty/"
 
 [chrome.files]
 "chrome/chrome-flags.conf" = "~/.config/chrome-flags.conf"
