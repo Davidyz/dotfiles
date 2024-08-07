@@ -842,9 +842,6 @@ M.plugins = {
     },
     event = "BufEnter",
   },
-  -- "~/git/fauxpilot.nvim",
-  -- "github/copilot.vim",
-  -- { "altermo/nxwm" },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "echasnovski/mini.animate",
@@ -863,9 +860,12 @@ M.plugins = {
             easing = "in-out",
           }),
         },
+        resize = { enable = false },
+        open = { enable = false },
+        close = { enable = false },
       }
     end,
-    event = { "BufNewFile", "BufReadPost", "FileType man" },
+    event = { "BufNewFile", "BufReadPost", "FileType *" },
   },
   {
     "mistricky/codesnap.nvim",
