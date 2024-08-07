@@ -1321,6 +1321,29 @@ M.plugins = {
     },
   },
   {
+    "mtrajano/tssorter.nvim",
+    version = "*",
+    opts = {},
+    keys = {
+      {
+        "<Leader>s",
+        function()
+          require("tssorter").sort({})
+        end,
+        mode = "x",
+        desc = "Sort selected treesitter nodes.",
+      },
+      {
+        "<Leader>S",
+        function()
+          require("tssorter").sort({ reverse = true })
+        end,
+        mode = "x",
+        desc = "Sort selected treesitter nodes (reversed).",
+      },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
