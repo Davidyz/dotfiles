@@ -1,8 +1,8 @@
 M = {}
 local utils = require("_utils")
 
----@type LazyPluginSpec[]
 local icon_provider = "echasnovski/mini.icons"
+---@type LazyPluginSpec[]
 M.plugins = {
   -- NOTE: icons
   {
@@ -38,7 +38,6 @@ M.plugins = {
       return vim.fn.executable("arduino-cli") ~= 0 and utils.no_vscode()
     end,
   },
-  { "theRealCarneiro/hyprland-vim-syntax" },
   {
     "lervag/vimtex",
     ft = { "tex" },
@@ -97,7 +96,6 @@ M.plugins = {
   },
   {
     "cameron-wags/rainbow_csv.nvim",
-
     config = true,
     ft = {
       "csv",
@@ -115,7 +113,6 @@ M.plugins = {
       "RainbowMultiDelim",
     },
   },
-
   {
     "lark-parser/vim-lark-syntax",
     ft = { "lark" },
@@ -304,11 +301,6 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "nvim-treesitter/nvim-treesitter-refactor",
-    event = { "BufReadPost", "BufNewFile" },
-    cond = utils.no_vscode,
-  },
-  {
     "windwp/nvim-autopairs",
     cond = utils.no_vscode,
     config = function()
@@ -398,7 +390,7 @@ M.plugins = {
         end
         local servers = vim.lsp.get_clients({ bufnr = bufnum })
         if
-          #servers > 1
+          #servers > 0
           and utils.any(servers, function(server)
             return server.server_capabilities.foldingRangeProvider == true
           end)
@@ -427,6 +419,16 @@ M.plugins = {
         show_source = true,
       },
     },
+  },
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-neo-tree/neo-tree.nvim",
+    },
+    opts = {},
+    event = { "LspAttach" },
+    ft = { "neo-tree" },
   },
 
   -- NOTE: mason
@@ -504,7 +506,10 @@ M.plugins = {
     opts = function()
       return require("keymaps.cmp")
     end,
-    dependencies = { "brenoprata10/nvim-highlight-colors" },
+    dependencies = {
+      "brenoprata10/nvim-highlight-colors",
+      "lukas-reineke/cmp-under-comparator",
+    },
   },
   {
     "hrsh7th/cmp-nvim-lsp",
@@ -1120,6 +1125,10 @@ M.plugins = {
         virt_text_priority = 100,
       },
     },
+    config = function(_, opts)
+      require("gitsigns").setup(opts)
+      vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Comment" })
+    end,
     event = { "BufReadPost", "BufNewFile" },
   },
   { "nvim-lua/plenary.nvim" },
@@ -1221,12 +1230,11 @@ M.plugins = {
       "nvim-telescope/telescope-ui-select.nvim",
     },
   },
-
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     build = "make",
     cond = function()
-      return utils.no_vscode() and vim.fn.executable("cmake") == 1
+      return utils.no_vscode() and vim.fn.executable("make") == 1
     end,
     config = function()
       require("telescope").load_extension("fzf")
@@ -1307,7 +1315,7 @@ M.plugins = {
   },
   {
     "stevearc/oil.nvim",
-    opts = {},
+    opts = { lsp_file_methods = { autosave_changes = true } },
     dependencies = { icon_provider },
     cmd = { "Oil" },
   },
@@ -1458,6 +1466,18 @@ M.plugins = {
     opts = {
       open_mapping = "<C-\\>",
     },
+  },
+  {
+    "pappasam/nvim-repl",
+    init = function()
+      vim.g.repl_filetype_commands = { python = "ipython" }
+      if vim.fn.executable("ipython") == 0 then
+        vim.g.repl_filetype_commands.python = "python"
+      end
+      vim.g.repl_split = "bottom"
+    end,
+    keys = { { "<C-|>", "<cmd>ReplToggle<cr>", desc = "Toggle repl" } },
+    cmd = { "Repl", "ReplOpen", "ReplRunCell" },
   },
   {
     "jim-fx/sudoku.nvim",

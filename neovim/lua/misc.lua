@@ -1,6 +1,5 @@
 vim.opt.smartcase = true
 vim.opt.encoding = "utf-8"
--- vim.opt.shadafile = "~/.local/share/nvim/shada/main.shada"
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -18,17 +17,7 @@ if
   and (not vim.list_contains({ "unnamed", "unnamedplus" }, vim.o.clipboard))
   and vim.g.clipboard == nil
 then
-  vim.g.clipboard = {
-    name = "OSC 52",
-    copy = {
-      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-    },
-    paste = {
-      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-    },
-  }
+  vim.o.clipboard = ""
 else
   vim.o.clipboard = "unnamedplus"
 end

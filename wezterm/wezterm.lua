@@ -50,6 +50,7 @@ local function deepcopy(orig)
   end
   return copy
 end
+color.split = "#b3bdfe"
 for i = 1, 8 do
   -- NOTE: make `bright` colors actually brighter
   color.ansi[i] = wezterm.color.parse(color.ansi[i])
