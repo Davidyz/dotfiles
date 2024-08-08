@@ -28,7 +28,7 @@ require("nvim-treesitter.configs").setup({
   auto_install = true,
   sync_install = true,
   ignore_install = { "csv" },
-  modules = { "highlight", "illuminate", "indent", "incremental_selection", "refactor" },
+  modules = { "highlight", "illuminate", "indent", "incremental_selection" },
   ensure_installed = installed_list,
   playground = {
     enable = true,
@@ -42,12 +42,6 @@ require("nvim-treesitter.configs").setup({
     additional_vim_regex_highlighting = false,
   },
   indent = true,
-  refactor = {
-    highlight_definitions = {
-      enable = true,
-      clear_on_cursor_move = true,
-    },
-  },
   incremental_selection = {
     enable = true,
     keymaps = {
