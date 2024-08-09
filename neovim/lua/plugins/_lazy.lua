@@ -1525,7 +1525,11 @@ M.plugins = {
     "akinsho/git-conflict.nvim",
     config = true,
   },
-  { "sindrets/diffview.nvim", config = true, cmd = { "DiffviewOpen" } },
+  {
+    "sindrets/diffview.nvim",
+    config = true,
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+  },
   {
     "Davidyz/executable-checker.nvim",
     opts = {},
