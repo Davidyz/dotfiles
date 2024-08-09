@@ -1142,29 +1142,44 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
     keys = {
       {
         "<Leader>tf",
-        "<cmd>Telescope find_files<cr>",
+        function()
+          require("telescope.builtin").find_files({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
+        end,
         remap = false,
         mode = "n",
       },
       {
         "<Leader>tb",
-        "<cmd>Telescope buffers<cr>",
+        function()
+          require("telescope.builtin").buffers({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
+        end,
         remap = false,
         mode = "n",
       },
       {
         "<Leader>tq",
-        "<cmd>Telescope quickfix<cr>",
+        function()
+          require("telescope.builtin").quickfix({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
+        end,
         remap = false,
         mode = "n",
       },
       {
         "<Leader>tD",
         function()
-          require("telescope.builtin").diagnostics()
+          require("telescope.builtin").diagnostics({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
         end,
         remap = false,
         mode = "n",
@@ -1173,7 +1188,10 @@ M.plugins = {
       {
         "<Leader>td",
         function()
-          require("telescope.builtin").diagnostics({ bufnr = 0 })
+          require("telescope.builtin").diagnostics({
+            bufnr = 0,
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
         end,
         remap = false,
         mode = "n",
@@ -1181,20 +1199,30 @@ M.plugins = {
       },
       {
         "<Leader>th",
-        "<cmd>Telescope help_tags<cr>",
+        function()
+          require("telescope.builtin").help_tags({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
+        end,
         remap = false,
         mode = "n",
       },
       {
         "R",
-        "<cmd>Telescope live_grep<cr>",
+        function()
+          require("telescope.builtin").live_grep({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
+        end,
         remap = false,
         mode = "n",
       },
       {
         "<Leader>f",
         function()
-          require("telescope.builtin").current_buffer_fuzzy_find()
+          require("telescope.builtin").current_buffer_fuzzy_find({
+            layout_config = { prompt_position = "top", preview_width = 0.6 },
+          })
         end,
         remap = false,
         mode = "n",
@@ -1204,7 +1232,6 @@ M.plugins = {
       require("telescope").setup(opts)
       require("telescope").load_extension("ui-select")
     end,
-
     cmd = "Telescope",
     opts = function()
       return {
@@ -1412,28 +1439,36 @@ M.plugins = {
               desc = "Find file",
               key = "f",
               action = function()
-                require("telescope.builtin").find_files()
+                require("telescope.builtin").find_files({
+                  layout_config = { prompt_position = "top", preview_width = 0.6 },
+                })
               end,
             },
             {
               desc = "Live grep",
               key = "r",
               action = function()
-                require("telescope.builtin").live_grep()
+                require("telescope.builtin").live_grep({
+                  layout_config = { prompt_position = "top", preview_width = 0.6 },
+                })
               end,
             },
             {
               desc = "Man pages",
               key = "m",
               action = function()
-                require("telescope.builtin").man_pages()
+                require("telescope.builtin").man_pages({
+                  layout_config = { prompt_position = "top", preview_width = 0.6 },
+                })
               end,
             },
             {
               desc = "vim help",
               key = "h",
               action = function()
-                require("telescope.builtin").help_tags()
+                require("telescope.builtin").help_tags({
+                  layout_config = { prompt_position = "top", preview_width = 0.6 },
+                })
               end,
             },
           },
