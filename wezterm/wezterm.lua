@@ -63,6 +63,9 @@ end
 
 color.cursor_bg = color.ansi[5]
 color.cursor_border = color.ansi[5]
+color.tab_bar.inactive_tab.bg_color = color.background
+color.tab_bar.active_tab.bg_color = color.split
+color.tab_bar.inactive_tab.fg_color = color.split
 
 config.status_update_interval = 1
 wezterm.on("update-status", function(window, pane)
