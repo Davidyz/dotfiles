@@ -707,6 +707,70 @@ M.plugins = {
         noremap = true,
         mode = { "x" },
       },
+      {
+        "<leader>if",
+        function()
+          require("refactoring").refactor("Inline Function")
+        end,
+        desc = "Inline Function",
+        noremap = true,
+        mode = { "x" },
+      },
+      {
+        "<leader>iv",
+        function()
+          require("refactoring").refactor("Inline Variable")
+        end,
+        desc = "Inline Variable",
+        noremap = true,
+        mode = { "x" },
+      },
+      {
+        "<leader>eb",
+        function()
+          require("refactoring").refactor("Extract Block")
+        end,
+        desc = "Extract block",
+        noremap = true,
+        mode = { "n" },
+      },
+      {
+        "<leader>ebf",
+        function()
+          require("refactoring").refactor("Extract Block To File")
+        end,
+        desc = "Extract block to file",
+        noremap = true,
+        mode = { "n" },
+      },
+      {
+        "<leader>rp",
+        function()
+          require("refactoring").debug.print_var({})
+        end,
+        mode = { "n" },
+        desc = "Add debug print statement.",
+      },
+      {
+        "<leader>rc",
+        function()
+          require("refactoring").debug.cleanup({})
+        end,
+        mode = { "n" },
+        desc = "Clear debug print statement.",
+      },
+      {
+        "<leader>rr",
+        function()
+          require("telescope").extensions.refactoring.refactors({
+            theme = "cursor",
+            layout_config = { width = 0.4, height = 0.4 },
+            layout_strategy = "cursor",
+          })
+        end,
+        mode = { "n", "x" },
+        desc = "Select refactoring.",
+      },
     },
   },
   {
