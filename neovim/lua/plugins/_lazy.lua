@@ -1223,6 +1223,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Fuzzy find files.",
       },
       {
         "<Leader>tb",
@@ -1233,6 +1234,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Show buffers.",
       },
       {
         "<Leader>tq",
@@ -1243,6 +1245,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Show quickfix.",
       },
       {
         "<Leader>tD",
@@ -1276,6 +1279,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Find help tags.",
       },
       {
         "R",
@@ -1286,6 +1290,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Live grep.",
       },
       {
         "<Leader>f",
@@ -1296,6 +1301,7 @@ M.plugins = {
         end,
         remap = false,
         mode = "n",
+        desc = "Fuzzy find current buffer.",
       },
     },
     config = function(_, opts)
@@ -1759,6 +1765,23 @@ M.plugins = {
       return utils.no_vscode()
         and (vim.fn.executable("ollama") == 1 or os.getenv("OLLAMA_ENTRY") ~= nil)
     end,
+  },
+  {
+    "folke/which-key.nvim",
+    event = "BufEnter",
+    opts = {
+      preset = "modern",
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
+    cond = utils.no_vscode(),
   },
   -- {
   --   "3rd/image.nvim",
