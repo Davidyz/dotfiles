@@ -920,6 +920,7 @@ M.plugins = {
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "echasnovski/mini.animate",
+    version = "*",
     init = function()
       vim.o.mousescroll = "ver:1,hor:6"
     end,
