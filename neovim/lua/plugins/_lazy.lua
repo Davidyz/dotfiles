@@ -780,7 +780,13 @@ M.plugins = {
     keys = {
       { "<leader>o", ":Outline<CR>", desc = "Toggle outline" },
     },
-    opts = {},
+    opts = function()
+      local opts = { symbols = { icons = {} } }
+      for k, v in pairs(require("_utils").codicons) do
+        opts.symbols.icons[k] = { icon = v }
+      end
+      return opts
+    end,
     init = function()
       vim.api.nvim_create_autocmd("BufEnter", {
         nested = true,
