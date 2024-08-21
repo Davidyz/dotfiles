@@ -15,8 +15,13 @@ local cmp_config = {
       group_index = 0, -- set group index to 0 to skip loading LuaLS completions
     },
     { name = "nvim_lsp", keyword_length = 1, priority = 9 },
-    { name = "path", priority = 10 },
+    {
+      name = "async_path",
+      priority = 10,
+      option = { trailing_slash = true },
+    },
     { name = "buffer", keyword_length = 2, priority = 3 },
+    { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
     { name = "snippets", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
     { name = "zsh" },
@@ -27,23 +32,20 @@ local cmp_config = {
         strategy = 0, -- mixed
       },
     },
+    { name = "codicons", keyword_length = 2 },
   },
   sorting = {
     priority_weight = 1,
     comparators = {
       compare.exact,
       compare.score,
-      compare.locality,
       compare.recently_used,
+      compare.locality,
       require("cmp-under-comparator").under,
       compare.order,
       compare.offset,
       compare.kind,
       compare.sort_text,
-      -- compare.recently_used,
-      -- compare.locality,
-      -- compare.score,
-      -- compare.order,
     },
   },
   window = {},
@@ -55,6 +57,9 @@ local cmp_config = {
         entry,
         { kind = item.kind, abbr = item.abbr }
       )
+      if entry.source.name == "cmp_yanky" then
+        item.kind = "Clipboard"
+      end
       item.kind = (require("_utils").codicons[item.kind] or "") .. (item.kind or "")
       if color_item.abbr_hl_group then
         item.kind_hl_group = color_item.abbr_hl_group

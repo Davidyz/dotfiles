@@ -243,10 +243,13 @@ M.plugins = {
     end,
   },
   {
-    "lukas-reineke/headlines.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    opts = {},
-    ft = { "markdown", "tex" },
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = function()
+      vim.treesitter.language.register("markdown", "vimwiki")
+      return { file_types = { "markdown", "vimwiki" } }
+    end,
+    ft = { "markdown", "vimwiki" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", icon_provider },
   },
 
   -- NOTE: tree sitter
@@ -506,19 +509,24 @@ M.plugins = {
     opts = function()
       return require("keymaps.cmp")
     end,
+    config = function(_, opts)
+      require("cmp").setup(opts)
+    end,
     dependencies = {
       "brenoprata10/nvim-highlight-colors",
       "lukas-reineke/cmp-under-comparator",
+      "onsails/lspkind.nvim",
     },
+    event = { "InsertEnter", "CmdlineEnter" },
   },
   {
     "hrsh7th/cmp-nvim-lsp",
-    event = "LspAttach",
+    event = { "InsertEnter", "CmdlineEnter" },
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-buffer",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "InsertEnter", "CmdlineEnter" },
     cond = utils.no_vscode,
     config = function()
       local cmp = require("cmp")
@@ -531,14 +539,33 @@ M.plugins = {
     end,
   },
   {
-    "hrsh7th/cmp-path",
-    event = { "BufReadPost", "BufNewFile" },
+    "https://codeberg.org/FelipeLema/cmp-async-path.git",
+    event = { "InsertEnter", "CmdlineEnter" },
+    cond = utils.no_vscode,
+  },
+  {
+    "chrisgrieser/cmp_yanky",
+    event = { "InsertEnter", "CmdlineEnter" },
+    cond = utils.no_vscode,
+    dependencies = {
+      {
+        "gbprod/yanky.nvim",
+        opts = {},
+      },
+    },
+  },
+  {
+    "Davidyz/codicons.nvim",
+    branch = "cmp-integration",
+    opts = {},
+    config = true,
+    event = { "InsertEnter" },
+    dependencies = { "hrsh7th/nvim-cmp" },
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-cmdline",
-    event = "BufEnter",
-    -- event = { "CmdlineChanged", "CmdlineEnter" },
+    event = { "CmdlineEnter" },
     cond = utils.no_vscode,
     dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
@@ -567,7 +594,7 @@ M.plugins = {
   {
     "garymjr/nvim-snippets",
     -- custom snippets by filetypes at ~/.config/nvim/snippets/
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "InsertEnter", "CmdlineEnter" },
     opts = { friendly_snippets = true },
     config = function(_, opts)
       require("snippets").setup(opts)
@@ -577,7 +604,7 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-nvim-lsp-signature-help",
-    event = "LspAttach",
+    event = { "InsertEnter", "CmdlineEnter" },
     cond = utils.no_vscode,
   },
   {
@@ -653,6 +680,25 @@ M.plugins = {
       }
     end,
     cond = utils.no_vscode,
+  },
+  {
+    "smjonas/inc-rename.nvim",
+    opts = {
+      input_buffer_type = "dressing",
+    },
+    dependencies = { "stevearc/dressing.nvim" },
+    cmd = { "IncRename" },
+    keys = {
+      {
+        "<Leader>rv",
+        function()
+          return ":IncRename " .. vim.fn.expand("<cword>")
+        end,
+        mode = "n",
+        expr = true,
+        desc = "LSP rename.",
+      },
+    },
   },
   {
     "ThePrimeagen/refactoring.nvim",
@@ -797,12 +843,6 @@ M.plugins = {
         end,
       })
     end,
-  },
-  {
-    "Zeioth/garbage-day.nvim",
-    event = "LspAttach",
-    dependencies = "neovim/nvim-lspconfig",
-    opts = { excluded_lsp_clients = { "null-ls" } },
   },
   {
     "folke/lazydev.nvim",
@@ -1081,7 +1121,6 @@ M.plugins = {
   { "mawkler/modicator.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "stevearc/dressing.nvim",
-    event = "VeryLazy",
     opts = { input = { title_pos = "center", border = "rounded" } },
   },
   {
@@ -1442,7 +1481,7 @@ M.plugins = {
         function()
           require("tssorter").sort({})
         end,
-        mode = "x",
+        mode = { "n", "x" },
         desc = "Sort selected treesitter nodes.",
       },
       {
@@ -1450,7 +1489,7 @@ M.plugins = {
         function()
           require("tssorter").sort({ reverse = true })
         end,
-        mode = "x",
+        mode = { "n", "x" },
         desc = "Sort selected treesitter nodes (reversed).",
       },
     },
@@ -1649,8 +1688,11 @@ M.plugins = {
   },
   {
     "Sam-programs/cmdline-hl.nvim",
-    event = "CmdlineChanged",
-    opts = { inline_ghost_text = false },
+    event = { "CmdlineChanged", "CmdlineEnter" },
+    opts = {
+      inline_ghost_text = false,
+      type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
+    },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
@@ -1748,7 +1790,8 @@ M.plugins = {
     "David-Kunz/gen.nvim",
     cmd = { "Gen" },
     opts = {
-      model = "deepseek-coder-v2:16b-lite-instruct-q8_0",
+      -- model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
+      model = "infinity-instruct-llama3.1-8b:latest",
       quit_map = "q",
       retry_map = "<c-r>",
       accept_map = "<c-cr>",
@@ -1832,8 +1875,10 @@ end
 M.config = {
   defaults = { lazy = true },
   ui = {
-    border = "double",
+    border = "none",
+    backdrop = 100,
   },
+  dev = { fallback = true },
   profiling = { loader = true, require = true },
 }
 

@@ -77,16 +77,14 @@ local lualine_config = {
   options = {
     icons_enabled = true,
     theme = "auto",
-    -- component_separators = { left = "", right = "" },
-    -- section_separators = { left = "", right = "" },
     section_separators = { left = "", right = "" },
-    component_separators = { left = "│", right = "│" },
+    component_separators = { left = "", right = "" },
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
   },
   sections = {
-    lualine_a = { "mode" },
+    lualine_a = { { "mode" } },
     lualine_b = {
       "branch",
       "diff",
@@ -109,11 +107,11 @@ local lualine_config = {
       "fileformat",
     },
     lualine_z = {
-      "location",
       {
         wordCount,
         cond = is_text,
       },
+      { "location" },
     },
   },
   inactive_sections = {

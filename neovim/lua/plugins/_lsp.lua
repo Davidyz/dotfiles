@@ -209,7 +209,7 @@ local handlers = {
       end,
       settings = {
         ltex = {
-          language = { "en-GB" },
+          language = "en-GB",
           completionEnabled = true,
           additionalRules = { motherTongue = "en-GB" },
         },
