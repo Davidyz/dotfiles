@@ -5,13 +5,13 @@ palette = "catppuccin_mocha"
 add_newline = true
 # Replace the '❯' symbol in the prompt with '➜'
 [character]
-success_symbol = '[➜](bold green)'
-error_symbol = '[✗](bold red)'
+success_symbol = '[](bold green)'
+error_symbol = '[](bold red)'
 
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true
-symbol = "󰏗 "
+symbol = " "
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -43,12 +43,13 @@ crust = "#11111b"
 
 [hostname]
 ssh_only = false
-ssh_symbol = " "
+ssh_symbol = " "
 style = "green"
+format = "[$ssh_symbol](blue)[$hostname]($style) in "
 
 [username]
 show_always = true
-format = '[$user]($style)@'
+format = '[$user]($style)[](lavender) '
 
 [git_status]
 ahead = '⇡${count}'
@@ -108,7 +109,7 @@ RockyLinux = " "
 Redox = "󰀘 "
 Solus = "󰠳 "
 SUSE = " "
-Ubuntu = " "
+Ubuntu = " "
 Unknown = " "
 Void = " "
 Windows = "󰍲 "
@@ -132,7 +133,7 @@ symbol = " "
 symbol = " "
 
 [directory]
-read_only = " 󰌾"
+read_only = " "
 
 [docker_context]
 symbol = " "
@@ -147,10 +148,10 @@ symbol = " "
 symbol = " "
 
 [fossil_branch]
-symbol = " "
+symbol = " "
 
 [git_branch]
-symbol = " "
+symbol = " "
 
 [golang]
 symbol = " "

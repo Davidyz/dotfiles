@@ -509,9 +509,6 @@ M.plugins = {
     opts = function()
       return require("keymaps.cmp")
     end,
-    config = function(_, opts)
-      require("cmp").setup(opts)
-    end,
     dependencies = {
       "brenoprata10/nvim-highlight-colors",
       "lukas-reineke/cmp-under-comparator",
@@ -1343,6 +1340,15 @@ M.plugins = {
         mode = "n",
         desc = "Fuzzy find current buffer.",
       },
+      {
+        "<Leader>tr",
+        function()
+          require("telescope.builtin").resume()
+        end,
+        remap = false,
+        mode = "n",
+        desc = "Resume last telescope session",
+      },
     },
     config = function(_, opts)
       require("telescope").setup(opts)
@@ -1827,42 +1833,29 @@ M.plugins = {
     },
     cond = utils.no_vscode(),
   },
-  -- {
-  --   "3rd/image.nvim",
-  --   filetypes = { "markdown" },
-  --   build = "luarocks --local --lua-version 5.1 install magick",
-  --   cond = function()
-  --     package.path = package.path
-  --       .. ";"
-  --       .. vim.fn.expand("$HOME")
-  --       .. "/.luarocks/share/lua/5.1/?/init.lua;"
-  --     package.path = package.path
-  --       .. ";"
-  --       .. vim.fn.expand("$HOME")
-  --       .. "/.luarocks/share/lua/5.1/?.lua;"
-  --     local ok, _ = pcall(require, "magick")
-  --     return ok and vim.fn.executable("magick") ~= 0 and utils.no_vscode()
-  --   end,
-  --   config = function()
-  --     package.path = package.path
-  --       .. ";"
-  --       .. vim.fn.expand("$HOME")
-  --       .. "/.luarocks/share/lua/5.1/?/init.lua;"
-  --     package.path = package.path
-  --       .. ";"
-  --       .. vim.fn.expand("$HOME")
-  --       .. "/.luarocks/share/lua/5.1/?.lua;"
-  --     require("image").setup({
-  --       backend = "kitty",
-  --       max_width_window_percentage = 200 / 3,
-  --       integrations = {
-  --         markdown = {
-  --           clear_in_insert_mode = true,
-  --         },
-  --       },
-  --     })
-  --   end,
-  -- },
+  {
+    "3rd/image.nvim",
+    filetypes = { "markdown" },
+    dependencies = { "leafo/magick" },
+    build = "luarocks --local --lua-version 5.1 install magick",
+    cond = function()
+      return vim.fn.executable("magick") ~= 0 and utils.no_vscode()
+    end,
+    opts = function()
+      return {
+        backend = "kitty",
+        max_width_window_percentage = 200 / 3,
+        integrations = {
+          markdown = {
+            clear_in_insert_mode = true,
+            only_render_image_at_cursor = true,
+          },
+        },
+        window_overlap_clear_enabled = true,
+        editor_only_render_when_focused = true,
+      }
+    end,
+  },
 }
 
 for _, spec in pairs(M.plugins) do
