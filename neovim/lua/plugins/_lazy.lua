@@ -137,8 +137,9 @@ M.plugins = {
 
   -- NOTE: markdown
   {
-    "mzlogin/vim-markdown-toc",
-    ft = { "markdown", "pandoc" },
+    "hedyhli/markdown-toc.nvim",
+    ft = { "markdown" },
+    opts = { headings = { before_toc = false } },
   },
   {
     "Myzel394/easytables.nvim",
@@ -225,6 +226,8 @@ M.plugins = {
         end,
         dim_inactive = { enabled = false },
         default_integrations = {
+          native_lsp = { enabled = false },
+
           diffview = true,
           fidget = true,
           hop = true,
@@ -315,7 +318,8 @@ M.plugins = {
     "andymass/vim-matchup",
     event = { "BufReadPost", "BufNewFile" },
     init = function()
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.g.matchup_matchparen_offscreen =
+        { method = "popup", fullwidth = 1, highlight = "Comment" }
       vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         callback = function()
           vim.api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
@@ -383,7 +387,7 @@ M.plugins = {
           end
           cur_width = cur_width + chunk_width
         end
-        table.insert(result, { " ⋯ ", "NonText" })
+        table.insert(result, { "  ", "NonText" })
         table.insert(result, { suffix, "TSPunctBracket" })
         return result
       end,
@@ -472,6 +476,14 @@ M.plugins = {
         opts = {
           ensure_installed = nil,
           automatic_installation = true,
+          handlers = {
+            ["editorconfig_checker"] = function(source_name, methods)
+              local null_ls = require("null-ls")
+              null_ls.register(null_ls.builtins.diagnostics.editorconfig_checker.with({
+                filetypes = { "editorconfig" },
+              }))
+            end,
+          },
         },
         config = true,
       },
@@ -518,7 +530,7 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-nvim-lsp",
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter" },
     cond = utils.no_vscode,
   },
   {
@@ -571,7 +583,6 @@ M.plugins = {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "path" },
-
           { name = "cmdline" },
         }),
       })
@@ -582,7 +593,6 @@ M.plugins = {
     ft = { "autohotkey" },
     config = function()
       require("nvim-autohotkey")
-
       require("cmp").setup.filetype({ "autohotkey" }, {
         sources = { { name = "autohotkey" } },
       })
@@ -591,7 +601,7 @@ M.plugins = {
   {
     "garymjr/nvim-snippets",
     -- custom snippets by filetypes at ~/.config/nvim/snippets/
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter" },
     opts = { friendly_snippets = true },
     config = function(_, opts)
       require("snippets").setup(opts)
@@ -601,7 +611,7 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-nvim-lsp-signature-help",
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = { "InsertEnter" },
     cond = utils.no_vscode,
   },
   {
@@ -616,7 +626,6 @@ M.plugins = {
   },
   {
     "tamago324/cmp-zsh",
-    event = "LspAttach",
     build = function()
       if vim.fn.executable("zsh") then
         io.popen('zsh -c "zmodload zsh/zpty"')
@@ -629,8 +638,8 @@ M.plugins = {
     end,
     ft = { "zsh" },
   },
-  { "hrsh7th/cmp-emoji", event = "LspAttach" },
-  { "kdheepak/cmp-latex-symbols", event = "LspAttach" },
+  { "hrsh7th/cmp-emoji", event = { "InsertEnter" } },
+  { "kdheepak/cmp-latex-symbols", event = { "InsertEnter" } },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
@@ -638,7 +647,7 @@ M.plugins = {
       notification = {
         window = {
           normal_hl = "TelescopeBorder",
-          winblend = 0,
+          winblend = 10,
           align = "bottom",
           x_padding = 0,
           border = { "" },
@@ -1452,6 +1461,10 @@ M.plugins = {
         follow_current_file = { enabled = true },
       },
       source_selector = { show_scrolled_off_parent_node = true },
+      default_component_configs = {
+        icon = { folder_closed = "", folder_open = "" },
+        git_status = { symbols = { added = "", modified = "" } },
+      },
     },
     keys = {
       {
@@ -1867,12 +1880,13 @@ end
 ---@type LazyConfig
 M.config = {
   defaults = { lazy = true },
+  dev = { fallback = true },
+  install = { colorscheme = { "catppuccin" } },
+  profiling = { loader = true, require = true },
   ui = {
     border = "none",
     backdrop = 100,
   },
-  dev = { fallback = true },
-  profiling = { loader = true, require = true },
 }
 
 return M

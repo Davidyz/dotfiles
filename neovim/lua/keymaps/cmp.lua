@@ -32,7 +32,7 @@ local cmp_config = {
         strategy = 0, -- mixed
       },
     },
-    { name = "codicons", keyword_length = 2 },
+    { name = "codicons", keyword_length = 2, priority = 4 },
   },
   sorting = {
     priority_weight = 1,
@@ -126,16 +126,6 @@ local cmp_config = {
         fallback()
       end
     end, { "i", "s" }),
-    ["<C-x>"] = cmp.mapping(
-      cmp.mapping.complete({
-        config = {
-          sources = cmp.config.sources({
-            { name = "cmp_ai" },
-          }),
-        },
-      }),
-      { "i" }
-    ),
   },
 }
 return cmp_config
