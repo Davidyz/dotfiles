@@ -402,7 +402,7 @@ M.plugins = {
             return server.server_capabilities.foldingRangeProvider == true
           end)
         then
-          return { "treesitter", "lsp" }
+          return { "lsp", "treesitter" }
         end
         return { "treesitter", "indent" }
       end,
@@ -1258,7 +1258,7 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
+    version = "*",
     keys = {
       {
         "<Leader>tf",
@@ -1410,6 +1410,7 @@ M.plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "LspAttach" },
+    version = "*",
     main = "ibl",
     init = function()
       vim.g.indent_blankline_filetype_exclude =
@@ -1477,6 +1478,7 @@ M.plugins = {
   },
   {
     "stevearc/oil.nvim",
+    version = "*",
     opts = { lsp_file_methods = { autosave_changes = true } },
     dependencies = { icon_provider },
     cmd = { "Oil" },
@@ -1604,6 +1606,13 @@ M.plugins = {
                 require("telescope.builtin").help_tags({
                   layout_config = { prompt_position = "top", preview_width = 0.6 },
                 })
+              end,
+            },
+            {
+              desc = "Empty buffer",
+              key = "e",
+              action = function()
+                vim.cmd("enew")
               end,
             },
           },
@@ -1881,7 +1890,7 @@ end
 M.config = {
   defaults = { lazy = true },
   dev = { fallback = true },
-  install = { colorscheme = { "catppuccin" } },
+  install = { colorscheme = { "catppuccin-mocha" } },
   profiling = { loader = true, require = true },
   ui = {
     border = "none",

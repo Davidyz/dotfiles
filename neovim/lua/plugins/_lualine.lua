@@ -21,7 +21,7 @@ local function get_context()
   local hostname = utils.getHostname()
   local result = ""
   if user and hostname then
-    result = user .. "@" .. hostname
+    result = user .. " " .. hostname
   elseif user or hostname then
     result = user or hostname
   end

@@ -101,7 +101,7 @@ local handlers = {
         settings = {
           basedpyright = {
             analysis = {
-              typeCheckingMode = "basic",
+              typeCheckingMode = "standard",
               inlayHints = {
                 callArgumentNames = "all",
                 functionReturnTypes = true,
@@ -163,6 +163,11 @@ local handlers = {
               quote_style = "double",
             },
           },
+          completion = {
+            callSnippet = "Replace",
+            displayContext = 5,
+            keywordSnippet = "Replace",
+          },
           workspace = {
             useGitIgnore = true,
             checkThirdParty = false,
@@ -175,6 +180,7 @@ local handlers = {
         },
       },
     })
+
     require("lspconfig")["lua_ls"].setup(lua_config)
   end,
   ["bashls"] = function()
