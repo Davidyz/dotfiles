@@ -1,0 +1,5 @@
+[include]
+	path = "./catppuccin.gitconfig"
+[delta]
+	features = catppuccin-mocha
+	side-by-side = true

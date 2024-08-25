@@ -30,3 +30,6 @@
 
 [starship.files]
 "starship/starship.toml" = "~/.config/starship.toml"
+
+[delta.files]
+"delta/" = "~/.config/delta/"
