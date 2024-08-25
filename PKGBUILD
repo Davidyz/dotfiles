@@ -7,6 +7,7 @@ arch=('any')
 license=('GPL')
 depends=(
     'autojump'
+    'bat'
     'biber'
     'bluedevil'
     'cmake'

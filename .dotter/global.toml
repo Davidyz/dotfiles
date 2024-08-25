@@ -33,3 +33,6 @@
 
 [delta.files]
 "delta/" = "~/.config/delta/"
+
+[bat.files]
+"bat/" = "~/.config/bat/"
