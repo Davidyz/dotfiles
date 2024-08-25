@@ -292,6 +292,7 @@ M.plugins = {
       vim.api.nvim_set_hl(
         0,
         "MatchParen",
+        ---@diagnostic disable-next-line: param-type-mismatch
         vim.tbl_deep_extend(
           "force",
           vim.api.nvim_get_hl(0, { name = "MatchParen" }),
@@ -1408,27 +1409,39 @@ M.plugins = {
     dependencies = { icon_provider },
   },
   {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "LspAttach" },
-    version = "*",
-    main = "ibl",
-    init = function()
-      vim.g.indent_blankline_filetype_exclude =
-        { "startify", "help", "nerdtree", "Outline", "dashboard" }
+    "shellRaining/hlchunk.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = function()
+      local excluded_ft = { help = true, ["neo-tree"] = true, dashboard = true }
+      local hl_names = {
+        "RainbowDelimiterRed",
+        "RainbowDelimiterYellow",
+        "RainbowDelimiterBlue",
+        "RainbowDelimiterOrange",
+        "RainbowDelimiterGreen",
+        "RainbowDelimiterViolet",
+        "RainbowDelimiterCyan",
+      }
+      local hl_groups = {}
+      for i, v in ipairs(hl_names) do
+        hl_groups[i] = vim.api.nvim_get_hl(0, { name = v })
+      end
+
+      return {
+        chunk = {
+          enable = true,
+          exclude_filetypes = excluded_ft,
+          delay = 100,
+          style = require("catppuccin.palettes.mocha").lavender,
+        },
+        indent = {
+          enable = true,
+          exclude_filetypes = excluded_ft,
+        },
+      }
     end,
-    opts = {
-      exclude = {
-        filetypes = { "help", "neo-tree", "dashboard" },
-      },
-      scope = {
-        enabled = true,
-        show_exact_scope = false,
-        show_start = false,
-        show_end = false,
-        include = { node_type = { ["*"] = "*" } },
-        highlight = "@character.special",
-      },
-    },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    cond = utils.no_vscode,
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -1857,11 +1870,14 @@ M.plugins = {
   },
   {
     "3rd/image.nvim",
+
     filetypes = { "markdown" },
     dependencies = { "leafo/magick" },
     build = "luarocks --local --lua-version 5.1 install magick",
     cond = function()
-      return vim.fn.executable("magick") ~= 0 and utils.no_vscode()
+      return vim.fn.executable("magick") ~= 0
+        and utils.no_vscode()
+        and utils.no_neovide()
     end,
     opts = function()
       return {

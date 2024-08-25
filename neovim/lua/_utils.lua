@@ -228,6 +228,10 @@ M.no_vscode = function()
   return vim.g.vscode == nil
 end
 
+M.no_neovide = function()
+  return vim.fn.exists("g:neovide") ~= 1
+end
+
 ---@return boolean
 M.is_treesitter_enabled = function()
   local okay, parsers = pcall(require, "nvim-treesitter.parsers")
