@@ -505,7 +505,7 @@ M.plugins = {
       require("keymaps._lsp")
       require("lspconfig.ui.windows").default_options.border = { " " }
     end,
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "CmdlineEnter" },
     cond = utils.no_vscode,
     dependencies = {
       "williamboman/mason.nvim",
@@ -579,13 +579,36 @@ M.plugins = {
     cond = utils.no_vscode,
     dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
+      local compare = require("cmp.config.compare")
       local cmp = require("cmp")
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
-          { name = "path" },
+          { name = "async_path" },
           { name = "cmdline" },
+          {
+            name = "lazydev",
+            group_index = 0,
+          },
+          { name = "nvim_lsp", keyword_length = 1, priority = 9 },
+          { name = "buffer", keyword_length = 2, priority = 3 },
+          { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
+          { name = "nvim_lsp_signature_help" },
         }),
+        sorting = {
+          priority_weight = 1,
+          comparators = {
+            compare.exact,
+            compare.score,
+            compare.recently_used,
+            compare.locality,
+            require("cmp-under-comparator").under,
+            compare.order,
+            compare.offset,
+            compare.kind,
+            compare.sort_text,
+          },
+        },
       })
     end,
   },
