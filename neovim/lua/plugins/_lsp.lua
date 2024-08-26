@@ -11,11 +11,6 @@ lsp_defaults.capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
 }
-lsp_defaults.capabilities = vim.tbl_deep_extend(
-  "force",
-  lsp_defaults.capabilities,
-  require("lsp-file-operations").default_capabilities()
-)
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 

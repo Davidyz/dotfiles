@@ -428,16 +428,6 @@ M.plugins = {
       },
     },
   },
-  {
-    "antosha417/nvim-lsp-file-operations",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-neo-tree/neo-tree.nvim",
-    },
-    opts = {},
-    event = { "LspAttach" },
-    ft = { "neo-tree" },
-  },
 
   -- NOTE: mason
   {
@@ -464,7 +454,6 @@ M.plugins = {
     cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
     config = function()
       require("plugins.mason_tools")
-      require("mason-tool-installer").clean()
     end,
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
@@ -876,7 +865,6 @@ M.plugins = {
   },
   {
     "folke/lazydev.nvim",
-    event = "LspAttach",
     ft = "lua",
     opts = {
       library = {
@@ -1418,9 +1406,11 @@ M.plugins = {
     cond = function()
       return utils.no_vscode() and vim.fn.executable("make") == 1
     end,
-    config = function()
+    config = function(_, opts)
+      require("telescope").setup(opts)
       require("telescope").load_extension("fzf")
     end,
+    opts = { extensions = { fzf = {} } },
   },
   {
     "debugloop/telescope-undo.nvim",
@@ -1431,7 +1421,7 @@ M.plugins = {
       },
     },
     keys = {
-      { -- lazy style key map
+      {
         "<leader>tu",
         "<cmd>Telescope undo<cr>",
         desc = "undo history",
@@ -1505,12 +1495,26 @@ M.plugins = {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
-    event = "VimEnter",
+    -- event = "VimEnter",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       "3rd/image.nvim",
     },
+    init = function()
+      vim.api.nvim_create_autocmd("BufEnter", {
+        -- make a group to be able to delete it later
+        group = vim.api.nvim_create_augroup("NeoTreeInit", { clear = true }),
+        callback = function()
+          local f = vim.fn.expand("%:p")
+          if vim.fn.isdirectory(f) ~= 0 then
+            vim.cmd("Neotree dir=" .. f)
+            -- neo-tree is loaded now, delete the init autocmd
+            vim.api.nvim_clear_autocmds({ group = "NeoTreeInit" })
+          end
+        end,
+      })
+    end,
     opts = {
       close_if_last_window = true,
       sort_case_insensitive = true,
@@ -1891,8 +1895,7 @@ M.plugins = {
     "David-Kunz/gen.nvim",
     cmd = { "Gen" },
     opts = {
-      -- model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
-      model = "infinity-instruct-llama3.1-8b:latest",
+      model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
       quit_map = "q",
       retry_map = "<c-r>",
       accept_map = "<c-cr>",
@@ -1930,14 +1933,13 @@ M.plugins = {
   },
   {
     "3rd/image.nvim",
-
     filetypes = { "markdown" },
     dependencies = { "leafo/magick" },
-    build = "luarocks --local --lua-version 5.1 install magick",
     cond = function()
-      return vim.fn.executable("magick") ~= 0
+      return vim.fn.executable("magick") == 1
         and utils.no_vscode()
         and utils.no_neovide()
+        and vim.fn.executable("lua5.1") == 1
     end,
     opts = function()
       return {
