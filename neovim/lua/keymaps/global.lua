@@ -1,6 +1,6 @@
 local km_utils = require("keymaps.utils")
 
-km_utils.setKeymap("n", "<space>", "za") -- fold
+km_utils.setKeymap("n", "<BS>", "za") -- fold
 
 km_utils.setKeymap("", "<Home>", function()
   local curr_line = vim.api.nvim_get_current_line()
