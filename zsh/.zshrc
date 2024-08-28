@@ -440,7 +440,7 @@ git_delete_merged_branches() {
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
 
 [ ! -d ~/.config/nvim/lua ] || export MANPAGER='nvim +Man!'
-if [ -f "$(which bat)" ]; then 
+if [ -f "$(which bat 2> /dev/null)" ]; then 
 	[ -d ~/.cache/bat/ ] || bat cache --build > /dev/null 
 	[ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME=Catppuccin\ Mocha
 fi
