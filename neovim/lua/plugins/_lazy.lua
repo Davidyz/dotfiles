@@ -356,6 +356,7 @@ M.plugins = {
       vim.keymap.set("n", "<C-p>", function()
         require("ufo.preview"):peekFoldedLinesUnderCursor()
       end, { noremap = true, desc = "Peek inside fold." })
+      vim.keymap.set("n", "<BS>", "za", { noremap = true, desc = "Toggle fold." })
     end,
     opts = {
       preview = {
@@ -515,6 +516,7 @@ M.plugins = {
       "brenoprata10/nvim-highlight-colors",
       "lukas-reineke/cmp-under-comparator",
       "onsails/lspkind.nvim",
+      "hrsh7th/cmp-buffer",
     },
     event = { "InsertEnter", "CmdlineEnter" },
   },
@@ -525,17 +527,6 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-buffer",
-    event = { "InsertEnter", "CmdlineEnter" },
-    cond = utils.no_vscode,
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup.cmdline({ "/", "?" }, {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
-    end,
   },
   {
     "https://codeberg.org/FelipeLema/cmp-async-path.git",
@@ -564,13 +555,13 @@ M.plugins = {
   },
   {
     "hrsh7th/cmp-cmdline",
-    event = { "CmdlineEnter" },
+    event = { "InsertEnter", "CmdlineEnter" },
     cond = utils.no_vscode,
-    dependencies = { "hrsh7th/nvim-cmp" },
+    dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-buffer" },
     config = function()
       local compare = require("cmp.config.compare")
       local cmp = require("cmp")
-      cmp.setup.cmdline(":", {
+      cmp.setup.cmdline({ "/", "?", ":" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "async_path" },
@@ -588,13 +579,13 @@ M.plugins = {
           priority_weight = 1,
           comparators = {
             compare.exact,
+            compare.kind,
             compare.score,
             compare.recently_used,
             compare.locality,
             require("cmp-under-comparator").under,
             compare.order,
             compare.offset,
-            compare.kind,
             compare.sort_text,
           },
         },
