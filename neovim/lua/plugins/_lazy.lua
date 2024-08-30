@@ -2,7 +2,6 @@ M = {}
 local utils = require("_utils")
 
 local icon_provider = "echasnovski/mini.icons"
----@type LazyPluginSpec[]
 M.plugins = {
   -- NOTE: icons
   {
@@ -184,7 +183,6 @@ M.plugins = {
     lazy = false,
     opts = function()
       local flavour = "mocha"
-      local cat = require("catppuccin.palettes." .. flavour)
       return {
         flavour = flavour,
         term_colors = true,
@@ -226,21 +224,20 @@ M.plugins = {
         end,
         dim_inactive = { enabled = false },
         default_integrations = {
-          native_lsp = { enabled = false },
-
           diffview = true,
           fidget = true,
+          headlines = true,
           hop = true,
           lspsaga = true,
           mason = true,
-          neotree = true,
+          mini = { enabled = true },
+          native_lsp = { enabled = true },
           navic = { enabled = true },
+          neotree = true,
           notify = true,
-          which_key = true,
           nvim_surround = true,
           rainbow_delimiters = true,
-          headlines = true,
-          mini = { enabled = true },
+          which_key = true,
         },
       }
     end,
@@ -258,7 +255,7 @@ M.plugins = {
   -- NOTE: tree sitter
   {
     "nvim-treesitter/nvim-treesitter",
-    config = function(config, opts)
+    config = function()
       require("plugins.tree_sitter")
     end,
     build = ":TSUpdate",
@@ -393,7 +390,7 @@ M.plugins = {
         table.insert(result, { suffix, "TSPunctBracket" })
         return result
       end,
-      provider_selector = function(bufnum, filetype, buftype)
+      provider_selector = function(bufnum, _, _)
         if vim.bo.bt == "nofile" then
           return ""
         end
@@ -442,7 +439,6 @@ M.plugins = {
       })
       require("executable-checker").add_executable({ "python3", "npm" }, "mason")
     end,
-    ---@type MasonSettings
     opts = {
       ui = { height = 0.8 },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
@@ -467,14 +463,6 @@ M.plugins = {
         opts = {
           ensure_installed = nil,
           automatic_installation = true,
-          handlers = {
-            ["editorconfig_checker"] = function(source_name, methods)
-              local null_ls = require("null-ls")
-              null_ls.register(null_ls.builtins.diagnostics.editorconfig_checker.with({
-                filetypes = { "editorconfig" },
-              }))
-            end,
-          },
         },
         config = true,
       },
@@ -647,11 +635,11 @@ M.plugins = {
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
+    version = "*",
     opts = {
       notification = {
         window = {
-          normal_hl = "TelescopeBorder",
-          winblend = 10,
+          winblend = 0,
           align = "bottom",
           x_padding = 0,
           border = { "" },
@@ -853,6 +841,11 @@ M.plugins = {
         end,
       })
     end,
+  },
+  {
+    "mawkler/refjump.nvim",
+    keys = { "]r", "[r" },
+    opts = {},
   },
   {
     "folke/lazydev.nvim",
@@ -1453,7 +1446,8 @@ M.plugins = {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
-      local excluded_ft = { help = true, ["neo-tree"] = true, dashboard = true }
+      local excluded_ft =
+        { ["neo-tree"] = true, dashboard = true, fidget = true, help = true }
       local hl_names = {
         "RainbowDelimiterRed",
         "RainbowDelimiterYellow",
@@ -1470,9 +1464,9 @@ M.plugins = {
 
       return {
         chunk = {
+          delay = 100,
           enable = true,
           exclude_filetypes = excluded_ft,
-          delay = 100,
           style = require("catppuccin.palettes.mocha").lavender,
         },
         indent = {
@@ -1486,11 +1480,10 @@ M.plugins = {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
-    -- event = "VimEnter",
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
       "3rd/image.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
     },
     init = function()
       vim.api.nvim_create_autocmd("BufEnter", {
@@ -1521,9 +1514,9 @@ M.plugins = {
       window = {
         mappings = {
           ["<cr>"] = "open",
-          ["<space>"] = "open",
           ["<left>"] = "navigate_up",
           ["<right>"] = "set_root",
+          ["<space>"] = "open",
         },
       },
       buffers = {
@@ -1631,11 +1624,7 @@ M.plugins = {
     event = "BufEnter",
     config = function()
       require("dashboard").setup({
-        shortcut_type = "number",
-        theme = "hyper",
-
         change_to_vcs_root = true,
-        hide = { tabline = false, statusline = false },
         config = {
           mru = { limit = 10, cwd_only = true },
           project = { enable = true },
@@ -1685,6 +1674,9 @@ M.plugins = {
             },
           },
         },
+        hide = { tabline = false, statusline = false },
+        shortcut_type = "number",
+        theme = "hyper",
       })
       vim.api.nvim_set_hl(0, "DashboardFiles", { link = "@keyword" })
       vim.api.nvim_set_hl(0, "DashboardProjectTitle", { link = "Keyword" })
@@ -1816,21 +1808,7 @@ M.plugins = {
     enabled = false,
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      -- startVisible = true,
       showBlankVirtLine = false,
-      -- highlightColor = { link = "Comment" },
-      -- hints = {
-      --      Caret = { text = "^", prio = 2 },
-      --      Dollar = { text = "$", prio = 1 },
-      --      MatchingPair = { text = "%", prio = 5 },
-      --      Zero = { text = "0", prio = 1 },
-      --      w = { text = "w", prio = 10 },
-      --      b = { text = "b", prio = 9 },
-      --      e = { text = "e", prio = 8 },
-      --      W = { text = "W", prio = 7 },
-      --      B = { text = "B", prio = 6 },
-      --      E = { text = "E", prio = 5 },
-      -- },
       gutterHints = {
         G = { prio = 0 },
         gg = { prio = 0 },
@@ -1843,7 +1821,7 @@ M.plugins = {
     "keaising/im-select.nvim",
     cond = function()
       return utils.any(
-        { "fcitx5-remote", "fcitx-remote", "im-select", "im-select.exe" },
+        { "fcitx-remote", "fcitx5-remote", "im-select", "im-select.exe" },
         function(arg)
           return vim.fn.executable(arg) == 1
         end
@@ -1869,11 +1847,11 @@ M.plugins = {
     opt = {},
     config = true,
     cmd = {
-      "RemoteStart",
-      "RemoteInfo",
       "RemoteCleanup",
-      "RemoteLog",
       "RemoteConfigDel",
+      "RemoteInfo",
+      "RemoteLog",
+      "RemoteStart",
     },
   },
   {
@@ -1886,19 +1864,19 @@ M.plugins = {
     "David-Kunz/gen.nvim",
     cmd = { "Gen" },
     opts = {
+      accept_map = "<c-cr>",
+      debug = false,
+      display_mode = "float",
+      hidden = false,
+      host = os.getenv("OLLAMA_ENTRY"),
+      init = function(_) end,
       model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
+      no_auto_close = true,
+      port = "11434",
       quit_map = "q",
       retry_map = "<c-r>",
-      accept_map = "<c-cr>",
-      host = os.getenv("OLLAMA_ENTRY"),
-      port = "11434",
-      display_mode = "float",
-      show_prompt = true,
       show_model = true,
-      no_auto_close = true,
-      hidden = false,
-      init = function(options) end,
-      debug = false, -- Prints errors and the command which is run.
+      show_prompt = true, -- Prints errors and the command which is run.
     },
     cond = function()
       return utils.no_vscode()
@@ -1955,7 +1933,6 @@ for _, spec in pairs(M.plugins) do
   end
 end
 
----@type LazyConfig
 M.config = {
   defaults = { lazy = true },
   dev = { fallback = true },

@@ -16,39 +16,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function()
     -- Displays hover information about the symbol under the cursor
-    local has_telescope, telescope = pcall(require, "telescope.builtin")
+    local telescope = require("telescope.builtin")
 
-    bufmap("n", "gd", function(ctx, opts)
+    bufmap("n", "gd", function(_, opts)
       opts = opts or {}
       opts.jump_type = "tab"
       return telescope.lsp_definitions(opts)
     end, { desc = "Goto definition." })
 
-    bufmap("n", "gD", function(ctx, opts)
+    bufmap("n", "gD", function(_, opts)
       opts = opts or {}
       opts.jump_type = "tab"
       return telescope.lsp_type_definitions(opts)
     end, { desc = "Goto type definition." })
 
-    bufmap("n", "gi", function(ctx, opts)
+    bufmap("n", "gi", function(_, opts)
       opts = opts or {}
       opts.jump_type = "tab"
       return telescope.lsp_implementations(opts)
     end, { desc = "Goto implementations." })
 
-    bufmap("n", "gr", function(ctx, opts)
+    bufmap("n", "gr", function(_, opts)
       opts = opts or {}
       opts.jump_type = "tab"
       return telescope.lsp_references(opts)
     end, { desc = "LSP reference." })
-    bufmap({ "i", "n" }, "<C-f>", function(ctx, opts)
+    bufmap({ "i", "n" }, "<C-f>", function(_, opts)
       return telescope.lsp_document_symbols(opts)
     end, { desc = "Document symbols." })
-    bufmap({ "i", "n" }, "<C-S-f>", function(ctx, opts)
+    bufmap({ "i", "n" }, "<C-S-f>", function(_, opts)
       return telescope.lsp_dynamic_workspace_symbols(opts)
     end, { desc = "Workspace symbols." })
-    -- Renames all references to the symbol under the cursor
-    -- bufmap("n", "<Leader>rv", vim.lsp.buf.rename)
 
     -- Move to the previous diagnostic
     bufmap("n", "[d", function()
