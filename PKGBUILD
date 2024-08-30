@@ -25,8 +25,6 @@ depends=(
     'rustup'
     'starship'
     'telegram-desktop'
-    'texlive'
-    'texlive-binextra'
     'tree-sitter-cli'
     'typst'
     'v2ray'
