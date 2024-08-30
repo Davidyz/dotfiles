@@ -6,7 +6,6 @@ url='https://github.com/Davidyz/dotfiles'
 arch=('any')
 license=('GPL')
 depends=(
-    'autojump'
     'bat'
     'biber'
     'bluedevil'
