@@ -131,8 +131,9 @@ end
 
 config.enable_scroll_bar = true
 config.font = wezterm.font_with_fallback({
-  "CaskaydiaCove NF",
   "Cascadia Mono PL",
+  "Symbols Nerd Font Mono",
+  "codicon",
   "Noto Sans Mono",
 })
 config.font_size = 13

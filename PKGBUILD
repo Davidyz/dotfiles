@@ -6,6 +6,7 @@ url='https://github.com/Davidyz/dotfiles'
 arch=('any')
 license=('GPL')
 depends=(
+    'adobe-source-han-sans-cn-fonts'
     'bat'
     'biber'
     'bluedevil'
@@ -28,6 +29,9 @@ depends=(
     'starship'
     'telegram-desktop'
     'tree-sitter-cli'
+    'ttf-cascadia-code'
+    'ttf-nerd-fonts-symbols'
+    'ttf-opensans'
     'typst'
     'v2ray'
     'vlc'
