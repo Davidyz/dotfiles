@@ -30,7 +30,7 @@ depends=(
     'telegram-desktop'
     'tree-sitter-cli'
     'ttf-cascadia-code'
-    'ttf-nerd-fonts-symbols'
+    'ttf-nerd-fonts-symbols-mono'
     'ttf-opensans'
     'typst'
     'v2ray'
