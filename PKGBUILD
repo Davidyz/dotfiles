@@ -17,6 +17,8 @@ depends=(
     'git-delta'
     'imagemagick'
     'lsd'
+    'lua51'
+    'luarocks'
     'make'
     'nodejs'
     'npm'
