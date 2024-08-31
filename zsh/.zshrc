@@ -124,7 +124,7 @@ for i in "${custom_plugins[@]}"; do
 done
 
 if command -v fastfetch > /dev/null ; then
-	fastfetch -c neofetch --pipe false
+	fastfetch -c examples/14 --pipe false
 	print
 elif command -v neofetch > /dev/null ; then
 	neofetch --color_blocks off --ascii_bold off --gtk3 off --gtk2 off --cpu_temp C --disable uptime --de_version off
