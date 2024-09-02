@@ -36,3 +36,6 @@
 
 [bat.files]
 "bat/" = "~/.config/bat/"
+
+[glow.files]
+"glow/" = { target = "~/.config/glow/", type = "symbolic" }
