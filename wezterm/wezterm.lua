@@ -131,13 +131,13 @@ end
 
 config.enable_scroll_bar = true
 config.font = wezterm.font_with_fallback({
-  "Cascadia Mono PL",
+  "Cascadia Mono",
   "Symbols Nerd Font Mono",
   "codicon",
   "Noto Sans Mono",
 })
 config.font_size = 13
-config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
+config.harfbuzz_features = { "calt=1", "clig=0", "liga=0" }
 config.inactive_pane_hsb = {
   saturation = 0.7,
   brightness = 0.7,
