@@ -478,6 +478,7 @@ M.plugins = {
   -- NOTE: lsp
   {
     "neovim/nvim-lspconfig",
+    version = "*",
     config = function()
       require("plugins._lsp")
       require("keymaps._lsp")
