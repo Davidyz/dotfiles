@@ -52,4 +52,46 @@ require("nvim-treesitter.configs").setup({
     },
   },
   matchup = { enable = true },
+  textobjects = {
+    select = {
+      enable = true,
+      keymaps = {
+        ["af"] = { query = "@function.outer", desc = "Select function" },
+        ["if"] = { query = "@function.inner", desc = "Select inner function" },
+        ["ac"] = {
+          query = "@class.outer",
+          desc = "Select class",
+        },
+        ["ic"] = {
+          query = "@class.inner",
+          desc = "Select inner part of a class region",
+        },
+        ["as"] = {
+          query = "@scope",
+          query_group = "locals",
+          desc = "Select language scope",
+        },
+        ["il"] = { query = "@loop.inner", desc = "Select inner loop" },
+        ["al"] = { query = "@loop.outer", desc = "Select loop" },
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>a"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<leader>A"] = "@parameter.inner",
+      },
+    },
+    lsp_interop = {
+      enable = true,
+      border = "none",
+      floating_preview_opts = {},
+      peek_definition_code = {
+        ["<leader>df"] = "@function.outer",
+        ["<leader>dF"] = "@class.outer",
+      },
+    },
+  },
 })

@@ -989,14 +989,17 @@ M.plugins = {
   {
     "mistricky/codesnap.nvim",
     build = "make",
+    version = "*",
     cond = function()
-      return utils.no_vscode() and vim.fn.executable("make")
+      return utils.no_vscode()
+        and vim.fn.executable("make")
+        and utils.platform() ~= "win"
     end,
-    init = function()
-      local path = vim.fn.expand("~/Pictures/nvim/")
-      if vim.fn.isdirectory(path) ~= 1 then
-        vim.fn.mkdir(path, "p")
+    config = function(_, opts)
+      if vim.fn.isdirectory(opts.save_path) ~= 1 then
+        vim.fn.mkdir(opts.save_path, "p")
       end
+      require("codesnap").setup(opts)
     end,
     opts = {
       mac_window_bar = false,
