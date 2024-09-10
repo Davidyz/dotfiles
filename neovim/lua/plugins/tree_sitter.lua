@@ -75,15 +75,6 @@ require("nvim-treesitter.configs").setup({
         ["al"] = { query = "@loop.outer", desc = "Select loop" },
       },
     },
-    swap = {
-      enable = true,
-      swap_next = {
-        ["<leader>a"] = "@parameter.inner",
-      },
-      swap_previous = {
-        ["<leader>A"] = "@parameter.inner",
-      },
-    },
     lsp_interop = {
       enable = true,
       border = "none",
