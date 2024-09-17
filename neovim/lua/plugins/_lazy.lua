@@ -478,6 +478,7 @@ M.plugins = {
   -- NOTE: lsp
   {
     "neovim/nvim-lspconfig",
+    version = "*",
     config = function()
       require("plugins._lsp")
       require("keymaps._lsp")
@@ -635,6 +636,7 @@ M.plugins = {
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
+    version = "*",
     opts = {
       notification = {
         window = {
@@ -961,6 +963,7 @@ M.plugins = {
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "echasnovski/mini.animate",
+    version = "*",
     init = function()
       vim.o.mousescroll = "ver:1,hor:6"
     end,
@@ -986,6 +989,7 @@ M.plugins = {
   {
     "mistricky/codesnap.nvim",
     build = "make",
+    version = "*",
     cond = function()
       return utils.no_vscode()
         and vim.fn.executable("make")
@@ -1221,7 +1225,7 @@ M.plugins = {
     },
     opts = {
       signs = {},
-      _signs_staged = {
+      signs_staged = {
         add = { text = "" },
         change = { text = "" },
         delete = { text = "" },
@@ -1254,6 +1258,7 @@ M.plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
+    version = "*",
     keys = {
       {
         "<Leader>tf",
@@ -1538,6 +1543,7 @@ M.plugins = {
   },
   {
     "stevearc/oil.nvim",
+    version = "*",
     opts = { lsp_file_methods = { autosave_changes = true } },
     dependencies = { icon_provider },
     cmd = { "Oil" },
@@ -1553,6 +1559,7 @@ M.plugins = {
   },
   {
     "mtrajano/tssorter.nvim",
+    version = "*",
     opts = {},
     keys = {
       {
@@ -1931,7 +1938,7 @@ for _, spec in pairs(M.plugins) do
 end
 
 M.config = {
-  defaults = { lazy = true, version = "*" },
+  defaults = { lazy = true },
   dev = { fallback = true },
   install = { colorscheme = { "catppuccin-mocha" } },
   profiling = { loader = true, require = true },
