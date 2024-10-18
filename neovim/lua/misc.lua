@@ -12,15 +12,7 @@ vim.opt.mouse = "a"
 vim.opt.swapfile = false
 
 vim.opt.showmode = false
-if
-  vim.fn.environ()["SSH_TTY"] ~= nil
-  and (not vim.list_contains({ "unnamed", "unnamedplus" }, vim.o.clipboard))
-  and vim.g.clipboard == nil
-then
-  vim.o.clipboard = ""
-else
-  vim.o.clipboard = "unnamedplus"
-end
+vim.o.clipboard = "unnamedplus"
 
 if vim.fn.has("unix") ~= 0 then
   if vim.fn.executable("python3") then
