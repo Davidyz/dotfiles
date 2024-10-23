@@ -2,6 +2,8 @@ M = {}
 local utils = require("_utils")
 
 local icon_provider = "echasnovski/mini.icons"
+-- local cmp_engine = "hrsh7th/nvim-cmp"
+local cmp_engine = "iguanacucumber/magazine.nvim"
 M.plugins = {
   -- NOTE: icons
   {
@@ -496,7 +498,8 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "hrsh7th/nvim-cmp",
+    cmp_engine,
+    name = "nvim-cmp",
     cond = utils.no_vscode,
     opts = function()
       return require("keymaps.cmp")
@@ -539,14 +542,14 @@ M.plugins = {
     opts = {},
     config = true,
     event = { "InsertEnter" },
-    dependencies = { "hrsh7th/nvim-cmp" },
+    dependencies = { cmp_engine },
     cond = utils.no_vscode,
   },
   {
     "hrsh7th/cmp-cmdline",
     event = { "InsertEnter", "CmdlineEnter" },
     cond = utils.no_vscode,
-    dependencies = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-buffer" },
+    dependencies = { cmp_engine, "hrsh7th/cmp-buffer" },
     config = function()
       local compare = require("cmp.config.compare")
       local cmp = require("cmp")

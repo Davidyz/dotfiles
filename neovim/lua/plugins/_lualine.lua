@@ -147,7 +147,7 @@ local lualine_config = {
         color_correction = "dynamic",
         navic_opts = {
           icons = require("_utils").codicons,
-          separator = "  ",
+          separator = "   ",
         },
       },
     },
