@@ -2,8 +2,8 @@ M = {}
 local utils = require("_utils")
 
 local icon_provider = "echasnovski/mini.icons"
--- local cmp_engine = "hrsh7th/nvim-cmp"
-local cmp_engine = "iguanacucumber/magazine.nvim"
+local cmp_engine = "hrsh7th/nvim-cmp"
+-- local cmp_engine = "iguanacucumber/magazine.nvim"
 M.plugins = {
   -- NOTE: icons
   {
