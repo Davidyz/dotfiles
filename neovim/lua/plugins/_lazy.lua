@@ -847,11 +847,6 @@ M.plugins = {
     end,
   },
   {
-    "mawkler/refjump.nvim",
-    keys = { "]r", "[r" },
-    opts = {},
-  },
-  {
     "folke/lazydev.nvim",
     ft = "lua",
     opts = {
@@ -950,18 +945,106 @@ M.plugins = {
 
   -- NOTE: misc
   {
-    "rcarriga/nvim-notify",
-    config = function(_, opts)
-      require("notify").setup(opts)
-      vim.notify = require("notify")
-    end,
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
     opts = {
-      fps = 60,
-      render = "compact",
-      background_colour = "Normal",
-      stages = "slide",
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      bigfile = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      statuscolumn = {
+        enabled = true,
+        left = { "mark", "sign", "git" },
+        right = { "fold" },
+      },
+      dashboard = {
+        enabled = true,
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1 },
+          {
+            icon = " ",
+            title = "Recent Files",
+            section = "recent_files",
+            indent = 2,
+            padding = { 2, 2 },
+          },
+          {
+            icon = " ",
+            title = "Projects",
+            section = "projects",
+            indent = 2,
+            padding = 2,
+          },
+          { section = "startup" },
+        },
+        preset = {
+          keys = {
+            {
+              icon = " ",
+              key = "f",
+              desc = "Find File",
+              action = ":lua Snacks.dashboard.pick('files')",
+            },
+            {
+              icon = " ",
+              key = "n",
+              desc = "New File",
+              action = ":ene | startinsert",
+            },
+            {
+              icon = " ",
+              key = "g",
+              desc = "Find Text",
+              action = ":lua Snacks.dashboard.pick('live_grep')",
+            },
+            {
+              icon = " ",
+              key = "r",
+              desc = "Recent Files",
+              action = ":lua Snacks.dashboard.pick('oldfiles')",
+            },
+            {
+              icon = " ",
+              key = "c",
+              desc = "Config",
+              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            },
+            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+            {
+              icon = "󰒲 ",
+              key = "L",
+              desc = "Lazy",
+              action = ":Lazy",
+              enabled = package.loaded.lazy ~= nil,
+            },
+            { icon = " ", key = "q", desc = "Quit", action = ":q" },
+          },
+        },
+      },
+      words = { enabled = true },
     },
-    event = "BufEnter",
+    keys = {
+      {
+        "]r",
+        function()
+          require("snacks").words.jump(vim.v.count1)
+        end,
+        desc = "Next Reference",
+        mode = { "n", "t" },
+      },
+      {
+        "[r",
+        function()
+          require("snacks").words.jump(-vim.v.count1)
+        end,
+        desc = "Prev Reference",
+        mode = { "n", "t" },
+      },
+    },
   },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
@@ -1454,7 +1537,7 @@ M.plugins = {
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local excluded_ft =
-        { ["neo-tree"] = true, dashboard = true, fidget = true, help = true }
+        { ["neo-tree"] = true, snacks_dashboard = true, fidget = true, help = true }
       local hl_names = {
         "RainbowDelimiterRed",
         "RainbowDelimiterYellow",
@@ -1624,78 +1707,6 @@ M.plugins = {
         desc = "Disable focus autoresize for FileType",
       })
     end,
-  },
-
-  {
-    "nvimdev/dashboard-nvim",
-    event = "BufEnter",
-    config = function()
-      require("dashboard").setup({
-        change_to_vcs_root = true,
-        config = {
-          mru = { limit = 10, cwd_only = true },
-          project = { enable = true },
-          shortcut = {
-            {
-              desc = "Find file",
-              key = "f",
-              action = function()
-                require("telescope.builtin").find_files({
-                  layout_config = { prompt_position = "top", preview_width = 0.6 },
-                })
-              end,
-            },
-            {
-              desc = "Live grep",
-              key = "r",
-              action = function()
-                require("telescope.builtin").live_grep({
-                  layout_config = { prompt_position = "top", preview_width = 0.6 },
-                })
-              end,
-            },
-            {
-              desc = "Man pages",
-              key = "m",
-              action = function()
-                require("telescope.builtin").man_pages({
-                  layout_config = { prompt_position = "top", preview_width = 0.6 },
-                })
-              end,
-            },
-            {
-              desc = "vim help",
-              key = "h",
-              action = function()
-                require("telescope.builtin").help_tags({
-                  layout_config = { prompt_position = "top", preview_width = 0.6 },
-                })
-              end,
-            },
-            {
-              desc = "Empty buffer",
-              key = "e",
-              action = function()
-                vim.cmd("enew")
-              end,
-            },
-          },
-        },
-        hide = { tabline = false, statusline = false },
-        shortcut_type = "number",
-        theme = "hyper",
-      })
-      vim.api.nvim_set_hl(0, "DashboardFiles", { link = "@keyword" })
-      vim.api.nvim_set_hl(0, "DashboardProjectTitle", { link = "Keyword" })
-      vim.api.nvim_set_hl(0, "DashboardMruTitle", { link = "Keyword" })
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "dashboard",
-        callback = function()
-          vim.api.nvim_buf_set_keymap(0, "n", "q", ":exit<CR>", { noremap = true })
-        end,
-      })
-    end,
-    dependencies = { { icon_provider } },
   },
   { "backdround/tabscope.nvim", config = true },
   {

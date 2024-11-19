@@ -222,23 +222,6 @@ local handlers = {
 
 require("mason-lspconfig").setup_handlers(handlers)
 
-vim.api.nvim_create_autocmd(
-  { "TextChanged", "TextChangedI", "CursorMoved", "CursorMovedI" },
-  {
-    callback = function()
-      local clients = vim.lsp.get_clients({ bufnr = 0 })
-      local server_supported = utils.any(clients, function(c)
-        local capability = c.server_capabilities.documentHighlightProvider
-        return capability ~= nil and capability ~= false
-      end)
-      if #clients > 1 and server_supported then
-        vim.lsp.buf.clear_references()
-        vim.lsp.buf.document_highlight()
-      end
-    end,
-  }
-)
-
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
