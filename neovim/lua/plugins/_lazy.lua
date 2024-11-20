@@ -948,85 +948,107 @@ M.plugins = {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-      bigfile = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      statuscolumn = {
-        enabled = true,
-        left = { "mark", "sign", "git" },
-        right = { "fold" },
-      },
-      dashboard = {
-        enabled = true,
-        sections = {
-          { section = "header" },
-          { section = "keys", gap = 1 },
-          {
-            icon = " ",
-            title = "Recent Files",
-            section = "recent_files",
-            indent = 2,
-            padding = { 2, 2 },
-          },
-          {
-            icon = " ",
-            title = "Projects",
-            section = "projects",
-            indent = 2,
-            padding = 2,
-          },
-          { section = "startup" },
+    version = "*",
+    opts = function()
+      return {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+        bigfile = { enabled = true },
+        notifier = { enabled = true },
+        quickfile = { enabled = true },
+        statuscolumn = {
+          enabled = true,
+          left = { "mark", "sign", "git" },
+          right = { "fold" },
         },
-        preset = {
-          keys = {
-            {
-              icon = " ",
-              key = "f",
-              desc = "Find File",
-              action = ":lua Snacks.dashboard.pick('files')",
-            },
+        dashboard = {
+          enabled = true,
+          wo = { statusline = nil },
+          sections = {
+            { section = "header" },
+            { section = "keys", gap = 0 },
             {
               icon = " ",
-              key = "n",
-              desc = "New File",
-              action = ":ene | startinsert",
+              title = "Recent Files",
+              section = "recent_files",
+              indent = 2,
+              padding = { 2, 2 },
             },
             {
-              icon = " ",
-              key = "g",
-              desc = "Find Text",
-              action = ":lua Snacks.dashboard.pick('live_grep')",
+              icon = " ",
+              title = "Projects",
+              section = "projects",
+              indent = 2,
+              enabled = require("snacks").git.get_root() == nil,
+              padding = 2,
             },
             {
-              icon = " ",
-              key = "r",
-              desc = "Recent Files",
-              action = ":lua Snacks.dashboard.pick('oldfiles')",
+              pane = 2,
+              icon = " ",
+              title = "Git Status",
+              section = "terminal",
+              enabled = require("snacks").git.get_root() ~= nil,
+              cmd = "git status --short --branch --renames",
+              height = 5,
+              padding = 1,
+              ttl = 5 * 60,
+              indent = 3,
             },
-            {
-              icon = " ",
-              key = "c",
-              desc = "Config",
-              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            { section = "startup" },
+          },
+          preset = {
+            keys = {
+              {
+                icon = " ",
+                key = "f",
+                desc = "Find File",
+                action = ":lua Snacks.dashboard.pick('files')",
+              },
+              {
+                icon = " ",
+                key = "n",
+                desc = "New File",
+                action = ":ene | startinsert",
+              },
+              {
+                icon = " ",
+                key = "g",
+                desc = "Find Text",
+                action = ":lua Snacks.dashboard.pick('live_grep')",
+              },
+              {
+                icon = " ",
+                key = "r",
+                desc = "Recent Files",
+                action = ":lua Snacks.dashboard.pick('oldfiles')",
+              },
+              {
+                icon = " ",
+                key = "c",
+                desc = "Config",
+                action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+              },
+              {
+                icon = " ",
+                key = "s",
+                desc = "Restore Session",
+                section = "session",
+              },
+              {
+                icon = "󰒲 ",
+                key = "L",
+                desc = "Lazy",
+                action = ":Lazy",
+                enabled = package.loaded.lazy ~= nil,
+              },
+              { icon = " ", key = "q", desc = "Quit", action = ":q" },
             },
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-            {
-              icon = "󰒲 ",
-              key = "L",
-              desc = "Lazy",
-              action = ":Lazy",
-              enabled = package.loaded.lazy ~= nil,
-            },
-            { icon = " ", key = "q", desc = "Quit", action = ":q" },
           },
         },
-      },
-      words = { enabled = true },
-    },
+        words = { enabled = true },
+      }
+    end,
     keys = {
       {
         "]r",
