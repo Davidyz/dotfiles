@@ -239,6 +239,7 @@ M.plugins = {
           notify = true,
           nvim_surround = true,
           rainbow_delimiters = true,
+          snacks = true,
           which_key = true,
         },
       }
@@ -1048,6 +1049,22 @@ M.plugins = {
         },
         words = { enabled = true },
       }
+    end,
+    init = function()
+      local snacks = require("snacks")
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          _G.dd = function(...)
+            snacks.debug.inspect(...)
+          end
+
+          _G.dt = function(...)
+            snacks.debug.backtrace(...)
+          end
+          vim.print = _G.dd
+        end,
+      })
     end,
     keys = {
       {
