@@ -199,6 +199,7 @@ if [ $USER = root ]; then
 	alias v2ray_install="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)"
 	alias v2ray_update_data="bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh)"
 fi
+[ -f "$(which xdg-open)" ] && alias open="xdg-open"
 
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"

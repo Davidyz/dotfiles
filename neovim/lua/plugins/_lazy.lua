@@ -877,6 +877,7 @@ M.plugins = {
   },
   {
     "linux-cultist/venv-selector.nvim",
+    branch = "regexp",
     dependencies = { "neovim/nvim-lspconfig" },
     cmd = { "VenvSelect", "VenvSelectCurrent" },
     opts = { auto_refresh = true, name = { "venv", ".venv" } },
@@ -1086,6 +1087,17 @@ M.plugins = {
     },
   },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
+  {
+    "sphamba/smear-cursor.nvim",
+    opts = function()
+      local palette = require("catppuccin.palettes.mocha")
+      return {
+        cursor_color = palette.blue,
+        normal_bg = palette.base,
+      }
+    end,
+    event = { "BufNewFile", "BufReadPost", "FileType *" },
+  },
   {
     "echasnovski/mini.animate",
     version = "*",
