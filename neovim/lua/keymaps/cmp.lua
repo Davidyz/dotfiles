@@ -126,6 +126,16 @@ local cmp_config = {
         fallback()
       end
     end, { "i", "s" }),
+    ["<C-x>"] = cmp.mapping(
+      cmp.mapping.complete({
+        config = {
+          sources = cmp.config.sources({
+            { name = "cmp_ai" },
+          }),
+        },
+      }),
+      { "i" }
+    ),
   },
 }
 return cmp_config

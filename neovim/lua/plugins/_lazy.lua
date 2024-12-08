@@ -510,8 +510,53 @@ M.plugins = {
       "lukas-reineke/cmp-under-comparator",
       "onsails/lspkind.nvim",
       "hrsh7th/cmp-buffer",
+      "tzachar/cmp-ai",
     },
     event = { "InsertEnter", "CmdlineEnter" },
+  },
+  {
+    "tzachar/cmp-ai",
+    dependencies = "nvim-lua/plenary.nvim",
+    cond = function()
+      return utils.no_vscode()
+        and (vim.fn.executable("ollama") or os.getenv("OLLAMA_HOST"))
+    end,
+    config = function()
+      local cmp_ai = require("cmp_ai.config")
+      cmp_ai:setup({
+        max_lines = 1000,
+        provider = "Ollama",
+        provider_options = {
+          base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
+          model = "qwen2.5-coder:7b-base-q6_K",
+          options = {
+            temperature = 0.2,
+          },
+          prompt = function(lines_before, lines_after)
+            local prompt = "Fill in the middle from the given context for this "
+              .. vim.bo.filetype
+              .. " code."
+              .. "<|fim_prefix|>"
+              .. lines_before
+              .. "<|fim_suffix|>"
+              .. lines_after
+              .. "<|fim_middle|>"
+
+            return prompt
+          end,
+        },
+        notify = true,
+        notify_callback = function(msg)
+          vim.notify(msg, "info", { title = "cmp-ai" })
+        end,
+        run_on_every_keystroke = false,
+        ignored_file_types = {
+          -- default is not to ignore
+          -- uncomment to ignore in lua:
+          -- lua = true
+        },
+      })
+    end,
   },
   {
     "hrsh7th/cmp-nvim-lsp",
