@@ -111,6 +111,7 @@ custom_plugins=(
 	TamCore/autoupdate-oh-my-zsh-plugins
 	ael-code/zsh-colored-man-pages
 	darvid/zsh-poetry
+	ocodo/ollama_zsh_completion
 )
 # [ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(plutowang/zsh-ollama-command)
 [ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(Davidyz/zsh-ollama-command)
@@ -156,6 +157,7 @@ plugins=(
 	pipenv
 	poetry
 	zsh-poetry
+	ollama_zsh_completion
 )
 
 [ ! -z "$HAS_OLLAMA" ] && plugins+=(zsh-ollama-command)
