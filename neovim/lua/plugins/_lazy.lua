@@ -927,7 +927,7 @@ M.plugins = {
     opts = { auto_refresh = true, name = { "venv", ".venv" } },
   },
   {
-    dir = "~/git/inlayhint-filler.nvim/",
+    "Davidyz/inlayhint-filler.nvim",
     keys = {
       {
         "<Leader>I",
