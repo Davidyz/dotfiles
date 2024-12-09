@@ -236,7 +236,6 @@ M.plugins = {
           native_lsp = { enabled = true },
           navic = { enabled = true },
           neotree = true,
-          notify = true,
           nvim_surround = true,
           rainbow_delimiters = true,
           snacks = true,
@@ -927,6 +926,17 @@ M.plugins = {
     cmd = { "VenvSelect", "VenvSelectCurrent" },
     opts = { auto_refresh = true, name = { "venv", ".venv" } },
   },
+  {
+    dir = "~/git/inlayhint-filler.nvim/",
+    keys = {
+      {
+        "<Leader>I",
+        function()
+          require("inlayhint-filler").fill({})
+        end,
+      },
+    },
+  },
 
   -- NOTE: dap
   {
@@ -1253,7 +1263,6 @@ M.plugins = {
 
       -- optional
       "nvim-treesitter/nvim-treesitter",
-      "rcarriga/nvim-notify",
 
       icon_provider,
     },
@@ -1399,8 +1408,7 @@ M.plugins = {
           else
             msg = "Disabled."
           end
-          local notify = require("notify")
-          notify(msg, "info", { title = "Git Blame" })
+          vim.notify(msg, "info", { title = "Git Blame" })
         end,
         noremap = true,
       },
