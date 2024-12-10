@@ -136,7 +136,7 @@ config.font = wezterm.font_with_fallback({
   "codicon",
   "Noto Sans Mono",
 })
-config.font_size = 13
+config.font_size = 12
 config.harfbuzz_features = { "calt=1", "clig=0", "liga=0" }
 config.inactive_pane_hsb = {
   saturation = 0.7,

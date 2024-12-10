@@ -934,6 +934,8 @@ M.plugins = {
         function()
           require("inlayhint-filler").fill({})
         end,
+        mode = { "n" },
+        desc = "Insert inlay hint to the buffer",
       },
     },
   },
@@ -1022,15 +1024,18 @@ M.plugins = {
         dashboard = {
           enabled = true,
           wo = { statusline = nil },
+          pane_gap = 4,
           sections = {
             { section = "header" },
-            { section = "keys", gap = 0 },
+            { section = "keys", gap = 0, padding = 2 },
             {
               icon = " ",
               title = "Recent Files",
               section = "recent_files",
               indent = 2,
-              padding = { 2, 2 },
+              padding = 2,
+              cwd = true,
+              file = vim.fn.fnamemodify(".", ":~"),
             },
             {
               icon = " ",
@@ -1453,9 +1458,7 @@ M.plugins = {
       {
         "<Leader>tf",
         function()
-          require("telescope.builtin").find_files({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").find_files({})
         end,
         remap = false,
         mode = "n",
@@ -1464,9 +1467,7 @@ M.plugins = {
       {
         "<Leader>tb",
         function()
-          require("telescope.builtin").buffers({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").buffers({})
         end,
         remap = false,
         mode = "n",
@@ -1475,9 +1476,7 @@ M.plugins = {
       {
         "<Leader>tq",
         function()
-          require("telescope.builtin").quickfix({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").quickfix({})
         end,
         remap = false,
         mode = "n",
@@ -1486,9 +1485,7 @@ M.plugins = {
       {
         "<Leader>tD",
         function()
-          require("telescope.builtin").diagnostics({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").diagnostics({})
         end,
         remap = false,
         mode = "n",
@@ -1499,7 +1496,6 @@ M.plugins = {
         function()
           require("telescope.builtin").diagnostics({
             bufnr = 0,
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
           })
         end,
         remap = false,
@@ -1509,9 +1505,7 @@ M.plugins = {
       {
         "<Leader>th",
         function()
-          require("telescope.builtin").help_tags({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").help_tags({})
         end,
         remap = false,
         mode = "n",
@@ -1520,9 +1514,7 @@ M.plugins = {
       {
         "R",
         function()
-          require("telescope.builtin").live_grep({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").live_grep({})
         end,
         remap = false,
         mode = "n",
@@ -1531,9 +1523,7 @@ M.plugins = {
       {
         "<Leader>f",
         function()
-          require("telescope.builtin").current_buffer_fuzzy_find({
-            layout_config = { prompt_position = "top", preview_width = 0.6 },
-          })
+          require("telescope.builtin").current_buffer_fuzzy_find({})
         end,
         remap = false,
         mode = "n",
@@ -1557,9 +1547,11 @@ M.plugins = {
     opts = function()
       return {
         defaults = {
-          layout_strategy = "horizontal",
-          -- layout_config = { prompt_position = "top", preview_width = 0.6 },
-          layout_config = { prompt_position = "top" },
+          layout_strategy = "flex",
+          layout_config = {
+            prompt_position = "top",
+            horizontal = { preview_width = 0.6 },
+          },
           sorting_strategy = "ascending",
           mappings = {
             i = {
@@ -1569,6 +1561,7 @@ M.plugins = {
         },
         extensions = {
           ["ui-select"] = { require("telescope.themes").get_dropdown() },
+          fzf = {},
         },
       }
     end,
@@ -2046,6 +2039,19 @@ M.plugins = {
         editor_only_render_when_focused = true,
       }
     end,
+  },
+  {
+    "jsongerber/thanks.nvim",
+    opts = {
+      star_on_install = true,
+      star_on_startup = false,
+      ignore_repos = {},
+      ignore_authors = {},
+      unstar_on_uninstall = true,
+      ask_before_unstarring = true,
+    },
+    event = { "VeryLazy" },
+    -- cmd = { "ThanksAll", "ThanksGithubAuth", "ThanksGithubLogout", "ThanksClearCache" },
   },
 }
 
