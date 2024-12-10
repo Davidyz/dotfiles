@@ -1147,17 +1147,17 @@ M.plugins = {
     },
   },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
-  {
-    "sphamba/smear-cursor.nvim",
-    opts = function()
-      local palette = require("catppuccin.palettes.mocha")
-      return {
-        cursor_color = palette.blue,
-        normal_bg = palette.base,
-      }
-    end,
-    event = { "BufNewFile", "BufReadPost", "FileType *" },
-  },
+  -- {
+  --   "sphamba/smear-cursor.nvim",
+  --   opts = function()
+  --     local palette = require("catppuccin.palettes.mocha")
+  --     return {
+  --       cursor_color = palette.blue,
+  --       normal_bg = palette.base,
+  --     }
+  --   end,
+  --   event = { "BufNewFile", "BufReadPost", "FileType *" },
+  -- },
   {
     "echasnovski/mini.animate",
     version = "*",
@@ -1947,7 +1947,7 @@ M.plugins = {
       async_switch_im = false,
       set_previous_events = { "InsertEnter" },
     },
-    cmd = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
   },
   {
     "amitds1997/remote-nvim.nvim",
