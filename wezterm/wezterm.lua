@@ -135,6 +135,7 @@ config.font = wezterm.font_with_fallback({
   "Symbols Nerd Font Mono",
   "codicon",
   "Noto Sans Mono",
+  "Noto Sans Mono CJK SC",
 })
 config.font_size = 12
 config.harfbuzz_features = { "calt=1", "clig=0", "liga=0" }
