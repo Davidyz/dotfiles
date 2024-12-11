@@ -2051,7 +2051,9 @@ M.plugins = {
       ask_before_unstarring = true,
     },
     event = { "VeryLazy" },
-    -- cmd = { "ThanksAll", "ThanksGithubAuth", "ThanksGithubLogout", "ThanksClearCache" },
+    cond = function()
+      return utils.no_vscode()
+    end,
   },
 }
 
