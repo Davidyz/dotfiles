@@ -422,6 +422,7 @@ M.plugins = {
     main = "tiny-inline-diagnostic",
     cond = utils.no_vscode,
     opts = {
+      preset = "nonerdfont",
       options = {
         multiple_diag_under_cursor = true,
         show_source = true,
@@ -518,7 +519,7 @@ M.plugins = {
     dependencies = "nvim-lua/plenary.nvim",
     cond = function()
       return utils.no_vscode()
-        and (vim.fn.executable("ollama") or os.getenv("OLLAMA_HOST"))
+        and (vim.fn.executable("ollama") or (os.getenv("OLLAMA_HOST") ~= nil))
     end,
     config = function()
       local cmp_ai = require("cmp_ai.config")
@@ -928,13 +929,14 @@ M.plugins = {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
+    dir = "~/git/inlayhint-filler.nvim/",
     keys = {
       {
-        "<Leader>I",
+        "<Leader>i",
         function()
-          require("inlayhint-filler").fill({})
+          require("inlayhint-filler").fill()
         end,
-        mode = { "n" },
+        mode = { "n", "v" },
         desc = "Insert inlay hint to the buffer",
       },
     },
@@ -1013,6 +1015,7 @@ M.plugins = {
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
+        -- input = { enabled = true, relative = "cursor", row = -3, col = 0 },
         bigfile = { enabled = true },
         notifier = { enabled = true },
         quickfile = { enabled = true },
@@ -1124,6 +1127,7 @@ M.plugins = {
             snacks.debug.backtrace(...)
           end
           vim.print = _G.dd
+          -- vim.ui.input = Snacks.input.input
         end,
       })
     end,
@@ -1147,17 +1151,6 @@ M.plugins = {
     },
   },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
-  -- {
-  --   "sphamba/smear-cursor.nvim",
-  --   opts = function()
-  --     local palette = require("catppuccin.palettes.mocha")
-  --     return {
-  --       cursor_color = palette.blue,
-  --       normal_bg = palette.base,
-  --     }
-  --   end,
-  --   event = { "BufNewFile", "BufReadPost", "FileType *" },
-  -- },
   {
     "echasnovski/mini.animate",
     version = "*",

@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.diagnostic.goto_next({ float = false })
     end, { desc = "Next diagnostic." })
 
-    bufmap("n", "<Leader>i", function()
+    bufmap("n", "<Leader>I", function()
       local bufnr = vim.api.nvim_get_current_buf()
       return vim.lsp.inlay_hint.enable(
         not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }),

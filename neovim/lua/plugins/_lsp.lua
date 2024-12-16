@@ -84,6 +84,15 @@ local handlers = {
       })
     )
   end,
+  ["pylsp"] = function()
+    lspconfig.pylsp.setup(
+      vim.tbl_deep_extend(
+        "force",
+        default_server_config,
+        { capabilities = { experimental = { inlayHintProvider = true } } }
+      )
+    )
+  end,
   ["basedpyright"] = function()
     lspconfig["basedpyright"].setup(
       vim.tbl_deep_extend("force", default_server_config, {

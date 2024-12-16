@@ -2,6 +2,7 @@ M = {}
 
 M.mason_packages = {
   "basedpyright",
+  -- "pylsp",
   "bash-language-server",
   "clang-format",
   "clangd",
