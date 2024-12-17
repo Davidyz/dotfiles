@@ -929,7 +929,6 @@ M.plugins = {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
-    dir = "~/git/inlayhint-filler.nvim/",
     keys = {
       {
         "<Leader>i",
@@ -2053,6 +2052,10 @@ M.plugins = {
 for _, spec in pairs(M.plugins) do
   if spec.dir ~= nil then
     spec.dir = vim.fn.expand(spec.dir)
+    if vim.fn.isdirectory(spec.dir) == 0 then
+      -- remove this attribute if no local dir.
+      spec.dir = nil
+    end
   end
 end
 
