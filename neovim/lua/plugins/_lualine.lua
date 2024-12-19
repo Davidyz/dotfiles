@@ -153,12 +153,19 @@ local lualine_config = {
     },
     lualine_y = {
       {
-        arduino_status,
+        function()
+          if vim.bo.filetype == "arduino" then
+            return arduino_status()
+          elseif vim.bo.filetype == "python" then
+            return require("venv-selector").venv() or ""
+          end
+        end,
         cond = function()
-          return vim.bo.filetype == "arduino"
+          return vim.list_contains({ "arduino", "python" }, vim.bo.filetype)
         end,
       },
     },
+    lualine_z = { require("snacks").profiler.status() },
   },
   extensions = {
     "overseer",

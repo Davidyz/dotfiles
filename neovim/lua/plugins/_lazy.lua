@@ -924,11 +924,38 @@ M.plugins = {
     "linux-cultist/venv-selector.nvim",
     branch = "regexp",
     dependencies = { "neovim/nvim-lspconfig" },
+    ft = { "python" },
     cmd = { "VenvSelect", "VenvSelectCurrent" },
-    opts = { auto_refresh = true, name = { "venv", ".venv" } },
+    opts = function()
+      return {
+        settings = {
+          options = {
+            activate_venv_in_terminal = true,
+            cached_venv_automatic_activation = true,
+            notify_user_on_venv_activation = true,
+            telescope_active_venv_color = require("catppuccin.palettes.mocha").lavender,
+          },
+        },
+      }
+    end,
+    config = function(_, opts)
+      require("venv-selector").setup(opts)
+      vim.api.nvim_create_autocmd("VimEnter", {
+        desc = "Auto select virtualenv Nvim open",
+        pattern = "*",
+        callback = function()
+          local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
+          if venv ~= "" then
+            pcall(require("venv-selector").retrieve_from_cache)
+          end
+        end,
+        once = true,
+      })
+    end,
   },
   {
     "Davidyz/inlayhint-filler.nvim",
+    dir = "~/git/inlayhint-filler.nvim/",
     keys = {
       {
         "<Leader>i",
@@ -1016,13 +1043,6 @@ M.plugins = {
         -- refer to the configuration section below
         -- input = { enabled = true, relative = "cursor", row = -3, col = 0 },
         bigfile = { enabled = true },
-        notifier = { enabled = true },
-        quickfile = { enabled = true },
-        statuscolumn = {
-          enabled = true,
-          left = { "mark", "sign", "git" },
-          right = { "fold" },
-        },
         dashboard = {
           enabled = true,
           wo = { statusline = nil },
@@ -1110,6 +1130,15 @@ M.plugins = {
             },
           },
         },
+        notifier = { enabled = true },
+        profiler = { enabled = true },
+        quickfile = { enabled = true },
+        rename = { enabled = true },
+        statuscolumn = {
+          enabled = true,
+          left = { "mark", "sign", "git" },
+          right = { "fold" },
+        },
         words = { enabled = true },
       }
     end,
@@ -1131,6 +1160,18 @@ M.plugins = {
       })
     end,
     keys = {
+      {
+        "<Leader>p",
+        function()
+          local snacks = require("snacks")
+          if snacks.profiler.running() then
+            snacks.profiler.stop()
+          else
+            snacks.profiler.start()
+          end
+        end,
+        desc = "Debug profiler",
+      },
       {
         "]r",
         function()
@@ -1678,35 +1719,45 @@ M.plugins = {
         end,
       })
     end,
-    opts = {
-      close_if_last_window = true,
-      sort_case_insensitive = true,
-      use_libuv_file_watcher = true,
-      filesystem = {
-        filtered_items = {
-          visible = true,
-          hide_hidden = false,
-          hide_dotfiles = false,
+    opts = function(_, opts)
+      local function on_move(data)
+        Snacks.rename.on_rename_file(data.source, data.destination)
+      end
+      local events = require("neo-tree.events")
+      opts = vim.tbl_deep_extend("force", opts, {
+        close_if_last_window = true,
+        sort_case_insensitive = true,
+        use_libuv_file_watcher = true,
+        event_handlers = {
+          { event = events.FILE_MOVED, handler = on_move },
+          { event = events.FILE_RENAMED, handler = on_move },
         },
-        follow_current_file = { enabled = true },
-      },
-      window = {
-        mappings = {
-          ["<cr>"] = "open",
-          ["<left>"] = "navigate_up",
-          ["<right>"] = "set_root",
-          ["<space>"] = "open",
+        filesystem = {
+          filtered_items = {
+            visible = true,
+            hide_hidden = false,
+            hide_dotfiles = false,
+          },
+          follow_current_file = { enabled = true },
         },
-      },
-      buffers = {
-        follow_current_file = { enabled = true },
-      },
-      source_selector = { show_scrolled_off_parent_node = true },
-      default_component_configs = {
-        icon = { folder_closed = "", folder_open = "" },
-        git_status = { symbols = { added = "", modified = "" } },
-      },
-    },
+        window = {
+          mappings = {
+            ["<cr>"] = "open",
+            ["<left>"] = "navigate_up",
+            ["<right>"] = "set_root",
+            ["<space>"] = "open",
+          },
+        },
+        buffers = {
+          follow_current_file = { enabled = true },
+        },
+        source_selector = { show_scrolled_off_parent_node = true },
+        default_component_configs = {
+          icon = { folder_closed = "", folder_open = "" },
+          git_status = { symbols = { added = "", modified = "" } },
+        },
+      })
+    end,
     keys = {
       {
         "<Leader>T",
