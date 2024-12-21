@@ -157,7 +157,8 @@ local lualine_config = {
           if vim.bo.filetype == "arduino" then
             return arduino_status()
           elseif vim.bo.filetype == "python" then
-            return require("venv-selector").venv() or ""
+            return string.gsub(require("venv-selector").venv(), os.getenv("HOME"), "~")
+              or ""
           end
         end,
         cond = function()

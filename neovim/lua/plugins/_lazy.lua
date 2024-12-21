@@ -520,6 +520,7 @@ M.plugins = {
     cond = function()
       return utils.no_vscode()
         and (vim.fn.executable("ollama") or (os.getenv("OLLAMA_HOST") ~= nil))
+        and os.getenv("OLLAMA_CODE_MODEL") ~= nil
     end,
     config = function()
       local cmp_ai = require("cmp_ai.config")
@@ -528,14 +529,14 @@ M.plugins = {
         provider = "Ollama",
         provider_options = {
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
-          model = "qwen2.5-coder:7b-base-q6_K",
+          model = os.getenv("OLLAMA_CODE_MODEL"),
           options = {
-            temperature = 0.2,
+            temperature = 0.8,
           },
           prompt = function(lines_before, lines_after)
             local prompt = "Fill in the middle from the given context for this "
               .. vim.bo.filetype
-              .. " code."
+              .. " code. Do not return empty statements or only a comment string/block."
               .. "<|fim_prefix|>"
               .. lines_before
               .. "<|fim_suffix|>"
@@ -1666,6 +1667,7 @@ M.plugins = {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
+      local palette = require("catppuccin.palettes.mocha")
       local excluded_ft =
         { ["neo-tree"] = true, snacks_dashboard = true, fidget = true, help = true }
       local hl_names = {
@@ -1682,16 +1684,28 @@ M.plugins = {
         hl_groups[i] = vim.api.nvim_get_hl(0, { name = v })
       end
 
+      local indent_colors = {
+        palette.surface0,
+        palette.surface1,
+        palette.surface2,
+        palette.overlay0,
+        palette.overlay1,
+        palette.overlay2,
+        palette.subtext0,
+        palette.subtext1,
+        palette.text,
+      }
       return {
         chunk = {
           delay = 100,
           enable = true,
           exclude_filetypes = excluded_ft,
-          style = require("catppuccin.palettes.mocha").lavender,
+          style = palette.lavender,
         },
         indent = {
           enable = true,
           exclude_filetypes = excluded_ft,
+          style = indent_colors,
         },
       }
     end,
