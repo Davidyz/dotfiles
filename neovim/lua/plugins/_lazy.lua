@@ -1714,6 +1714,7 @@ M.plugins = {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
+    version = "*",
     dependencies = {
       "3rd/image.nvim",
       "MunifTanjim/nui.nvim",
@@ -2040,7 +2041,7 @@ M.plugins = {
       debug = false,
       display_mode = "float",
       hidden = false,
-      host = os.getenv("OLLAMA_ENTRY"),
+      host = os.getenv("OLLAMA_HOST"),
       init = function(_) end,
       model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
       no_auto_close = true,
@@ -2052,7 +2053,7 @@ M.plugins = {
     },
     cond = function()
       return utils.no_vscode()
-        and (vim.fn.executable("ollama") == 1 or os.getenv("OLLAMA_ENTRY") ~= nil)
+        and (vim.fn.executable("ollama") == 1 or os.getenv("OLLAMA_HOST") ~= nil)
     end,
   },
   {
@@ -2106,6 +2107,7 @@ M.plugins = {
       ignore_authors = {},
       unstar_on_uninstall = true,
       ask_before_unstarring = true,
+      ignore_unauthenticated = true,
     },
     event = { "VeryLazy" },
     cond = function()
