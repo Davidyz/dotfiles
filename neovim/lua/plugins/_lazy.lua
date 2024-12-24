@@ -518,9 +518,13 @@ M.plugins = {
     "tzachar/cmp-ai",
     dependencies = "nvim-lua/plenary.nvim",
     cond = function()
-      return utils.no_vscode()
-        and (vim.fn.executable("ollama") or (os.getenv("OLLAMA_HOST") ~= nil))
-        and os.getenv("OLLAMA_CODE_MODEL") ~= nil
+      if not utils.no_vscode() or os.getenv("OLLAMA_HOST") == nil then
+        return
+      end
+      local ok, result = pcall(function()
+        require("plenary.curl").get(os.getenv("OLLAMA_HOST"), { timeout = 1000 })
+      end)
+      return ok
     end,
     config = function()
       local cmp_ai = require("cmp_ai.config")
@@ -2052,8 +2056,13 @@ M.plugins = {
       show_prompt = true, -- Prints errors and the command which is run.
     },
     cond = function()
-      return utils.no_vscode()
-        and (vim.fn.executable("ollama") == 1 or os.getenv("OLLAMA_HOST") ~= nil)
+      if not utils.no_vscode() or os.getenv("OLLAMA_HOST") == nil then
+        return
+      end
+      local ok, result = pcall(function()
+        require("plenary.curl").get(os.getenv("OLLAMA_HOST"), { timeout = 1000 })
+      end)
+      return ok
     end,
   },
   {
