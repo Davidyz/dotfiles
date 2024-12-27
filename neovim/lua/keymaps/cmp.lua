@@ -89,8 +89,7 @@ local cmp_config = {
           select = true,
         })
       else
-        local cr = vim.api.nvim_replace_termcodes("<cr>", true, true, true)
-        vim.api.nvim_feedkeys(cr, "n", false)
+        fallback()
       end
     end),
 

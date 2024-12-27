@@ -73,6 +73,7 @@ local function arduino_status()
   return line
 end
 
+local snacks_status_component = require("snacks").profiler.status()
 local lualine_config = {
   options = {
     icons_enabled = true,
@@ -139,6 +140,21 @@ local lualine_config = {
         use_mode_colors = true,
       },
     },
+    lualine_y = {
+      {
+        function()
+          local response = vim.g.ai_raw_response
+          return string.format(
+            "ctx: %s, %.2f token/s",
+            response.prompt_eval_count,
+            response.eval_count / response.eval_duration / 1e-9
+          )
+        end,
+        cond = function()
+          return vim.g.ai_raw_response ~= nil
+        end,
+      },
+    },
   },
   winbar = {
     lualine_b = {
@@ -166,7 +182,7 @@ local lualine_config = {
         end,
       },
     },
-    lualine_z = { require("snacks").profiler.status() },
+    lualine_z = { snacks_status_component },
   },
   extensions = {
     "overseer",

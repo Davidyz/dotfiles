@@ -516,10 +516,10 @@ M.plugins = {
   },
   {
     "tzachar/cmp-ai",
-    dependencies = "nvim-lua/plenary.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
     cond = function()
       if not utils.no_vscode() or os.getenv("OLLAMA_HOST") == nil then
-        return
+        return false
       end
       local ok, result = pcall(function()
         require("plenary.curl").get(os.getenv("OLLAMA_HOST"), { timeout = 1000 })
@@ -529,18 +529,23 @@ M.plugins = {
     config = function()
       local cmp_ai = require("cmp_ai.config")
       cmp_ai:setup({
-        max_lines = 1000,
+        max_lines = 250,
         provider = "Ollama",
         provider_options = {
+          raw_response_cb = function(response)
+            vim.g.ai_raw_response = response
+          end,
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
           model = os.getenv("OLLAMA_CODE_MODEL"),
           options = {
             temperature = 0.8,
+            stop = { "<|cursor|>" },
+            num_ctx = 4096,
           },
           prompt = function(lines_before, lines_after)
             local prompt = "Fill in the middle from the given context for this "
               .. vim.bo.filetype
-              .. " code. Do not return empty statements or only a comment string/block."
+              .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text."
               .. "<|fim_prefix|>"
               .. lines_before
               .. "<|fim_suffix|>"
