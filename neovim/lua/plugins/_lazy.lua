@@ -1594,6 +1594,7 @@ M.plugins = {
           layout_config = {
             prompt_position = "top",
             horizontal = { preview_width = 0.6 },
+            vertical = { preview_height = 0.6 },
           },
           sorting_strategy = "ascending",
           mappings = {
