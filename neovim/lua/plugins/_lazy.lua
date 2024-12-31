@@ -518,12 +518,13 @@ M.plugins = {
     "tzachar/cmp-ai",
     dependencies = { "nvim-lua/plenary.nvim" },
     cond = function()
-      if not utils.no_vscode() or os.getenv("OLLAMA_HOST") == nil then
+      local ollama_host = os.getenv("OLLAMA_HOST")
+      if not utils.no_vscode() or ollama_host == nil then
         return false
       end
-      local ok, result = pcall(function()
-        require("plenary.curl").get(os.getenv("OLLAMA_HOST"), { timeout = 1000 })
-      end)
+      local ok, result = pcall(vim.schedule_wrap(function()
+        require("plenary.curl").get(ollama_host, { timeout = 1000 })
+      end))
       return ok
     end,
     config = function()
@@ -541,11 +542,13 @@ M.plugins = {
             temperature = 0.8,
             stop = { "<|cursor|>" },
             num_ctx = 4096,
+            num_predict = -1,
           },
+          system = "You are a coding assistant who focuses on performance, readability and conciseness.",
           prompt = function(lines_before, lines_after)
             local prompt = "Fill in the middle from the given context for this "
               .. vim.bo.filetype
-              .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text."
+              .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
               .. "<|fim_prefix|>"
               .. lines_before
               .. "<|fim_suffix|>"
@@ -557,7 +560,7 @@ M.plugins = {
         },
         notify = true,
         notify_callback = function(msg)
-          vim.notify(msg, "info", { title = "cmp-ai" })
+          vim.notify(msg, "info", { title = os.getenv("OLLAMA_CODE_MODEL") })
         end,
         run_on_every_keystroke = false,
         ignored_file_types = {
@@ -2062,12 +2065,14 @@ M.plugins = {
       show_prompt = true, -- Prints errors and the command which is run.
     },
     cond = function()
-      if not utils.no_vscode() or os.getenv("OLLAMA_HOST") == nil then
+      local ollama_host = os.getenv("OLLAMA_HOST")
+      if not utils.no_vscode() or ollama_host == nil then
         return
       end
-      local ok, result = pcall(function()
-        require("plenary.curl").get(os.getenv("OLLAMA_HOST"), { timeout = 1000 })
-      end)
+
+      local ok, result = pcall(vim.schedule_wrap(function()
+        require("plenary.curl").get(ollama_host, { timeout = 1000 })
+      end))
       return ok
     end,
   },
