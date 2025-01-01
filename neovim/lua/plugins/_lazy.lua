@@ -519,11 +519,11 @@ M.plugins = {
     dependencies = { "nvim-lua/plenary.nvim" },
     cond = function()
       local ollama_host = os.getenv("OLLAMA_HOST")
-      if not utils.no_vscode() or ollama_host == nil then
+      if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
         return false
       end
-      local ok, result = pcall(vim.schedule_wrap(function()
-        require("plenary.curl").get(ollama_host, { timeout = 1000 })
+      local ok, result = vim.schedule_wrap(pcall(function()
+        pcall(require("plenary.curl").get(ollama_host, { timeout = 1000 }))
       end))
       return ok
     end,
@@ -2070,9 +2070,9 @@ M.plugins = {
         return
       end
 
-      local ok, result = pcall(vim.schedule_wrap(function()
-        require("plenary.curl").get(ollama_host, { timeout = 1000 })
-      end))
+      local ok, result = vim.schedule_wrap(function()
+        pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
+      end)
       return ok
     end,
   },
