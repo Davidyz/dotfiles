@@ -511,9 +511,11 @@ M.plugins = {
       "onsails/lspkind.nvim",
       "hrsh7th/cmp-buffer",
       "tzachar/cmp-ai",
+      "xzbdmw/colorful-menu.nvim",
     },
     event = { "InsertEnter", "CmdlineEnter" },
   },
+  { "xzbdmw/colorful-menu.nvim", opts = {} },
   {
     "tzachar/cmp-ai",
     dependencies = { "nvim-lua/plenary.nvim" },

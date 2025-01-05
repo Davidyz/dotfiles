@@ -61,10 +61,17 @@ local cmp_config = {
         item.kind = "Clipboard"
       end
       item.kind = (require("_utils").codicons[item.kind] or "") .. (item.kind or "")
+
       if color_item.abbr_hl_group then
         item.kind_hl_group = color_item.abbr_hl_group
         item.kind = color_item.abbr
         return item
+      end
+
+      local highlights_info = require("colorful-menu").cmp_highlights(entry)
+      if highlights_info ~= nil then
+        item.abbr_hl_group = highlights_info.highlights
+        item.abbr = highlights_info.text
       end
       if
         item.menu
