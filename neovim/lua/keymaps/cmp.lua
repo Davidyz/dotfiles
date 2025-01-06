@@ -21,7 +21,7 @@ local cmp_config = {
       option = { trailing_slash = true },
     },
     { name = "buffer", keyword_length = 2, priority = 3 },
-    { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
+    { name = "cmp_yanky", option = { onlyCurrentFiletype = false }, keyword_length = 2 },
     { name = "snippets", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
     { name = "zsh" },

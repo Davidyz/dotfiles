@@ -540,6 +540,7 @@ M.plugins = {
           end,
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
           model = os.getenv("OLLAMA_CODE_MODEL"),
+          auto_unload = true,
           options = {
             temperature = 0.8,
             stop = { "<|cursor|>" },
@@ -618,23 +619,23 @@ M.plugins = {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "async_path" },
-          { name = "cmdline" },
+          { name = "cmdline", priority = 9 },
           {
             name = "lazydev",
             group_index = 0,
           },
           { name = "nvim_lsp", keyword_length = 1, priority = 9 },
-          { name = "buffer", keyword_length = 2, priority = 3 },
+          { name = "buffer", keyword_length = 2 },
           { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
           { name = "nvim_lsp_signature_help" },
         }),
         sorting = {
           priority_weight = 1,
           comparators = {
-            compare.exact,
-            compare.kind,
-            compare.score,
             compare.recently_used,
+            compare.kind,
+            compare.exact,
+            compare.score,
             compare.locality,
             require("cmp-under-comparator").under,
             compare.order,
@@ -1685,19 +1686,6 @@ M.plugins = {
       local palette = require("catppuccin.palettes.mocha")
       local excluded_ft =
         { ["neo-tree"] = true, snacks_dashboard = true, fidget = true, help = true }
-      local hl_names = {
-        "RainbowDelimiterRed",
-        "RainbowDelimiterYellow",
-        "RainbowDelimiterBlue",
-        "RainbowDelimiterOrange",
-        "RainbowDelimiterGreen",
-        "RainbowDelimiterViolet",
-        "RainbowDelimiterCyan",
-      }
-      local hl_groups = {}
-      for i, v in ipairs(hl_names) do
-        hl_groups[i] = vim.api.nvim_get_hl(0, { name = v })
-      end
 
       local indent_colors = {
         palette.surface0,
@@ -1742,7 +1730,7 @@ M.plugins = {
         callback = function()
           local f = vim.fn.expand("%:p")
           if vim.fn.isdirectory(f) ~= 0 then
-            vim.cmd("Neotree dir=" .. f)
+            vim.cmd("Neotree action=focus dir=" .. f)
             -- neo-tree is loaded now, delete the init autocmd
             vim.api.nvim_clear_autocmds({ group = "NeoTreeInit" })
           end
@@ -1796,6 +1784,8 @@ M.plugins = {
         remap = true,
       },
     },
+    ft = { "netrw" },
+    cmd = { "Neotree" },
   },
   {
     "stevearc/oil.nvim",
