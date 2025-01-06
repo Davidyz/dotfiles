@@ -1604,7 +1604,7 @@ M.plugins = {
           },
           sorting_strategy = "ascending",
           mappings = {
-            i = {
+            n = {
               ["<esc>"] = require("telescope.actions").close,
             },
           },
@@ -1620,6 +1620,36 @@ M.plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
     },
+  },
+  {
+    "jmacadie/telescope-hierarchy.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
+    },
+    keys = {
+      {
+        "<leader>tc",
+        "<cmd>Telescope hierarchy<cr>",
+        desc = "Function call hierarchy.",
+      },
+    },
+    opts = function()
+      return {
+        extensions = {
+          hierarchy = { layout_strategy = "flex" },
+        },
+      }
+    end,
+    config = function(_, opts)
+      require("telescope").setup(opts)
+      require("telescope").load_extension("hierarchy")
+    end,
+    cond = function()
+      return utils.no_vscode() and vim.fn.has("nightly") == 0
+    end,
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
