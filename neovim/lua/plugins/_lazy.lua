@@ -525,7 +525,7 @@ M.plugins = {
         return false
       end
       local ok, result = vim.schedule_wrap(pcall(function()
-        pcall(require("plenary.curl").get(ollama_host, { timeout = 1000 }))
+        pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
       end))
       return ok
     end,
