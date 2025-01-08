@@ -515,7 +515,10 @@ M.plugins = {
     },
     event = { "InsertEnter", "CmdlineEnter" },
   },
-  { "xzbdmw/colorful-menu.nvim", opts = {} },
+  {
+    "xzbdmw/colorful-menu.nvim",
+    opts = { max_width = 0.4 },
+  },
   {
     "tzachar/cmp-ai",
     dependencies = { "nvim-lua/plenary.nvim" },

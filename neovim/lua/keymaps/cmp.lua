@@ -21,7 +21,11 @@ local cmp_config = {
       option = { trailing_slash = true },
     },
     { name = "buffer", keyword_length = 2, priority = 3 },
-    { name = "cmp_yanky", option = { onlyCurrentFiletype = false }, keyword_length = 2 },
+    {
+      name = "cmp_yanky",
+      option = { onlyCurrentFiletype = false },
+      keyword_length = 2,
+    },
     { name = "snippets", keyword_length = 2 },
     { name = "nvim_lsp_signature_help" },
     { name = "zsh" },
@@ -50,7 +54,7 @@ local cmp_config = {
   },
   window = {},
   formatting = {
-    fields = { "abbr", "menu", "kind" },
+    fields = { "abbr", "kind" },
     expandable_indicator = true,
     format = function(entry, item)
       local color_item = require("nvim-highlight-colors").format(
@@ -73,17 +77,7 @@ local cmp_config = {
         item.abbr_hl_group = highlights_info.highlights
         item.abbr = highlights_info.text
       end
-      if
-        item.menu
-        and #item.abbr + #item.kind + #item.menu > math.floor(vim.o.columns * 0.3)
-      then
-        -- truncate long menu items
-        item.menu = string.sub(
-          item.menu,
-          1,
-          math.floor(vim.o.columns * 0.3) - #item.abbr - #item.kind
-        ) .. "…"
-      end
+
       return item
     end,
   },
