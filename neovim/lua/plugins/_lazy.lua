@@ -1631,9 +1631,14 @@ M.plugins = {
     },
     keys = {
       {
-        "<leader>tc",
-        "<cmd>Telescope hierarchy<cr>",
-        desc = "Function call hierarchy.",
+        "<leader>ti",
+        "<cmd>Telescope hierarchy incoming_calls<cr>",
+        desc = "Incoming Function call.",
+      },
+      {
+        "<leader>to",
+        "<cmd>Telescope hierarchy outgoing_calls<cr>",
+        desc = "Outgoing Function call.",
       },
     },
     opts = function()
