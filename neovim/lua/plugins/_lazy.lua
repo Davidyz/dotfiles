@@ -517,11 +517,17 @@ M.plugins = {
   },
   {
     "xzbdmw/colorful-menu.nvim",
-    opts = { max_width = 0.4 },
+    opts = { max_width = 0.3 },
+  },
+  {
+    "Davidyz/VectorCode",
   },
   {
     "tzachar/cmp-ai",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "Davidyz/VectorCode",
+    },
     cond = function()
       local ollama_host = os.getenv("OLLAMA_HOST")
       if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
@@ -534,12 +540,20 @@ M.plugins = {
     end,
     config = function()
       local cmp_ai = require("cmp_ai.config")
+      local num_ctx = 4096
+      local n_query = 5
       cmp_ai:setup({
         max_lines = 250,
         provider = "Ollama",
         provider_options = {
           raw_response_cb = function(response)
             vim.g.ai_raw_response = response
+            local token_count = response.prompt_eval_count + response.eval_count
+            if token_count < num_ctx then
+              n_query = n_query + 1
+            elseif token_count >= num_ctx and n_query > 0 then
+              n_query = n_query - 1
+            end
           end,
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
           model = os.getenv("OLLAMA_CODE_MODEL"),
@@ -547,20 +561,36 @@ M.plugins = {
           options = {
             temperature = 0.8,
             stop = { "<|cursor|>" },
-            num_ctx = 4096,
-            num_predict = -1,
+            num_ctx = num_ctx,
+            num_predict = 50,
           },
-          system = "You are a coding assistant who focuses on performance, readability and conciseness.",
+          system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
           prompt = function(lines_before, lines_after)
+            local file_context = ""
+            local ok, retrieval = pcall(
+              require("vectorcode").query,
+              lines_before .. " " .. lines_after,
+              { n_query = n_query }
+            )
+            if ok then
+              for _, source in pairs(retrieval) do
+                file_context = file_context
+                  .. "<|file_sep|>"
+                  .. source.path
+                  .. "\n"
+                  .. source.document
+                  .. "\n"
+              end
+            end
             local prompt = "Fill in the middle from the given context for this "
               .. vim.bo.filetype
               .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
+              .. file_context
               .. "<|fim_prefix|>"
               .. lines_before
               .. "<|fim_suffix|>"
               .. lines_after
               .. "<|fim_middle|>"
-
             return prompt
           end,
         },
