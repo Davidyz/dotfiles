@@ -521,6 +521,24 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    branch = "nvim/async_cache",
+    config = function(_, opts)
+      require("vectorcode").setup(opts)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function()
+          require("vectorcode.cacher").register_buffer(
+            0,
+            { notify = false, n_query = 10 },
+            nil
+          )
+        end,
+        desc = "Register buffer for VectorCode",
+      })
+    end,
+    opts = { notify = false, n_query = 10 },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
   },
   {
     "tzachar/cmp-ai",
@@ -541,15 +559,25 @@ M.plugins = {
     config = function()
       local cmp_ai = require("cmp_ai.config")
       local num_ctx = 4096
-      local n_query = 5
-      cmp_ai:setup({
+      local n_query = nil
+      local prev_n_query = 1
+      local opts = {
         max_lines = 250,
         provider = "Ollama",
         provider_options = {
           raw_response_cb = function(response)
+            if response == nil or response == {} then
+              return
+            end
             vim.g.ai_raw_response = response
-            local token_count = response.prompt_eval_count + response.eval_count
-            if token_count < num_ctx then
+            local token_count = (response.prompt_eval_count or 0)
+              + (response.eval_count or 0)
+            if n_query == nil then
+              n_query = prev_n_query
+            end
+            if token_count == 0 or n_query > prev_n_query then
+              return
+            elseif token_count < (num_ctx * 0.9) then
               n_query = n_query + 1
             elseif token_count >= num_ctx and n_query > 0 then
               n_query = n_query - 1
@@ -567,29 +595,24 @@ M.plugins = {
           system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
           prompt = function(lines_before, lines_after)
             local file_context = ""
-            local ok, retrieval = pcall(
-              require("vectorcode").query,
-              lines_before .. " " .. lines_after,
-              { n_query = n_query }
-            )
-            if ok then
-              for _, source in pairs(retrieval) do
-                file_context = file_context
-                  .. "<|file_sep|>"
-                  .. source.path
-                  .. "\n"
-                  .. source.document
-                  .. "\n"
-              end
+            local retrieval = require("vectorcode.cacher").query_from_cache()
+            prev_n_query = #retrieval
+            for _, source in pairs(retrieval) do
+              file_context = file_context
+                .. "<|file_sep|>"
+                .. source.path
+                .. "\n"
+                .. source.document
+                .. "\n"
             end
             local prompt = "Fill in the middle from the given context for this "
               .. vim.bo.filetype
               .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
               .. file_context
               .. "<|fim_prefix|>"
-              .. lines_before
+              .. (lines_before or "")
               .. "<|fim_suffix|>"
-              .. lines_after
+              .. (lines_after or "")
               .. "<|fim_middle|>"
             return prompt
           end,
@@ -604,7 +627,8 @@ M.plugins = {
           -- uncomment to ignore in lua:
           -- lua = true
         },
-      })
+      }
+      cmp_ai:setup(opts)
     end,
   },
   {
