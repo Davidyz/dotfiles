@@ -521,16 +521,12 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    branch = "nvim/async_cache",
+    dir = "~/git/VectorCode/",
     config = function(_, opts)
       require("vectorcode").setup(opts)
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
-          require("vectorcode.cacher").register_buffer(
-            0,
-            { notify = false, n_query = 10 },
-            nil
-          )
+          require("vectorcode.cacher").register_buffer(0, { notify = false }, nil)
         end,
         desc = "Register buffer for VectorCode",
       })
@@ -551,12 +547,13 @@ M.plugins = {
       if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
         return false
       end
-      local ok, result = vim.schedule_wrap(pcall(function()
+      local ok, result = pcall(function()
         pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-      end))
+      end)
       return ok
     end,
     config = function()
+      local vectorcode_cacher = require("vectorcode.cacher")
       local cmp_ai = require("cmp_ai.config")
       local num_ctx = 4096
       local n_query = nil
@@ -575,12 +572,15 @@ M.plugins = {
             if n_query == nil then
               n_query = prev_n_query
             end
-            if token_count == 0 or n_query > prev_n_query then
+            if token_count == 0 then
               return
             elseif token_count < (num_ctx * 0.9) then
               n_query = n_query + 1
             elseif token_count >= num_ctx and n_query > 0 then
               n_query = n_query - 1
+            end
+            if vectorcode_cacher.buf_is_registered(0) then
+              vectorcode_cacher.register_buffer(0, { n_query = n_query })
             end
           end,
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
@@ -595,7 +595,8 @@ M.plugins = {
           system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
           prompt = function(lines_before, lines_after)
             local file_context = ""
-            local retrieval = require("vectorcode.cacher").query_from_cache()
+
+            local retrieval = vectorcode_cacher.query_from_cache()
             prev_n_query = #retrieval
             for _, source in pairs(retrieval) do
               file_context = file_context

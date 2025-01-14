@@ -140,7 +140,8 @@ local lualine_config = {
         use_mode_colors = true,
       },
     },
-    lualine_y = {
+    lualine_y = { require("vectorcode.cacher").lualine() },
+    lualine_z = {
       {
         function()
           local response = vim.g.ai_raw_response
