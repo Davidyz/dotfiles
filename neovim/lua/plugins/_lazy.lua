@@ -521,12 +521,17 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    dir = "~/git/VectorCode/",
+    version = "*",
     config = function(_, opts)
       require("vectorcode").setup(opts)
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
-          require("vectorcode.cacher").register_buffer(0, { notify = false }, nil)
+          require("vectorcode.cacher").register_buffer(
+            vim.api.nvim_get_current_buf(),
+            { notify = false },
+            nil,
+            { "InsertEnter", "BufWritePost" }
+          )
         end,
         desc = "Register buffer for VectorCode",
       })
@@ -547,15 +552,14 @@ M.plugins = {
       if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
         return false
       end
-      local ok, result = pcall(function()
+      local ok, result =
         pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-      end)
       return ok
     end,
     config = function()
       local vectorcode_cacher = require("vectorcode.cacher")
       local cmp_ai = require("cmp_ai.config")
-      local num_ctx = 4096
+      local num_ctx = 1024 * 16
       local n_query = nil
       local prev_n_query = 1
       local opts = {
@@ -563,6 +567,7 @@ M.plugins = {
         provider = "Ollama",
         provider_options = {
           raw_response_cb = function(response)
+            local bufnr = vim.api.nvim_get_current_buf()
             if response == nil or response == {} then
               return
             end
@@ -575,19 +580,19 @@ M.plugins = {
             if token_count == 0 then
               return
             elseif token_count < (num_ctx * 0.9) then
-              n_query = n_query + 1
-            elseif token_count >= num_ctx and n_query > 0 then
-              n_query = n_query - 1
+              n_query = prev_n_query + 1
+            elseif token_count >= num_ctx and prev_n_query > 0 then
+              n_query = prev_n_query - 1
             end
-            if vectorcode_cacher.buf_is_registered(0) then
-              vectorcode_cacher.register_buffer(0, { n_query = n_query })
+            if vectorcode_cacher.buf_is_registered(bufnr) then
+              vectorcode_cacher.register_buffer(bufnr, { n_query = n_query })
             end
           end,
           base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
           model = os.getenv("OLLAMA_CODE_MODEL"),
           auto_unload = true,
           options = {
-            temperature = 0.8,
+            temperature = 0,
             stop = { "<|cursor|>" },
             num_ctx = num_ctx,
             num_predict = 50,
@@ -682,7 +687,11 @@ M.plugins = {
             name = "lazydev",
             group_index = 0,
           },
-          { name = "nvim_lsp", keyword_length = 1, priority = 9 },
+          {
+            name = "nvim_lsp",
+            keyword_length = 1,
+            priority = 9,
+          },
           { name = "buffer", keyword_length = 2 },
           { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
           { name = "nvim_lsp_signature_help" },

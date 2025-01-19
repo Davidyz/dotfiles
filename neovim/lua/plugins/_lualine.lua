@@ -74,6 +74,11 @@ local function arduino_status()
 end
 
 local snacks_status_component = require("snacks").profiler.status()
+local vectorcode_component = nil
+local ok, vectorcode = pcall(require, "vectorcode.cacher")
+if ok then
+  vectorcode_component = vectorcode.lualine()
+end
 local lualine_config = {
   options = {
     icons_enabled = true,
@@ -126,7 +131,6 @@ local lualine_config = {
   tabline = {
     lualine_b = {
       {
-        max_length = vim.o.columns,
         "tabs",
         mode = 2,
         fmt = function(str)
@@ -140,7 +144,7 @@ local lualine_config = {
         use_mode_colors = true,
       },
     },
-    lualine_y = { require("vectorcode.cacher").lualine() },
+    lualine_y = { vectorcode_component },
     lualine_z = {
       {
         function()
