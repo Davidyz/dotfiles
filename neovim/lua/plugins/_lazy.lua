@@ -530,7 +530,7 @@ M.plugins = {
             vim.api.nvim_get_current_buf(),
             { notify = false },
             nil,
-            { "InsertEnter", "BufWritePost" }
+            { "BufWritePost" }
           )
         end,
         desc = "Register buffer for VectorCode",
@@ -2141,32 +2141,59 @@ M.plugins = {
     priority = 1001,
   },
   {
-    "David-Kunz/gen.nvim",
-    cmd = { "Gen" },
-    opts = {
-      accept_map = "<c-cr>",
-      debug = false,
-      display_mode = "float",
-      hidden = false,
-      host = os.getenv("OLLAMA_HOST"),
-      init = function(_) end,
-      model = "deepseek-coder-v2:16b-lite-instruct-q5_K_M",
-      no_auto_close = true,
-      port = "11434",
-      quit_map = "q",
-      retry_map = "<c-r>",
-      show_model = true,
-      show_prompt = true, -- Prints errors and the command which is run.
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
     },
+    config = true,
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionCmd",
+      "CodeCompanionChat",
+      "CodeCompanionActions",
+    },
+    opts = function(_, opts)
+      opts = opts or {}
+      opts.adapters = {
+        ["Qwen2.5-Coder"] = function()
+          return require("codecompanion.adapters").extend("ollama", {
+            name = "Qwen2.5-Coder",
+            env = {
+              url = os.getenv("OLLAMA_HOST"),
+            },
+            schema = {
+              model = {
+                default = os.getenv("OLLAMA_CODE_CHAT_MODEL"),
+              },
+              num_ctx = { default = 16 * 1024 },
+            },
+          })
+        end,
+      }
+
+      opts.strategies = {
+        chat = {
+          adapter = "Qwen2.5-Coder",
+        },
+        inline = {
+          adapter = "Qwen2.5-Coder",
+        },
+      }
+      return opts
+    end,
     cond = function()
       local ollama_host = os.getenv("OLLAMA_HOST")
-      if not utils.no_vscode() or ollama_host == nil then
-        return
+      if
+        not utils.no_vscode()
+        or ollama_host == nil
+        or ollama_host == ""
+        or os.getenv("OLLAMA_CODE_CHAT_MODEL") == nil
+      then
+        return false
       end
-
-      local ok, result = vim.schedule_wrap(function()
+      local ok, result =
         pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-      end)
       return ok
     end,
   },
