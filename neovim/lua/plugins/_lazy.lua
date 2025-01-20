@@ -521,17 +521,15 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    version = "*",
     config = function(_, opts)
       require("vectorcode").setup(opts)
+      local cacher = require("vectorcode.cacher")
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function()
-          require("vectorcode.cacher").register_buffer(
-            vim.api.nvim_get_current_buf(),
-            { notify = false },
-            nil,
-            { "BufWritePost" }
-          )
+          local bufnr = vim.api.nvim_get_current_buf()
+          cacher.async_check("config", function()
+            cacher.register_buffer(bufnr, { notify = false }, nil, { "BufWritePost" })
+          end, nil)
         end,
         desc = "Register buffer for VectorCode",
       })
