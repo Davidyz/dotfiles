@@ -5,7 +5,6 @@ local items = {
 
   "keymaps.help",
   "keymaps.shell",
-  "keymaps.c",
 }
 
 utils.tryRequire(items)
