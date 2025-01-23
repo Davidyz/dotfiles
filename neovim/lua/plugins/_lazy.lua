@@ -528,7 +528,12 @@ M.plugins = {
         callback = function()
           local bufnr = vim.api.nvim_get_current_buf()
           cacher.async_check("config", function()
-            cacher.register_buffer(bufnr, { notify = false }, nil, { "BufWritePost" })
+            cacher.register_buffer(
+              bufnr,
+              { notify = false, n_query = 10 },
+              nil,
+              { "BufWritePost" }
+            )
           end, nil)
         end,
         desc = "Register buffer for VectorCode",
