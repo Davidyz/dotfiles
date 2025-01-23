@@ -985,11 +985,13 @@ M.plugins = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
         { path = "wezterm-types", mods = { "wezterm" } },
+        { path = "folke/snacks.nvim", words = { "Snacks" } },
       },
     },
     dependencies = {
       { "Bilal2453/luvit-meta" },
       { "justinsgithub/wezterm-types" },
+      { "folke/snacks.nvim" },
     },
   },
   {
