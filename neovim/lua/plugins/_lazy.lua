@@ -510,7 +510,7 @@ M.plugins = {
       "lukas-reineke/cmp-under-comparator",
       "onsails/lspkind.nvim",
       "hrsh7th/cmp-buffer",
-      "tzachar/cmp-ai",
+      -- "tzachar/cmp-ai",
       "xzbdmw/colorful-menu.nvim",
     },
     event = { "InsertEnter", "CmdlineEnter" },
@@ -545,11 +545,29 @@ M.plugins = {
     },
   },
   {
-    "tzachar/cmp-ai",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "Davidyz/VectorCode",
-    },
+    "milanglacier/minuet-ai.nvim",
+    opts = function(_, opt)
+      return vim.tbl_deep_extend("force", opt or {}, {
+        add_single_line_entry = true,
+        n_completions = 3,
+        after_cursor_filter_length = 0,
+        notify = "verbose",
+        provider = "openai_fim_compatible",
+        provider_options = {
+          openai_fim_compatible = {
+            api_key = "TERM",
+            name = "Ollama",
+            end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
+            model = os.getenv("OLLAMA_CODE_MODEL"),
+            optional = {
+              max_tokens = 256,
+              top_p = 0.9,
+              num_ctx = 16384,
+            },
+          },
+        },
+      })
+    end,
     cond = function()
       local ollama_host = os.getenv("OLLAMA_HOST")
       if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
@@ -559,87 +577,103 @@ M.plugins = {
         pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
       return ok
     end,
-    config = function()
-      local vectorcode_cacher = require("vectorcode.cacher")
-      local cmp_ai = require("cmp_ai.config")
-      local num_ctx = 1024 * 16
-      local n_query = nil
-      local prev_n_query = 1
-      local opts = {
-        max_lines = 250,
-        provider = "Ollama",
-        provider_options = {
-          raw_response_cb = function(response)
-            local bufnr = vim.api.nvim_get_current_buf()
-            if response == nil or response == {} then
-              return
-            end
-            vim.g.ai_raw_response = response
-            local token_count = (response.prompt_eval_count or 0)
-              + (response.eval_count or 0)
-            if n_query == nil then
-              n_query = prev_n_query
-            end
-            if token_count == 0 then
-              return
-            elseif token_count < (num_ctx * 0.9) then
-              n_query = prev_n_query + 1
-            elseif token_count >= num_ctx and prev_n_query > 0 then
-              n_query = prev_n_query - 1
-            end
-            if vectorcode_cacher.buf_is_registered(bufnr) then
-              vectorcode_cacher.register_buffer(bufnr, { n_query = n_query })
-            end
-          end,
-          base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
-          model = os.getenv("OLLAMA_CODE_MODEL"),
-          auto_unload = true,
-          options = {
-            temperature = 0,
-            stop = { "<|cursor|>" },
-            num_ctx = num_ctx,
-            num_predict = 50,
-          },
-          system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
-          prompt = function(lines_before, lines_after)
-            local file_context = ""
-
-            local retrieval = vectorcode_cacher.query_from_cache()
-            prev_n_query = #retrieval
-            for _, source in pairs(retrieval) do
-              file_context = file_context
-                .. "<|file_sep|>"
-                .. source.path
-                .. "\n"
-                .. source.document
-                .. "\n"
-            end
-            local prompt = "Fill in the middle from the given context for this "
-              .. vim.bo.filetype
-              .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
-              .. file_context
-              .. "<|fim_prefix|>"
-              .. (lines_before or "")
-              .. "<|fim_suffix|>"
-              .. (lines_after or "")
-              .. "<|fim_middle|>"
-            return prompt
-          end,
-        },
-        notify = true,
-        notify_callback = function(msg)
-          vim.notify(msg, "info", { title = os.getenv("OLLAMA_CODE_MODEL") })
-        end,
-        run_on_every_keystroke = false,
-        ignored_file_types = {
-          -- default is not to ignore
-          -- uncomment to ignore in lua:
-          -- lua = true
-        },
-      }
-      cmp_ai:setup(opts)
-    end,
   },
+  -- {
+  --   "tzachar/cmp-ai",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "Davidyz/VectorCode",
+  --   },
+  --   cond = function()
+  --     local ollama_host = os.getenv("OLLAMA_HOST")
+  --     if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
+  --       return false
+  --     end
+  --     local ok, result =
+  --       pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
+  --     return ok
+  --   end,
+  --   config = function()
+  --     local vectorcode_cacher = require("vectorcode.cacher")
+  --     local cmp_ai = require("cmp_ai.config")
+  --     local num_ctx = 1024 * 16
+  --     local n_query = nil
+  --     local prev_n_query = 1
+  --     local opts = {
+  --       max_lines = 250,
+  --       provider = "Ollama",
+  --       provider_options = {
+  --         raw_response_cb = function(response)
+  --           local bufnr = vim.api.nvim_get_current_buf()
+  --           if response == nil or response == {} then
+  --             return
+  --           end
+  --           vim.g.ai_raw_response = response
+  --           local token_count = (response.prompt_eval_count or 0)
+  --             + (response.eval_count or 0)
+  --           if n_query == nil then
+  --             n_query = prev_n_query
+  --           end
+  --           if token_count == 0 then
+  --             return
+  --           elseif token_count < (num_ctx * 0.9) then
+  --             n_query = prev_n_query + 1
+  --           elseif token_count >= num_ctx and prev_n_query > 0 then
+  --             n_query = prev_n_query - 1
+  --           end
+  --           if vectorcode_cacher.buf_is_registered(bufnr) then
+  --             vectorcode_cacher.register_buffer(bufnr, { n_query = n_query })
+  --           end
+  --         end,
+  --         base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
+  --         model = os.getenv("OLLAMA_CODE_MODEL"),
+  --         auto_unload = true,
+  --         options = {
+  --           temperature = 0,
+  --           stop = { "<|cursor|>" },
+  --           num_ctx = num_ctx,
+  --           num_predict = 50,
+  --         },
+  --         system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
+  --         prompt = function(lines_before, lines_after)
+  --           local file_context = ""
+  --
+  --           local retrieval = vectorcode_cacher.query_from_cache()
+  --           prev_n_query = #retrieval
+  --           for _, source in pairs(retrieval) do
+  --             file_context = file_context
+  --               .. "<|file_sep|>"
+  --               .. source.path
+  --               .. "\n"
+  --               .. source.document
+  --               .. "\n"
+  --           end
+  --           local prompt = "Fill in the middle from the given context for this "
+  --             .. vim.bo.filetype
+  --             .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
+  --             .. file_context
+  --             .. "<|fim_prefix|>"
+  --             .. (lines_before or "")
+  --             .. "<|fim_suffix|>"
+  --             .. (lines_after or "")
+  --             .. "<|fim_middle|>"
+  --           return prompt
+  --         end,
+  --       },
+  --       notify = true,
+  --       notify_callback = function(msg)
+  --         vim.notify(msg, "info", { title = os.getenv("OLLAMA_CODE_MODEL") })
+  --       end,
+  --       run_on_every_keystroke = false,
+  --       ignored_file_types = {
+  --         -- default is not to ignore
+  --         -- uncomment to ignore in lua:
+  --         -- lua = true
+  --       },
+  --     }
+  --     cmp_ai:setup(opts)
+  --   end,
+  -- },
   {
     "hrsh7th/cmp-nvim-lsp",
     event = { "InsertEnter" },

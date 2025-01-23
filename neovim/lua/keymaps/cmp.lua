@@ -4,6 +4,7 @@ local compare = require("cmp.config.compare")
 local select_opts = { behavior = cmp.SelectBehavior.Select }
 ---@type cmp.ConfigSchema
 local cmp_config = {
+  performance = { fetching_timeout = 2000 },
   snippet = {
     expand = function(args)
       vim.snippet.expand(args.body)
@@ -126,16 +127,17 @@ local cmp_config = {
         fallback()
       end
     end, { "i", "s" }),
-    ["<C-x>"] = cmp.mapping(
-      cmp.mapping.complete({
-        config = {
-          sources = cmp.config.sources({
-            { name = "cmp_ai" },
-          }),
-        },
-      }),
-      { "i" }
-    ),
+    ["<C-x>"] = require("minuet").make_cmp_map(),
+    -- ["<C-x>"] = cmp.mapping(
+    --   cmp.mapping.complete({
+    --     config = {
+    --       sources = cmp.config.sources({
+    --         { name = "cmp_ai" },
+    --       }),
+    --     },
+    --   }),
+    --   { "i" }
+    -- ),
   },
 }
 return cmp_config
