@@ -546,9 +546,10 @@ M.plugins = {
   },
   {
     "milanglacier/minuet-ai.nvim",
-    opts = function(_, opt)
+    lazy = false,
+    config = function(_, opts)
       local vectorcode_cacher = require("vectorcode.cacher")
-      return vim.tbl_deep_extend("force", opt or {}, {
+      require("minuet").setup({
         add_single_line_entry = true,
         n_completions = 1,
         after_cursor_filter_length = 0,
@@ -558,6 +559,7 @@ M.plugins = {
           openai_fim_compatible = {
             api_key = "TERM",
             name = "Ollama",
+            stream = false,
             end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
             model = os.getenv("OLLAMA_CODE_MODEL"),
             optional = {
@@ -583,6 +585,31 @@ M.plugins = {
           },
         },
       })
+      local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
+      local orig_get_text_fn = openai_fim_compatible.get_text_fn
+      openai_fim_compatible.get_text_fn = function(json)
+        vim.g.ai_raw_response = json
+        -- {
+        --   choices = {
+        --     {
+        --       finish_reason = "stop",
+        --       index = 0,
+        --       text = "",
+        --     },
+        --   },
+        --   created = 1737710145,
+        --   id = "cmpl-400",
+        --   model = "qwen2.5-coder:7b-base-q4_1",
+        --   object = "text_completion",
+        --   system_fingerprint = "fp_ollama",
+        --   usage = {
+        --     completion_tokens = 1,
+        --     prompt_tokens = 2048,
+        --     total_tokens = 2049,
+        --   },
+        -- }
+        return orig_get_text_fn(json)
+      end
     end,
     cond = function()
       local ollama_host = os.getenv("OLLAMA_HOST")

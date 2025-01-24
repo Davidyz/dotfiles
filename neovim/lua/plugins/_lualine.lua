@@ -149,11 +149,7 @@ local lualine_config = {
       {
         function()
           local response = vim.g.ai_raw_response
-          return string.format(
-            "ctx: %s, %.2f token/s",
-            response.prompt_eval_count,
-            response.eval_count / response.eval_duration / 1e-9
-          )
+          return string.format("ctx: %d", response.usage.total_tokens)
         end,
         cond = function()
           return vim.g.ai_raw_response ~= nil
