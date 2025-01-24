@@ -531,7 +531,7 @@ M.plugins = {
             cacher.register_buffer(
               bufnr,
               { notify = false, n_query = 10 },
-              nil,
+              require("vectorcode.utils").lsp_document_symbol_cb(),
               { "BufWritePost" }
             )
           end, nil)
