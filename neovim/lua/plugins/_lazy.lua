@@ -522,6 +522,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    version = "*",
     config = function(_, opts)
       require("vectorcode").setup(opts)
       local cacher = require("vectorcode.cacher")
