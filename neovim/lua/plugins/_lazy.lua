@@ -511,6 +511,7 @@ M.plugins = {
       "onsails/lspkind.nvim",
       "hrsh7th/cmp-buffer",
       -- "tzachar/cmp-ai",
+      "milanglacier/minuet-ai.nvim",
       "xzbdmw/colorful-menu.nvim",
     },
     event = { "InsertEnter", "CmdlineEnter" },
@@ -546,9 +547,9 @@ M.plugins = {
   },
   {
     "milanglacier/minuet-ai.nvim",
-    lazy = false,
     config = function(_, opts)
       local vectorcode_cacher = require("vectorcode.cacher")
+      local num_docs = 10
       require("minuet").setup({
         add_single_line_entry = true,
         n_completions = 1,
@@ -570,7 +571,9 @@ M.plugins = {
             template = {
               prompt = function(pref, suff)
                 local prompt_message = ""
-                for _, file in ipairs(vectorcode_cacher.query_from_cache(0)) do
+                local cache_result = vectorcode_cacher.query_from_cache(0)
+                num_docs = #cache_result
+                for _, file in ipairs(cache_result) do
                   prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
                 end
                 return prompt_message
@@ -589,6 +592,21 @@ M.plugins = {
       local orig_get_text_fn = openai_fim_compatible.get_text_fn
       openai_fim_compatible.get_text_fn = function(json)
         vim.g.ai_raw_response = json
+        if vectorcode_cacher.buf_is_registered() then
+          local new_num_query = num_docs
+          if vim.g.ai_raw_response.usage.total_tokens > 16384 then
+            new_num_query = math.max(num_docs - 1, 1)
+          elseif vim.g.ai_raw_response.usage.total_tokens < 16000 then
+            new_num_query = num_docs + 1
+          end
+          vectorcode_cacher.register_buffer(
+            0,
+            { n_query = new_num_query },
+            nil,
+            { "BufWritePost" },
+            10
+          )
+        end
         -- {
         --   choices = {
         --     {
