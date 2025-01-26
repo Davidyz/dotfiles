@@ -2,8 +2,6 @@ M = {}
 local utils = require("_utils")
 
 local icon_provider = "echasnovski/mini.icons"
-local cmp_engine = "hrsh7th/nvim-cmp"
--- local cmp_engine = "iguanacucumber/magazine.nvim"
 M.plugins = {
   -- NOTE: icons
   {
@@ -498,23 +496,219 @@ M.plugins = {
     "williamboman/mason-lspconfig.nvim",
     cond = utils.no_vscode,
   },
+  -- {
+  --   cmp_engine,
+  --   name = "nvim-cmp",
+  --   cond = utils.no_vscode,
+  --   opts = function()
+  --     return require("keymaps.cmp")
+  --   end,
+  --   dependencies = {
+  --     "brenoprata10/nvim-highlight-colors",
+  --     "lukas-reineke/cmp-under-comparator",
+  --     "onsails/lspkind.nvim",
+  --     "hrsh7th/cmp-buffer",
+  --     -- "tzachar/cmp-ai",
+  --     "milanglacier/minuet-ai.nvim",
+  --     "xzbdmw/colorful-menu.nvim",
+  --   },
+  --   event = { "InsertEnter", "CmdlineEnter" },
+  -- },
   {
-    cmp_engine,
-    name = "nvim-cmp",
-    cond = utils.no_vscode,
-    opts = function()
-      return require("keymaps.cmp")
-    end,
+    "saghen/blink.cmp",
     dependencies = {
-      "brenoprata10/nvim-highlight-colors",
-      "lukas-reineke/cmp-under-comparator",
-      "onsails/lspkind.nvim",
-      "hrsh7th/cmp-buffer",
-      -- "tzachar/cmp-ai",
+      "rafamadriz/friendly-snippets",
       "milanglacier/minuet-ai.nvim",
-      "xzbdmw/colorful-menu.nvim",
+      "folke/lazydev.nvim",
+      "moyiz/blink-emoji.nvim",
+      {
+        "Kaiser-Yang/blink-cmp-dictionary",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
     },
-    event = { "InsertEnter", "CmdlineEnter" },
+    version = "*",
+    opts = function()
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
+      return {
+        keymap = {
+          -- preset = "super-tab",
+          ["<C-x>"] = {
+            function(cmp)
+              cmp.show({ providers = { "minuet" } })
+            end,
+          },
+          ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+          ["<C-e>"] = { "hide", "fallback" },
+
+          ["<Tab>"] = {
+            function(cmp)
+              local col = vim.fn.col(".") - 1
+              if cmp.snippet_active() then
+                return cmp.accept()
+              elseif cmp.is_menu_visible() then
+                return cmp.select_next()
+              elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+                return nil
+              else
+                return cmp.show()
+              end
+            end,
+            "snippet_forward",
+            "fallback",
+          },
+          ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+          ["<CR>"] = {
+            "accept",
+            "fallback",
+          },
+
+          ["<Up>"] = { "select_prev", "fallback" },
+          ["<Down>"] = { "select_next", "fallback" },
+          ["<C-p>"] = { "select_prev", "fallback" },
+          ["<C-n>"] = { "select_next", "fallback" },
+
+          ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+          ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+          ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+          cmdline = {
+            ["<CR>"] = {
+              function(cmp)
+                if cmp.is_menu_visible() then
+                  return cmp.accept()
+                end
+              end,
+              "fallback",
+            },
+            ["<C-x>"] = {
+              function(cmp)
+                cmp.show({ providers = { "minuet" } })
+              end,
+            },
+            ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+            ["<C-e>"] = { "hide", "fallback" },
+
+            ["<Tab>"] = {
+              function(cmp)
+                local col = vim.fn.col(".") - 1
+                if cmp.is_menu_visible() then
+                  return cmp.select_next({ auto_insert = true, preselect = true })
+                elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+                  return nil
+                else
+                  return cmp.show()
+                end
+              end,
+              "snippet_forward",
+              "fallback",
+            },
+            ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+
+            ["<Up>"] = { "select_prev", "fallback" },
+            ["<Down>"] = { "select_next", "fallback" },
+            ["<C-p>"] = { "select_prev", "fallback" },
+            ["<C-n>"] = { "select_next", "fallback" },
+
+            ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+            ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+            ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+          },
+        },
+        signature = { enabled = true },
+        appearance = {
+          use_nvim_cmp_as_default = true,
+          nerd_font_variant = "mono",
+          kind_icons = {
+            ellipsis = false,
+            text = function(ctx)
+              return require("lspkind").symbolic(ctx.kind, {
+                mode = "symbol",
+              })
+            end,
+          },
+        },
+        sources = {
+          default = {
+            "lazydev",
+            "lsp",
+            "dictionary",
+            "emoji",
+            "path",
+            "snippets",
+            "buffer",
+          },
+          providers = {
+            minuet = {
+              name = "minuet",
+              module = "minuet.blink",
+              score_offset = 8,
+              async = true,
+            },
+            lazydev = {
+              name = "LazyDev",
+              module = "lazydev.integrations.blink",
+              score_offset = 100,
+            },
+            emoji = {
+              module = "blink-emoji",
+              name = "Emoji",
+              score_offset = 15, -- Tune by preference
+              opts = { insert = true }, -- Insert emoji (default) or complete its name
+            },
+            dictionary = {
+              module = "blink-cmp-dictionary",
+              name = "Dict",
+              -- Make sure this is at least 2.
+              -- 3 is recommended
+              min_keyword_length = 3,
+              opts = {
+                -- options for blink-cmp-dictionary
+              },
+            },
+          },
+        },
+        completion = {
+          trigger = {
+            prefetch_on_insert = false,
+            show_on_keyword = true,
+          },
+          list = {
+            selection = {
+              auto_insert = function(ctx)
+                return ctx.mode == "cmdline"
+              end,
+              preselect = function(ctx)
+                return ctx.mode ~= "cmdline"
+                  and not require("blink.cmp").snippet_active({ direction = 1 })
+              end,
+            },
+          },
+          menu = {
+            draw = {
+              columns = {
+                { "kind_icon" },
+                { "label", gap = 1 },
+                { "source_name" },
+              },
+              components = {
+                label = {
+                  text = function(ctx)
+                    return require("colorful-menu").blink_components_text(ctx)
+                  end,
+                  highlight = function(ctx)
+                    return require("colorful-menu").blink_components_highlight(ctx)
+                  end,
+                },
+              },
+            },
+          },
+        },
+      }
+    end,
+    opts_extend = { "sources.default" },
+    cond = utils.no_vscode,
   },
   {
     "xzbdmw/colorful-menu.nvim",
@@ -534,7 +728,8 @@ M.plugins = {
               bufnr,
               { notify = false, n_query = 10 },
               require("vectorcode.utils").lsp_document_symbol_cb(),
-              { "BufWritePost" }
+              { "BufWritePost" },
+              15
             )
           end, nil)
         end,
@@ -640,202 +835,24 @@ M.plugins = {
       return ok
     end,
   },
-  -- {
-  --   "tzachar/cmp-ai",
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "Davidyz/VectorCode",
-  --   },
-  --   cond = function()
-  --     local ollama_host = os.getenv("OLLAMA_HOST")
-  --     if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
-  --       return false
-  --     end
-  --     local ok, result =
-  --       pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-  --     return ok
-  --   end,
-  --   config = function()
-  --     local vectorcode_cacher = require("vectorcode.cacher")
-  --     local cmp_ai = require("cmp_ai.config")
-  --     local num_ctx = 1024 * 16
-  --     local n_query = nil
-  --     local prev_n_query = 1
-  --     local opts = {
-  --       max_lines = 250,
-  --       provider = "Ollama",
-  --       provider_options = {
-  --         raw_response_cb = function(response)
-  --           local bufnr = vim.api.nvim_get_current_buf()
-  --           if response == nil or response == {} then
-  --             return
-  --           end
-  --           vim.g.ai_raw_response = response
-  --           local token_count = (response.prompt_eval_count or 0)
-  --             + (response.eval_count or 0)
-  --           if n_query == nil then
-  --             n_query = prev_n_query
-  --           end
-  --           if token_count == 0 then
-  --             return
-  --           elseif token_count < (num_ctx * 0.9) then
-  --             n_query = prev_n_query + 1
-  --           elseif token_count >= num_ctx and prev_n_query > 0 then
-  --             n_query = prev_n_query - 1
-  --           end
-  --           if vectorcode_cacher.buf_is_registered(bufnr) then
-  --             vectorcode_cacher.register_buffer(bufnr, { n_query = n_query })
-  --           end
-  --         end,
-  --         base_url = os.getenv("OLLAMA_HOST") .. "/api/generate",
-  --         model = os.getenv("OLLAMA_CODE_MODEL"),
-  --         auto_unload = true,
-  --         options = {
-  --           temperature = 0,
-  --           stop = { "<|cursor|>" },
-  --           num_ctx = num_ctx,
-  --           num_predict = 50,
-  --         },
-  --         system = "You are a coding assistant who focuses on performance, readability and conciseness. ",
-  --         prompt = function(lines_before, lines_after)
-  --           local file_context = ""
-  --
-  --           local retrieval = vectorcode_cacher.query_from_cache()
-  --           prev_n_query = #retrieval
-  --           for _, source in pairs(retrieval) do
-  --             file_context = file_context
-  --               .. "<|file_sep|>"
-  --               .. source.path
-  --               .. "\n"
-  --               .. source.document
-  --               .. "\n"
-  --           end
-  --           local prompt = "Fill in the middle from the given context for this "
-  --             .. vim.bo.filetype
-  --             .. " code. Do not reply with empty statements or only a comment string/block. Do not reply with plain text. Do not reply with multiple functions or classes, unless they are nested."
-  --             .. file_context
-  --             .. "<|fim_prefix|>"
-  --             .. (lines_before or "")
-  --             .. "<|fim_suffix|>"
-  --             .. (lines_after or "")
-  --             .. "<|fim_middle|>"
-  --           return prompt
-  --         end,
-  --       },
-  --       notify = true,
-  --       notify_callback = function(msg)
-  --         vim.notify(msg, "info", { title = os.getenv("OLLAMA_CODE_MODEL") })
-  --       end,
-  --       run_on_every_keystroke = false,
-  --       ignored_file_types = {
-  --         -- default is not to ignore
-  --         -- uncomment to ignore in lua:
-  --         -- lua = true
-  --       },
-  --     }
-  --     cmp_ai:setup(opts)
-  --   end,
-  -- },
-  {
-    "hrsh7th/cmp-nvim-lsp",
-    event = { "InsertEnter" },
-    cond = utils.no_vscode,
-  },
-  {
-    "hrsh7th/cmp-buffer",
-  },
-  {
-    "https://codeberg.org/FelipeLema/cmp-async-path.git",
-    event = { "InsertEnter", "CmdlineEnter" },
-    cond = utils.no_vscode,
-  },
-  {
-    "chrisgrieser/cmp_yanky",
-    event = { "InsertEnter", "CmdlineEnter" },
-    cond = utils.no_vscode,
-    dependencies = {
-      {
-        "gbprod/yanky.nvim",
-        opts = {},
-      },
-    },
-  },
   {
     "Davidyz/codicons.nvim",
     branch = "cmp-integration",
     opts = {},
     config = true,
     event = { "InsertEnter" },
-    dependencies = { cmp_engine },
     cond = utils.no_vscode,
-  },
-  {
-    "hrsh7th/cmp-cmdline",
-    event = { "InsertEnter", "CmdlineEnter" },
-    cond = utils.no_vscode,
-    dependencies = { cmp_engine, "hrsh7th/cmp-buffer" },
-    config = function()
-      local compare = require("cmp.config.compare")
-      local cmp = require("cmp")
-      cmp.setup.cmdline({ "/", "?", ":" }, {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = "async_path" },
-          { name = "cmdline", priority = 9 },
-          {
-            name = "lazydev",
-            group_index = 0,
-          },
-          {
-            name = "nvim_lsp",
-            keyword_length = 1,
-            priority = 9,
-          },
-          { name = "buffer", keyword_length = 2 },
-          { name = "cmp_yanky", option = { onlyCurrentFiletype = false } },
-          { name = "nvim_lsp_signature_help" },
-        }),
-        sorting = {
-          priority_weight = 1,
-          comparators = {
-            compare.recently_used,
-            compare.kind,
-            compare.exact,
-            compare.score,
-            compare.locality,
-            require("cmp-under-comparator").under,
-            compare.order,
-            compare.offset,
-            compare.sort_text,
-          },
-        },
-      })
-    end,
-  },
-  {
-    "DasGandlaf/nvim-autohotkey",
-    ft = { "autohotkey" },
-    config = function()
-      require("nvim-autohotkey")
-      require("cmp").setup.filetype({ "autohotkey" }, {
-        sources = { { name = "autohotkey" } },
-      })
-    end,
   },
   {
     "garymjr/nvim-snippets",
     -- custom snippets by filetypes at ~/.config/nvim/snippets/
     event = { "InsertEnter" },
-    opts = { friendly_snippets = true },
-    config = function(_, opts)
-      require("snippets").setup(opts)
-    end,
+    opts = {
+      friendly_snippets = true,
+      create_autocmd = true,
+      create_cmp_source = false,
+    },
     dependencies = { "rafamadriz/friendly-snippets" },
-    cond = utils.no_vscode,
-  },
-  {
-    "hrsh7th/cmp-nvim-lsp-signature-help",
-    event = { "InsertEnter" },
     cond = utils.no_vscode,
   },
   {
@@ -848,22 +865,21 @@ M.plugins = {
     cond = utils.no_vscode,
     dependencies = { "neovim/nvim-lspconfig" },
   },
-  {
-    "tamago324/cmp-zsh",
-    build = function()
-      if vim.fn.executable("zsh") then
-        io.popen('zsh -c "zmodload zsh/zpty"')
-      end
-    end,
-    main = "cmp_zsh",
-    opts = { zshrc = true, filetypes = { "zsh" } },
-    cond = function()
-      return utils.no_vscode() and vim.fn.executable("zsh") ~= 0
-    end,
-    ft = { "zsh" },
-  },
-  { "hrsh7th/cmp-emoji", event = { "InsertEnter" } },
-  { "kdheepak/cmp-latex-symbols", event = { "InsertEnter" } },
+  -- {
+  --   "tamago324/cmp-zsh",
+  --   build = function()
+  --     if vim.fn.executable("zsh") then
+  --       io.popen('zsh -c "zmodload zsh/zpty"')
+  --     end
+  --   end,
+  --   main = "cmp_zsh",
+  --   opts = { zshrc = true, filetypes = { "zsh" } },
+  --   cond = function()
+  --     return utils.no_vscode() and vim.fn.executable("zsh") ~= 0
+  --   end,
+  --   ft = { "zsh" },
+  -- },
+  -- { "kdheepak/cmp-latex-symbols", event = { "InsertEnter" } },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
@@ -1139,7 +1155,6 @@ M.plugins = {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
-    dir = "~/git/inlayhint-filler.nvim/",
     keys = {
       {
         "<Leader>i",

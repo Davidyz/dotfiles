@@ -2,10 +2,10 @@ local Rule = require("nvim-autopairs.rule")
 local npairs = require("nvim-autopairs")
 
 require("nvim-autopairs").setup({
-  disable_filetype = { "TelescopePrompt" },
-  check_ts = true,
-  enable_check_bracket_line = false,
-  map_cr = false,
+	disable_filetype = { "TelescopePrompt" },
+	check_ts = true,
+	enable_check_bracket_line = false,
+	map_cr = false,
 })
 
 npairs.add_rule(Rule("'''", "'''", "python"))
@@ -25,7 +25,3 @@ npairs.add_rule(Rule("$${", "}$$", "tex"))
 
 npairs.add_rule(Rule("if then", "fi", "make"))
 npairs.add_rule(Rule("for do", "done", "make"))
-
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local cmp = require("cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
