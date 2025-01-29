@@ -496,24 +496,6 @@ M.plugins = {
     "williamboman/mason-lspconfig.nvim",
     cond = utils.no_vscode,
   },
-  -- {
-  --   cmp_engine,
-  --   name = "nvim-cmp",
-  --   cond = utils.no_vscode,
-  --   opts = function()
-  --     return require("keymaps.cmp")
-  --   end,
-  --   dependencies = {
-  --     "brenoprata10/nvim-highlight-colors",
-  --     "lukas-reineke/cmp-under-comparator",
-  --     "onsails/lspkind.nvim",
-  --     "hrsh7th/cmp-buffer",
-  --     -- "tzachar/cmp-ai",
-  --     "milanglacier/minuet-ai.nvim",
-  --     "xzbdmw/colorful-menu.nvim",
-  --   },
-  --   event = { "InsertEnter", "CmdlineEnter" },
-  -- },
   {
     "saghen/blink.cmp",
     dependencies = {
@@ -526,187 +508,9 @@ M.plugins = {
         dependencies = { "nvim-lua/plenary.nvim" },
       },
     },
+    event = { "BufReadPost", "CmdlineEnter" },
     version = "*",
-    opts = function()
-      ---@module 'blink.cmp'
-      ---@type blink.cmp.Config
-      return {
-        keymap = {
-          -- preset = "super-tab",
-          ["<C-x>"] = {
-            function(cmp)
-              cmp.show({ providers = { "minuet" } })
-            end,
-          },
-          ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-          ["<C-e>"] = { "hide", "fallback" },
-
-          ["<Tab>"] = {
-            function(cmp)
-              local col = vim.fn.col(".") - 1
-              if cmp.snippet_active() then
-                return cmp.accept()
-              elseif cmp.is_menu_visible() then
-                return cmp.select_next()
-              elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-                return nil
-              else
-                return cmp.show()
-              end
-            end,
-            "snippet_forward",
-            "fallback",
-          },
-          ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
-          ["<CR>"] = {
-            "accept",
-            "fallback",
-          },
-
-          ["<Up>"] = { "select_prev", "fallback" },
-          ["<Down>"] = { "select_next", "fallback" },
-          ["<C-p>"] = { "select_prev", "fallback" },
-          ["<C-n>"] = { "select_next", "fallback" },
-
-          ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-          ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-          ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
-          cmdline = {
-            ["<CR>"] = {
-              function(cmp)
-                if cmp.is_menu_visible() then
-                  return cmp.accept()
-                end
-              end,
-              "fallback",
-            },
-            ["<C-x>"] = {
-              function(cmp)
-                cmp.show({ providers = { "minuet" } })
-              end,
-            },
-            ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-            ["<C-e>"] = { "hide", "fallback" },
-
-            ["<Tab>"] = {
-              function(cmp)
-                local col = vim.fn.col(".") - 1
-                if cmp.is_menu_visible() then
-                  return cmp.select_next({ auto_insert = true, preselect = true })
-                elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-                  return nil
-                else
-                  return cmp.show()
-                end
-              end,
-              "snippet_forward",
-              "fallback",
-            },
-            ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
-
-            ["<Up>"] = { "select_prev", "fallback" },
-            ["<Down>"] = { "select_next", "fallback" },
-            ["<C-p>"] = { "select_prev", "fallback" },
-            ["<C-n>"] = { "select_next", "fallback" },
-
-            ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-            ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-            ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
-          },
-        },
-        signature = { enabled = true },
-        appearance = {
-          use_nvim_cmp_as_default = true,
-          nerd_font_variant = "mono",
-          kind_icons = {
-            ellipsis = false,
-            text = function(ctx)
-              return require("lspkind").symbolic(ctx.kind, {
-                mode = "symbol",
-              })
-            end,
-          },
-        },
-        sources = {
-          default = {
-            "lazydev",
-            "lsp",
-            "dictionary",
-            "emoji",
-            "path",
-            "snippets",
-            "buffer",
-          },
-          providers = {
-            minuet = {
-              name = "minuet",
-              module = "minuet.blink",
-              score_offset = 8,
-              async = true,
-            },
-            lazydev = {
-              name = "LazyDev",
-              module = "lazydev.integrations.blink",
-              score_offset = 100,
-            },
-            emoji = {
-              module = "blink-emoji",
-              name = "Emoji",
-              score_offset = 15, -- Tune by preference
-              opts = { insert = true }, -- Insert emoji (default) or complete its name
-            },
-            dictionary = {
-              module = "blink-cmp-dictionary",
-              name = "Dict",
-              -- Make sure this is at least 2.
-              -- 3 is recommended
-              min_keyword_length = 3,
-              opts = {
-                -- options for blink-cmp-dictionary
-              },
-            },
-          },
-        },
-        completion = {
-          trigger = {
-            prefetch_on_insert = false,
-            show_on_keyword = true,
-          },
-          list = {
-            selection = {
-              auto_insert = function(ctx)
-                return ctx.mode == "cmdline"
-              end,
-              preselect = function(ctx)
-                return ctx.mode ~= "cmdline"
-                  and not require("blink.cmp").snippet_active({ direction = 1 })
-              end,
-            },
-          },
-          menu = {
-            draw = {
-              columns = {
-                { "kind_icon" },
-                { "label", gap = 1 },
-                { "source_name" },
-              },
-              components = {
-                label = {
-                  text = function(ctx)
-                    return require("colorful-menu").blink_components_text(ctx)
-                  end,
-                  highlight = function(ctx)
-                    return require("colorful-menu").blink_components_highlight(ctx)
-                  end,
-                },
-              },
-            },
-          },
-        },
-      }
-    end,
+    opts = require("plugins.blink"),
     opts_extend = { "sources.default" },
     cond = utils.no_vscode,
   },
@@ -750,7 +554,6 @@ M.plugins = {
         add_single_line_entry = true,
         n_completions = 1,
         after_cursor_filter_length = 0,
-        notify = "debug",
         provider = "openai_fim_compatible",
         provider_options = {
           openai_fim_compatible = {
@@ -803,25 +606,6 @@ M.plugins = {
             10
           )
         end
-        -- {
-        --   choices = {
-        --     {
-        --       finish_reason = "stop",
-        --       index = 0,
-        --       text = "",
-        --     },
-        --   },
-        --   created = 1737710145,
-        --   id = "cmpl-400",
-        --   model = "qwen2.5-coder:7b-base-q4_1",
-        --   object = "text_completion",
-        --   system_fingerprint = "fp_ollama",
-        --   usage = {
-        --     completion_tokens = 1,
-        --     prompt_tokens = 2048,
-        --     total_tokens = 2049,
-        --   },
-        -- }
         return orig_get_text_fn(json)
       end
     end,
@@ -1339,6 +1123,7 @@ M.plugins = {
           right = { "fold" },
         },
         words = { enabled = true },
+        scroll = { animate = { easing = "inOutCirc" } },
       }
     end,
     init = function()
@@ -1390,31 +1175,6 @@ M.plugins = {
     },
   },
   { "nmac427/guess-indent.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
-  {
-    "echasnovski/mini.animate",
-    version = "*",
-    init = function()
-      vim.o.mousescroll = "ver:1,hor:6"
-    end,
-    priority = 1001,
-    opts = function()
-      local animate = require("mini.animate")
-      return {
-        cursor = { enable = false },
-        scroll = {
-          timing = animate.gen_timing.exponential({
-            duration = 250,
-            unit = "total",
-            easing = "in-out",
-          }),
-        },
-        resize = { enable = false },
-        open = { enable = false },
-        close = { enable = false },
-      }
-    end,
-    event = { "BufNewFile", "BufReadPost", "FileType *" },
-  },
   {
     "mistricky/codesnap.nvim",
     build = "make",
