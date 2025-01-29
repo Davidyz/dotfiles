@@ -550,73 +550,76 @@ M.plugins = {
     config = function(_, opts)
       local vectorcode_cacher = require("vectorcode.cacher")
       local num_docs = 10
-      require("minuet").setup({
+      opts = {
         add_single_line_entry = true,
         n_completions = 1,
         after_cursor_filter_length = 0,
-        provider = "openai_fim_compatible",
-        provider_options = {
-          openai_fim_compatible = {
-            api_key = "TERM",
-            name = "Ollama",
-            stream = false,
-            end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
-            model = os.getenv("OLLAMA_CODE_MODEL"),
-            optional = {
-              max_tokens = 256,
-              top_p = 0.9,
-              num_ctx = 16384,
-            },
-            template = {
-              prompt = function(pref, suff)
-                local prompt_message = ""
-                local cache_result = vectorcode_cacher.query_from_cache(0)
-                num_docs = #cache_result
-                for _, file in ipairs(cache_result) do
-                  prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
-                end
-                return prompt_message
-                  .. "<|fim_prefix|>"
-                  .. pref
-                  .. "<|fim_suffix|>"
-                  .. suff
-                  .. "<|fim_middle|>"
-              end,
-              suffix = nil,
-            },
-          },
-        },
-      })
-      local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
-      local orig_get_text_fn = openai_fim_compatible.get_text_fn
-      openai_fim_compatible.get_text_fn = function(json)
-        vim.g.ai_raw_response = json
-        if vectorcode_cacher.buf_is_registered() then
-          local new_num_query = num_docs
-          if vim.g.ai_raw_response.usage.total_tokens > 16384 then
-            new_num_query = math.max(num_docs - 1, 1)
-          elseif vim.g.ai_raw_response.usage.total_tokens < 16000 then
-            new_num_query = num_docs + 1
-          end
-          vectorcode_cacher.register_buffer(
-            0,
-            { n_query = new_num_query },
-            nil,
-            { "BufWritePost" },
-            10
-          )
-        end
-        return orig_get_text_fn(json)
-      end
-    end,
-    cond = function()
+        provider_options = {},
+      }
+
       local ollama_host = os.getenv("OLLAMA_HOST")
       if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
         return false
       end
-      local ok, result =
-        pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-      return ok
+      local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
+      if ok then
+        opts.provider = "openai_fim_compatible"
+        opts.provider_options.openai_fim_compatible = {
+          api_key = "TERM",
+          name = "Ollama",
+          stream = false,
+          end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
+          model = os.getenv("OLLAMA_CODE_MODEL"),
+          optional = {
+            max_tokens = 256,
+            top_p = 0.9,
+            num_ctx = 16384,
+          },
+          request_timeout = 10,
+          n_completions = 5,
+          template = {
+            prompt = function(pref, suff)
+              local prompt_message = ""
+              local cache_result = vectorcode_cacher.query_from_cache(0)
+              num_docs = #cache_result
+              for _, file in ipairs(cache_result) do
+                prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+              end
+              return prompt_message
+                .. "<|fim_prefix|>"
+                .. pref
+                .. "<|fim_suffix|>"
+                .. suff
+                .. "<|fim_middle|>"
+            end,
+            suffix = nil,
+          },
+        }
+      end
+      require("minuet").setup(opts)
+      if ok then
+        local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
+        local orig_get_text_fn = openai_fim_compatible.get_text_fn
+        openai_fim_compatible.get_text_fn = function(json)
+          vim.g.ai_raw_response = json
+          if vectorcode_cacher.buf_is_registered() then
+            local new_num_query = num_docs
+            if vim.g.ai_raw_response.usage.total_tokens > 16384 then
+              new_num_query = math.max(num_docs - 1, 1)
+            elseif vim.g.ai_raw_response.usage.total_tokens < 16000 then
+              new_num_query = num_docs + 1
+            end
+            vectorcode_cacher.register_buffer(
+              0,
+              { n_query = new_num_query },
+              nil,
+              { "BufWritePost" },
+              10
+            )
+          end
+          return orig_get_text_fn(json)
+        end
+      end
     end,
   },
   {

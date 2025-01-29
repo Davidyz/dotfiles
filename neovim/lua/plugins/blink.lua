@@ -120,11 +120,6 @@ return function(_, opts)
           module = "minuet.blink",
           score_offset = 8,
           async = true,
-          enabled = function()
-            -- return package.loaded["minuet"] ~= nil
-            local ok, _ = pcall(require, "minuet.blink")
-            return ok and package.preload["minuet.blink"] ~= nil
-          end,
           timeout_ms = 10000,
         },
         lazydev = {
