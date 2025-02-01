@@ -548,7 +548,7 @@ M.plugins = {
   {
     "milanglacier/minuet-ai.nvim",
     config = function(_, opts)
-      local vectorcode_cacher = require("vectorcode.cacher")
+      local has_vc, vectorcode_cacher = pcall(require, "vectorcode.cacher")
       local num_docs = 10
       opts = {
         add_single_line_entry = true,
@@ -580,10 +580,12 @@ M.plugins = {
           template = {
             prompt = function(pref, suff)
               local prompt_message = ""
-              local cache_result = vectorcode_cacher.query_from_cache(0)
-              num_docs = #cache_result
-              for _, file in ipairs(cache_result) do
-                prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+              if has_vs then
+                local cache_result = vectorcode_cacher.query_from_cache(0)
+                num_docs = #cache_result
+                for _, file in ipairs(cache_result) do
+                  prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+                end
               end
               return prompt_message
                 .. "<|fim_prefix|>"
