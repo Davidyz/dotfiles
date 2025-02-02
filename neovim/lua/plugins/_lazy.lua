@@ -528,13 +528,13 @@ M.plugins = {
         callback = function()
           local bufnr = vim.api.nvim_get_current_buf()
           cacher.async_check("config", function()
-            cacher.register_buffer(
-              bufnr,
-              { notify = false, n_query = 10 },
-              require("vectorcode.utils").lsp_document_symbol_cb(),
-              { "BufWritePost" },
-              15
-            )
+            cacher.register_buffer(bufnr, {
+              notify = false,
+              n_query = 10,
+              query_cb = require("vectorcode.utils").lsp_document_symbol_cb(),
+              events = { "BufWritePost" },
+              debounce = 15,
+            })
           end, nil)
         end,
         desc = "Register buffer for VectorCode",
@@ -580,7 +580,7 @@ M.plugins = {
           template = {
             prompt = function(pref, suff)
               local prompt_message = ""
-              if has_vs then
+              if has_vc then
                 local cache_result = vectorcode_cacher.query_from_cache(0)
                 num_docs = #cache_result
                 for _, file in ipairs(cache_result) do
@@ -1014,6 +1014,14 @@ M.plugins = {
       {
         "jay-babu/mason-nvim-dap.nvim",
         cond = utils.no_vscode,
+      },
+      {
+        "mfussenegger/nvim-dap-python",
+        ft = { "python" },
+        config = function(_, opts)
+          require("dap-python").setup(opts)
+          require("dap-python").test_runner = "pytest"
+        end,
       },
     },
   },
