@@ -86,7 +86,7 @@ local lualine_config = {
     section_separators = { left = "", right = "" },
     component_separators = { left = "", right = "" },
     disabled_filetypes = {},
-    always_divide_middle = true,
+    -- always_divide_middle = true,
     globalstatus = true,
   },
   sections = {
@@ -133,6 +133,9 @@ local lualine_config = {
       {
         "tabs",
         mode = 2,
+        max_length = function()
+          return vim.o.columns - 40
+        end,
         fmt = function(str)
           local ft_icon = get_devicon_for_buf()
           if ft_icon ~= "" then
