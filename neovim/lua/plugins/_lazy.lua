@@ -555,6 +555,7 @@ M.plugins = {
         n_completions = 1,
         after_cursor_filter_length = 0,
         provider_options = {},
+        request_timeout = 10,
       }
 
       local ollama_host = os.getenv("OLLAMA_HOST")
@@ -575,8 +576,6 @@ M.plugins = {
             top_p = 0.9,
             num_ctx = 16384,
           },
-          request_timeout = 10,
-          n_completions = 5,
           template = {
             prompt = function(pref, suff)
               local prompt_message = ""
@@ -1019,7 +1018,7 @@ M.plugins = {
         "mfussenegger/nvim-dap-python",
         ft = { "python" },
         config = function(_, opts)
-          require("dap-python").setup(opts)
+          require("dap-python").setup("python3", opts)
           require("dap-python").test_runner = "pytest"
         end,
       },
