@@ -612,10 +612,7 @@ M.plugins = {
             end
             vectorcode_cacher.register_buffer(
               0,
-              { n_query = new_num_query },
-              nil,
-              { "BufWritePost" },
-              10
+              { n_query = new_num_query }
             )
           end
           return orig_get_text_fn(json)
