@@ -593,7 +593,7 @@ M.plugins = {
                 .. suff
                 .. "<|fim_middle|>"
             end,
-            suffix = nil,
+            suffix = false,
           },
         }
       end
@@ -610,10 +610,7 @@ M.plugins = {
             elseif vim.g.ai_raw_response.usage.total_tokens < 16000 then
               new_num_query = num_docs + 1
             end
-            vectorcode_cacher.register_buffer(
-              0,
-              { n_query = new_num_query }
-            )
+            vectorcode_cacher.register_buffer(0, { n_query = new_num_query })
           end
           return orig_get_text_fn(json)
         end
