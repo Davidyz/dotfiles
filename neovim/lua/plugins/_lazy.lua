@@ -565,6 +565,7 @@ M.plugins = {
       local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
       if ok then
         opts.provider = "openai_fim_compatible"
+        local num_ctx = 1024 * 32
         opts.provider_options.openai_fim_compatible = {
           api_key = "TERM",
           name = "Ollama",
@@ -573,8 +574,7 @@ M.plugins = {
           model = os.getenv("OLLAMA_CODE_MODEL"),
           optional = {
             max_tokens = 256,
-            top_p = 0.9,
-            num_ctx = 16384,
+            num_ctx = num_ctx,
           },
           template = {
             prompt = function(pref, suff)
@@ -605,9 +605,9 @@ M.plugins = {
           vim.g.ai_raw_response = json
           if vectorcode_cacher.buf_is_registered() then
             local new_num_query = num_docs
-            if vim.g.ai_raw_response.usage.total_tokens > 16384 then
+            if vim.g.ai_raw_response.usage.total_tokens > num_ctx then
               new_num_query = math.max(num_docs - 1, 1)
-            elseif vim.g.ai_raw_response.usage.total_tokens < 16000 then
+            elseif vim.g.ai_raw_response.usage.total_tokens < num_ctx * 0.9 then
               new_num_query = num_docs + 1
             end
             vectorcode_cacher.register_buffer(0, { n_query = new_num_query })
