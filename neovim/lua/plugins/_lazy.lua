@@ -556,6 +556,7 @@ M.plugins = {
         after_cursor_filter_length = 0,
         provider_options = {},
         request_timeout = 10,
+        notify = "debug",
       }
 
       local ollama_host = os.getenv("OLLAMA_HOST")
@@ -578,7 +579,9 @@ M.plugins = {
           },
           template = {
             prompt = function(pref, suff)
-              local prompt_message = ""
+              local prompt_message = ([[
+              Perform fill-in-middle from the following snippet of a %s code. <|fim_prefix|> denotes the content before the cursor. <|fim_suffix|> denotes the content after the cursor. <|file_sep|> denotes a file path, followed by the content, of a file in the repository that may be related to the current code.
+              ]]):format(tostring(vim.bo.filetype))
               if has_vc then
                 local cache_result = vectorcode_cacher.query_from_cache(0)
                 num_docs = #cache_result
@@ -602,16 +605,20 @@ M.plugins = {
         local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
         local orig_get_text_fn = openai_fim_compatible.get_text_fn
         openai_fim_compatible.get_text_fn = function(json)
-          vim.g.ai_raw_response = json
-          if vectorcode_cacher.buf_is_registered() then
-            local new_num_query = num_docs
-            if vim.g.ai_raw_response.usage.total_tokens > num_ctx then
-              new_num_query = math.max(num_docs - 1, 1)
-            elseif vim.g.ai_raw_response.usage.total_tokens < num_ctx * 0.9 then
-              new_num_query = num_docs + 1
+          vim.notify(vim.inspect(json))
+          local co = coroutine.create(function()
+            vim.g.ai_raw_response = json
+            if vectorcode_cacher.buf_is_registered() then
+              local new_num_query = num_docs
+              if vim.g.ai_raw_response.usage.total_tokens > num_ctx then
+                new_num_query = math.max(num_docs - 1, 1)
+              elseif vim.g.ai_raw_response.usage.total_tokens < num_ctx * 0.9 then
+                new_num_query = num_docs + 1
+              end
+              vectorcode_cacher.register_buffer(0, { n_query = new_num_query })
             end
-            vectorcode_cacher.register_buffer(0, { n_query = new_num_query })
-          end
+          end)
+          coroutine.resume(co)
           return orig_get_text_fn(json)
         end
       end
