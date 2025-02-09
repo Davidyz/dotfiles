@@ -520,7 +520,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    version = "*",
+    -- version = "*",
     config = function(_, opts)
       require("vectorcode").setup(opts)
       local cacher = require("vectorcode.cacher")
@@ -559,7 +559,6 @@ M.plugins = {
         after_cursor_filter_length = 0,
         provider_options = {},
         request_timeout = 10,
-        notify = "debug",
       }
 
       local ollama_host = os.getenv("OLLAMA_HOST")
@@ -608,14 +607,15 @@ M.plugins = {
         local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
         local orig_get_text_fn = openai_fim_compatible.get_text_fn
         openai_fim_compatible.get_text_fn = function(json)
+          local bufnr = vim.api.nvim_get_current_buf()
           vim.notify(vim.inspect(json))
           local co = coroutine.create(function()
-            vim.g.ai_raw_response = json
+            vim.b[bufnr].ai_raw_response = json
             if vectorcode_cacher.buf_is_registered() then
               local new_num_query = num_docs
-              if vim.g.ai_raw_response.usage.total_tokens > num_ctx then
+              if json.usage.total_tokens > num_ctx then
                 new_num_query = math.max(num_docs - 1, 1)
-              elseif vim.g.ai_raw_response.usage.total_tokens < num_ctx * 0.9 then
+              elseif json.usage.total_tokens < num_ctx * 0.9 then
                 new_num_query = num_docs + 1
               end
               vectorcode_cacher.register_buffer(0, { n_query = new_num_query })

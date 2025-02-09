@@ -151,11 +151,11 @@ local lualine_config = {
     lualine_z = {
       {
         function()
-          local response = vim.g.ai_raw_response
+          local response = vim.b.ai_raw_response
           return string.format("ctx: %d", response.usage.total_tokens)
         end,
         cond = function()
-          return vim.g.ai_raw_response ~= nil
+          return vim.b.ai_raw_response ~= nil
         end,
       },
     },
