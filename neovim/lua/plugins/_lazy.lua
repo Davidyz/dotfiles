@@ -544,6 +544,9 @@ M.plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    cond = function()
+      return vim.fn.executable("vectorcode") == 1 and utils.no_vscode()
+    end,
   },
   {
     "milanglacier/minuet-ai.nvim",
