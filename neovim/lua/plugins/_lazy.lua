@@ -588,7 +588,11 @@ M.plugins = {
                 local cache_result = vectorcode_cacher.query_from_cache(0)
                 num_docs = #cache_result
                 for _, file in ipairs(cache_result) do
-                  prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+                  prompt_message = prompt_message
+                    .. "<|file_separator|>"
+                    .. file.path
+                    .. "\n"
+                    .. file.document
                 end
               end
               return prompt_message
