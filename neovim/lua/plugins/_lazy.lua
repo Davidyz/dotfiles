@@ -581,9 +581,9 @@ M.plugins = {
           },
           template = {
             prompt = function(pref, suff)
-              local prompt_message = ([[
-              Perform fill-in-middle from the following snippet of a %s code. <|fim_prefix|> denotes the content before the cursor. <|fim_suffix|> denotes the content after the cursor. <|file_sep|> denotes a file path, followed by the content, of a file in the repository that may be related to the current code.
-              ]]):format(tostring(vim.bo.filetype))
+              local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
+                vim.bo.filetype
+              )
               if has_vc then
                 local cache_result = vectorcode_cacher.query_from_cache(0)
                 num_docs = #cache_result
