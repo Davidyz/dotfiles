@@ -1655,7 +1655,7 @@ M.plugins = {
       require("plugins._lualine")
     end,
     lazy = false,
-    dependencies = { icon_provider },
+    dependencies = { icon_provider, "Davidyz/VectorCode" },
   },
   {
     "shellRaining/hlchunk.nvim",
@@ -2021,6 +2021,7 @@ M.plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "Davidyz/VectorCode",
     },
     config = true,
     cmd = {
