@@ -520,7 +520,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    opts = { notify = false, n_query = 10 },
+    opts = { notify = false, n_query = 10, events = { "BufWritePost" } },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
