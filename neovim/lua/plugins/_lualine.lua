@@ -75,7 +75,7 @@ end
 
 local snacks_status_component = require("snacks").profiler.status()
 local vectorcode_component = nil
-local ok, vectorcode = pcall(require, "vectorcode.cacher")
+local ok, vectorcode = pcall(require, "vectorcode.integrations")
 if ok then
   vectorcode_component = vectorcode.lualine()
 end

@@ -520,26 +520,6 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    -- version = "*",
-    config = function(_, opts)
-      require("vectorcode").setup(opts)
-      local cacher = require("vectorcode.cacher")
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function()
-          local bufnr = vim.api.nvim_get_current_buf()
-          cacher.async_check("config", function()
-            cacher.register_buffer(bufnr, {
-              notify = false,
-              n_query = 10,
-              query_cb = require("vectorcode.utils").lsp_document_symbol_cb(),
-              events = { "BufWritePost" },
-              debounce = 15,
-            })
-          end, nil)
-        end,
-        desc = "Register buffer for VectorCode",
-      })
-    end,
     opts = { notify = false, n_query = 10 },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -2071,6 +2051,9 @@ M.plugins = {
       opts.strategies = {
         chat = {
           adapter = "Qwen2.5-Coder",
+          slash_commands = {
+            codebase = require("vectorcode.integrations").codecompanion.chat.slash_command,
+          },
         },
         inline = {
           adapter = "Qwen2.5-Coder",
