@@ -520,7 +520,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    version = "*",
+    -- version = "*",
     opts = { notify = false, n_query = 10, events = { "BufWritePost" } },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -566,16 +566,11 @@ M.plugins = {
                 vim.bo.filetype
               )
               if has_vc then
-                local cache_result = vectorcode_cacher.query_from_cache(0)
-                num_docs = #cache_result
-                for _, file in ipairs(cache_result) do
-                  prompt_message = prompt_message
-                    .. "<|file_sep|>"
-                    .. file.path
-                    .. "\n"
-                    .. file.document
-                end
+                local cache_result = vectorcode_cacher.make_prompt_component(0)
+                num_docs = cache_result.count
+                prompt_message = prompt_message .. cache_result.content
               end
+
               return prompt_message
                 .. "<|fim_prefix|>"
                 .. pref
@@ -2054,7 +2049,7 @@ M.plugins = {
         chat = {
           adapter = "Qwen2.5-Coder",
           slash_commands = {
-            codebase = require("vectorcode.integrations").codecompanion.chat.slash_command,
+            codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
           },
         },
         inline = {
