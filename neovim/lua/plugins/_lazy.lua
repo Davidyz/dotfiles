@@ -531,6 +531,7 @@ M.plugins = {
   },
   {
     "milanglacier/minuet-ai.nvim",
+    cond = utils.no_vscode,
     config = function(_, opts)
       local has_vc, vectorcode_cacher = pcall(require, "vectorcode.cacher")
       local num_docs = 10
@@ -538,14 +539,28 @@ M.plugins = {
         add_single_line_entry = true,
         n_completions = 1,
         after_cursor_filter_length = 0,
-        provider_options = {},
+        provider = "gemini",
+        provider_options = {
+          gemini = {
+            model = "gemini-2.0-flash",
+            chat_input = {
+              template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
+              repo_context = function()
+                if has_vc then
+                  return vectorcode_cacher.make_prompt_component(0, function(file)
+                    return "<|file_separator|>" .. file.path .. "\n" .. file.document
+                  end).content
+                else
+                  return ""
+                end
+              end,
+            },
+          },
+        },
         request_timeout = 10,
       }
 
       local ollama_host = os.getenv("OLLAMA_HOST")
-      if not utils.no_vscode() or ollama_host == nil or ollama_host == "" then
-        return false
-      end
       local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
       if ok then
         opts.provider = "openai_fim_compatible"
