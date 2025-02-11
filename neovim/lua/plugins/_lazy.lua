@@ -520,6 +520,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    version = "*",
     opts = { notify = false, n_query = 10, events = { "BufWritePost" } },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -569,7 +570,7 @@ M.plugins = {
                 num_docs = #cache_result
                 for _, file in ipairs(cache_result) do
                   prompt_message = prompt_message
-                    .. "<|file_separator|>"
+                    .. "<|file_sep|>"
                     .. file.path
                     .. "\n"
                     .. file.document
