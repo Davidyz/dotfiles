@@ -508,8 +508,9 @@ M.plugins = {
         dependencies = { "nvim-lua/plenary.nvim" },
       },
     },
+    build = "cargo build --release",
     event = { "BufReadPost", "CmdlineEnter" },
-    version = "*",
+    -- version = "*",
     opts = require("plugins.blink"),
     opts_extend = { "sources.default" },
     cond = utils.no_vscode,
@@ -603,7 +604,6 @@ M.plugins = {
         local orig_get_text_fn = openai_fim_compatible.get_text_fn
         openai_fim_compatible.get_text_fn = function(json)
           local bufnr = vim.api.nvim_get_current_buf()
-          vim.notify(vim.inspect(json))
           local co = coroutine.create(function()
             vim.b[bufnr].ai_raw_response = json
             if vectorcode_cacher.buf_is_registered() then
@@ -713,25 +713,6 @@ M.plugins = {
       }
     end,
     cond = utils.no_vscode,
-  },
-  {
-    "smjonas/inc-rename.nvim",
-    opts = {
-      input_buffer_type = "dressing",
-    },
-    dependencies = { "stevearc/dressing.nvim" },
-    cmd = { "IncRename" },
-    keys = {
-      {
-        "<Leader>rv",
-        function()
-          return ":IncRename " .. vim.fn.expand("<cword>")
-        end,
-        mode = "n",
-        expr = true,
-        desc = "LSP rename.",
-      },
-    },
   },
   {
     "ThePrimeagen/refactoring.nvim",
@@ -1124,6 +1105,7 @@ M.plugins = {
             },
           },
         },
+        input = { enabled = true },
         notifier = { enabled = true },
         profiler = { enabled = true },
         quickfile = { enabled = true },
@@ -1135,6 +1117,7 @@ M.plugins = {
         },
         words = { enabled = true },
         scroll = { animate = { easing = "inOutCirc" } },
+        styles = { input = { relative = "cursor", row = -3, col = 0 } },
       }
     end,
     init = function()
@@ -1324,10 +1307,6 @@ M.plugins = {
     opts = {},
   },
   { "mawkler/modicator.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
-  {
-    "stevearc/dressing.nvim",
-    opts = { input = { title_pos = "center", border = "rounded" } },
-  },
   {
     "NStefan002/2048.nvim",
     cmd = "Play2048",
