@@ -42,9 +42,9 @@ return function(_, opts)
 
       ["<C-b>"] = { "scroll_documentation_up", "fallback" },
       ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-      ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
-      cmdline = {
+    },
+    cmdline = {
+      keymap = {
         ["<CR>"] = {
           function(cmp)
             if cmp.is_menu_visible() then
