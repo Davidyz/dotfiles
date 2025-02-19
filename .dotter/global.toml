@@ -1,5 +1,5 @@
 [neovim.files]
-"neovim/" = "~/.config/nvim/"
+"neovim/" = { target = "~/.config/nvim/", type = "symbolic" }
 
 [hyprland.files]
 "hyprland/" = "~/.config/hypr/"
