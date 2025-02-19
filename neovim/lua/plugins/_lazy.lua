@@ -508,9 +508,8 @@ M.plugins = {
         dependencies = { "nvim-lua/plenary.nvim" },
       },
     },
-    build = "cargo build --release",
     event = { "BufReadPost", "CmdlineEnter" },
-    -- version = "*",
+    version = "*",
     opts = require("plugins.blink"),
     opts_extend = { "sources.default" },
     cond = utils.no_vscode,
@@ -521,11 +520,12 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    -- version = "*",
+    version = "*",
     opts = { notify = false, n_query = 10, events = { "BufWritePost" } },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    cmd = "VectorCode",
     cond = function()
       return vim.fn.executable("vectorcode") == 1 and utils.no_vscode()
     end,
@@ -2023,6 +2023,9 @@ M.plugins = {
     opts = function(_, opts)
       opts = opts or {}
       opts.adapters = {
+        ["Gemini"] = function()
+          return require("codecompanion.adapters").extend("gemini", { name = "Gemini" })
+        end,
         ["Qwen2.5-Coder"] = function()
           return require("codecompanion.adapters").extend("ollama", {
             name = "Qwen2.5-Coder",
@@ -2033,38 +2036,47 @@ M.plugins = {
               model = {
                 default = os.getenv("OLLAMA_CODE_CHAT_MODEL"),
               },
-              num_ctx = { default = 16 * 1024 },
+              num_ctx = { default = 32 * 1024 },
             },
           })
         end,
       }
+      local adapter = "Gemini"
+      local ollama_host = os.getenv("OLLAMA_HOST")
+      local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
 
+      if ok then
+        adapter = "Qwen2.5-Coder"
+      end
       opts.strategies = {
         chat = {
-          adapter = "Qwen2.5-Coder",
+          adapter = adapter,
           slash_commands = {
             codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
           },
+          agents = {
+            tools = {
+              vectorcode = {
+                opts = {
+                  hide_output = true,
+                },
+                description = "Run VectorCode to retrieve the project context.",
+                -- callback = "vectorcode",
+                callback = require("vectorcode.integrations").codecompanion.chat.make_tool({
+                  default_num = 15,
+                }),
+              },
+            },
+          },
         },
         inline = {
-          adapter = "Qwen2.5-Coder",
+          adapter = adapter,
         },
       }
       return opts
     end,
     cond = function()
-      local ollama_host = os.getenv("OLLAMA_HOST")
-      if
-        not utils.no_vscode()
-        or ollama_host == nil
-        or ollama_host == ""
-        or os.getenv("OLLAMA_CODE_CHAT_MODEL") == nil
-      then
-        return false
-      end
-      local ok, result =
-        pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
-      return ok
+      return utils.no_vscode()
     end,
   },
   {
@@ -2116,8 +2128,8 @@ M.plugins = {
       star_on_startup = false,
       ignore_repos = {},
       ignore_authors = {},
-      unstar_on_uninstall = true,
-      ask_before_unstarring = true,
+      unstar_on_uninstall = false,
+      ask_before_unstarring = false,
       ignore_unauthenticated = true,
     },
     event = { "VeryLazy" },

@@ -52,62 +52,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
       local orig_win = vim.api.nvim_get_current_win()
       local orig_buf = vim.api.nvim_win_get_buf(orig_win)
       local orig_name = vim.fn.expand("<cword>")
-      local prompt_win = vim.ui.input(
-        { prompt = "New name", default = orig_name },
-        function(input)
-          vim.lsp.buf_request(
-            orig_buf,
-            vim.lsp.protocol.Methods.textDocument_rename,
-            vim.tbl_deep_extend(
-              "force",
-              vim.lsp.util.make_position_params(orig_win),
-              { newName = input or orig_name }
-            ),
-            nil,
-            function()
-              vim.notify("Rename is not supported by the current language server.")
-            end
-          )
-        end
-      )
-
-      if prompt_win ~= nil then
-        vim.api.nvim_create_autocmd("TextChangedI", {
-          buffer = prompt_win.buf,
-          callback = function()
-            local new_name = vim.api.nvim_get_current_line()
-            if new_name:len() == 0 then
-              new_name = orig_name
-            end
-            local rename_params = vim.tbl_deep_extend(
-              "force",
-              vim.lsp.util.make_position_params(orig_win),
-              { newName = new_name }
-            )
-            vim.lsp.buf_request(
-              orig_buf,
-              vim.lsp.protocol.Methods.textDocument_prepareRename,
-              rename_params,
-              function(err, result, ctx, config)
-                vim.notify(vim.inspect(result))
-                if result ~= nil then
-                  vim.lsp.buf_request(
-                    orig_buf,
-                    vim.lsp.protocol.Methods.textDocument_rename,
-                    rename_params,
-                    nil,
-                    function()
-                      vim.notify(
-                        "Rename is not supported by the current language server."
-                      )
-                    end
-                  )
-                end
-              end
-            )
-          end,
-        })
-      end
+      vim.ui.input({ prompt = "New name", default = orig_name }, function(input)
+        vim.lsp.buf_request(
+          orig_buf,
+          vim.lsp.protocol.Methods.textDocument_rename,
+          vim.tbl_deep_extend(
+            "force",
+            vim.lsp.util.make_position_params(orig_win),
+            { newName = input or orig_name }
+          ),
+          nil,
+          function()
+            vim.notify("Rename is not supported by the current language server.")
+          end
+        )
+      end)
     end, { desc = "LSP [r]ename [v]ariable." })
 
     -- Move to the previous diagnostic
