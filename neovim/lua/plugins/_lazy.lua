@@ -560,6 +560,9 @@ M.plugins = {
                 end
               end,
             },
+            optional = {
+              generationConfig = { stop_sequences = { "<|file_separator|>" } },
+            },
           },
         },
         request_timeout = 10,
@@ -2012,6 +2015,7 @@ M.plugins = {
   },
   {
     "olimorris/codecompanion.nvim",
+    version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -2030,31 +2034,11 @@ M.plugins = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", { name = "Gemini" })
         end,
-        ["Qwen2.5-Coder"] = function()
-          return require("codecompanion.adapters").extend("ollama", {
-            name = "Qwen2.5-Coder",
-            env = {
-              url = os.getenv("OLLAMA_HOST"),
-            },
-            schema = {
-              model = {
-                default = os.getenv("OLLAMA_CODE_CHAT_MODEL"),
-              },
-              num_ctx = { default = 32 * 1024 },
-            },
-          })
-        end,
       }
-      local adapter = "Gemini"
-      local ollama_host = os.getenv("OLLAMA_HOST")
-      local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
 
-      if ok then
-        adapter = "Qwen2.5-Coder"
-      end
       opts.strategies = {
         chat = {
-          adapter = adapter,
+          adapter = "Gemini",
           slash_commands = {
             codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
           },
@@ -2074,7 +2058,7 @@ M.plugins = {
           },
         },
         inline = {
-          adapter = adapter,
+          adapter = "Gemini",
         },
       }
       return opts
