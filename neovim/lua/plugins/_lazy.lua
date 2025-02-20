@@ -521,7 +521,11 @@ M.plugins = {
   {
     "Davidyz/VectorCode",
     version = "*",
-    opts = { notify = false, n_query = 10, events = { "BufWritePost" } },
+    opts = {
+      notify = false,
+      n_query = 10,
+      async_opts = { events = { "BufWritePost" } },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
