@@ -520,11 +520,13 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    -- dir = "~/git/VectorCode/",
     version = "*",
     opts = {
       notify = false,
       n_query = 10,
-      async_opts = { events = { "BufWritePost" } },
+      timeout_ms = -1,
+      async_opts = { events = { "BufWritePost" }, single_job = true },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
