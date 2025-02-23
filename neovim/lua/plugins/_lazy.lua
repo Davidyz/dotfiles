@@ -1,9 +1,8 @@
 M = {}
 local utils = require("_utils")
 
-local icon_provider = "echasnovski/mini.icons"
 M.plugins = {
-  -- NOTE: icons
+  -- NOTE: mini
   {
     "echasnovski/mini.icons",
     opts = {},
@@ -17,16 +16,6 @@ M.plugins = {
         return package.loaded["nvim-web-devicons"]
       end
     end,
-    cond = function()
-      return icon_provider == "echasnovski/mini.icons"
-    end,
-  },
-  {
-    "nvim-tree/nvim-web-devicons",
-    cond = function()
-      return icon_provider == "nvim-tree/nvim-web-devicons"
-    end,
-    dependencies = {},
   },
 
   -- NOTE: filetypes
@@ -249,7 +238,7 @@ M.plugins = {
       return { file_types = { "markdown", "vimwiki" } }
     end,
     ft = { "markdown", "vimwiki" },
-    dependencies = { "nvim-treesitter/nvim-treesitter", icon_provider },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
   },
 
   -- NOTE: tree sitter
@@ -520,14 +509,19 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    -- dir = "~/git/VectorCode/",
-    version = "*",
-    opts = {
-      notify = false,
-      n_query = 10,
-      timeout_ms = -1,
-      async_opts = { events = { "BufWritePost" }, single_job = true },
-    },
+    -- version = "*",
+    opts = function()
+      return {
+        notify = false,
+        n_query = 10,
+        timeout_ms = -1,
+        async_opts = {
+          events = { "BufWritePost" },
+          single_job = true,
+          query_cb = require("vectorcode.utils").make_surrounding_lines_cb(40),
+        },
+      }
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -1264,7 +1258,7 @@ M.plugins = {
       -- optional
       "nvim-treesitter/nvim-treesitter",
 
-      icon_provider,
+      "echasnovski/mini.icons",
     },
   },
   {
@@ -1654,7 +1648,7 @@ M.plugins = {
       require("plugins._lualine")
     end,
     lazy = false,
-    dependencies = { icon_provider, "Davidyz/VectorCode" },
+    dependencies = { "echasnovski/mini.icons", "Davidyz/VectorCode" },
   },
   {
     "shellRaining/hlchunk.nvim",
@@ -1768,7 +1762,7 @@ M.plugins = {
     "stevearc/oil.nvim",
     version = "*",
     opts = { lsp_file_methods = { autosave_changes = true } },
-    dependencies = { icon_provider },
+    dependencies = { "echasnovski/mini.icons" },
     cmd = { "Oil" },
   },
   {
