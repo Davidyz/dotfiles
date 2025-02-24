@@ -8,6 +8,21 @@ vim.api.nvim_create_autocmd(
   "BufEnter",
   { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach }
 )
+dap.configurations.lua = {
+  {
+    type = "nlua",
+    request = "attach",
+    name = "Attach to running Neovim instance",
+  },
+}
+
+dap.adapters.nlua = function(callback, config)
+  callback({
+    type = "server",
+    host = config.host or "127.0.0.1",
+    port = config.port or 8086,
+  })
+end
 
 dapui.setup({
   icons = { expanded = "▾", collapsed = "▸" },
@@ -50,10 +65,10 @@ dapui.setup({
       close = { "q", "<Esc>" },
     },
   },
-  windows = { indent = 1 },
+  windows = { indent = 2 },
   render = {
     indent = 1,
-    max_type_length = nil, -- Can be integer or nil.
+    -- max_type_length = nil, -- Can be integer or nil.
   },
 })
 
@@ -77,7 +92,7 @@ virtual_text.setup({
 
 local mason_dap = require("mason-nvim-dap")
 mason_dap.setup({
-  ensure_installed = {  "bash", "cppdbg" },
+  ensure_installed = { "bash", "cppdbg" },
   automatic_setup = true,
   handlers = {
     function(config)

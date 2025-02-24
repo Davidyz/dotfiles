@@ -967,7 +967,7 @@ M.plugins = {
       },
       { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
       { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
-      { "<Space>i", "<cmd>DapStepOver<CR>", desc = "DAP Step [I]nto.", noremap = true },
+      { "<Space>i", "<cmd>DapStepInto<CR>", desc = "DAP Step [I]nto.", noremap = true },
       { "<Space>q", "<cmd>DapStepOut<CR>", desc = "DAP Step Out.", noremap = true },
       {
         "<Space>b",
@@ -1012,11 +1012,15 @@ M.plugins = {
         "mfussenegger/nvim-dap-python",
         ft = { "python" },
         config = function(_, opts)
+          local python_test_runner = "unittest"
+          if vim.fn.executable("pytest") == 1 then
+            python_test_runner = "pytest"
+          end
           require("dap-python").setup(
             require("venv-selector").python() or "python3",
             opts
           )
-          require("dap-python").test_runner = "pytest"
+          require("dap-python").test_runner = python_test_runner
         end,
       },
     },
@@ -1029,6 +1033,31 @@ M.plugins = {
     end,
     dependencies = { "mfussenegger/nvim-dap" },
   },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = function()
+      local python_test_runner = "unittest"
+      if vim.fn.executable("pytest") == 1 then
+        python_test_runner = "pytest"
+      end
+      return {
+        adapters = {
+          require("neotest-python")({
+            python = require("venv-selector").python,
+            runner = python_test_runner,
+          }),
+        },
+      }
+    end,
+    cmd = { "Neotest" },
+  },
+  { "nvim-neotest/neotest-python" },
 
   -- NOTE: misc
   {
@@ -1827,8 +1856,13 @@ M.plugins = {
   },
   {
     "nvim-focus/focus.nvim",
-    opts = {},
-    config = true,
+    opts = {
+      autoresize = { enable = false },
+      ui = {
+        cursorline = true,
+        cursorcolumn = true,
+      },
+    },
     event = "WinNew",
     init = function()
       local ignore_filetypes = { "neo-tree", "Outline" }
@@ -2142,6 +2176,39 @@ M.plugins = {
     cond = function()
       return utils.no_vscode()
     end,
+  },
+  {
+    "pogyomo/winresize.nvim",
+    keys = {
+      {
+        "<C-Left>",
+        function()
+          require("winresize").resize(0, 1, "left")
+        end,
+        mode = "n",
+      },
+      {
+        "<C-Right>",
+        function()
+          require("winresize").resize(0, 1, "right")
+        end,
+        mode = "n",
+      },
+      {
+        "<C-Up>",
+        function()
+          require("winresize").resize(0, 1, "up")
+        end,
+        mode = "n",
+      },
+      {
+        "<C-Down>",
+        function()
+          require("winresize").resize(0, 1, "down")
+        end,
+        mode = "n",
+      },
+    },
   },
 }
 

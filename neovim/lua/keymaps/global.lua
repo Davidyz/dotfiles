@@ -28,23 +28,6 @@ end, { noremap = false })
 km_utils.setKeymap("t", "<A-Esc>", "<C-\\><C-n>") -- terminal
 km_utils.setKeymap("", "<A-Esc>", "<Esc>")
 
-km_utils.setKeymap("", "<C-Left>", ":vertical resize -1<CR>", {
-  noremap = true, -- split window sizes
-  silent = true,
-})
-km_utils.setKeymap("", "<C-Right>", ":vertical resize +1<CR>", {
-  noremap = true,
-  silent = true,
-})
-km_utils.setKeymap("", "<C-Up>", ":resize -1<CR>", {
-  noremap = true,
-  silent = true,
-})
-km_utils.setKeymap("", "<C-Down>", ":resize +1<CR>", {
-  noremap = true,
-  silent = true,
-})
-
 km_utils.setKeymap("n", "<C-h>", "<C-w>h") -- move between splits
 km_utils.setKeymap("n", "<C-j>", "<C-w>j")
 km_utils.setKeymap("n", "<C-k>", "<C-w>k")
