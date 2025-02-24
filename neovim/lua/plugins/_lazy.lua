@@ -869,6 +869,18 @@ M.plugins = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
         { path = "wezterm-types", mods = { "wezterm" } },
         { path = "folke/snacks.nvim", words = { "Snacks" } },
+        {
+          path = "nvim-lua/plenary.nvim",
+          words = {
+            "describe",
+            "it",
+            "pending",
+            "before_each",
+            "after_each",
+            "clear",
+            "assert.*",
+          },
+        },
       },
     },
     dependencies = {
