@@ -956,7 +956,6 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function()
       require("plugins.dap")
-      -- require("keymaps.dap")
     end,
     keys = {
       {
@@ -1013,11 +1012,22 @@ M.plugins = {
         "mfussenegger/nvim-dap-python",
         ft = { "python" },
         config = function(_, opts)
-          require("dap-python").setup("python3", opts)
+          require("dap-python").setup(
+            require("venv-selector").python() or "python3",
+            opts
+          )
           require("dap-python").test_runner = "pytest"
         end,
       },
     },
+  },
+  {
+    "HiPhish/debugpy.nvim",
+    cmd = { "Debugpy" },
+    cond = function()
+      return utils.no_vscode()
+    end,
+    dependencies = { "mfussenegger/nvim-dap" },
   },
 
   -- NOTE: misc
