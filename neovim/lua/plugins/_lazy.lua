@@ -513,6 +513,7 @@ M.plugins = {
     opts = function()
       return {
         notify = false,
+        on_setup = {},
         n_query = 10,
         timeout_ms = -1,
         async_opts = {

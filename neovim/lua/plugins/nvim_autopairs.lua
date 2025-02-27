@@ -2,11 +2,11 @@ local Rule = require("nvim-autopairs.rule")
 local npairs = require("nvim-autopairs")
 
 require("nvim-autopairs").setup({
-	disable_filetype = { "TelescopePrompt" },
-	check_ts = true,
-	enable_check_bracket_line = false,
-	map_cr = false,
-	map_bs = false,
+  disable_filetype = { "TelescopePrompt" },
+  check_ts = true,
+  enable_check_bracket_line = false,
+  map_cr = false,
+  map_bs = true,
 })
 
 npairs.add_rule(Rule("'''", "'''", "python"))
