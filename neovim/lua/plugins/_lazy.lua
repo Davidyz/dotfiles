@@ -487,6 +487,7 @@ M.plugins = {
   },
   {
     "saghen/blink.cmp",
+    build = "cargo build --release",
     dependencies = {
       "rafamadriz/friendly-snippets",
       "milanglacier/minuet-ai.nvim",
@@ -500,7 +501,6 @@ M.plugins = {
     event = { "BufReadPost", "CmdlineEnter" },
     version = "*",
     opts = require("plugins.blink"),
-    opts_extend = { "sources.default" },
     cond = utils.no_vscode,
   },
   {

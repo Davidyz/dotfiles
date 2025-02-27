@@ -44,19 +44,21 @@ return function(_, opts)
       ["<C-f>"] = { "scroll_documentation_down", "fallback" },
     },
     cmdline = {
+      completion = {
+        menu = { auto_show = true },
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          },
+        },
+      },
+      enabled = true,
       keymap = {
         ["<CR>"] = {
           function(cmp)
             if cmp.is_menu_visible() then
               return cmp.accept()
-            end
-          end,
-          "fallback",
-        },
-        ["<C-x>"] = {
-          function(cmp)
-            if package.loaded["minuet"] then
-              return cmp.show({ providers = { "minuet" } })
             end
           end,
           "fallback",
@@ -75,7 +77,6 @@ return function(_, opts)
               return cmp.show()
             end
           end,
-          "snippet_forward",
           "fallback",
         },
         ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
