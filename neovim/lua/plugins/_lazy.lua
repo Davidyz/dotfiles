@@ -2079,6 +2079,7 @@ M.plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "Davidyz/VectorCode",
+      "nvim-telescope/telescope.nvim", -- for vim.ui.select
     },
     config = true,
     cmd = {
