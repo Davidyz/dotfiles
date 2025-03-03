@@ -512,7 +512,8 @@ M.plugins = {
     -- version = "*",
     opts = function()
       return {
-        notify = false,
+        async_backend = "lsp",
+        notify = true,
         on_setup = {},
         n_query = 10,
         timeout_ms = -1,
@@ -520,6 +521,7 @@ M.plugins = {
           events = { "BufWritePost" },
           single_job = true,
           query_cb = require("vectorcode.utils").make_surrounding_lines_cb(40),
+          debounce = 30,
         },
       }
     end,
@@ -535,7 +537,11 @@ M.plugins = {
     "milanglacier/minuet-ai.nvim",
     cond = utils.no_vscode,
     config = function(_, opts)
-      local has_vc, vectorcode_cacher = pcall(require, "vectorcode.cacher")
+      local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
+      local vectorcode_cacher = nil
+      if has_vc then
+        vectorcode_cacher = vectorcode_config.get_cacher_backend()
+      end
       local num_docs = 10
       opts = {
         add_single_line_entry = true,
@@ -548,7 +554,7 @@ M.plugins = {
             chat_input = {
               template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
               repo_context = function()
-                if has_vc then
+                if vectorcode_cacher ~= nil then
                   return vectorcode_cacher.make_prompt_component(0, function(file)
                     return "<|file_separator|>" .. file.path .. "\n" .. file.document
                   end).content
