@@ -2116,6 +2116,25 @@ M.plugins = {
           adapter = "Gemini",
         },
       }
+
+      if os.getenv("OPENROUTER_API_KEY") then
+        opts.adapters["OpenRouter"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = "https://openrouter.ai/api",
+              api_key = "OPENROUTER_API_KEY",
+              chat_url = "/v1/chat/completions",
+            },
+            schema = {
+              model = {
+                default = "qwen/qwen-2.5-coder-32b-instruct",
+              },
+            },
+          })
+        end
+        opts.strategies.chat.adapter = "OpenRouter"
+        opts.strategies.inline.adapter = "OpenRouter"
+      end
       return opts
     end,
     cond = function()
