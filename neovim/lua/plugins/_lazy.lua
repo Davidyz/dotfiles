@@ -522,6 +522,8 @@ M.plugins = {
           single_job = true,
           query_cb = require("vectorcode.utils").make_surrounding_lines_cb(40),
           debounce = 30,
+          debounce = -1,
+          n_query = 30,
         },
       }
     end,
@@ -762,71 +764,79 @@ M.plugins = {
       {
         "<leader>ef",
         function()
-          require("refactoring").refactor("Extract Function")
+          return require("refactoring").refactor("Extract Function")
         end,
         desc = "Extract Function",
         noremap = true,
+        expr = true,
         mode = { "x" },
       },
       {
         "<leader>ev",
         function()
-          require("refactoring").refactor("Extract Variable")
+          return require("refactoring").refactor("Extract Variable")
         end,
         desc = "Extract Variable",
         noremap = true,
+        expr = true,
         mode = { "x" },
       },
       {
         "<leader>if",
         function()
-          require("refactoring").refactor("Inline Function")
+          return require("refactoring").refactor("Inline Function")
         end,
         desc = "Inline Function",
         noremap = true,
+        expr = true,
         mode = { "x" },
       },
       {
         "<leader>iv",
         function()
-          require("refactoring").refactor("Inline Variable")
+          return require("refactoring").refactor("Inline Variable")
         end,
         desc = "Inline Variable",
         noremap = true,
+        expr = true,
         mode = { "x" },
       },
       {
         "<leader>eb",
         function()
-          require("refactoring").refactor("Extract Block")
+          return require("refactoring").refactor("Extract Block")
         end,
         desc = "Extract block",
         noremap = true,
+        expr = true,
         mode = { "n" },
       },
       {
         "<leader>ebf",
         function()
-          require("refactoring").refactor("Extract Block To File")
+          return require("refactoring").refactor("Extract Block To File")
         end,
         desc = "Extract block to file",
         noremap = true,
+        expr = true,
         mode = { "n" },
       },
       {
         "<leader>rp",
         function()
-          require("refactoring").debug.print_var({})
+          return require("refactoring").debug.print_var({})
         end,
         mode = { "n" },
+        expr = true,
         desc = "Add debug print statement.",
       },
       {
         "<leader>rc",
         function()
-          require("refactoring").debug.cleanup({})
+          return require("refactoring").debug.cleanup({})
         end,
         mode = { "n" },
+        expr = true,
         desc = "Clear debug print statement.",
       },
       {
