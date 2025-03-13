@@ -17,6 +17,12 @@ M.plugins = {
       end
     end,
   },
+  {
+    "echasnovski/mini.test",
+    version = "*",
+    event = { "BufEnter tests/**/*.lua" },
+    opts = {},
+  },
 
   -- NOTE: filetypes
   {
@@ -521,7 +527,6 @@ M.plugins = {
           events = { "BufWritePost" },
           single_job = true,
           query_cb = require("vectorcode.utils").make_surrounding_lines_cb(40),
-          debounce = 30,
           debounce = -1,
           n_query = 30,
         },
@@ -533,6 +538,21 @@ M.plugins = {
     cmd = "VectorCode",
     cond = function()
       return vim.fn.executable("vectorcode") == 1 and utils.no_vscode()
+    end,
+  },
+  {
+    "ravitemer/mcphub.nvim",
+    version = "*",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    cmd = { "MCPHub" },
+    build = "npm install -g mcp-hub@latest",
+    opts = function()
+      return {
+        port = 3000,
+        config = vim.fn.expand("~/mcpservers.json"),
+      }
     end,
   },
   {
@@ -575,9 +595,9 @@ M.plugins = {
 
       local ollama_host = os.getenv("OLLAMA_HOST")
       local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
+      local num_ctx = 1024 * 32
       if ok then
         opts.provider = "openai_fim_compatible"
-        local num_ctx = 1024 * 32
         opts.provider_options.openai_fim_compatible = {
           api_key = "TERM",
           name = "Ollama",
@@ -593,7 +613,7 @@ M.plugins = {
               local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
                 vim.bo.filetype
               )
-              if has_vc then
+              if has_vc and vectorcode_cacher ~= nil then
                 local cache_result = vectorcode_cacher.make_prompt_component(0)
                 num_docs = cache_result.count
                 prompt_message = prompt_message .. cache_result.content
@@ -618,6 +638,9 @@ M.plugins = {
           local bufnr = vim.api.nvim_get_current_buf()
           local co = coroutine.create(function()
             vim.b[bufnr].ai_raw_response = json
+            if vectorcode_cacher == nil then
+              return
+            end
             if vectorcode_cacher.buf_is_registered() then
               local new_num_query = num_docs
               if json.usage.total_tokens > num_ctx then
@@ -2117,7 +2140,7 @@ M.plugins = {
               description = "Run VectorCode to retrieve the project context.",
               callback = require("vectorcode.integrations").codecompanion.chat.make_tool({
                 default_num = 15,
-                include_stderr = false,
+                use_lsp = true,
               }),
             },
           },
@@ -2137,7 +2160,7 @@ M.plugins = {
             },
             schema = {
               model = {
-                default = "qwen/qwen-2.5-coder-32b-instruct",
+                default = "deepseek/deepseek-chat",
               },
             },
           })
