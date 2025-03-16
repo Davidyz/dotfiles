@@ -2141,6 +2141,7 @@ M.plugins = {
               callback = require("vectorcode.integrations").codecompanion.chat.make_tool({
                 default_num = 15,
                 use_lsp = true,
+                auto_submit = { ls = true, query = false },
               }),
             },
           },
