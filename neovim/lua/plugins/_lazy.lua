@@ -1074,6 +1074,16 @@ M.plugins = {
     dependencies = { "mfussenegger/nvim-dap" },
   },
   {
+    "Davidyz/coredumpy.nvim",
+    cmd = { "Coredumpy" },
+    opts = function()
+      return { python = nil }
+    end,
+    cond = function()
+      return utils.no_vscode()
+    end,
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "nvim-neotest/nvim-nio",
@@ -2173,6 +2183,33 @@ M.plugins = {
     end,
     cond = function()
       return utils.no_vscode()
+    end,
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      "github/copilot.vim", -- or zbirenbaum/copilot.lua
+      "nvim-lua/plenary.nvim", -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    cmd = { "CopilotChat" },
+    opts = function(_, opts)
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        contexts = {
+          vectorcode = require("vectorcode.integrations.copilotchat").make_context({
+            prompt_header = "Here are relevant files from the repository:",
+            prompt_footer = "\nConsider this context when answering:",
+            skip_empty = true,
+          }),
+        },
+        prompts = {
+          Explain = {
+            prompt = "Explain the following code in detail:\n$input",
+            -- context = { "selection", "vectorcode" }, -- Add vectorcode to the context
+          },
+        },
+      })
+      return opts
     end,
   },
   {
