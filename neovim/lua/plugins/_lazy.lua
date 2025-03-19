@@ -406,7 +406,7 @@ M.plugins = {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
-    dependencies = { "neovim/nvim-lspconfig", "nvimtools/none-ls.nvim" },
+    -- dependencies = { "neovim/nvim-lspconfig", "nvimtools/none-ls.nvim" },
     init = function()
       vim.diagnostic.config({
         virtual_text = false,
@@ -450,25 +450,68 @@ M.plugins = {
     end,
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
-      {
-        "jay-babu/mason-null-ls.nvim",
-        dependencies = {
-          "williamboman/mason.nvim",
-          "nvimtools/none-ls.nvim",
-        },
-        opts = {
-          ensure_installed = nil,
-          automatic_installation = true,
-        },
-        config = true,
-      },
+      { "zapling/mason-conform.nvim", opts = { ignore_install = { "black" } } },
     },
   },
   {
-    "nvimtools/none-ls.nvim",
+    "stevearc/conform.nvim",
+    version = "*",
+    opts = function(_, opts)
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        formatters_by_ft = {
+          lua = { "stylua" },
+          sh = { "shfmt" },
+          zsh = { "shfmt" },
+          bash = { "shfmt" },
+          python = {},
+          c = { "clang-format" },
+          cpp = { "clang-format" },
+        },
+      })
+      if vim.fn.executable("black") == 1 then
+        vim.list_extend(opts.formatters_by_ft.python, { "black" })
+      end
+      return opts
+    end,
+    config = function(_, opts)
+      require("conform").setup(opts)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        callback = function()
+          if vim.g.format_on_save == false then
+            return
+          end
+          require("conform").format({ lsp_format = "first" })
+        end,
+      })
+    end,
     event = { "BufReadPost", "BufNewFile" },
-    config = require("plugins.null_ls"),
+  },
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        ["*"] = { "editorconfig-checker" },
+        cmake = { "cmakelang" },
+        sh = { "shellcheck" },
+        bash = { "shellcheck" },
+        zsh = { "shellcheck" },
+        ["yaml.ghaction"] = { "actionlint" },
+        [".*/.github/workflows/.*%.yml"] = { "yaml.ghaction" },
+      }
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
     dependencies = { "williamboman/mason.nvim" },
+    event = { "BufReadPost", "BufNewFile" },
+  },
+  {
+    "rshkarin/mason-nvim-lint",
+    dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-lint" },
+    event = { "BufReadPost", "BufNewFile" },
   },
 
   -- NOTE: lsp
@@ -493,7 +536,6 @@ M.plugins = {
   },
   {
     "saghen/blink.cmp",
-    build = "cargo build --release",
     dependencies = {
       "rafamadriz/friendly-snippets",
       "milanglacier/minuet-ai.nvim",
@@ -1502,6 +1544,42 @@ M.plugins = {
           vim.notify(msg, "info", { title = "Git Blame" })
         end,
         noremap = true,
+        desc = "Toggle git [b]lame.",
+      },
+      {
+        "<Leader>ga",
+        "<cmd>Gitsigns stage_hunk<cr>",
+        noremap = true,
+        desc = "Git [a]dd hunk.",
+        mode = { "n", "x" },
+      },
+      {
+        "<Leader>gr",
+        "<cmd>Gitsigns reset_hunk<cr>",
+        noremap = true,
+        desc = "Git [r]eset hunk.",
+        mode = { "n", "x" },
+      },
+      {
+        "<Leader>gp",
+        "<cmd>Gitsigns preview_hunk<cr>",
+        noremap = true,
+        desc = "Git [p]review hunk.",
+        mode = { "n", "x" },
+      },
+      {
+        "]g",
+        "<cmd>Gitsigns nav_hunk next<cr>",
+        noremap = true,
+        desc = "Next hunk.",
+        mode = { "n" },
+      },
+      {
+        "[g",
+        "<cmd>Gitsigns nav_hunk prev<cr>",
+        noremap = true,
+        desc = "Next hunk.",
+        mode = { "n" },
       },
     },
     opts = {

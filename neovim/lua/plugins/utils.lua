@@ -1,8 +1,8 @@
 M = {}
 
 M.mason_packages = {
+  "actionlint",
   "basedpyright",
-  -- "pylsp",
   "bash-language-server",
   "clang-format",
   "clangd",
