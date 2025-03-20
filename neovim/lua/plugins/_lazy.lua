@@ -1104,6 +1104,26 @@ M.plugins = {
           )
           require("dap-python").test_runner = python_test_runner
         end,
+        keys = {
+          {
+            "<Space>tf",
+            function()
+              require("dap-python").test_method()
+            end,
+            mode = { "n", "x" },
+            desc = "[T]est [f]unction/method",
+            noremap = true,
+          },
+          {
+            "<Space>tc",
+            function()
+              require("dap-python").test_class()
+            end,
+            mode = { "n", "x" },
+            desc = "[T]est [c]lass",
+            noremap = true,
+          },
+        },
       },
     },
   },
