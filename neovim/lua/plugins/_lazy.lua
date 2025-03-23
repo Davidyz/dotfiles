@@ -2401,6 +2401,12 @@ M.plugins = {
       },
     },
   },
+  {
+    "andythigpen/nvim-coverage",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = { commands = true, auto_reload = true },
+    cmd = { "Coverage" },
+  },
 }
 
 for _, spec in pairs(M.plugins) do
