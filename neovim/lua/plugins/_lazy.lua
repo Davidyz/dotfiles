@@ -2404,7 +2404,21 @@ M.plugins = {
   {
     "andythigpen/nvim-coverage",
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = { commands = true, auto_reload = true },
+    opts = function()
+      local palette = require("catppuccin.palettes.mocha")
+      return {
+        commands = true,
+        auto_reload = true,
+        highlights = {
+          covered = {
+            fg = palette.surface0,
+          },
+          uncovered = {
+            fg = palette.lavender,
+          },
+        },
+      }
+    end,
     cmd = { "Coverage" },
   },
 }
