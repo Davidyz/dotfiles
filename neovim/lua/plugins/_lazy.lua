@@ -536,6 +536,7 @@ M.plugins = {
   },
   {
     "saghen/blink.cmp",
+    build = "cargo build --release",
     dependencies = {
       "rafamadriz/friendly-snippets",
       "milanglacier/minuet-ai.nvim",
@@ -1145,31 +1146,6 @@ M.plugins = {
       return utils.no_vscode()
     end,
   },
-  {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = function()
-      local python_test_runner = "unittest"
-      if vim.fn.executable("pytest") == 1 then
-        python_test_runner = "pytest"
-      end
-      return {
-        adapters = {
-          require("neotest-python")({
-            python = require("venv-selector").python,
-            runner = python_test_runner,
-          }),
-        },
-      }
-    end,
-    cmd = { "Neotest" },
-  },
-  { "nvim-neotest/neotest-python" },
 
   -- NOTE: misc
   {
@@ -2405,18 +2381,11 @@ M.plugins = {
     "andythigpen/nvim-coverage",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = function()
-      local palette = require("catppuccin.palettes.mocha")
+      vim.api.nvim_set_hl(0, "CoverageCovered", { link = "LineNr" })
+      vim.api.nvim_set_hl(0, "CoverageUncovered", { link = "Exception" })
       return {
         commands = true,
         auto_reload = true,
-        highlights = {
-          covered = {
-            fg = palette.surface0,
-          },
-          uncovered = {
-            fg = palette.lavender,
-          },
-        },
       }
     end,
     cmd = { "Coverage" },
