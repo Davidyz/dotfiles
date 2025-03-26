@@ -15,37 +15,44 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function()
-    -- Displays hover information about the symbol under the cursor
-    local telescope = require("telescope.builtin")
+    local fzf = require("fzf-lua")
 
-    bufmap("n", "gd", function(_, opts)
-      opts = opts or {}
-      opts.jump_type = "tab"
-      return telescope.lsp_definitions(opts)
+    local actions = require("fzf-lua").actions
+    local opts = {
+      sync = false,
+      jump1 = true,
+      jump1_action = function(selected, opts)
+        -- jump if in the same file, new tab otherwise
+        local path = string.gsub(selected[1], ":.*", "")
+        local action
+        if vim.uri_from_fname(path) == vim.uri_from_bufnr(0) then
+          action = actions.file_edit
+        else
+          action = actions.file_tabedit
+        end
+        action(selected, opts)
+      end,
+    }
+    bufmap("n", "gd", function()
+      return fzf.lsp_definitions(opts)
     end, { desc = "Goto definition." })
 
-    bufmap("n", "gD", function(_, opts)
-      opts = opts or {}
-      opts.jump_type = "tab"
-      return telescope.lsp_type_definitions(opts)
+    bufmap("n", "gD", function()
+      return fzf.lsp_typedefs(opts)
     end, { desc = "Goto type definition." })
 
-    bufmap("n", "gi", function(_, opts)
-      opts = opts or {}
-      opts.jump_type = "tab"
-      return telescope.lsp_implementations(opts)
+    bufmap("n", "gi", function()
+      return fzf.lsp_implementations(opts)
     end, { desc = "Goto implementations." })
 
-    bufmap("n", "gr", function(_, opts)
-      opts = opts or {}
-      opts.jump_type = "tab"
-      return telescope.lsp_references(opts)
+    bufmap("n", "gr", function()
+      return fzf.lsp_references(opts)
     end, { desc = "LSP reference." })
-    bufmap({ "i", "n" }, "<C-f>", function(_, opts)
-      return telescope.lsp_document_symbols(opts)
+    bufmap({ "i", "n" }, "<C-f>", function()
+      return fzf.lsp_document_symbols()
     end, { desc = "Document symbols." })
-    bufmap({ "i", "n" }, "<C-S-f>", function(_, opts)
-      return telescope.lsp_dynamic_workspace_symbols(opts)
+    bufmap({ "i", "n" }, "<C-S-f>", function()
+      return fzf.lsp_live_workspace_symbols()
     end, { desc = "Workspace symbols." })
 
     bufmap("n", "<Leader>rv", function()

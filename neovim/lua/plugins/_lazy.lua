@@ -183,34 +183,6 @@ M.plugins = {
         term_colors = true,
         custom_highlights = function(colors)
           return {
-            TelescopeNormal = {
-              bg = colors.mantle,
-              fg = colors.text,
-            },
-            TelescopeBorder = {
-              bg = colors.mantle,
-              fg = colors.mantle,
-            },
-            TelescopePromptNormal = {
-              bg = colors.crust,
-              fg = colors.lavender,
-            },
-            TelescopePromptBorder = {
-              bg = colors.crust,
-              fg = colors.crust,
-            },
-            TelescopePromptTitle = {
-              bg = colors.crust,
-              fg = colors.crust,
-            },
-            TelescopePreviewTitle = {
-              bg = colors.mantle,
-              fg = colors.mantle,
-            },
-            TelescopeResultsTitle = {
-              bg = colors.mantle,
-              fg = colors.mantle,
-            },
             FloatBorder = { fg = colors.mantle, bg = colors.mantle },
             FloatTitle = { fg = colors.lavender, bg = colors.mantle },
             LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
@@ -221,6 +193,7 @@ M.plugins = {
         default_integrations = {
           diffview = true,
           fidget = true,
+          fzf = true,
           headlines = true,
           hop = true,
           lspsaga = true,
@@ -406,7 +379,7 @@ M.plugins = {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
-    -- dependencies = { "neovim/nvim-lspconfig", "nvimtools/none-ls.nvim" },
+    dependencies = { "neovim/nvim-lspconfig" },
     init = function()
       vim.diagnostic.config({
         virtual_text = false,
@@ -558,12 +531,12 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    -- version = "*",
+    version = "*",
     opts = function()
       return {
         async_backend = "lsp",
         notify = true,
-        on_setup = {},
+        on_setup = { lsp = false },
         n_query = 10,
         timeout_ms = -1,
         async_opts = {
@@ -575,6 +548,14 @@ M.plugins = {
         },
       }
     end,
+    -- config = function(_, opts)
+    --   require("vectorcode").setup(opts)
+    --   vim.api.nvim_create_autocmd("LspAttach", {
+    --     callback = function()
+    --       require("vectorcode.config").get_cacher_backend().register_buffer(0)
+    --     end,
+    --   })
+    -- end,
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -763,41 +744,11 @@ M.plugins = {
     cond = utils.no_vscode,
   },
   {
-    "aznhe21/actions-preview.nvim",
-    keys = {
-      {
-        "<Leader>a",
-        [[<cmd>lua require("actions-preview").code_actions()<cr>]],
-        mode = { "v", "n" },
-        desc = "Code Actions",
-      },
-    },
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    opts = function()
-      return {
-        telescope = {
-          sorting_strategy = "ascending",
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
-        },
-      }
-    end,
-    cond = utils.no_vscode,
-  },
-  {
     "ThePrimeagen/refactoring.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "nvim-telescope/telescope.nvim",
+      "ibhagwan/fzf-lua",
     },
     cond = utils.no_vscode,
     config = function()
@@ -824,7 +775,6 @@ M.plugins = {
         printf_statements = {},
         print_var_statements = {},
       })
-      require("telescope").load_extension("refactoring")
     end,
     keys = {
       {
@@ -908,11 +858,7 @@ M.plugins = {
       {
         "<leader>rr",
         function()
-          require("telescope").extensions.refactoring.refactors({
-            theme = "cursor",
-            layout_config = { width = 0.4, height = 0.4 },
-            layout_strategy = "cursor",
-          })
+          require("refactoring").select_refactor({ prefer_ex_cmd = true })
         end,
         mode = { "n", "x" },
         desc = "Select refactoring.",
@@ -999,7 +945,7 @@ M.plugins = {
             activate_venv_in_terminal = true,
             cached_venv_automatic_activation = true,
             notify_user_on_venv_activation = true,
-            telescope_active_venv_color = require("catppuccin.palettes.mocha").lavender,
+            picker = "fzf-lua",
           },
         },
       }
@@ -1390,8 +1336,7 @@ M.plugins = {
       })
     end,
     dependencies = {
-      "nvim-telescope/telescope.nvim",
-      "nvim-lua/plenary.nvim", -- required by telescope
+      "ibhagwan/fzf-lua",
       "MunifTanjim/nui.nvim",
 
       -- optional
@@ -1612,209 +1557,102 @@ M.plugins = {
     },
   },
   {
-    "nvim-telescope/telescope.nvim",
-    version = "*",
+    "ibhagwan/fzf-lua",
+    dependencies = { "echasnovski/mini.icons" },
+    opts = function(_, opts)
+      return vim.tbl_deep_extend("force", opts or {}, {
+        winopts = {
+          border = "solid",
+          preview = { border = "solid", default = "bat" },
+        },
+        lsp = { code_actions = { previewer = "codeaction_native" } },
+      })
+    end,
+    config = function(_, opts)
+      require("fzf-lua").setup(opts)
+      vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
+      require("fzf-lua").register_ui_select(function(_, items)
+        local min_h, max_h = 0.15, 0.70
+        local h = (#items + 4) / vim.o.lines
+        if h < min_h then
+          h = min_h
+        elseif h > max_h then
+          h = max_h
+        end
+        return { winopts = { height = h, width = 0.60, row = 0.40 } }
+      end)
+    end,
     keys = {
       {
+        "<Leader>a",
+        "<cmd>FzfLua lsp_code_actions<cr>",
+        remap = false,
+        mode = { "n", "x" },
+      },
+      {
         "<Leader>tf",
-        function()
-          require("telescope.builtin").find_files({})
-        end,
+        "<cmd>FzfLua files<cr>",
         remap = false,
         mode = "n",
         desc = "Fuzzy find files.",
       },
       {
         "<Leader>tb",
-        function()
-          require("telescope.builtin").buffers({})
-        end,
+        "<cmd>FzfLua buffers<cr>",
         remap = false,
         mode = "n",
         desc = "Show buffers.",
       },
       {
         "<Leader>tq",
-        function()
-          require("telescope.builtin").quickfix({})
-        end,
+        "<cmd>FzfLua quickfix<cr>",
         remap = false,
         mode = "n",
         desc = "Show quickfix.",
       },
       {
         "<Leader>tD",
-        function()
-          require("telescope.builtin").diagnostics({})
-        end,
+        "<cmd>FzfLua diagnostics_workspace<cr>",
         remap = false,
         mode = "n",
         desc = "Project-wise diagnostics.",
       },
       {
         "<Leader>td",
-        function()
-          require("telescope.builtin").diagnostics({
-            bufnr = 0,
-          })
-        end,
+        "<cmd>FzfLua diagnostics_document<cr>",
         remap = false,
         mode = "n",
         desc = "Buffer diagnostics.",
       },
       {
         "<Leader>th",
-        function()
-          require("telescope.builtin").help_tags({})
-        end,
+        "<cmd>FzfLua helptags<cr>",
         remap = false,
         mode = "n",
         desc = "Find help tags.",
       },
       {
         "R",
-        function()
-          require("telescope.builtin").live_grep({})
-        end,
+        "<cmd>FzfLua live_grep<cr>",
         remap = false,
         mode = "n",
         desc = "Live grep.",
       },
       {
         "<Leader>f",
-        function()
-          require("telescope.builtin").current_buffer_fuzzy_find({})
-        end,
+        "<cmd>FzfLua grep<cr>",
         remap = false,
         mode = "n",
         desc = "Fuzzy find current buffer.",
       },
       {
         "<Leader>tr",
-        function()
-          require("telescope.builtin").resume()
-        end,
+        "<cmd>FzfLua resume<cr>",
         remap = false,
         mode = "n",
-        desc = "Resume last telescope session",
+        desc = "Resume last fzf-lua session",
       },
     },
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension("ui-select")
-    end,
-    cmd = "Telescope",
-    opts = function()
-      return {
-        defaults = {
-          layout_strategy = "flex",
-          layout_config = {
-            prompt_position = "top",
-            horizontal = { preview_width = 0.6 },
-            vertical = { preview_height = 0.6 },
-          },
-          sorting_strategy = "ascending",
-          mappings = {
-            n = {
-              ["<esc>"] = require("telescope.actions").close,
-            },
-          },
-        },
-        extensions = {
-          ["ui-select"] = { require("telescope.themes").get_dropdown() },
-          fzf = {},
-        },
-      }
-    end,
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
-    },
-  },
-  {
-    "jmacadie/telescope-hierarchy.nvim",
-    dependencies = {
-      {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
-    },
-    keys = {
-      {
-        "<leader>ti",
-        "<cmd>Telescope hierarchy incoming_calls<cr>",
-        desc = "Incoming Function call.",
-      },
-      {
-        "<leader>to",
-        "<cmd>Telescope hierarchy outgoing_calls<cr>",
-        desc = "Outgoing Function call.",
-      },
-    },
-    opts = function()
-      return {
-        extensions = {
-          hierarchy = { layout_strategy = "flex" },
-        },
-      }
-    end,
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension("hierarchy")
-    end,
-    cond = function()
-      return utils.no_vscode() and vim.fn.has("nightly") == 0
-    end,
-  },
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-    cond = function()
-      return utils.no_vscode() and vim.fn.executable("make") == 1
-    end,
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension("fzf")
-    end,
-    opts = { extensions = { fzf = {} } },
-  },
-  {
-    "debugloop/telescope-undo.nvim",
-    dependencies = {
-      {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
-    },
-    keys = {
-      {
-        "<leader>tu",
-        "<cmd>Telescope undo<cr>",
-        desc = "undo history",
-      },
-    },
-    opts = {
-      extensions = {
-        undo = {
-          use_delta = vim.fn.executable("delta") == 1,
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
-        },
-      },
-    },
-    config = function(_, opts)
-      require("telescope").setup(opts)
-      require("telescope").load_extension("undo")
-    end,
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -1885,7 +1723,7 @@ M.plugins = {
     end,
     opts = function(_, opts)
       local function on_move(data)
-        Snacks.rename.on_rename_file(data.source, data.destination)
+        require("snacks").rename.on_rename_file(data.source, data.destination)
       end
       local events = require("neo-tree.events")
       opts = vim.tbl_deep_extend("force", opts, {
@@ -2069,7 +1907,7 @@ M.plugins = {
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
-    dependencies = { "nvim-telescope/telescope.nvim" },
+    dependencies = { "ibhagwan/fzf-lua" },
   },
   {
     "f-person/git-blame.nvim",
@@ -2171,7 +2009,7 @@ M.plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim", -- For standard functions
       "MunifTanjim/nui.nvim", -- To build the plugin UI
-      "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+      "ibhagwan/fzf-lua",
     },
     opt = {},
     config = true,
@@ -2196,7 +2034,7 @@ M.plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "Davidyz/VectorCode",
-      "nvim-telescope/telescope.nvim", -- for vim.ui.select
+      "ibhagwan/fzf-lua",
     },
     config = true,
     cmd = {
@@ -2209,7 +2047,10 @@ M.plugins = {
       opts = opts or {}
       opts.adapters = {
         ["Gemini"] = function()
-          return require("codecompanion.adapters").extend("gemini", { name = "Gemini" })
+          return require("codecompanion.adapters").extend("gemini", {
+            name = "Gemini",
+            schema = { model = { default = "gemini-2.5-pro-exp-03-25" } },
+          })
         end,
       }
 
@@ -2225,7 +2066,7 @@ M.plugins = {
               callback = require("vectorcode.integrations").codecompanion.chat.make_tool({
                 default_num = 15,
                 use_lsp = true,
-                auto_submit = { ls = true, query = false },
+                auto_submit = { ls = true, query = true },
               }),
             },
           },
@@ -2245,7 +2086,7 @@ M.plugins = {
             },
             schema = {
               model = {
-                default = "deepseek/deepseek-chat",
+                default = "deepseek/deepseek-chat-v3-0324:free",
               },
             },
           })
