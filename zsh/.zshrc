@@ -113,8 +113,6 @@ custom_plugins=(
 	darvid/zsh-poetry
 	ocodo/ollama_zsh_completion
 )
-# [ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(plutowang/zsh-ollama-command)
-[ ! -z "$HAS_OLLAMA" ] && custom_plugins+=(Davidyz/zsh-ollama-command)
 for i in "${custom_plugins[@]}"; do
 	plugin_dir="${i##*/}"
 	[ $plugin_dir = "autoupdate-oh-my-zsh-plugins" ] && plugin_dir=autoupdate
@@ -160,7 +158,6 @@ plugins=(
 	ollama_zsh_completion
 )
 
-[ ! -z "$HAS_OLLAMA" ] && plugins+=(zsh-ollama-command)
 
 if command -v pdm > /dev/null 2> /dev/null && [ ! -d $ZSH_CUSTOM/plugins/pdm ]; then
 	mkdir $ZSH_CUSTOM/plugins/pdm
