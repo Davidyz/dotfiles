@@ -26,10 +26,11 @@ return function(_, opts)
             return cmp.show()
           end
         end,
-        "snippet_forward",
         "fallback",
       },
-      ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
+      ["<Left>"] = { "snippet_backward", "fallback" },
+      ["<Right>"] = { "snippet_forward", "fallback" },
       ["<CR>"] = {
         "accept",
         "fallback",
@@ -124,6 +125,9 @@ return function(_, opts)
           score_offset = 8,
           async = true,
           timeout_ms = 10000,
+          enabled = function()
+            return true
+          end,
         },
         lazydev = {
           name = "LazyDev",
