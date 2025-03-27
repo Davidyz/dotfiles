@@ -74,11 +74,7 @@ local function arduino_status()
 end
 
 local snacks_status_component = require("snacks").profiler.status()
-local vectorcode_component = nil
-local ok, vectorcode = pcall(require, "vectorcode.integrations")
-if ok then
-  vectorcode_component = vectorcode.lualine({ show_job_count = false })
-end
+
 local lualine_config = {
   options = {
     icons_enabled = true,
@@ -147,7 +143,20 @@ local lualine_config = {
         use_mode_colors = true,
       },
     },
-    lualine_y = { vectorcode_component },
+    lualine_y = {
+      {
+        function()
+          return require("vectorcode.integrations").lualine()[1]()
+        end,
+        cond = function()
+          if package.loaded["vectorcode"] == nil then
+            return false
+          else
+            return require("vectorcode.integrations").lualine().cond()
+          end
+        end,
+      },
+    },
     lualine_z = {
       {
         function()
@@ -169,6 +178,9 @@ local lualine_config = {
           icons = require("_utils").codicons,
           separator = "   ",
         },
+        cond = function()
+          return #vim.lsp.get_clients({ bufnr = 0 }) > 0
+        end,
       },
     },
     lualine_y = {

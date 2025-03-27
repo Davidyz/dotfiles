@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 M = {}
 local utils = require("_utils")
 
@@ -586,10 +587,7 @@ M.plugins = {
     cond = utils.no_vscode,
     config = function(_, opts)
       local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
-      local vectorcode_cacher = nil
-      if has_vc then
-        vectorcode_cacher = vectorcode_config.get_cacher_backend()
-      end
+
       local num_docs = 10
       opts = {
         add_single_line_entry = true,
@@ -602,10 +600,12 @@ M.plugins = {
             chat_input = {
               template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
               repo_context = function()
-                if vectorcode_cacher ~= nil then
-                  return vectorcode_cacher.make_prompt_component(0, function(file)
-                    return "<|file_separator|>" .. file.path .. "\n" .. file.document
-                  end).content
+                if has_vc then
+                  return vectorcode_config
+                    .get_cacher_backend()
+                    .make_prompt_component(0, function(file)
+                      return "<|file_separator|>" .. file.path .. "\n" .. file.document
+                    end).content
                 else
                   return ""
                 end
@@ -618,69 +618,77 @@ M.plugins = {
         },
         request_timeout = 10,
       }
-
-      local ollama_host = os.getenv("OLLAMA_HOST")
-      local ok, _ = pcall(require("plenary.curl").get, ollama_host, { timeout = 1000 })
       local num_ctx = 1024 * 32
-      if ok then
-        opts.provider = "openai_fim_compatible"
-        opts.provider_options.openai_fim_compatible = {
-          api_key = "TERM",
-          name = "Ollama",
-          stream = false,
-          end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
-          model = os.getenv("OLLAMA_CODE_MODEL"),
-          optional = {
-            max_tokens = 256,
-            num_ctx = num_ctx,
-          },
-          template = {
-            prompt = function(pref, suff)
-              local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
-                vim.bo.filetype
-              )
-              if has_vc and vectorcode_cacher ~= nil then
-                local cache_result = vectorcode_cacher.make_prompt_component(0)
-                num_docs = cache_result.count
-                prompt_message = prompt_message .. cache_result.content
-              end
+      local job = require("plenary.job"):new({
+        command = "curl",
+        args = { os.getenv("OLLAMA_HOST"), "--connect-timeout", "1" },
+        on_exit = function(self, code, signal)
+          if code == 0 then
+            opts.provider = "openai_fim_compatible"
+            opts.provider_options.openai_fim_compatible = {
+              api_key = "TERM",
+              name = "Ollama",
+              stream = false,
+              end_point = os.getenv("OLLAMA_HOST") .. "/v1/completions",
+              model = os.getenv("OLLAMA_CODE_MODEL"),
+              optional = {
+                max_tokens = 256,
+                num_ctx = num_ctx,
+              },
+              template = {
+                prompt = function(pref, suff)
+                  local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
+                    vim.bo.filetype
+                  )
+                  if has_vc then
+                    local cache_result =
+                      vectorcode_config.get_cacher_backend().make_prompt_component(0)
+                    num_docs = cache_result.count
+                    prompt_message = prompt_message .. cache_result.content
+                  end
 
-              return prompt_message
-                .. "<|fim_prefix|>"
-                .. pref
-                .. "<|fim_suffix|>"
-                .. suff
-                .. "<|fim_middle|>"
-            end,
-            suffix = false,
-          },
-        }
-      end
-      require("minuet").setup(opts)
-      if ok then
-        local openai_fim_compatible = require("minuet.backends.openai_fim_compatible")
-        local orig_get_text_fn = openai_fim_compatible.get_text_fn
-        openai_fim_compatible.get_text_fn = function(json)
-          local bufnr = vim.api.nvim_get_current_buf()
-          local co = coroutine.create(function()
-            vim.b[bufnr].ai_raw_response = json
-            if vectorcode_cacher == nil then
-              return
-            end
-            if vectorcode_cacher.buf_is_registered() then
-              local new_num_query = num_docs
-              if json.usage.total_tokens > num_ctx then
-                new_num_query = math.max(num_docs - 1, 1)
-              elseif json.usage.total_tokens < num_ctx * 0.9 then
-                new_num_query = num_docs + 1
-              end
-              vectorcode_cacher.register_buffer(0, { n_query = new_num_query })
+                  return prompt_message
+                    .. "<|fim_prefix|>"
+                    .. pref
+                    .. "<|fim_suffix|>"
+                    .. suff
+                    .. "<|fim_middle|>"
+                end,
+                suffix = false,
+              },
+            }
+          end
+          vim.schedule(function()
+            require("minuet").setup(opts)
+            local openai_fim_compatible =
+              require("minuet.backends.openai_fim_compatible")
+            local orig_get_text_fn = openai_fim_compatible.get_text_fn
+            openai_fim_compatible.get_text_fn = function(json)
+              local bufnr = vim.api.nvim_get_current_buf()
+              local co = coroutine.create(function()
+                vim.b[bufnr].ai_raw_response = json
+                if not has_vc then
+                  return
+                end
+                if vectorcode_config.get_cacher_backend().buf_is_registered() then
+                  local new_num_query = num_docs
+                  if json.usage.total_tokens > num_ctx then
+                    new_num_query = math.max(num_docs - 1, 1)
+                  elseif json.usage.total_tokens < num_ctx * 0.9 then
+                    new_num_query = num_docs + 1
+                  end
+                  vectorcode_config
+                    .get_cacher_backend()
+                    .register_buffer(0, { n_query = new_num_query })
+                end
+              end)
+              coroutine.resume(co)
+              return orig_get_text_fn(json)
             end
           end)
-          coroutine.resume(co)
-          return orig_get_text_fn(json)
-        end
-      end
+        end,
+      })
+      job:start()
     end,
   },
   {
