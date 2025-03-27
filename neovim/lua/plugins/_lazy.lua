@@ -534,6 +534,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    dir = "~/git/VectorCode/",
     version = "*",
     opts = function()
       return {
@@ -586,9 +587,8 @@ M.plugins = {
     "milanglacier/minuet-ai.nvim",
     cond = utils.no_vscode,
     config = function(_, opts)
-      local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
-
       local num_docs = 10
+      local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
       opts = {
         add_single_line_entry = true,
         n_completions = 1,
@@ -623,6 +623,7 @@ M.plugins = {
         command = "curl",
         args = { os.getenv("OLLAMA_HOST"), "--connect-timeout", "1" },
         on_exit = function(self, code, signal)
+          local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
           if code == 0 then
             opts.provider = "openai_fim_compatible"
             opts.provider_options.openai_fim_compatible = {
@@ -1672,7 +1673,7 @@ M.plugins = {
       require("plugins._lualine")
     end,
     lazy = false,
-    dependencies = { "echasnovski/mini.icons", "Davidyz/VectorCode" },
+    dependencies = { "echasnovski/mini.icons" },
   },
   {
     "shellRaining/hlchunk.nvim",
