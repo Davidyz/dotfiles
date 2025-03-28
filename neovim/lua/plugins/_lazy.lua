@@ -522,6 +522,10 @@ M.plugins = {
         "Kaiser-Yang/blink-cmp-dictionary",
         dependencies = { "nvim-lua/plenary.nvim" },
       },
+      {
+        "saghen/blink.compat",
+        version = "*",
+      },
     },
     event = { "BufReadPost", "CmdlineEnter" },
     version = "*",
@@ -534,7 +538,6 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    dir = "~/git/VectorCode/",
     version = "*",
     opts = function()
       return {
@@ -623,7 +626,6 @@ M.plugins = {
         command = "curl",
         args = { os.getenv("OLLAMA_HOST"), "--connect-timeout", "1" },
         on_exit = function(self, code, signal)
-          local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
           if code == 0 then
             opts.provider = "openai_fim_compatible"
             opts.provider_options.openai_fim_compatible = {
@@ -722,21 +724,6 @@ M.plugins = {
     cond = utils.no_vscode,
     dependencies = { "neovim/nvim-lspconfig" },
   },
-  -- {
-  --   "tamago324/cmp-zsh",
-  --   build = function()
-  --     if vim.fn.executable("zsh") then
-  --       io.popen('zsh -c "zmodload zsh/zpty"')
-  --     end
-  --   end,
-  --   main = "cmp_zsh",
-  --   opts = { zshrc = true, filetypes = { "zsh" } },
-  --   cond = function()
-  --     return utils.no_vscode() and vim.fn.executable("zsh") ~= 0
-  --   end,
-  --   ft = { "zsh" },
-  -- },
-  -- { "kdheepak/cmp-latex-symbols", event = { "InsertEnter" } },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
