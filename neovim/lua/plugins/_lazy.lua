@@ -316,8 +316,8 @@ M.plugins = {
     config = function(_, opts)
       require("ufo").setup(opts)
       vim.api.nvim_set_hl(0, "UfoCursorFoldedLine", { link = "CursorLine" })
-      vim.api.nvim_set_hl(0, "UfoPreviewBg", { link = "TelescopePreviewBorder" })
-      vim.api.nvim_set_hl(0, "UfoPreviewWinBar", { link = "TelescopePreviewBorder" })
+      vim.api.nvim_set_hl(0, "UfoPreviewBg", { link = "FzfLuaPreviewBorder" })
+      vim.api.nvim_set_hl(0, "UfoPreviewWinBar", { link = "FzfLuaPreviewBorder" })
       vim.api.nvim_set_hl(0, "UfoFoldedBg", { link = "CursorLine" })
       vim.keymap.set("n", "<C-p>", function()
         require("ufo.preview"):peekFoldedLinesUnderCursor()
@@ -1287,7 +1287,7 @@ M.plugins = {
     keys = {
       {
         "<Leader>tt",
-        "<cmd>TodoTelescope<CR>",
+        "<cmd>TodoFzfLua<CR>",
         mode = "n",
         desc = "[T]odo Comments.",
       },
@@ -2263,6 +2263,7 @@ M.plugins = {
     end,
     cmd = { "Coverage" },
   },
+  { "nvim-telescope/telescope.nvim", enabled = false },
 }
 
 for _, spec in pairs(M.plugins) do
