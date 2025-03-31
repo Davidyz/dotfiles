@@ -1,4 +1,5 @@
 return function(_, opts)
+  vim.keymap.del("s", "<tab>", {})
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = vim.tbl_deep_extend("force", opts or {}, {
