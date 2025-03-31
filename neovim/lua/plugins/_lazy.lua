@@ -987,22 +987,31 @@ M.plugins = {
       require("plugins.dap")
     end,
     keys = {
+      { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
+      { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
+      { "<Space>i", "<cmd>DapStepInto<CR>", desc = "DAP Step [I]nto.", noremap = true },
+      { "<Space>q", "<cmd>DapStepOut<CR>", desc = "DAP Step Out.", noremap = true },
+      {
+        "<Space>s",
+        function()
+          local widgets = require("dap.ui.widgets")
+          widgets.centered_float(widgets.scopes, { border = "solid" })
+        end,
+        desc = "DAP [s]cope",
+        noremap = true,
+      },
+      {
+        "<Space>b",
+        "<cmd>DapToggleBreakpoint<CR>",
+        desc = "DAP Toggle [B]reakpoint.",
+        noremap = true,
+      },
       {
         "<leader>d",
         function()
           require("dapui").toggle()
         end,
         desc = "Toggle DAP UI.",
-      },
-      { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
-      { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
-      { "<Space>i", "<cmd>DapStepInto<CR>", desc = "DAP Step [I]nto.", noremap = true },
-      { "<Space>q", "<cmd>DapStepOut<CR>", desc = "DAP Step Out.", noremap = true },
-      {
-        "<Space>b",
-        "<cmd>DapToggleBreakpoint<CR>",
-        desc = "DAP Toggle [B]reakpoint.",
-        noremap = true,
       },
     },
     cmd = {
@@ -1028,6 +1037,7 @@ M.plugins = {
         "rcarriga/nvim-dap-ui",
         cond = utils.no_vscode,
         dependencies = { "nvim-neotest/nvim-nio" },
+        key = {},
       },
       {
         "jbyuki/one-small-step-for-vimkind",

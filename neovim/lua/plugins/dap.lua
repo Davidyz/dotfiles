@@ -43,7 +43,6 @@ dapui.setup({
     {
       elements = {
         -- Provide as ID strings or tables with "id" and "size" keys
-        "scopes",
         "breakpoints",
         "stacks",
         "watches",
