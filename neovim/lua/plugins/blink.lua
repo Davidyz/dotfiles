@@ -159,7 +159,7 @@ return function(_, opts)
         auto_show_delay_ms = 500,
       },
       trigger = {
-        prefetch_on_insert = false,
+        prefetch_on_insert = true,
         show_on_keyword = true,
       },
       list = {
