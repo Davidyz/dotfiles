@@ -192,6 +192,7 @@ M.plugins = {
         end,
         dim_inactive = { enabled = false },
         default_integrations = {
+          blink_cmp = true,
           diffview = true,
           fidget = true,
           fzf = true,
@@ -205,7 +206,7 @@ M.plugins = {
           neotree = true,
           nvim_surround = true,
           rainbow_delimiters = true,
-          snacks = true,
+          snacks = { enabled = true },
           which_key = true,
         },
       }
@@ -589,6 +590,7 @@ M.plugins = {
   {
     "milanglacier/minuet-ai.nvim",
     cond = utils.no_vscode,
+    event = "VeryLazy",
     config = function(_, opts)
       local num_docs = 10
       local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
@@ -1413,6 +1415,7 @@ M.plugins = {
       init = function()
         require("hover.providers.lsp")
         require("hover.providers.man")
+        require("hover.providers.dap")
         require("hover.providers.diagnostic")
       end,
       preview_opts = {
