@@ -556,14 +556,20 @@ M.plugins = {
         },
       }
     end,
-    -- config = function(_, opts)
-    --   require("vectorcode").setup(opts)
-    --   vim.api.nvim_create_autocmd("LspAttach", {
-    --     callback = function()
-    --       require("vectorcode.config").get_cacher_backend().register_buffer(0)
-    --     end,
-    --   })
-    -- end,
+    config = function(_, opts)
+      vim.lsp.config("vectorcode_server", {
+        cmd_env = {
+          HTTP_PROXY = os.getenv("HTTP_PROXY"),
+          HTTPS_PROXY = os.getenv("HTTPS_PROXY"),
+        },
+      })
+      require("vectorcode").setup(opts)
+      -- vim.api.nvim_create_autocmd("LspAttach", {
+      --   callback = function()
+      --     require("vectorcode.config").get_cacher_backend().register_buffer(0)
+      --   end,
+      -- })
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
