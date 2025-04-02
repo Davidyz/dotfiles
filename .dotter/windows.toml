@@ -1,2 +1,2 @@
 [neovim.files]
-"neovim/" = "~/AppData/Local/nvim/"
+"neovim/" = { target = "~/AppData/Local/nvim/", type = "symbolic" }
