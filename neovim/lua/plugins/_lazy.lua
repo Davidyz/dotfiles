@@ -2126,6 +2126,7 @@ M.plugins = {
                 default_num = 15,
                 use_lsp = true,
                 auto_submit = { ls = true, query = true },
+                ls_on_start = true,
               }),
             },
           },
