@@ -445,5 +445,3 @@ if [ -f "$(which bat 2> /dev/null)" ]; then
 	[ -d ~/.cache/bat/ ] || bat cache --build > /dev/null 
 	[ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME=Catppuccin\ Mocha
 fi
-
-command register-python-argcomplete > /dev/null 2> /dev/null && eval "$(register-python-argcomplete pipx)"
