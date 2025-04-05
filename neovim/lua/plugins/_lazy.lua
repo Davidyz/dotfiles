@@ -2108,7 +2108,7 @@ M.plugins = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
             name = "Gemini",
-            schema = { model = { default = "gemini-2.5-pro-exp-03-25" } },
+            schema = { model = { default = "gemini-2.5-pro-preview-03-25" } },
           })
         end,
       }
