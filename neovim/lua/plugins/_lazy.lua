@@ -216,9 +216,9 @@ M.plugins = {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = function()
       vim.treesitter.language.register("markdown", "vimwiki")
-      return { file_types = { "markdown", "vimwiki" } }
+      return { file_types = { "markdown", "vimwiki", "codecompanion" } }
     end,
-    ft = { "markdown", "vimwiki" },
+    ft = { "markdown", "vimwiki", "codecompanion" },
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
   },
 
@@ -975,7 +975,7 @@ M.plugins = {
     "Davidyz/inlayhint-filler.nvim",
     keys = {
       {
-        "<Leader>i",
+        "<Leader>I",
         function()
           require("inlayhint-filler").fill()
         end,
@@ -2146,7 +2146,7 @@ M.plugins = {
             },
             schema = {
               model = {
-                default = "deepseek/deepseek-chat-v3-0324:free",
+                default = "google/gemini-2.5-pro-exp-03-25:free",
               },
             },
           })

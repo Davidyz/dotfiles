@@ -78,15 +78,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Move to the previous diagnostic
     bufmap("n", "[d", function()
-      vim.diagnostic.goto_prev({ float = false })
+      vim.diagnostic.get_prev({ float = false })
     end, { desc = "Previous diagnostic." })
 
     -- Move to the next diagnostic
     bufmap("n", "]d", function()
-      vim.diagnostic.goto_next({ float = false })
+      vim.diagnostic.get_next({ float = false })
     end, { desc = "Next diagnostic." })
 
-    bufmap("n", "<Leader>I", function()
+    bufmap("n", "<Leader>ii", function()
       local bufnr = vim.api.nvim_get_current_buf()
       return vim.lsp.inlay_hint.enable(
         not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }),
