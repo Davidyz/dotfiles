@@ -107,7 +107,6 @@ local handlers = {
               },
               autoFormatStrings = true,
               autoImportCompletions = true,
-              diagnosticMode = "workspace",
             },
             linting = { enabled = false },
             disableOrganizeImports = true,
