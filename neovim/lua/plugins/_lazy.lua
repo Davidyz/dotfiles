@@ -1589,7 +1589,7 @@ M.plugins = {
             vertical = "down:45%",
           },
         },
-        files = { formatter = "path.filename_first" },
+        files = { formatter = "path.dirname_first" },
         lsp = { code_actions = { previewer = "codeaction_native" } },
       })
     end,
