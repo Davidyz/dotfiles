@@ -14,7 +14,10 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
-  callback = function()
+  callback = function(args)
+    if vim.lsp.get_client_by_id(args.data.client_id).name == "vectorcode_server" then
+      return
+    end
     local fzf = require("fzf-lua")
 
     local actions = require("fzf-lua").actions

@@ -2146,7 +2146,7 @@ M.plugins = {
             },
             schema = {
               model = {
-                default = "google/gemini-2.5-pro-exp-03-25:free",
+                default = "deepseek/deepseek-chat-v3-0324:free",
               },
             },
           })
