@@ -584,12 +584,13 @@ M.plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    build = "bundled_build.lua",
     cmd = { "MCPHub" },
-    build = "npm install -g mcp-hub@latest",
     opts = function()
       return {
         port = 3000,
         config = vim.fn.expand("~/mcpservers.json"),
+        use_bundled_binary = false,
       }
     end,
   },
