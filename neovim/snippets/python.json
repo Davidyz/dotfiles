@@ -1,0 +1,11 @@
+{
+  "No Cover Snippet": {
+    "prefix": "nocover",
+    "body": "# pragma: nocover",
+    "description": "Insert Python no cover pragma comment"
+  },
+  "Get Logger": {
+    "prefix": "glog",
+    "body": "logger = logging.getLogger(name=__name__)"
+  }
+}
