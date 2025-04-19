@@ -6,6 +6,6 @@
   },
   "Get Logger": {
     "prefix": "glog",
-    "body": "logger = logging.getLogger(name=__name__)"
+    "body": "import logging\nlogger = logging.getLogger(name=__name__)"
   }
 }
