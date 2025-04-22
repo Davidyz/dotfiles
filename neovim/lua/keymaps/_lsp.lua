@@ -4,6 +4,11 @@ end
 
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
+vim.keymap.del({ "n" }, "gri")
+vim.keymap.del({ "n", "x" }, "gra")
+vim.keymap.del({ "n" }, "grn")
+vim.keymap.del({ "n" }, "grr")
+
 local bufmap = function(mode, lhs, rhs, opts)
   opts = opts or { buffer = true }
   if opts.buffer == nil then
