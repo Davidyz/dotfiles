@@ -66,11 +66,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.buf_request(
           orig_buf,
           vim.lsp.protocol.Methods.textDocument_rename,
-          vim.tbl_deep_extend(
-            "force",
-            vim.lsp.util.make_position_params(orig_win),
-            { newName = input or orig_name }
-          ),
+          function(client, _)
+            return vim.tbl_deep_extend(
+              "force",
+              vim.lsp.util.make_position_params(orig_win, client.offset_encoding),
+              { newName = input or orig_name }
+            )
+          end,
           nil,
           function()
             vim.notify("Rename is not supported by the current language server.")
@@ -81,12 +83,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Move to the previous diagnostic
     bufmap("n", "[d", function()
-      vim.diagnostic.get_prev({ float = false })
+      vim.diagnostic.jump({ pos = vim.api.nvim_win_get_cursor(0), count = -1 })
     end, { desc = "Previous diagnostic." })
 
     -- Move to the next diagnostic
     bufmap("n", "]d", function()
-      vim.diagnostic.get_next({ float = false })
+      vim.diagnostic.jump({ pos = vim.api.nvim_win_get_cursor(0), count = 1 })
     end, { desc = "Next diagnostic." })
 
     bufmap("n", "<Leader>ii", function()
