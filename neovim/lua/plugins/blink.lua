@@ -157,6 +157,9 @@ return function(_, opts)
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 500,
+        window = {
+          winblend = 30,
+        },
       },
       trigger = {
         prefetch_on_insert = true,
@@ -171,8 +174,10 @@ return function(_, opts)
           end,
         },
       },
+
       menu = {
         auto_show = true,
+        border = "none",
         draw = {
           columns = {
             { "kind_icon" },

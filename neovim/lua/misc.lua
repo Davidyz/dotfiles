@@ -62,3 +62,4 @@ vim.api.nvim_set_hl(
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
+vim.o.winborder = "solid"

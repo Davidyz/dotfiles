@@ -286,8 +286,12 @@ M.plugins = {
     "andymass/vim-matchup",
     event = { "BufReadPost", "BufNewFile" },
     init = function()
-      vim.g.matchup_matchparen_offscreen =
-        { method = "popup", fullwidth = 1, highlight = "Comment" }
+      vim.g.matchup_matchparen_offscreen = {
+        method = "popup",
+        fullwidth = 0,
+        border = "solid",
+        highlight = "FidgetNormal",
+      }
       vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         callback = function()
           vim.api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
@@ -539,6 +543,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    dir = "~/git/VectorCode/",
     version = "*",
     opts = function()
       return {
@@ -610,7 +615,7 @@ M.plugins = {
           gemini = {
             model = "gemini-2.0-flash",
             chat_input = {
-              template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
+              template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}{{{git_diff}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
               repo_context = function()
                 if has_vc then
                   return vectorcode_config
@@ -621,6 +626,16 @@ M.plugins = {
                 else
                   return ""
                 end
+              end,
+              git_diff = function()
+                if vim.bo.filetype == "gitcommit" then
+                  local git_diff = vim.system({ "git", "diff" }, {}, nil):wait().stdout
+                  if git_diff then
+                    return "Write conventional commit message for the following git diff: "
+                      .. git_diff
+                  end
+                end
+                return ""
               end,
             },
             optional = {
@@ -649,6 +664,14 @@ M.plugins = {
               },
               template = {
                 prompt = function(pref, suff)
+                  if vim.bo.filetype == "gitcommit" then
+                    local git_diff =
+                      vim.system({ "git", "diff" }, {}, nil):wait().stdout
+                    if git_diff then
+                      return "Write conventional commit message for the following git diff: "
+                        .. git_diff
+                    end
+                  end
                   local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
                     vim.bo.filetype
                   )
@@ -842,17 +865,30 @@ M.plugins = {
     "j-hui/fidget.nvim",
     event = "LspAttach",
     version = "*",
-    opts = {
-      notification = {
-        window = {
-          winblend = 0,
-          align = "bottom",
-          x_padding = 0,
-          border = { "" },
+    opts = function()
+      return {
+        notification = {
+          window = {
+            normal_hl = "FidgetNormal",
+            winblend = 50,
+            align = "bottom",
+            x_padding = 0,
+            border = "solid",
+          },
+          view = { stack_upwards = false },
         },
-        view = { stack_upwards = false },
-      },
-    },
+      }
+    end,
+    config = function(_, opts)
+      require("fidget").setup(opts)
+      local comment_hl = vim.api.nvim_get_hl(0, { name = "Comment" })
+      local float_border = vim.api.nvim_get_hl(0, { name = "FloatBorder" })
+      vim.api.nvim_set_hl(
+        0,
+        "FidgetNormal",
+        { fg = comment_hl.fg, guifg = comment_hl.guifg, bg = float_border.bg }
+      )
+    end,
     cond = utils.no_vscode,
   },
   {
