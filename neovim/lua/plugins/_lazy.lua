@@ -415,7 +415,7 @@ M.plugins = {
       require("executable-checker").add_executable({ "python3", "npm" }, "mason")
     end,
     opts = {
-      ui = { height = 0.8 },
+      ui = { height = 0.8, border='solid' },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
       PATH = "append",
     },
@@ -2452,7 +2452,7 @@ M.config = {
   install = { colorscheme = { "catppuccin-mocha" } },
   profiling = { loader = true, require = true },
   ui = {
-    border = "none",
+    border = "solid",
     backdrop = 100,
   },
 }
