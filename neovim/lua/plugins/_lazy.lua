@@ -543,7 +543,6 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
-    dir = "~/git/VectorCode/",
     version = "*",
     opts = function()
       return {
@@ -595,7 +594,7 @@ M.plugins = {
       return {
         port = 3000,
         config = vim.fn.expand("~/mcpservers.json"),
-        use_bundled_binary = false,
+        use_bundled_binary = true,
       }
     end,
   },
@@ -668,8 +667,9 @@ M.plugins = {
                     local git_diff =
                       vim.system({ "git", "diff" }, {}, nil):wait().stdout
                     if git_diff then
-                      return "Write conventional commit message for the following git diff: "
+                      return "You are a experienced software developer, writing a conventional git commit message for the following patch.<|file_sep|>"
                         .. git_diff
+                        .. "<|fim_middle|>"
                     end
                   end
                   local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
@@ -2251,7 +2251,7 @@ M.plugins = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
             name = "Gemini",
-            schema = { model = { default = "gemini-2.5-pro-preview-03-25" } },
+            schema = { model = { default = "gemini-2.5-pro-exp-03-25" } },
           })
         end,
       }
