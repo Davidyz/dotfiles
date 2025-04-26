@@ -415,7 +415,7 @@ M.plugins = {
       require("executable-checker").add_executable({ "python3", "npm" }, "mason")
     end,
     opts = {
-      ui = { height = 0.8, border='solid' },
+      ui = { height = 0.8, border = "solid" },
       max_concurrent_jobs = math.min(4, utils.cpu_count()),
       PATH = "append",
     },
@@ -1143,7 +1143,8 @@ M.plugins = {
         "<Space>s",
         function()
           local widgets = require("dap.ui.widgets")
-          widgets.centered_float(widgets.scopes, { border = "solid" })
+          local float = widgets.centered_float(widgets.scopes, { border = "solid" })
+          vim.keymap.set("n", "q", "<cmd>q<cr>", { noremap = true, buffer = float.buf })
         end,
         desc = "DAP [s]cope",
         noremap = true,
