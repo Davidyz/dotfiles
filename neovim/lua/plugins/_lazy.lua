@@ -1145,6 +1145,12 @@ M.plugins = {
           local widgets = require("dap.ui.widgets")
           local float = widgets.centered_float(widgets.scopes, { border = "solid" })
           vim.keymap.set("n", "q", "<cmd>q<cr>", { noremap = true, buffer = float.buf })
+          vim.keymap.set(
+            "n",
+            "<Space>s",
+            "<cmd>q<cr>",
+            { noremap = true, buffer = float.buf }
+          )
         end,
         desc = "DAP [s]cope",
         noremap = true,
