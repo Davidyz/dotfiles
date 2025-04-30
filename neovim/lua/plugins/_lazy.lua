@@ -2321,6 +2321,37 @@ M.plugins = {
         opts.strategies.chat.adapter = "SiliconFlow"
         opts.strategies.inline.adapter = "SiliconFlow"
       end
+      if os.getenv("QWEN_API_KEY") then
+        opts.adapters["Qwen"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = "https://dashscope.aliyuncs.com/compatible-mode",
+              api_key = "QWEN_API_KEY",
+              chat_url = "/v1/chat/completions",
+            },
+            schema = {
+              model = {
+                default = "qwen-plus",
+              },
+              temperature = { default = 0.6 },
+            },
+          })
+        end
+        opts.strategies.chat.adapter = "Qwen"
+        opts.strategies.inline.adapter = "Qwen"
+      end
+      if os.getenv("OLLAMA_HOST") then
+        opts.adapters["Ollama"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = os.getenv("OLLAMA_HOST") .. "/",
+              api_key = "QWEN_API_KEY",
+              chat_url = "v1/chat/completions",
+            },
+            schema = { num_ctx = { default = 1000 * 128 } },
+          })
+        end
+      end
       return opts
     end,
     cond = function()
