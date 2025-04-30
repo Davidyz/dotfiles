@@ -2262,23 +2262,23 @@ M.plugins = {
         end,
       }
 
+      opts.extensions = {
+        vectorcode = {
+          opts = {
+            add_tool = true,
+            add_slash_command = true,
+            tool_opts = {
+              default_num = 15,
+              use_lsp = true,
+              auto_submit = { ls = true, query = true },
+              ls_on_start = true,
+            },
+          },
+        },
+      }
       opts.strategies = {
         chat = {
           adapter = "Gemini",
-          slash_commands = {
-            codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
-          },
-          tools = {
-            vectorcode = {
-              description = "Run VectorCode to retrieve the project context.",
-              callback = require("vectorcode.integrations").codecompanion.chat.make_tool({
-                default_num = 15,
-                use_lsp = true,
-                auto_submit = { ls = true, query = true },
-                ls_on_start = true,
-              }),
-            },
-          },
         },
         inline = {
           adapter = "Gemini",
@@ -2302,6 +2302,24 @@ M.plugins = {
         end
         opts.strategies.chat.adapter = "OpenRouter"
         opts.strategies.inline.adapter = "OpenRouter"
+      end
+      if os.getenv("SILICONFLOW_API_KEY") then
+        opts.adapters["SiliconFlow"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = "https://api.siliconflow.cn/",
+              api_key = "SILICONFLOW_API_KEY",
+              chat_url = "/v1/chat/completions",
+            },
+            schema = {
+              model = {
+                default = "Qwen/Qwen2.5-72B-Instruct-128K",
+              },
+            },
+          })
+        end
+        opts.strategies.chat.adapter = "SiliconFlow"
+        opts.strategies.inline.adapter = "SiliconFlow"
       end
       return opts
     end,
