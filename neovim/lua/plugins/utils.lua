@@ -9,6 +9,7 @@ M.mason_packages = {
   "clangd",
   "debugpy",
   "editorconfig-checker",
+  "harper-ls",
   "html-lsp",
   "jsonls",
   "lua-language-server",
@@ -34,14 +35,6 @@ local conditionals = {
   rustc = "rust-analyzer",
   tex = "texlab",
 }
-
-if vim.fn.executable("java") then
-  local output = vim.fn.execute("!java -version") or ""
-  local java_ver_num = string.match(output, "build (%d+)") or 0
-  if tonumber(java_ver_num) > 11 then
-    table.insert(M.mason_packages, "ltex-ls")
-  end
-end
 
 for exe, ls in pairs(conditionals) do
   if vim.fn.executable(exe) ~= 0 then

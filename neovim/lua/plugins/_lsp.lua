@@ -192,34 +192,6 @@ local handlers = {
       vim.tbl_deep_extend("force", default_server_config, { cmd = ls_executable })
     lspconfig["bashls"].setup(bash_config)
   end,
-  ["ltex"] = function()
-    if vim.fn.isdirectory(vim.fn.expand("~/.local/share/ltex/")) ~= 1 then
-      vim.fn.mkdir(vim.fn.expand("~/.local/share/ltex/"), "p")
-    end
-
-    local ltex_config = vim.tbl_deep_extend("force", default_server_config, {
-      on_attach = function(client, bufnr)
-        original_on_attach(client, bufnr)
-        if client.name == "ltex" then
-          require("ltex_extra").setup({
-            load_langs = { "en-GB" },
-            init_check = true,
-            path = vim.fn.expand("~/.local/share/ltex"),
-            log_level = "none",
-            server_opts = nil,
-          })
-        end
-      end,
-      settings = {
-        ltex = {
-          language = "en-GB",
-          completionEnabled = true,
-          additionalRules = { motherTongue = "en-GB" },
-        },
-      },
-    })
-    lspconfig["ltex"].setup(ltex_config)
-  end,
 }
 
 require("mason-lspconfig").setup_handlers(handlers)
