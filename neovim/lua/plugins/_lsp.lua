@@ -71,6 +71,15 @@ local handlers = {
       )
     )
   end,
+  ["harper_ls"] = function()
+    require("lspconfig")["harper_ls"].setup(
+      vim.tbl_deep_extend(
+        "force",
+        default_server_config,
+        { filetypes = { "markdown", "latex", "tex", "text", "txt" } }
+      )
+    )
+  end,
   ["texlab"] = function()
     require("lspconfig")["texlab"].setup(
       vim.tbl_deep_extend("force", default_server_config, {
