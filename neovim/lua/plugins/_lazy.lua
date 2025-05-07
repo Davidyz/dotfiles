@@ -405,6 +405,7 @@ M.plugins = {
   -- NOTE: mason
   {
     "williamboman/mason.nvim",
+    version = "*",
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "mason",
@@ -513,6 +514,7 @@ M.plugins = {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    version = "*",
     cond = utils.no_vscode,
   },
   {
@@ -593,7 +595,6 @@ M.plugins = {
     opts = function()
       return {
         port = 3000,
-        config = vim.fn.expand("~/mcpservers.json"),
         use_bundled_binary = true,
       }
     end,
@@ -1183,7 +1184,37 @@ M.plugins = {
       },
       {
         "jbyuki/one-small-step-for-vimkind",
-        cond = utils.no_vscode,
+        cond = function()
+          return utils.no_vscode() and vim.fn.executable("nlua") == 1
+        end,
+        ft = { "lua" },
+        config = function()
+          local dap = require("dap")
+          dap.configurations.lua = {
+            {
+              type = "nlua",
+              request = "attach",
+              name = "Attach to running Neovim instance",
+            },
+          }
+          dap.adapters.nlua = function(callback, config)
+            callback({
+              type = "server",
+              host = config.host or "127.0.0.1",
+              port = config.port or 8086,
+            })
+          end
+        end,
+        keys = {
+          {
+            "<Leader>D",
+            function()
+              require("osv").launch({ port = 8086 })
+            end,
+            mode = "n",
+            noremap = true,
+          },
+        },
       },
       {
         "jay-babu/mason-nvim-dap.nvim",

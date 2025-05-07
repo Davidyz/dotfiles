@@ -25,6 +25,11 @@ then
   export PATH=$PATH:/usr/lib/distcc/bin/
 fi
 
+if [ -d $HOME/.luarocks/bin/ ] 
+then
+  export PATH=$PATH:$HOME/.luarocks/bin:
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"

@@ -45,7 +45,7 @@ dapui.setup({
         -- Provide as ID strings or tables with "id" and "size" keys
         "breakpoints",
         "stacks",
-        "watches",
+        "scopes",
       },
       size = 40,
       position = "left", -- Can be "left", "right", "top", "bottom"
