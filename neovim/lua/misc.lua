@@ -37,21 +37,9 @@ vim.api.nvim_set_hl(0, "LazyBackdrop", { link = "Normal" })
 vim.api.nvim_set_hl(0, "Normal", { bg = "none", sp = "none" })
 vim.o.compatible = false
 
--- recover cursor location from history
-vim.api.nvim_create_autocmd({ "BufRead" }, {
-  pattern = { "*" },
-  callback = function()
-    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
-      vim.api.nvim_command("normal! g'\"")
-    end
-  end,
-})
-
 if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option_value("t_Co", { 256 }, {})
 end
-
-vim.opt.foldlevel = 50
 
 vim.api.nvim_set_hl(
   0,
@@ -63,3 +51,22 @@ vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
 vim.o.winborder = "none"
+
+vim.o.viewoptions = "folds,cursor"
+local group = vim.api.nvim_create_augroup("ViewSaver", { clear = true })
+
+vim.api.nvim_create_autocmd("BufUnload", {
+  group = group,
+  callback = function(args)
+    local uri = vim.uri_from_bufnr(0)
+    local path = vim.uri_to_fname(uri)
+    local stat = vim.uv.fs_stat(path)
+    if stat ~= nil and stat.type == "file" then
+      vim.cmd("mkview")
+    end
+  end,
+})
+vim.api.nvim_create_autocmd(
+  "BufReadPost",
+  { group = group, command = "silent! loadview" }
+)

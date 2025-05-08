@@ -1,14 +1,5 @@
 local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
-lsp_defaults.capabilities = vim.tbl_deep_extend(
-  "force",
-  lsp_defaults.capabilities,
-  require("blink.cmp").get_lsp_capabilities()
-)
-lsp_defaults.capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
-}
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 
@@ -55,7 +46,17 @@ local default_server_config = {
   on_attach = original_on_attach,
 }
 vim.lsp.config("*", default_server_config)
-require("mason-lspconfig").setup({ automatic_enable = true, ensure_installed = nil })
+-- vim.lsp.config("ty", default_server_config)
+-- vim.lsp.config("ty", {
+--   cmd = { "ty", "server" },
+--   filetypes = { "python" },
+--   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
+-- })
+-- vim.lsp.enable("ty")
+require("mason-lspconfig").setup({
+  -- automatic_enable = { exclude = { "basedpyright" } },
+  ensure_installed = nil,
+})
 
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }
 for type, icon in pairs(signs) do

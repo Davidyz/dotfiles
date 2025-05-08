@@ -309,13 +309,12 @@ M.plugins = {
     dependencies = {
       "kevinhwang91/promise-async",
       "nvim-treesitter/nvim-treesitter",
-      "neovim/nvim-lspconfig",
     },
     cond = utils.no_vscode,
     init = function()
       vim.o.foldenable = true
       vim.o.foldlevel = 99
-      vim.o.foldlevelstart = 99
+      -- vim.o.foldlevelstart = 99
       vim.o.foldcolumn = "0"
     end,
     config = function(_, opts)
@@ -324,14 +323,14 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "UfoPreviewBg", { link = "FzfLuaPreviewBorder" })
       vim.api.nvim_set_hl(0, "UfoPreviewWinBar", { link = "FzfLuaPreviewBorder" })
       vim.api.nvim_set_hl(0, "UfoFoldedBg", { link = "CursorLine" })
-      vim.keymap.set("n", "<C-p>", function()
+      vim.keymap.set("n", "P", function()
         require("ufo.preview"):peekFoldedLinesUnderCursor()
       end, { noremap = true, desc = "Peek inside fold." })
       vim.keymap.set("n", "<BS>", "za", { noremap = true, desc = "Toggle fold." })
     end,
     opts = {
       preview = {
-        win_config = { winhighlight = "Normal:TelescopePreviewBorder", winblend = 0 },
+        win_config = { winhighlight = "Normal:FzfLuaPreviewBorder", winblend = 0 },
       },
       fold_virt_text_handler = function(virt_text, lnum, end_lnum, width, truncate)
         local result = {}
@@ -367,15 +366,6 @@ M.plugins = {
       provider_selector = function(bufnum, _, _)
         if vim.bo.bt == "nofile" then
           return ""
-        end
-        local servers = vim.lsp.get_clients({ bufnr = bufnum })
-        if
-          #servers > 0
-          and utils.any(servers, function(server)
-            return server.server_capabilities.foldingRangeProvider == true
-          end)
-        then
-          return { "lsp", "treesitter" }
         end
         return { "treesitter", "indent" }
       end,
@@ -1730,6 +1720,7 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Comment" })
     end,
     event = { "BufReadPost", "BufNewFile" },
+    cmd = { "Gitsigns" },
   },
   { "nvim-lua/plenary.nvim" },
   {
@@ -1986,20 +1977,20 @@ M.plugins = {
     opts = {},
     keys = {
       {
-        "<Leader>s",
+        "<leader>s",
         function()
           require("tssorter").sort({})
         end,
         mode = { "n", "x" },
-        desc = "Sort selected treesitter nodes.",
+        desc = "sort selected treesitter nodes.",
       },
       {
-        "<Leader>S",
+        "<leader>s",
         function()
           require("tssorter").sort({ reverse = true })
         end,
         mode = { "n", "x" },
-        desc = "Sort selected treesitter nodes (reversed).",
+        desc = "sort selected treesitter nodes (reversed).",
       },
     },
   },
@@ -2018,9 +2009,9 @@ M.plugins = {
         cursorcolumn = true,
       },
     },
-    event = "WinNew",
+    event = "winnew",
     init = function()
-      local ignore_filetypes = { "neo-tree", "Outline" }
+      local ignore_filetypes = { "neo-tree", "outline" }
       local ignore_buftypes = { "nofile", "prompt", "popup" }
 
       local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
@@ -2065,18 +2056,6 @@ M.plugins = {
     opts = {
       open_mapping = "<C-\\>",
     },
-  },
-  {
-    "pappasam/nvim-repl",
-    init = function()
-      vim.g.repl_filetype_commands = { python = "ipython" }
-      if vim.fn.executable("ipython") == 0 then
-        vim.g.repl_filetype_commands.python = "python"
-      end
-      vim.g.repl_split = "bottom"
-    end,
-    keys = { { "<C-|>", "<cmd>ReplToggle<cr>", desc = "Toggle repl" } },
-    cmd = { "Repl", "ReplOpen", "ReplRunCell" },
   },
   {
     "jim-fx/sudoku.nvim",
