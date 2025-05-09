@@ -318,7 +318,8 @@ M.plugins = {
       vim.o.foldcolumn = "0"
     end,
     config = function(_, opts)
-      require("ufo").setup(opts)
+      local ufo = require("ufo")
+      ufo.setup(opts)
       vim.api.nvim_set_hl(0, "UfoCursorFoldedLine", { link = "CursorLine" })
       vim.api.nvim_set_hl(0, "UfoPreviewBg", { link = "FzfLuaPreviewBorder" })
       vim.api.nvim_set_hl(0, "UfoPreviewWinBar", { link = "FzfLuaPreviewBorder" })
@@ -327,6 +328,18 @@ M.plugins = {
         require("ufo.preview"):peekFoldedLinesUnderCursor()
       end, { noremap = true, desc = "Peek inside fold." })
       vim.keymap.set("n", "<BS>", "za", { noremap = true, desc = "Toggle fold." })
+      vim.keymap.set(
+        "n",
+        "[f",
+        ufo.goPreviousClosedFold,
+        { noremap = true, desc = "Previous fold." }
+      )
+      vim.keymap.set(
+        "n",
+        "]f",
+        ufo.goNextClosedFold,
+        { noremap = true, desc = "Next fold." }
+      )
     end,
     opts = {
       preview = {
@@ -359,18 +372,38 @@ M.plugins = {
           end
           cur_width = cur_width + chunk_width
         end
-        table.insert(result, { "  ", "NonText" })
+        table.insert(result, { "   ", "NonText" })
         table.insert(result, { suffix, "TSPunctBracket" })
+        table.insert(result, {
+          ("\t\t %d"):format(end_lnum - lnum),
+          "Comment",
+        })
         return result
       end,
       provider_selector = function(bufnum, _, _)
         if vim.bo.bt == "nofile" then
           return ""
         end
+        for _, cli in pairs(vim.lsp.get_clients({ bufnr = bufnum })) do
+          if cli.server_capabilities.foldingRangeProvider then
+            return { "lsp", "treesitter" }
+          end
+        end
         return { "treesitter", "indent" }
       end,
     },
     event = { "LspAttach" },
+  },
+  {
+    "chrisgrieser/nvim-origami",
+    event = "VeryLazy",
+    dependencies = { "kevinhwang91/nvim-ufo" },
+    opts = function()
+      return {
+        keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
+        pauseFoldsOnSearch = true,
+      }
+    end,
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -1814,6 +1847,13 @@ M.plugins = {
         remap = false,
         mode = "n",
         desc = "Find help tags.",
+      },
+      {
+        "<Leader>tH",
+        "<cmd>FzfLua highlights<cr>",
+        remap = false,
+        mode = "n",
+        desc = "Find highlight groups.",
       },
       {
         "R",
