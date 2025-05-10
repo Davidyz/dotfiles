@@ -628,7 +628,6 @@ M.plugins = {
     event = "VeryLazy",
     config = function(_, opts)
       local num_docs = 10
-      local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
       opts = {
         add_single_line_entry = true,
         n_completions = 1,
@@ -640,6 +639,7 @@ M.plugins = {
             chat_input = {
               template = "{{{language}}}\n{{{tab}}}\n{{{repo_context}}}{{{git_diff}}}<|fim_prefix|>{{{context_before_cursor}}}<|fim_suffix|>{{{context_after_cursor}}}<|fim_middle|>",
               repo_context = function()
+                local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
                 if has_vc then
                   return vectorcode_config
                     .get_cacher_backend()
@@ -699,6 +699,7 @@ M.plugins = {
                   local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled in code.]]):format(
                     vim.bo.filetype
                   )
+                  local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
                   if has_vc then
                     local cache_result =
                       vectorcode_config.get_cacher_backend().make_prompt_component(0)
@@ -726,6 +727,7 @@ M.plugins = {
               local bufnr = vim.api.nvim_get_current_buf()
               local co = coroutine.create(function()
                 vim.b[bufnr].ai_raw_response = json
+                local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
                 if not has_vc then
                   return
                 end
