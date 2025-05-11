@@ -6,4 +6,9 @@ return {
       rangeFormatting = { dynamicRegistration = not has_black },
     },
   },
+  init_options = {
+    settings = {
+      configurationPreference = "filesystemFirst",
+    },
+  },
 }
