@@ -2292,6 +2292,7 @@ M.plugins = {
     },
     opts = function(_, opts)
       opts = opts or {}
+      opts.display = { action_palette = { provider = "default" } }
       opts.adapters = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
@@ -2396,6 +2397,29 @@ M.plugins = {
     cond = function()
       return utils.no_vscode()
     end,
+    keys = {
+      {
+        "<leader>ca",
+        "<cmd>CodeCompanionActions<cr>",
+        mode = "n",
+        noremap = true,
+        desc = "[C]odeCompanion [a]ctions.",
+      },
+      {
+        "<leader>cc",
+        "<cmd>CodeCompanionChat<cr>",
+        mode = "n",
+        noremap = true,
+        desc = "[C]odeCompanion [c]hat.",
+      },
+      {
+        "<leader>ct",
+        "<cmd>CodeCompanionChat Toggle<cr>",
+        mode = "n",
+        noremap = true,
+        desc = "[C]odeCompanion chat [t]oggle.",
+      },
+    },
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
