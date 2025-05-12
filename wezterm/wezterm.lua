@@ -131,7 +131,7 @@ end
 
 config.enable_scroll_bar = true
 config.font = wezterm.font_with_fallback({
-  "Maple Mono NF CN",
+  "Maple Mono Normal NL NF CN",
   "Cascadia Mono",
   "Symbols Nerd Font Mono",
   "codicon",
@@ -140,6 +140,7 @@ config.font = wezterm.font_with_fallback({
 })
 config.font_size = 11.5
 config.cell_width = 0.95
+config.line_height = 0.975
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 config.inactive_pane_hsb = {
   saturation = 0.7,
