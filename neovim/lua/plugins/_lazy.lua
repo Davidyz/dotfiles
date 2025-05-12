@@ -2319,6 +2319,16 @@ M.plugins = {
       opts.strategies = {
         chat = {
           adapter = "Gemini",
+          roles = {
+            ---@type string|fun(adapter: CodeCompanion.Adapter): string
+            llm = function(adapter)
+              return string.format(
+                "%s (%s)",
+                adapter.formatted_name,
+                adapter.model.name
+              )
+            end,
+          },
         },
         inline = {
           adapter = "Gemini",
