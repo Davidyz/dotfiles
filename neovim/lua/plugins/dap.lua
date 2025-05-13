@@ -40,8 +40,7 @@ dapui.setup({
     -- You can change the order of elements in the sidebar
     {
       elements = {
-        -- Provide as ID strings or tables with "id" and "size" keys
-        "breakpoints",
+        "watches",
         "stacks",
         "scopes",
       },
