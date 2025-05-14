@@ -179,7 +179,8 @@ local lualine_config = {
           separator = "   ",
         },
         cond = function()
-          return #vim.lsp.get_clients({ bufnr = 0 }) > 0
+          return package.loaded["nvim-navic"] ~= nil
+            and #vim.lsp.get_clients({ bufnr = 0 }) > 0
         end,
       },
     },

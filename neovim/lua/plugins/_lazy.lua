@@ -446,7 +446,6 @@ M.plugins = {
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    event = { "BufReadPost", "BufNewFile" },
     cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
     config = function()
       require("plugins.mason_tools")
@@ -532,13 +531,13 @@ M.plugins = {
     cond = utils.no_vscode,
     dependencies = {
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
     },
   },
   {
     "williamboman/mason-lspconfig.nvim",
     version = "*",
     cond = utils.no_vscode,
+    dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" },
   },
   {
     "saghen/blink.cmp",
@@ -1247,7 +1246,6 @@ M.plugins = {
       },
       {
         "mfussenegger/nvim-dap-python",
-        ft = { "python" },
         config = function(_, opts)
           local python_test_runner = "unittest"
           if vim.fn.executable("pytest") == 1 then
