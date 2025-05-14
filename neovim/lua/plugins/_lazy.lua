@@ -1259,26 +1259,6 @@ M.plugins = {
           )
           require("dap-python").test_runner = python_test_runner
         end,
-        keys = {
-          {
-            "<Space>tf",
-            function()
-              require("dap-python").test_method()
-            end,
-            mode = { "n", "x" },
-            desc = "[T]est [f]unction/method",
-            noremap = true,
-          },
-          {
-            "<Space>tc",
-            function()
-              require("dap-python").test_class()
-            end,
-            mode = { "n", "x" },
-            desc = "[T]est [c]lass",
-            noremap = true,
-          },
-        },
       },
     },
   },
@@ -2308,6 +2288,7 @@ M.plugins = {
     opts = { window = { open = "tab" } },
     lazy = false,
     priority = 1001,
+    commit = "d3e3529",
   },
   {
     "olimorris/codecompanion.nvim",
@@ -2597,6 +2578,85 @@ M.plugins = {
     end,
     cmd = { "Coverage" },
   },
+  {
+    "nvim-neotest/neotest",
+    config = function()
+      local default_python = require("venv-selector").python() or ".venv/bin/python"
+      local stat = vim.uv.fs_stat(default_python)
+      if not stat or stat.type ~= "file" then
+        default_python = "python"
+      end
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({
+            dap = { justMyCode = true },
+            args = { "--log-level", "DEBUG" },
+            runner = "pytest",
+            python = default_python,
+          }),
+        },
+      })
+
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function()
+          for _, lhs in pairs({ "q", "<esc>" }) do
+            vim.keymap.set("n", lhs, function()
+              vim.cmd("quit")
+            end, { buffer = true })
+          end
+        end,
+      })
+    end,
+    version = "*",
+    keys = {
+      {
+        "<Space>tf",
+        function()
+          require("neotest").run.run()
+        end,
+        desc = "[T]est nearest [f]unction",
+      },
+      {
+        "<Space>tF",
+        function()
+          require("neotest").run.run({ strategy = "dap" })
+        end,
+        desc = "[T]est nearest [f]unction (dap)",
+      },
+      {
+        "<Space>to",
+        function()
+          require("neotest").output.open({ short = true, enter = true })
+        end,
+        desc = "[T]est [o]utput",
+      },
+      {
+        "<Space>ts",
+        function()
+          require("neotest").run.stop()
+        end,
+        desc = "[S]top",
+      },
+      {
+        "<Space>ta",
+        function()
+          local buf_name = vim.api.nvim_buf_get_name(0)
+          local stat = vim.uv.fs_stat(buf_name)
+          if stat ~= nil and stat.type == "file" then
+            require("neotest").run.run(buf_name)
+          end
+        end,
+        desc = "[T]est [a]ll cases in current file",
+      },
+    },
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
+  { "nvim-neotest/neotest-python", ft = { "python" } },
   { "nvim-telescope/telescope.nvim", enabled = false },
 }
 
