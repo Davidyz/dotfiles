@@ -314,7 +314,7 @@ M.plugins = {
     init = function()
       vim.o.foldenable = true
       vim.o.foldlevel = 99
-      -- vim.o.foldlevelstart = 99
+      vim.o.foldlevelstart = 99
       vim.o.foldcolumn = "0"
     end,
     config = function(_, opts)
@@ -2598,6 +2598,7 @@ M.plugins = {
       })
 
       vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "neotest*",
         callback = function()
           for _, lhs in pairs({ "q", "<esc>" }) do
             vim.keymap.set("n", lhs, function()
@@ -2638,15 +2639,43 @@ M.plugins = {
         desc = "[S]top",
       },
       {
+        "<Space>at",
+        function()
+          require("neotest").run.attach()
+        end,
+        desc = "[A]ttach to [t]est",
+      },
+      {
         "<Space>ta",
         function()
           local buf_name = vim.api.nvim_buf_get_name(0)
           local stat = vim.uv.fs_stat(buf_name)
           if stat ~= nil and stat.type == "file" then
             require("neotest").run.run(buf_name)
+            require("neotest").summary.open()
           end
         end,
         desc = "[T]est [a]ll cases in current file",
+      },
+      {
+        "<Space>tA",
+        function()
+          local root_dir = vim.fs.root(0, { "tests", "test" })
+          if root_dir == nil then
+            return
+          end
+          local stat
+          for _, dir in pairs({ "tests", "test" }) do
+            local test_dir = vim.fs.joinpath(root_dir, dir)
+            stat = vim.uv.fs_stat(test_dir)
+            if stat and stat.type == "directory" then
+              require("neotest").run.run(test_dir)
+              require("neotest").summary.open()
+              return
+            end
+          end
+        end,
+        desc = "Run all tests.",
       },
     },
     dependencies = {
