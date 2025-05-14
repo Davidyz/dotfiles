@@ -2581,7 +2581,11 @@ M.plugins = {
   {
     "nvim-neotest/neotest",
     config = function()
-      local default_python = require("venv-selector").python() or ".venv/bin/python"
+      local default_python = require("venv-selector").python()
+        or vim.fs.joinpath(
+          vim.fs.root(0, { ".venv", "pyproject.toml", ".git" }) or ".",
+          ".venv/bin/python"
+        )
       local stat = vim.uv.fs_stat(default_python)
       if not stat or stat.type ~= "file" then
         default_python = "python"
@@ -2597,13 +2601,13 @@ M.plugins = {
         },
       })
 
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "neotest*",
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "neotest-*",
         callback = function()
           for _, lhs in pairs({ "q", "<esc>" }) do
             vim.keymap.set("n", lhs, function()
               vim.cmd("quit")
-            end, { buffer = true })
+            end, { buffer = 0 })
           end
         end,
       })
