@@ -40,6 +40,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
         action(selected, opts)
       end,
+      unique_line_items = true,
     }
     bufmap("n", "gd", function()
       return fzf.lsp_definitions(opts)
