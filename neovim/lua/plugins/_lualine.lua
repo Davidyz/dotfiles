@@ -82,7 +82,6 @@ local lualine_config = {
     section_separators = { left = "", right = "" },
     component_separators = { left = "", right = "" },
     disabled_filetypes = {},
-    -- always_divide_middle = true,
     globalstatus = true,
   },
   sections = {
@@ -180,7 +179,7 @@ local lualine_config = {
         },
         cond = function()
           return package.loaded["nvim-navic"] ~= nil
-            and #vim.lsp.get_clients({ bufnr = 0 }) > 0
+            and require("nvim-navic").is_available()
         end,
       },
     },
