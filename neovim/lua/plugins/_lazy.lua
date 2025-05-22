@@ -2296,6 +2296,7 @@ M.plugins = {
       "nvim-treesitter/nvim-treesitter",
       "Davidyz/VectorCode",
       "ibhagwan/fzf-lua",
+      "ravitemer/codecompanion-history.nvim",
     },
     config = true,
     cmd = {
@@ -2317,6 +2318,27 @@ M.plugins = {
       }
 
       opts.extensions = {
+        history = {
+          enabled = true,
+          opts = {
+            -- Keymap to open history from chat buffer (default: gh)
+            keymap = "gh",
+            -- Keymap to save the current chat manually (when auto_save is disabled)
+            save_chat_keymap = "sc",
+            -- Save all chats by default (disable to save only manually using 'sc')
+            auto_save = true,
+            -- Number of days after which chats are automatically deleted (0 to disable)
+            expiration_days = 0,
+            -- Picker interface ("telescope" or "snacks" or "fzf-lua" or "default")
+            picker = "fzf-lua",
+            ---Automatically generate titles for new chats
+            auto_generate_title = true,
+            ---On exiting and entering neovim, loads the last chat on opening chat
+            continue_last_chat = false,
+            ---When chat is cleared with `gx` delete the chat from history
+            delete_on_clearing_chat = false,
+          },
+        },
         vectorcode = {
           opts = {
             add_tool = true,

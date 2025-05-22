@@ -117,6 +117,7 @@ custom_plugins=(
 	ael-code/zsh-colored-man-pages
 	darvid/zsh-poetry
 	ocodo/ollama_zsh_completion
+	nix-community/nix-zsh-completions
 )
 for i in "${custom_plugins[@]}"; do
 	plugin_dir="${i##*/}"

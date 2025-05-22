@@ -164,6 +164,10 @@ return function(_, opts)
       trigger = {
         prefetch_on_insert = true,
         show_on_keyword = true,
+        show_on_trigger_character = true,
+        show_in_snippet = true,
+        show_on_insert_on_trigger_character = true,
+        show_on_accept_on_trigger_character = true,
       },
       list = {
         selection = {
@@ -196,6 +200,7 @@ return function(_, opts)
           },
         },
       },
+      keyword = { range = "full" },
     },
   })
   return opts
