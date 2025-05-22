@@ -7,5 +7,9 @@
   "Get Logger": {
     "prefix": "glog",
     "body": "import logging\nlogger = logging.getLogger(name=__name__)"
+  },
+  "Ignore type checking": {
+    "prefix": "ignore",
+    "body": "# type:ignore"
   }
 }
