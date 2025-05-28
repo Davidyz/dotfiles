@@ -1197,6 +1197,7 @@ M.plugins = {
     dependencies = {
       {
         "theHamsta/nvim-dap-virtual-text",
+        opts = { only_first_definition = false },
         cond = utils.no_vscode,
       },
       {
@@ -2307,7 +2308,7 @@ M.plugins = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
             name = "Gemini",
-            schema = { model = { default = "gemini-2.5-pro-exp-03-25" } },
+            schema = { model = { default = "gemini-2.5-flash-preview-05-20" } },
           })
         end,
       }
