@@ -1802,6 +1802,7 @@ M.plugins = {
         "<cmd>FzfLua lsp_code_actions<cr>",
         remap = false,
         mode = { "n", "x" },
+        desc = "Code actions",
       },
       {
         "<Leader>tf",
@@ -2022,6 +2023,7 @@ M.plugins = {
         "<cmd>Neotree action=focus toggle<cr>",
         mode = "n",
         remap = true,
+        desc = "Neo-tree",
       },
     },
     ft = { "netrw" },
@@ -2509,6 +2511,17 @@ M.plugins = {
     opts = {
       preset = "modern",
     },
+    config = function(_, opts)
+      local wk = require("which-key")
+      wk.setup(opts)
+      wk.add({
+        { "<leader>c", group = "CodeCompanion" },
+        { "<leader>t", group = "Fzf-lua" },
+        { "<leader>r", group = "Refactoring" },
+        { "<leader>e", group = "Extract" },
+        { "<leader>g", group = "Git integrations" },
+      })
+    end,
     keys = {
       {
         "<leader>?",
