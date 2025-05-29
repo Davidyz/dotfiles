@@ -1228,40 +1228,6 @@ M.plugins = {
         key = {},
       },
       {
-        "jbyuki/one-small-step-for-vimkind",
-        cond = function()
-          return utils.no_vscode() and vim.fn.executable("nlua") == 1
-        end,
-        ft = { "lua" },
-        config = function()
-          local dap = require("dap")
-          dap.configurations.lua = {
-            {
-              type = "nlua",
-              request = "attach",
-              name = "Attach to running Neovim instance",
-            },
-          }
-          dap.adapters.nlua = function(callback, config)
-            callback({
-              type = "server",
-              host = config.host or "127.0.0.1",
-              port = config.port or 8086,
-            })
-          end
-        end,
-        keys = {
-          {
-            "<Leader>D",
-            function()
-              require("osv").launch({ port = 8086 })
-            end,
-            mode = "n",
-            noremap = true,
-          },
-        },
-      },
-      {
         "jay-babu/mason-nvim-dap.nvim",
         cond = utils.no_vscode,
       },
