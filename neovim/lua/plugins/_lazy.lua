@@ -651,10 +651,28 @@ M.plugins = {
               end,
               git_diff = function()
                 if vim.bo.filetype == "gitcommit" then
-                  local git_diff = vim.system({ "git", "diff" }, {}, nil):wait().stdout
+                  local git_diff_job = vim.system({ "git", "diff", "--cached" }, {}, nil)
+                  local recent_commits_job = vim.system(
+                    { "git", "log", "HEAD~10..HEAD", "--" },
+                    {},
+                    nil
+                  )
+                  local git_diff = git_diff_job:wait().stdout
+
                   if git_diff then
-                    return "Write conventional commit message for the following git diff: "
+                    local recent_commits = recent_commits_job:wait().stdout
+
+                    local prompt = ""
+                    if recent_commits then
+                      prompt = string.format(
+                        "The following are the most recent 10 commits in the repo:\n%s\nFollow their style of writing.\n",
+                        recent_commits
+                      )
+                    end
+                    prompt = prompt
+                      .. "Write a concise conventional commit message for the following git diff: "
                       .. git_diff
+                    return prompt
                   end
                 end
                 return ""
@@ -673,7 +691,6 @@ M.plugins = {
         args = { os.getenv("OLLAMA_HOST"), "--connect-timeout", "1" },
         on_exit = function(self, code, signal)
           if code == 0 then
-            opts.provider = "openai_fim_compatible"
             opts.provider_options.openai_fim_compatible = {
               api_key = "TERM",
               name = "Ollama",
