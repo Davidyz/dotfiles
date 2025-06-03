@@ -661,17 +661,27 @@ M.plugins = {
                     {},
                     nil
                   )
-                  local git_diff = git_diff_job:wait().stdout
-
+                  local curr_branch_job = vim.system(
+                    { "git", "branch", "--show-current" },
+                    {},
+                    nil
+                  )
+                  local git_diff = vim.trim(git_diff_job:wait().stdout)
+                  local curr_branch = vim.trim(curr_branch_job:wait().stdout)
                   if git_diff then
                     local recent_commits = recent_commits_job:wait().stdout
 
                     local prompt = ""
+                    if curr_branch then
+                      prompt =
+                        string.format("The current branch name is `%s`\n", curr_branch)
+                    end
                     if recent_commits then
-                      prompt = string.format(
-                        "The following are the most recent 10 commits in the repo:\n%s\nFollow their style of writing.\n",
-                        recent_commits
-                      )
+                      prompt = prompt
+                        .. string.format(
+                          "The following are the most recent 10 commits in the repo:\n%s\nFollow their style of writing.\n",
+                          recent_commits
+                        )
                     end
                     prompt = prompt
                       .. "Write a concise conventional commit message for the following git diff: "
