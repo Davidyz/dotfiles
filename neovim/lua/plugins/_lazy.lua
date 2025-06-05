@@ -790,6 +790,7 @@ M.plugins = {
       })
       job:start()
     end,
+    dependencies = { "ibhagwan/fzf-lua" },
   },
   {
     "Davidyz/codicons.nvim",
@@ -2311,12 +2312,24 @@ M.plugins = {
     },
     opts = function(_, opts)
       opts = opts or {}
-      opts.display = { action_palette = { provider = "default" } }
+      opts.display = {
+        action_palette = { provider = "fzf_lua" },
+        chat = { show_header_separator = false },
+      }
       opts.adapters = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
             name = "Gemini",
             schema = { model = { default = "gemini-2.5-flash-preview-05-20" } },
+          })
+        end,
+        ["LlamaCPP"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = "http://127.0.0.1:8080",
+              api_key = "TERM",
+              chat_url = "/v1/chat/completions",
+            },
           })
         end,
       }
