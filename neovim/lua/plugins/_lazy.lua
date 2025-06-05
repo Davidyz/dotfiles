@@ -1758,9 +1758,9 @@ M.plugins = {
           width = 0.90,
           preview = {
             border = "solid",
-            default = "bat",
+            default = ((vim.fn.executable("bat") == 1) and "bat") or "cat",
             horizontal = "right:55%",
-            vertical = "down:45%",
+            vertical = "down:65%",
           },
         },
         files = { formatter = "path.dirname_first" },
