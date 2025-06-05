@@ -499,15 +499,24 @@ M.plugins = {
         bash = { "shellcheck" },
         zsh = { "shellcheck" },
         ["yaml.ghaction"] = { "actionlint" },
+        lua = { "selene" },
       }
-      vim.api.nvim_create_autocmd(
-        { "BufReadPost", "BufWritePost", "InsertEnter", "InsertLeave", "TextChanged" },
-        {
-          callback = function()
+      vim.api.nvim_create_autocmd({
+        "BufReadPost",
+        "BufWritePost",
+        "InsertEnter",
+        "InsertLeave",
+        "TextChanged",
+        "TextChangedI",
+        "CursorMoved",
+        "CursorMovedI",
+      }, {
+        callback = function()
+          if vim.bo.filetype ~= "lua" or (vim.fs.root(0, { "selene.toml" }) ~= nil) then
             lint.try_lint()
-          end,
-        }
-      )
+          end
+        end,
+      })
     end,
     dependencies = { "williamboman/mason.nvim" },
     event = { "BufReadPost", "BufNewFile" },
