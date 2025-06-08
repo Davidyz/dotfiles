@@ -576,6 +576,7 @@ M.plugins = {
   },
   {
     "Davidyz/VectorCode",
+    -- dir = "~/git/VectorCode/",
     version = "*",
     opts = function()
       return {
@@ -2295,15 +2296,18 @@ M.plugins = {
   },
   {
     "olimorris/codecompanion.nvim",
+    -- dir = "~/git/codecompanion.nvim/",
     version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "Davidyz/VectorCode",
       "ibhagwan/fzf-lua",
-      "ravitemer/codecompanion-history.nvim",
+      {
+        "ravitemer/codecompanion-history.nvim",
+        -- dir = "~/git/codecompanion-history.nvim/",
+      },
     },
-    config = true,
     cmd = {
       "CodeCompanion",
       "CodeCompanionCmd",
@@ -2346,9 +2350,23 @@ M.plugins = {
             auto_generate_title = true,
             continue_last_chat = false,
             delete_on_clearing_chat = false,
+            summary = {
+              create_summary_keymap = "gcs",
+              browse_summaries_keymap = "gbs",
+              preview_summary_keymap = "gps",
+
+              generation_opts = {
+                context_size = 90000,
+                -- Include slash command content (default: true)
+                include_references = true,
+                -- Include tool outputs (default: true)
+                include_tool_outputs = true,
+              },
+            },
           },
         },
         vectorcode = {
+          enabled = vim.fn.executable("vectorcode") == 1,
           opts = {
             add_tool = true,
             add_slash_command = true,
@@ -2437,13 +2455,9 @@ M.plugins = {
       end
       if os.getenv("OLLAMA_HOST") then
         opts.adapters["Ollama"] = function()
-          return require("codecompanion.adapters").extend("openai_compatible", {
-            env = {
-              url = os.getenv("OLLAMA_HOST") .. "/",
-              api_key = "QWEN_API_KEY",
-              chat_url = "v1/chat/completions",
-            },
-            schema = { num_ctx = { default = 1000 * 128 } },
+          return require("codecompanion.adapters").extend("ollama", {
+            schema = { num_ctx = { default = 1024 * 128 } },
+            opts = { stream = true },
           })
         end
       end
