@@ -2199,7 +2199,12 @@ M.plugins = {
   },
   {
     "sindrets/diffview.nvim",
-    config = true,
+    opts = {
+      view = {
+        merge_tool = { layout = "diff3_mixed" },
+      },
+      file_panel = { listing_style = "list" },
+    },
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
   },
   {
@@ -2634,7 +2639,7 @@ M.plugins = {
     end,
     keys = {
       {
-        "]c",
+        "]C",
         function()
           require("coverage").jump_next("uncovered")
         end,
@@ -2642,7 +2647,7 @@ M.plugins = {
         noremap = true,
       },
       {
-        "[c",
+        "[C",
         function()
           require("coverage").jump_prev("uncovered")
         end,

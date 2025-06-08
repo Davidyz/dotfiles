@@ -75,6 +75,45 @@ end
 
 local snacks_status_component = require("snacks").profiler.status()
 
+local diffview_label = function()
+  if package.loaded["diffview"] ~= nil then
+    ---@module 'diffview'
+
+    local view = require("diffview.lib").get_current_view()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local rev_label = ""
+    local path = ""
+    for _, file in ipairs(view.cur_entry and view.cur_entry.layout:files() or {}) do
+      if file:is_valid() and file.bufnr == bufnr then
+        path = string.format("%s/%s", view.adapter.ctx.toplevel, file.path)
+        local rev = file.rev
+        if rev.type == 1 then
+          rev_label = "LOCAL"
+        elseif rev.type == 2 then
+          local head =
+            vim.trim(vim.fn.system({ "git", "rev-parse", "--revs-only", "HEAD" }))
+          if head == rev.commit then
+            rev_label = "HEAD"
+          else
+            rev_label = string.format("%s", rev.commit:sub(1, 7))
+          end
+        elseif rev.type == 3 then
+          rev_label = ({
+            [0] = "INDEX",
+            [1] = "MERGE COMMON ANCESTOR",
+            [2] = "MERGE OURS",
+            [3] = "MERGE THEIRS",
+          })[rev.stage] or ""
+        end
+      end
+    end
+    if rev_label ~= "" then
+      return string.format("DiffView %s", rev_label)
+    end
+  end
+  return ""
+end
+
 local lualine_config = {
   options = {
     icons_enabled = true,
@@ -143,6 +182,12 @@ local lualine_config = {
       },
     },
     lualine_y = {
+      {
+        diffview_label,
+        cond = function()
+          return package.loaded["diffview"] ~= nil
+        end,
+      },
       {
         function()
           return require("vectorcode.integrations").lualine()[1]()

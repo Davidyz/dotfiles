@@ -455,4 +455,3 @@ if [ -f "$(which bat 2> /dev/null)" ]; then
 fi
 
 [ -f "$(command -v llama-server 2> /dev/null)" ] && eval "$(llama-server --completion-bash 2> /dev/null)" || true
-[ -d $HOME/.nix-profile/bin ] && export PATH=$PATH:$HOME/.nix-profile/bin/
