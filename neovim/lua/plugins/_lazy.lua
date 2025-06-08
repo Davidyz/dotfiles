@@ -2608,14 +2608,34 @@ M.plugins = {
   {
     "andythigpen/nvim-coverage",
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = function()
-      vim.api.nvim_set_hl(0, "CoverageCovered", { link = "LineNr" })
-      vim.api.nvim_set_hl(0, "CoverageUncovered", { link = "Exception" })
-      return {
-        commands = true,
-        auto_reload = true,
-      }
+    opts = {
+      commands = true,
+      auto_reload = true,
+      signs = { covered = { hl = "LineNr" }, uncovered = { hl = "Exception" } },
+    },
+    config = function(_, opts)
+      local cov = require("coverage")
+      cov.setup(opts)
+      cov.load(true)
     end,
+    keys = {
+      {
+        "]c",
+        function()
+          require("coverage").jump_next("uncovered")
+        end,
+        desc = "Next uncovered snippet.",
+        noremap = true,
+      },
+      {
+        "[c",
+        function()
+          require("coverage").jump_prev("uncovered")
+        end,
+        desc = "Previous uncovered snippet.",
+        noremap = true,
+      },
+    },
     cmd = { "Coverage" },
   },
   {
