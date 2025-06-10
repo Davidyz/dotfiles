@@ -120,6 +120,7 @@ return function(_, opts)
         "buffer",
       },
       providers = {
+        lsp = { async = false, score_offset = 1 },
         minuet = {
           name = "minuet",
           module = "minuet.blink",
@@ -202,6 +203,7 @@ return function(_, opts)
       },
       keyword = { range = "full" },
     },
+    fuzzy = { implementation = "lua", sorts = { "exact", "score", "sort_text" } },
   })
   return opts
 end
