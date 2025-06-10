@@ -10,12 +10,17 @@ vim.keymap.del({ "n" }, "grn")
 vim.keymap.del({ "n" }, "grr")
 
 local bufmap = function(mode, lhs, rhs, opts)
-  opts = opts or { buffer = true }
+  opts = opts or { buffer = 0 }
+
   if opts.buffer == nil then
-    opts.buffer = true
+    opts.buffer = 0
   end
   vim.keymap.set(mode, lhs, rhs, opts)
 end
+
+local fzf = require("fzf-lua")
+local actions = require("fzf-lua.actions")
+local path = require("fzf-lua.path")
 
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
@@ -23,25 +28,38 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if vim.lsp.get_client_by_id(args.data.client_id).name == "vectorcode_server" then
       return
     end
-    local fzf = require("fzf-lua")
-
-    local actions = require("fzf-lua").actions
     local opts = {
       sync = false,
       jump1 = true,
       jump1_action = function(selected, opts)
-        -- jump if in the same file, new tab otherwise
-        local path = string.gsub(selected[1], ":.*", "")
-        local action
-        if vim.uri_from_fname(path) == vim.uri_from_bufnr(0) then
-          action = actions.file_edit
-        else
-          action = actions.file_tabedit
+        if #selected == 0 then
+          return
         end
-        action(selected, opts)
+        local entry = path.entry_to_file(selected[1], opts, false)
+        local uri = vim.uri_from_fname(entry.path) or vim.uri_from_bufnr(entry.bufnr)
+        if uri == nil then
+          return
+        end
+        for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+            if vim.uri_from_bufnr(vim.api.nvim_win_get_buf(win)) == uri then
+              vim.api.nvim_set_current_win(win)
+              if entry.line > 0 or entry.col > 0 then
+                pcall(
+                  vim.api.nvim_win_set_cursor,
+                  win,
+                  { math.max(1, entry.line), math.max(1, entry.col) - 1 }
+                )
+              end
+              return
+            end
+          end
+        end
+        return actions.file_tabedit(selected, opts)
       end,
       unique_line_items = true,
     }
+
     bufmap("n", "gd", function()
       return fzf.lsp_definitions(opts)
     end, { desc = "Goto definition." })
