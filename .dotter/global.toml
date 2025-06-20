@@ -38,4 +38,5 @@
 "bat/" = "~/.config/bat/"
 
 [glow.files]
-"glow/" = { target = "~/.config/glow/", type = "symbolic" }
+"glow/glow.yml" = { target = "~/.config/glow/glow.yml", type = "template" }
+"glow/catppuccin-mocha.json" = { target = "~/.config/glow/catppuccin-mocha.json", type = "symbolic" }
