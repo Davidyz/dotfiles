@@ -1,7 +1,10 @@
+---@module "lazy"
+
 ---@diagnostic disable: missing-fields
 M = {}
 local utils = require("_utils")
 
+---@type LazySpec[]
 M.plugins = {
   -- NOTE: mini
   {
@@ -225,6 +228,7 @@ M.plugins = {
   -- NOTE: tree sitter
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     config = function()
       require("plugins.tree_sitter")
     end,
@@ -280,7 +284,7 @@ M.plugins = {
     config = function()
       require("plugins.nvim_autopairs")
     end,
-    event = "LspAttach",
+    event = { "BufReadPre", "BufNewFile" },
   },
   {
     "andymass/vim-matchup",
@@ -394,17 +398,17 @@ M.plugins = {
     },
     event = { "LspAttach" },
   },
-  {
-    "chrisgrieser/nvim-origami",
-    event = "VeryLazy",
-    dependencies = { "kevinhwang91/nvim-ufo" },
-    opts = function()
-      return {
-        keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
-        pauseFoldsOnSearch = true,
-      }
-    end,
-  },
+  -- {
+  --   "chrisgrieser/nvim-origami",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   dependencies = { "kevinhwang91/nvim-ufo" },
+  --   opts = function()
+  --     return {
+  --       keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
+  --       pauseFoldsOnSearch = true,
+  --     }
+  --   end,
+  -- },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
@@ -465,6 +469,7 @@ M.plugins = {
           sh = { "shfmt" },
           zsh = { "shfmt" },
           bash = { "shfmt" },
+          json = { "jq" },
           python = {},
           c = { "clang-format" },
           cpp = { "clang-format" },
@@ -536,7 +541,7 @@ M.plugins = {
       require("keymaps._lsp")
       require("lspconfig.ui.windows").default_options.border = { " " }
     end,
-    event = { "BufReadPost", "BufNewFile", "CmdlineEnter" },
+    event = { "BufReadPre", "BufNewFile", "CmdlineEnter" },
     cond = utils.no_vscode,
     dependencies = {
       "williamboman/mason.nvim",
@@ -582,7 +587,7 @@ M.plugins = {
       return {
         async_backend = "lsp",
         notify = true,
-        on_setup = { lsp = false },
+        on_setup = { lsp = true },
         n_query = 10,
         timeout_ms = -1,
         async_opts = {
@@ -1384,6 +1389,7 @@ M.plugins = {
         },
         input = { enabled = true },
         notifier = { enabled = true },
+        picker = { enabled = true },
         profiler = { enabled = true },
         quickfile = { enabled = true },
         rename = { enabled = true },
@@ -1393,7 +1399,7 @@ M.plugins = {
           right = { "fold" },
         },
         words = { enabled = true },
-        scroll = { animate = { easing = "inOutCirc" } },
+        -- scroll = { animate = { easing = "inOutCirc" } },
         styles = { input = { relative = "cursor", row = -3, col = 0 } },
       }
     end,
@@ -1912,8 +1918,13 @@ M.plugins = {
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local palette = require("catppuccin.palettes.mocha")
-      local excluded_ft =
-        { ["neo-tree"] = true, snacks_dashboard = true, fidget = true, help = true }
+      local excluded_ft = {
+        ["neo-tree"] = true,
+        snacks_dashboard = true,
+        fidget = true,
+        help = true,
+        snacks_picker_preview = true,
+      }
 
       local indent_colors = {
         palette.surface0,
@@ -2341,6 +2352,15 @@ M.plugins = {
             },
           })
         end,
+        ["Ollama"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = os.getenv("OLLAMA_HOST"),
+              api_key = "TERM",
+              chat_url = "/v1/chat/completions",
+            },
+          })
+        end,
       }
 
       opts.extensions = {
@@ -2368,18 +2388,47 @@ M.plugins = {
                 include_tool_outputs = true,
               },
             },
+            memory = { index_on_startup = true },
           },
         },
         vectorcode = {
           enabled = vim.fn.executable("vectorcode") == 1,
+          ---@type VectorCode.CodeCompanion.ExtensionOpts
           opts = {
-            add_tool = true,
-            add_slash_command = true,
+            tool_group = { extras = { "file_search" }, collapse = false },
             tool_opts = {
-              default_num = 15,
-              use_lsp = true,
-              auto_submit = { ls = true, query = true },
-              ls_on_start = true,
+              ls = { use_lsp = true },
+              vectorise = {
+                use_lsp = true,
+                requires_approval = false,
+              },
+              query = {
+                default_num = { document = 15, chunks = 100 },
+                chunk_mode = true,
+                use_lsp = true,
+                -- summarise = {
+                --   enabled = true,
+                --   timeout = 1000000,
+                --   adapter = function()
+                --     return require("codecompanion.adapters").extend(
+                --       "openai_compatible",
+                --       {
+                --         env = {
+                --           url = os.getenv("OLLAMA_HOST"),
+                --           api_key = "TERM",
+                --           chat_url = "/v1/chat/completions",
+                --         },
+                --         schema = {
+                --           model = {
+                --             default = "hf.co/QuantFactory/Qwen2.5-7B-GGUF:Q4_1",
+                --           },
+                --         },
+                --         opts = { stream = false },
+                --       }
+                --     )
+                --   end,
+                -- },
+              },
             },
           },
         },
@@ -2397,11 +2446,16 @@ M.plugins = {
               )
             end,
           },
+          tools = {
+            opts = { default_tools = { "vectorcode_toolbox" } },
+          },
         },
         inline = {
           adapter = "Gemini",
         },
       }
+
+      -- opts.display = { chat = { show_references = false } }
 
       if os.getenv("OPENROUTER_API_KEY") then
         opts.adapters["OpenRouter"] = function()

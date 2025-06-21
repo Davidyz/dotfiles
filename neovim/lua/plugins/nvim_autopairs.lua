@@ -2,7 +2,7 @@ local Rule = require("nvim-autopairs.rule")
 local npairs = require("nvim-autopairs")
 
 require("nvim-autopairs").setup({
-  disable_filetype = { "TelescopePrompt" },
+  disable_filetype = {},
   check_ts = true,
   enable_check_bracket_line = false,
   map_cr = false,
