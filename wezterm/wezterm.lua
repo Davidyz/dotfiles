@@ -228,7 +228,7 @@ if string.find(wezterm.target_triple, "windows") ~= nil then
     "pwsh",
   }
 elseif string.find(wezterm.target_triple, "linux") ~= nil then
-  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  config.window_decorations = "TITLE|RESIZE"
 end
 
 config.hide_tab_bar_if_only_one_tab = true
