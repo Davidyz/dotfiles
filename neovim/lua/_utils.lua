@@ -171,22 +171,6 @@ function M.all(array, func)
   return true
 end
 
---- separate a string.
----@param inputstr string
----@param sep string
----@return table
-function M.split(inputstr, sep)
-  sep = sep or "%s"
-  local t = {}
-  for field, s in string.gmatch(inputstr, "([^" .. sep .. "]*)(" .. sep .. "?)") do
-    table.insert(t, field)
-    if s == "" then
-      return t
-    end
-  end
-  return {}
-end
-
 ---@param func function
 ---@param callback function
 M.async_run = function(func, callback)

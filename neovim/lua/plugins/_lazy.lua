@@ -228,13 +228,42 @@ M.plugins = {
   -- NOTE: tree sitter
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     config = function()
-      require("plugins.tree_sitter")
+      -- require("plugins.tree_sitter")
     end,
     build = ":TSUpdate",
     cond = utils.no_vscode,
-    dependencies = { "williamboman/mason.nvim" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      {
+        "MeanderingProgrammer/treesitter-modules.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        ---@module 'treesitter-modules'
+        ---@return ts.mod.UserConfig
+        opts = function(_, opts)
+          ---@type ts.mod.UserConfig
+          opts = vim.tbl_deep_extend("force", {
+            ignore_install = { "csv" },
+            highlight = { enable = true },
+            indent = { enable = true },
+            incremental_selection = {
+              enable = true,
+              keymaps = {
+                init_selection = "<TAB>",
+                node_incremental = "<TAB>",
+                scope_incremental = false,
+                node_decremental = "<S-TAB>",
+              },
+            },
+          }, opts or {})
+          if #vim.uv.cpu_info() >= 4 then
+            opts.ensure_installed = require("plugins.utils").treesitter_parsers
+          end
+          return opts
+        end,
+      },
+    },
   },
   {
     "hiphish/rainbow-delimiters.nvim",
@@ -2040,7 +2069,7 @@ M.plugins = {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      -- "nvim-treesitter/nvim-treesitter-textobjects",
     },
   },
   {
@@ -2066,12 +2095,12 @@ M.plugins = {
       },
     },
   },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-textobjects",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  -- },
   {
     "nvim-focus/focus.nvim",
     opts = {
@@ -2223,15 +2252,15 @@ M.plugins = {
     opts = {},
     event = "VeryLazy",
   },
-  {
-    "Sam-programs/cmdline-hl.nvim",
-    event = { "CmdlineChanged", "CmdlineEnter" },
-    opts = {
-      inline_ghost_text = false,
-      type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
-    },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-  },
+  -- {
+  --   "Sam-programs/cmdline-hl.nvim",
+  --   event = { "CmdlineChanged", "CmdlineEnter" },
+  --   opts = {
+  --     inline_ghost_text = false,
+  --     type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
+  --   },
+  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
+  -- },
   {
     "NStefan002/screenkey.nvim",
     config = true,

@@ -24,6 +24,28 @@ M.mason_packages = {
   "yaml-language-server",
 }
 
+M.treesitter_parsers = {
+  "python",
+  "c",
+  "comment",
+  "cpp",
+  "gitcommit",
+  "javascript",
+  "json5",
+  "make",
+  "regex",
+  "lua",
+  "luadoc",
+  "regex",
+  "toml",
+  "markdown_inline",
+  "vim",
+  "yaml",
+  "vimdoc",
+  "git_rebase",
+  "gitattributes",
+}
+
 local conditionals = {
   ["arduino-cli"] = "arduino-language-server",
   arduino = "arduino-language-server",
