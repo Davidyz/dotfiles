@@ -70,3 +70,8 @@ vim.api.nvim_create_autocmd(
   "BufReadPost",
   { group = group, command = "silent! loadview" }
 )
+
+local ok, extui = pcall(require, "vim._extui")
+if ok then
+  extui.enable({})
+end
