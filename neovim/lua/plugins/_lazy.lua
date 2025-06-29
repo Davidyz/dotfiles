@@ -1447,6 +1447,7 @@ M.plugins = {
           vim.print = _G.dd
           -- vim.ui.input = Snacks.input.input
           vim.o.laststatus = 3
+          vim.o.showtabline = 1
         end,
       })
     end,
