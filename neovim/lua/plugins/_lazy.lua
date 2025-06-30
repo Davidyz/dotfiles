@@ -268,6 +268,7 @@ M.plugins = {
   {
     "hiphish/rainbow-delimiters.nvim",
     event = { "BufReadPost", "BufNewFile" },
+    submodules = false,
     config = function()
       local rainbow_delimiters = require("rainbow-delimiters")
       vim.g.rainbow_delimiters = {
@@ -1324,6 +1325,7 @@ M.plugins = {
   -- NOTE: misc
   {
     "folke/snacks.nvim",
+    submodules = false,
     priority = 1000,
     lazy = false,
     version = "*",
