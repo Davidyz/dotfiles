@@ -4,7 +4,7 @@ local lsp_defaults = lspconfig.util.default_config
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 
 local original_on_attach = function(client, bufnr)
-  if client.supports_method("textDocument/formatting") then
+  if client:supports_method("textDocument/formatting") then
     -- format on save
     vim.api.nvim_clear_autocmds({ buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -15,7 +15,7 @@ local original_on_attach = function(client, bufnr)
         end
         vim.lsp.buf.format({
           filter = function(c)
-            local blacklisted_formatter = { "basedpyright" }
+            local blacklisted_formatter = { "basedpyright", "emmylua_ls" }
             if vim.fn.executable("black") == 1 then
               vim.list_extend(blacklisted_formatter, { "ruff", "ruff_lsp" })
             end
@@ -54,6 +54,7 @@ vim.lsp.config("*", default_server_config)
 -- })
 -- vim.lsp.enable("ty")
 require("mason-lspconfig").setup({
+  -- automatic_enable = { exclude = { "lua_ls" } },
   -- automatic_enable = { exclude = { "basedpyright" } },
   ensure_installed = nil,
 })
