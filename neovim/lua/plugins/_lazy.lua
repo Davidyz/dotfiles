@@ -1171,7 +1171,7 @@ M.plugins = {
   {
     "linux-cultist/venv-selector.nvim",
     branch = "regexp",
-    dependencies = { "neovim/nvim-lspconfig" },
+    dependencies = { "neovim/nvim-lspconfig", "ibhagwan/fzf-lua" },
     ft = { "python" },
     cmd = { "VenvSelect", "VenvSelectCurrent" },
     opts = function()
@@ -2372,7 +2372,7 @@ M.plugins = {
         ["Gemini"] = function()
           return require("codecompanion.adapters").extend("gemini", {
             name = "Gemini",
-            schema = { model = { default = "gemini-2.5-flash-preview-05-20" } },
+            schema = { model = { default = "gemini-2.5-flash" } },
           })
         end,
         ["LlamaCPP"] = function()
@@ -2385,17 +2385,20 @@ M.plugins = {
           })
         end,
         ["Ollama"] = function()
-          return require("codecompanion.adapters").extend("openai_compatible", {
+          return require("codecompanion.adapters").extend("ollama", {
             env = {
               url = os.getenv("OLLAMA_HOST"),
               api_key = "TERM",
               chat_url = "/v1/chat/completions",
             },
+            schema = { num_ctx = { default = 32000 } },
           })
         end,
       }
 
       opts.extensions = {
+        -- dap = { enabled = true },
+        mcphub = { callback = "mcphub.extensions.codecompanion" },
         history = {
           enabled = true,
           opts = {
@@ -2429,37 +2432,29 @@ M.plugins = {
           opts = {
             tool_group = { extras = { "file_search" }, collapse = false },
             tool_opts = {
-              ls = { use_lsp = true },
-              vectorise = {
-                use_lsp = true,
-                requires_approval = false,
-              },
+              ---@type VectorCode.CodeCompanion.ToolOpts
+              ["*"] = { use_lsp = true },
+              ls = {},
+              vectorise = {},
               query = {
                 default_num = { document = 15, chunks = 100 },
                 chunk_mode = true,
-                use_lsp = true,
-                -- summarise = {
-                --   enabled = true,
-                --   timeout = 1000000,
-                --   adapter = function()
-                --     return require("codecompanion.adapters").extend(
-                --       "openai_compatible",
-                --       {
-                --         env = {
-                --           url = os.getenv("OLLAMA_HOST"),
-                --           api_key = "TERM",
-                --           chat_url = "/v1/chat/completions",
-                --         },
-                --         schema = {
-                --           model = {
-                --             default = "hf.co/QuantFactory/Qwen2.5-7B-GGUF:Q4_1",
-                --           },
-                --         },
-                --         opts = { stream = false },
-                --       }
-                --     )
-                --   end,
-                -- },
+                ---@type VectorCode.CodeCompanion.SummariseOpts
+                summarise = {
+                  enabled = true,
+                  system_prompt = function(s)
+                    return s
+                  end,
+                  adapter = function()
+                    return require("codecompanion.adapters").extend("gemini", {
+                      name = "Summariser",
+                      schema = {
+                        model = { default = "gemini-2.0-flash-lite" },
+                      },
+                      opts = { stream = false },
+                    })
+                  end,
+                },
               },
             },
           },
@@ -2480,6 +2475,24 @@ M.plugins = {
           },
           tools = {
             opts = { default_tools = { "vectorcode_toolbox" } },
+          },
+          opts = {
+            ---@param message string
+            ---@param adapter CodeCompanion.Adapter
+            ---@param context table
+            ---@return string
+            prompt_decorator = function(message, adapter, context)
+              local root = vim.fs.root(0, { ".git", ".vectorcode" })
+              if root == nil then
+                return message
+              else
+                return string.format(
+                  "%s\n\nI'm currently working on a project located at %s.",
+                  message,
+                  root
+                )
+              end
+            end,
           },
         },
         inline = {
