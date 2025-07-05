@@ -2410,6 +2410,11 @@ M.plugins = {
             auto_generate_title = true,
             continue_last_chat = false,
             delete_on_clearing_chat = false,
+            title_generation_opts = {
+              format_title = function(s)
+                return vim.trim(string.gsub(s, "<think>.*</think>", ""))
+              end,
+            },
             summary = {
               create_summary_keymap = "gcs",
               browse_summaries_keymap = "gbs",

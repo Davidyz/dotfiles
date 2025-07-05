@@ -3,7 +3,20 @@ local lsp_defaults = lspconfig.util.default_config
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 
+---@param client vim.lsp.Client
+---@return boolean
+local function allow_for_formatting(client)
+  local blacklisted_formatter = { "basedpyright", "emmylua_ls" }
+  if vim.fn.executable("black") == 1 then
+    vim.list_extend(blacklisted_formatter, { "ruff", "ruff_lsp" })
+  end
+  return not vim.list_contains(blacklisted_formatter, client.name)
+end
+
 local original_on_attach = function(client, bufnr)
+  if allow_for_formatting(client) then
+    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
+  end
   if client:supports_method("textDocument/formatting") then
     -- format on save
     vim.api.nvim_clear_autocmds({ buffer = bufnr })
@@ -14,13 +27,8 @@ local original_on_attach = function(client, bufnr)
           return
         end
         vim.lsp.buf.format({
-          filter = function(c)
-            local blacklisted_formatter = { "basedpyright", "emmylua_ls" }
-            if vim.fn.executable("black") == 1 then
-              vim.list_extend(blacklisted_formatter, { "ruff", "ruff_lsp" })
-            end
-            return not vim.list_contains(blacklisted_formatter, c.name)
-          end,
+          filter = allow_for_formatting,
+          async = true,
         })
       end,
     })
