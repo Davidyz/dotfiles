@@ -2355,6 +2355,10 @@ M.plugins = {
         "ravitemer/codecompanion-history.nvim",
         -- dir = "~/git/codecompanion-history.nvim/",
       },
+      {
+        "Davidyz/codecompanion-dap.nvim",
+        -- dir = "~/git/codecompanion-dap.nvim/",
+      },
     },
     cmd = {
       "CodeCompanion",
@@ -2397,7 +2401,10 @@ M.plugins = {
       }
 
       opts.extensions = {
-        -- dap = { enabled = true },
+        dap = {
+          enabled = true,
+          opts = { tool_opts = { breakpoints = false }, interval_ms = 5000 },
+        },
         mcphub = { callback = "mcphub.extensions.codecompanion" },
         history = {
           enabled = true,
@@ -2426,6 +2433,9 @@ M.plugins = {
                 include_references = true,
                 -- Include tool outputs (default: true)
                 include_tool_outputs = true,
+                format_summary = function(s)
+                  return vim.trim(string.gsub(s, "<think>.*</think>", ""))
+                end,
               },
             },
             memory = { index_on_startup = true },
@@ -2435,7 +2445,7 @@ M.plugins = {
           enabled = vim.fn.executable("vectorcode") == 1,
           ---@type VectorCode.CodeCompanion.ExtensionOpts
           opts = {
-            tool_group = { extras = { "file_search" }, collapse = false },
+            tool_group = { extras = { "file_search" }, collapse = true },
             tool_opts = {
               ---@type VectorCode.CodeCompanion.ToolOpts
               ["*"] = { use_lsp = true },
@@ -2479,7 +2489,7 @@ M.plugins = {
             end,
           },
           tools = {
-            opts = { default_tools = { "vectorcode_toolbox" } },
+            opts = { default_tools = { "vectorcode_toolbox", "read_file" } },
           },
           opts = {
             ---@param message string
@@ -2553,7 +2563,7 @@ M.plugins = {
             },
             schema = {
               model = {
-                default = "qwen-plus",
+                default = "qwen-turbo-2025-04-28",
               },
               temperature = { default = 0.6 },
             },

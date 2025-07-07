@@ -48,7 +48,7 @@ dapui.setup({
       position = "left", -- Can be "left", "right", "top", "bottom"
     },
     {
-      elements = { "repl" },
+      elements = { "repl", "breakpoints" },
       size = 10,
       position = "bottom", -- Can be "left", "right", "top", "bottom"
     },
@@ -97,7 +97,7 @@ mason_dap.setup({
   },
 })
 
-dap.listeners.before.attach.dapui_config = dapui.open
-dap.listeners.before.launch.dapui_config = dapui.open
+-- dap.listeners.before.attach.dapui_config = dapui.open
+-- dap.listeners.before.launch.dapui_config = dapui.open
 dap.listeners.before.event_terminated.dapui_config = dapui.close
 dap.listeners.before.event_exited.dapui_config = dapui.close
