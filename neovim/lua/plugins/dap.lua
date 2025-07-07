@@ -8,6 +8,8 @@ vim.api.nvim_create_autocmd(
   "BufEnter",
   { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach }
 )
+
+dap.defaults.fallback.switchbuf = "usevisible,useopen,usetab"
 dap.configurations.lua = {
   {
     type = "nlua",
