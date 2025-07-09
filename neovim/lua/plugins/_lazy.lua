@@ -1245,7 +1245,27 @@ M.plugins = {
       },
       {
         "<Space>b",
-        "<cmd>DapToggleBreakpoint<CR>",
+        function()
+          local bp = require("dap.breakpoints").get()[vim.api.nvim_get_current_buf()]
+          local cursor_pos = vim.api.nvim_win_get_cursor(0)
+          if
+            vim.iter(bp or {}):any(function(item)
+              return item.line == cursor_pos[1]
+            end)
+          then
+            require("dap").toggle_breakpoint()
+          else
+            vim.ui.input(
+              { prompt = "Breakpoint Condition?", default = "" },
+              function(value)
+                if value == "" then
+                  value = nil
+                end
+                require("dap").toggle_breakpoint(value)
+              end
+            )
+          end
+        end,
         desc = "DAP Toggle [B]reakpoint.",
         noremap = true,
       },
@@ -2403,7 +2423,7 @@ M.plugins = {
       opts.extensions = {
         dap = {
           enabled = true,
-          opts = { tool_opts = { breakpoints = false }, interval_ms = 5000 },
+          opts = { tool_opts = {}, interval_ms = 5000 },
         },
         mcphub = { callback = "mcphub.extensions.codecompanion" },
         history = {
