@@ -1255,15 +1255,14 @@ M.plugins = {
           then
             require("dap").toggle_breakpoint()
           else
-            vim.ui.input(
-              { prompt = "Breakpoint Condition?", default = "" },
-              function(value)
+            vim.ui.input({ prompt = "Breakpoint Condition?" }, function(value)
+              if value then
                 if value == "" then
                   value = nil
                 end
                 require("dap").toggle_breakpoint(value)
               end
-            )
+            end)
           end
         end,
         desc = "DAP Toggle [B]reakpoint.",
@@ -1469,7 +1468,7 @@ M.plugins = {
           vim.print = _G.dd
           -- vim.ui.input = Snacks.input.input
           vim.o.laststatus = 3
-          vim.o.showtabline = 1
+          vim.o.showtabline = 2
         end,
       })
     end,

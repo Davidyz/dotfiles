@@ -28,7 +28,6 @@ local original_on_attach = function(client, bufnr)
         end
         vim.lsp.buf.format({
           filter = allow_for_formatting,
-          async = true,
         })
       end,
     })
