@@ -70,7 +70,7 @@ vim.api.nvim_create_autocmd(
   "BufReadPost",
   { group = group, command = "silent! loadview" }
 )
-
+vim.o.switchbuf = "useopen,usetab,newtab"
 local ok, extui = pcall(require, "vim._extui")
 if ok then
   extui.enable({})
