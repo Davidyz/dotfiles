@@ -11,10 +11,11 @@ vim.keymap.del({ "n" }, "grr")
 pcall(vim.keymap.del, { "n" }, "<C-s>")
 
 local bufmap = function(mode, lhs, rhs, opts)
-  opts = opts or { buffer = 0 }
+  local curr_buf = vim.api.nvim_get_current_buf()
+  opts = opts or { buffer = curr_buf }
 
   if opts.buffer == nil then
-    opts.buffer = 0
+    opts.buffer = curr_buf
   end
   vim.keymap.set(mode, lhs, rhs, opts)
 end
