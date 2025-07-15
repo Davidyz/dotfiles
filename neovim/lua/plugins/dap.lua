@@ -9,7 +9,7 @@ vim.api.nvim_create_autocmd(
   { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach }
 )
 
-dap.defaults.fallback.switchbuf = "usevisible,useopen,usetab,uselast"
+dap.defaults.fallback.switchbuf = "useopen,usetab,usevisible,newtab"
 dap.configurations.lua = {
   {
     type = "nlua",
