@@ -1723,7 +1723,10 @@ M.plugins = {
                   local ft = vim.bo[_bufnr].filetype
                   vim.treesitter.start(_bufnr, ft)
 
-                  local md_lines = { "```" .. ft }
+                  local md_lines = {
+                    "```" .. ft,
+                    string.format(vim.bo[_bufnr].commentstring, method),
+                  }
                   vim.list_extend(
                     md_lines,
                     vim.api.nvim_buf_get_lines(
