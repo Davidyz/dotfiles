@@ -1665,6 +1665,59 @@ M.plugins = {
         require("hover.providers.man")
         require("hover.providers.dap")
         require("hover.providers.diagnostic")
+        require("hover").register({
+          name = "LSP Peek",
+          enabled = function(bufnr)
+            return not vim.tbl_isempty(vim.lsp.get_clients({
+              bufnr = bufnr,
+              method = vim.lsp.protocol.Methods.textDocument_definition,
+            }))
+          end,
+          execute = function(opts, done)
+            vim.lsp.buf_request(
+              opts.bufnr,
+              vim.lsp.protocol.Methods.textDocument_definition,
+              function(client, _bufnr)
+                return vim.lsp.util.make_position_params(0, client.offset_encoding)
+              end,
+              function(err, result, context, config)
+                if result == nil or vim.tbl_isempty(result) then
+                  return done(false)
+                end
+                local loc = result
+                if vim.islist(result) then
+                  loc = result[1]
+                end
+                loc.uri = loc.uri or loc.targetUri
+                loc.range = loc.range or loc.targetRange
+                if loc.uri == nil or loc.range == nil then
+                  return done(false)
+                end
+                local _bufnr = vim.uri_to_bufnr(loc.uri)
+                vim.fn.bufload(_bufnr)
+                local range = loc.range
+                local ft = vim.bo[_bufnr].filetype
+                vim.treesitter.start(_bufnr, ft)
+
+                local md_lines = { "```" .. ft }
+                vim.list_extend(
+                  md_lines,
+                  vim.api.nvim_buf_get_lines(
+                    _bufnr,
+                    range.start.line,
+                    range.start.line + math.ceil(vim.api.nvim_win_get_height(0) * 0.2),
+                    false
+                  )
+                )
+                table.insert(md_lines, "```")
+                return done({
+                  lines = md_lines,
+                  filetype = "markdown",
+                })
+              end
+            )
+          end,
+        })
       end,
       preview_opts = {
         -- border = "double",
