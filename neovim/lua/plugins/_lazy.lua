@@ -613,6 +613,7 @@ M.plugins = {
     "Davidyz/VectorCode",
     -- dir = "~/git/VectorCode/",
     version = "*",
+    build = "uv tool install --upgrade vectorcode",
     opts = function()
       return {
         async_backend = "lsp",
