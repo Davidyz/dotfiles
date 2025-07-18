@@ -1,6 +1,7 @@
 return {
   capabilities = {
     textDocument = {
+      onTypeFormatting = { dynamicRegistration = true },
       formatting = { dynamicRegistration = false },
       rangeFormatting = { dynamicRegistration = false },
     },

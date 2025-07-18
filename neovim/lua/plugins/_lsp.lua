@@ -1,7 +1,7 @@
-local lspconfig = require("lspconfig")
-local lsp_defaults = lspconfig.util.default_config
-
 vim.opt.completeopt = { "menu", "menuone", "popup" }
+vim.lsp.on_type_formatting = vim.lsp.on_type_formatting
+  or require("plugins.lsp-handlers.on_type_formatting")
+vim.lsp.on_type_formatting.enable(true)
 
 ---@param client vim.lsp.Client
 ---@return boolean
@@ -13,6 +13,7 @@ local function allow_for_formatting(client)
   return not vim.list_contains(blacklisted_formatter, client.name)
 end
 
+---@param client vim.lsp.Client
 local original_on_attach = function(client, bufnr)
   if allow_for_formatting(client) then
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
@@ -49,7 +50,15 @@ end
 local default_server_config = {
   flags = { debounce_text_changes = 150 },
   single_file_support = true,
-  capabilities = lsp_defaults.capabilities,
+  capabilities = vim.tbl_deep_extend(
+    "force",
+    vim.lsp.protocol.make_client_capabilities(),
+    {
+      textDocument = {
+        onTypeFormatting = { dynamicRegistration = true },
+      },
+    }
+  ),
   on_attach = original_on_attach,
 }
 vim.lsp.config("*", default_server_config)
