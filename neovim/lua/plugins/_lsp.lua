@@ -18,7 +18,7 @@ local original_on_attach = function(client, bufnr)
   if allow_for_formatting(client) then
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
   end
-  if client:supports_method("textDocument/formatting") then
+  if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
     -- format on save
     vim.api.nvim_clear_autocmds({ buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -32,6 +32,14 @@ local original_on_attach = function(client, bufnr)
         })
       end,
     })
+  end
+  if
+    not client:supports_method(
+      vim.lsp.protocol.Methods.textDocument_onTypeFormatting,
+      bufnr
+    )
+  then
+    vim.lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
   if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
     vim.g.inlay_hints_visible = true

@@ -28,7 +28,7 @@ local path = require("fzf-lua.path")
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function(args)
-    if vim.lsp.get_client_by_id(args.data.client_id).name == "vectorcode_server" then
+    if vim.bo.filetype == "codecompanion" then
       return
     end
     local opts = {

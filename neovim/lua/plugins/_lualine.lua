@@ -166,16 +166,22 @@ local lualine_config = {
     lualine_b = {
       {
         "tabs",
-        mode = 2,
+        mode = 1,
         max_length = function()
           return vim.o.columns - 40
         end,
-        fmt = function(str)
+        path = 1,
+        show_modified_status = true, -- Shows a symbol next to the tab name if the file has been modified.
+        symbols = {
+          modified = "[+]", -- Text to show when the file is modified.
+        },
+
+        fmt = function(name, _)
           local ft_icon = get_devicon_for_buf()
           if ft_icon ~= "" then
-            return ft_icon .. " " .. str
+            return ft_icon .. " " .. name
           else
-            return str
+            return name
           end
         end,
         use_mode_colors = true,

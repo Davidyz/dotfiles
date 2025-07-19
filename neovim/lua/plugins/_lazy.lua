@@ -613,7 +613,6 @@ M.plugins = {
     "Davidyz/VectorCode",
     -- dir = "~/git/VectorCode/",
     version = "*",
-    build = "uv tool install --upgrade vectorcode",
     opts = function()
       return {
         async_backend = "lsp",
@@ -1438,10 +1437,13 @@ M.plugins = {
             },
           },
         },
+        image = { enabled = true },
         input = { enabled = true },
         notifier = { enabled = true },
         picker = { enabled = true },
-        profiler = { enabled = true },
+        profiler = {
+          enabled = true,
+        },
         quickfile = { enabled = true },
         rename = { enabled = true },
         statuscolumn = {
@@ -2476,9 +2478,13 @@ M.plugins = {
     },
     opts = function(_, opts)
       opts = opts or {}
+      -- opts.opts = { log_level = "DEBUG" }
       opts.display = {
         action_palette = { provider = "fzf_lua" },
-        chat = { show_header_separator = false },
+        chat = {
+          show_header_separator = false,
+          window = { sticky = true },
+        },
       }
       opts.adapters = {
         ["Gemini"] = function()
@@ -2501,9 +2507,19 @@ M.plugins = {
             env = {
               url = os.getenv("OLLAMA_HOST"),
               api_key = "TERM",
-              chat_url = "/v1/chat/completions",
             },
-            schema = { num_ctx = { default = 32000 } },
+            schema = {
+              num_ctx = { default = 64000 },
+              model = { default = "qwen3:8b-q4_K_M-dynamic-thinking" },
+              think = {
+                default = function(adapter)
+                  local model_name = adapter.model.name:lower()
+                  return vim.iter({ "qwen3", "deepseek-r1" }):any(function(kw)
+                    return string.find(model_name, kw) ~= nil
+                  end)
+                end,
+              },
+            },
           })
         end,
       }
@@ -2511,7 +2527,7 @@ M.plugins = {
       opts.extensions = {
         dap = {
           enabled = true,
-          opts = { tool_opts = {}, interval_ms = 5000 },
+          opts = { tool_opts = {}, interval_ms = 1 },
         },
         mcphub = { callback = "mcphub.extensions.codecompanion" },
         history = {
@@ -2679,14 +2695,6 @@ M.plugins = {
         end
         opts.strategies.chat.adapter = "Qwen"
         opts.strategies.inline.adapter = "Qwen"
-      end
-      if os.getenv("OLLAMA_HOST") then
-        opts.adapters["Ollama"] = function()
-          return require("codecompanion.adapters").extend("ollama", {
-            schema = { num_ctx = { default = 1024 * 128 } },
-            opts = { stream = true },
-          })
-        end
       end
       return opts
     end,
