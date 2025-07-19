@@ -76,7 +76,7 @@ vim.lsp.config("*", default_server_config)
 --   filetypes = { "python" },
 --   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
 -- })
--- vim.lsp.enable("ty")
+vim.lsp.enable("ty")
 require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },
   -- automatic_enable = { exclude = { "basedpyright" } },
