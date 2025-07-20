@@ -4,7 +4,8 @@ return {
   filetypes = { "python" },
   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
   handlers = {
-    -- ty's inlayhint is not usable yet. disable it.
+    -- disable some functionalities that ty doesn't do well at.
     [vim.lsp.protocol.Methods.textDocument_inlayHint] = function() end,
+    [vim.lsp.protocol.Methods.textDocument_signatureHelp] = function() end,
   },
 }
