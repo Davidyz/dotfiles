@@ -30,6 +30,16 @@ M.plugins = {
 
   -- NOTE: filetypes
   {
+    "r-pletnev/pdfreader.nvim",
+    lazy = false,
+    dependencies = {
+      "folke/snacks.nvim", -- image rendering
+    },
+    -- config = function()
+    --   require("pdfreader").setup()
+    -- end,
+  },
+  {
     "stevearc/vim-arduino",
     ft = { "arduino" },
     cond = function()
@@ -428,17 +438,6 @@ M.plugins = {
     },
     event = { "LspAttach" },
   },
-  -- {
-  --   "chrisgrieser/nvim-origami",
-  --   event = { "BufReadPost", "BufNewFile" },
-  --   dependencies = { "kevinhwang91/nvim-ufo" },
-  --   opts = function()
-  --     return {
-  --       keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
-  --       pauseFoldsOnSearch = true,
-  --     }
-  --   end,
-  -- },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },

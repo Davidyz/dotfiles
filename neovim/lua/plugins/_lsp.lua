@@ -41,7 +41,10 @@ local original_on_attach = function(client, bufnr)
   then
     vim.lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
-  if client.server_capabilities.inlayHintProvider and vim.bo.filetype ~= "tex" then
+  if
+    client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, bufnr)
+    and vim.bo.filetype ~= "tex"
+  then
     vim.g.inlay_hints_visible = true
     ---@diagnostic disable-next-line: unused-local
     local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
@@ -50,7 +53,9 @@ local original_on_attach = function(client, bufnr)
       vim.lsp.inlay_hint.enable(bufnr, true)
     end
   end
-  if client.server_capabilities.documentSymbolProvider then
+  if
+    client:supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol, bufnr)
+  then
     require("nvim-navic").attach(client, bufnr)
   end
 end
@@ -70,12 +75,6 @@ local default_server_config = {
   on_attach = original_on_attach,
 }
 vim.lsp.config("*", default_server_config)
--- vim.lsp.config("ty", default_server_config)
--- vim.lsp.config("ty", {
---   cmd = { "ty", "server" },
---   filetypes = { "python" },
---   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
--- })
 vim.lsp.enable("ty")
 require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },

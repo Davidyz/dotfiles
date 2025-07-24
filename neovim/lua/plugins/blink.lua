@@ -1,5 +1,7 @@
 return function(_, opts)
-  vim.keymap.del("s", "<tab>", {})
+  for _, m in ipairs({ "s", "x", "v", "o", "l" }) do
+    pcall(vim.keymap.del, m, "<tab>", {})
+  end
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = vim.tbl_deep_extend("force", opts or {}, {
@@ -19,8 +21,8 @@ return function(_, opts)
           local col = vim.fn.col(".") - 1
           if cmp.is_menu_visible() then
             return cmp.select_next()
-          elseif cmp.snippet_active() then
-            return cmp.accept()
+          -- elseif cmp.snippet_active() then
+          --   return cmp.accept()
           elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
             return nil
           else
