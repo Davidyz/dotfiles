@@ -324,7 +324,7 @@ M.plugins = {
     config = function()
       require("plugins.nvim_autopairs")
     end,
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "InsertEnter", "CmdlineEnter" },
   },
   {
     "andymass/vim-matchup",
