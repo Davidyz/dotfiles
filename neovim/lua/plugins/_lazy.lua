@@ -601,7 +601,7 @@ M.plugins = {
     },
     event = { "BufReadPost", "CmdlineEnter" },
     version = "*",
-    opts = require("plugins.blink"),
+    opts = require("plugins.blink_cmp"),
     cond = utils.no_vscode,
   },
   {
