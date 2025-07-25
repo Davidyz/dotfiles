@@ -44,10 +44,15 @@ end
 local function wordCount()
   if vim.bo.ft == "tex" and vim.fn["vimtex#misc#wordcount"] then
     local nerd_icon = nvim_devicon.get_icon_by_filetype("tex")
-    local opts = { detailed = 0, count_letters = 0 }
-    return nerd_icon
-      .. " : "
-      .. tostring(vim.fn["vimtex#misc#wordcount"](opts)):gsub(" *%(errors:%d+%)", "")
+    local opts = { detailed = 1, count_letters = 0 }
+    vim.g.vimtex_texcount_custom_arg = "-ch -jp -kr "
+    local lines = vim
+      .iter(vim.fn["vimtex#misc#wordcount"](opts))
+      :filter(function(line)
+        return string.find(line, "^Sum") ~= nil
+      end)
+      :totable()
+    return nerd_icon .. " : " .. string.match(lines[1], "%d+")
   end
 
   local wc = vim.fn["wordcount"]()
