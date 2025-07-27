@@ -176,7 +176,10 @@ local function attach(client, bufnr)
     desc = "Detach on-type formatting module when the client detaches",
     group = augroup,
     callback = function(args)
-      detach(args.data.client_id, bufnr)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client then
+        detach(client, bufnr)
+      end
     end,
   })
 end

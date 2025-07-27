@@ -8,4 +8,9 @@ return {
     [vim.lsp.protocol.Methods.textDocument_inlayHint] = function() end,
     [vim.lsp.protocol.Methods.textDocument_signatureHelp] = function() end,
   },
+  on_attach = function(client, bufnr)
+    client.server_capabilities.inlayHintProvider = false
+    client.server_capabilities.signatureHelpProvider = nil
+    client.server_capabilities.hoverProvider = false
+  end,
 }
