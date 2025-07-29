@@ -612,6 +612,25 @@ M.plugins = {
     "Davidyz/VectorCode",
     -- dir = "~/git/VectorCode/",
     version = "*",
+    -- build = "uv tool upgrade vectorcode",
+    build = function(plugin)
+      if vim.fn.executable("uv") ~= 1 then
+        return vim.notify(
+          "Failed to install VectorCode because `uv` is missing.",
+          vim.log.levels.WARN
+        )
+      end
+      local stdpath = vim.fn.stdpath("data")
+      if string.find(plugin.dir, stdpath) then
+        local command
+        if vim.fn.executable("vectorcode") == 1 then
+          command = "uv tool upgrade vectorcode"
+        else
+          command = 'uv tool install "vectorcode[lsp,mcp]"'
+        end
+        vim.system(vim.split(command, " ", { trimempty = true }), {}, nil)
+      end
+    end,
     opts = function()
       return {
         async_backend = "lsp",
@@ -1160,6 +1179,12 @@ M.plugins = {
         },
       },
     },
+    config = function(_, opts)
+      require("lazydev").setup(opts)
+      require("lazydev.lsp").supports = function(client)
+        return client and vim.tbl_contains({ "lua_ls", "emmylua_ls" }, client.name)
+      end
+    end,
     dependencies = {
       { "Bilal2453/luvit-meta" },
       { "justinsgithub/wezterm-types" },

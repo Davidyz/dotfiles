@@ -18,10 +18,16 @@ local original_on_attach = function(client, bufnr)
   if allow_for_formatting(client) then
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
   end
-  if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
+  if
+    client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting)
+    and allow_for_formatting(client)
+  then
     -- format on save
-    vim.api.nvim_clear_autocmds({ buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup(
+        string.format("LspFormatBuf%d", bufnr),
+        { clear = true }
+      ),
       buffer = bufnr,
       callback = function()
         if vim.g.format_on_save == false then
@@ -60,7 +66,9 @@ local original_on_attach = function(client, bufnr)
   end
 end
 
+---@type vim.lsp.Config
 local default_server_config = {
+  ---@type vim.lsp.Client.Flags|{}
   flags = { debounce_text_changes = 150 },
   single_file_support = true,
   capabilities = vim.tbl_deep_extend(
@@ -68,17 +76,16 @@ local default_server_config = {
     vim.lsp.protocol.make_client_capabilities(),
     {
       textDocument = {
-        onTypeFormatting = { dynamicRegistration = true },
+        onTypeFormatting = { dynamicRegistration = vim.lsp.on_type_formatting ~= nil },
       },
     }
   ),
   on_attach = original_on_attach,
 }
+
 vim.lsp.config("*", default_server_config)
-vim.lsp.enable("ty")
 require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },
-  -- automatic_enable = { exclude = { "basedpyright" } },
   ensure_installed = nil,
 })
 

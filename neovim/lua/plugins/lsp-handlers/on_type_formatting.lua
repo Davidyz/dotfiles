@@ -18,12 +18,6 @@ local M = {}
 --- @type table<integer, vim.lsp.on_type_formatting.BufTriggers>
 local buf_handles = {}
 
----@param client_id integer
----@return string
-local function get_client_augroup(client_id)
-  return string.format("nvim.lsp.on_type_formatting.client:%d", client_id)
-end
-
 --- |lsp-handler| for the `textDocument/onTypeFormatting` method.
 ---
 --- @param err? lsp.ResponseError
@@ -176,40 +170,38 @@ local function attach(client, bufnr)
     desc = "Detach on-type formatting module when the client detaches",
     group = augroup,
     callback = function(args)
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client then
-        detach(client, bufnr)
+      local cli = vim.lsp.get_client_by_id(args.data.client_id)
+      if cli then
+        detach(cli, bufnr)
       end
     end,
   })
 end
 
+api.nvim_create_autocmd("LspAttach", {
+  desc = "Enable on-type formatting for all buffers this client attaches to",
+  callback = function(ev)
+    local buf = ev.buf
+    local client = assert(lsp.get_client_by_id(ev.data.client_id))
+    if not client._otf_enabled or not client:supports_method(method, buf) then
+      return
+    end
+
+    attach(client, buf)
+  end,
+})
+
 ---@param enable boolean
 ---@param client vim.lsp.Client
 local function toggle_for_client(enable, client)
   local handler = enable and attach or detach
-  local client_id = client.id
 
   -- Toggle for buffers already attached.
   for bufnr, _ in pairs(client.attached_buffers) do
     handler(client, bufnr)
   end
 
-  -- If disabling, only clear the attachment autocmd. If enabling, create it.
-  local group = api.nvim_create_augroup(get_client_augroup(client_id), { clear = true })
-  if enable then
-    api.nvim_create_autocmd("LspAttach", {
-      group = group,
-      desc = "Enable on-type formatting for all buffers this client attaches to",
-      callback = function(ev)
-        if ev.data.client_id ~= client_id then
-          return
-        end
-
-        attach(client, ev.buf)
-      end,
-    })
-  end
+  client._otf_enabled = enable
 end
 
 ---@param enable boolean
@@ -228,7 +220,7 @@ local function toggle_globally(enable)
       desc = "Enable on-type formatting for all clients",
       callback = function(ev)
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
-        if client:supports_method(method, ev.buf) then
+        if client._otf_enabled ~= false and client:supports_method(method, ev.buf) then
           attach(client, ev.buf)
         end
       end,
