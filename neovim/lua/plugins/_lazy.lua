@@ -240,7 +240,11 @@ M.plugins = {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     config = function()
-      -- require("plugins.tree_sitter")
+      pcall(function()
+        require("nvim-dap-repl-highlights").setup()
+      end)
+      require("nvim-treesitter").setup()
+      require("nvim-treesitter").install({ "dap_repl" })
     end,
     build = ":TSUpdate",
     cond = utils.no_vscode,
@@ -248,7 +252,10 @@ M.plugins = {
       "williamboman/mason.nvim",
       {
         "MeanderingProgrammer/treesitter-modules.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "Davidyz/nvim-dap-repl-highlights",
+        },
         ---@module 'treesitter-modules'
         ---@return ts.mod.UserConfig
         opts = function(_, opts)
@@ -599,7 +606,7 @@ M.plugins = {
         version = "*",
       },
     },
-    event = { "BufReadPost", "CmdlineEnter" },
+    event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     opts = require("plugins.blink_cmp"),
     cond = utils.no_vscode,
@@ -2389,15 +2396,15 @@ M.plugins = {
     opts = {},
     event = "VeryLazy",
   },
-  -- {
-  --   "Sam-programs/cmdline-hl.nvim",
-  --   event = { "CmdlineChanged", "CmdlineEnter" },
-  --   opts = {
-  --     inline_ghost_text = false,
-  --     type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
-  --   },
-  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  -- },
+  {
+    "Sam-programs/cmdline-hl.nvim",
+    event = { "CmdlineChanged", "CmdlineEnter" },
+    opts = {
+      inline_ghost_text = false,
+      type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
+    },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
   {
     "NStefan002/screenkey.nvim",
     config = true,
@@ -2535,14 +2542,6 @@ M.plugins = {
             schema = {
               num_ctx = { default = 64000 },
               model = { default = "qwen3:8b-q4_K_M-dynamic-thinking" },
-              think = {
-                default = function(adapter)
-                  local model_name = adapter.model.name:lower()
-                  return vim.iter({ "qwen3", "deepseek-r1" }):any(function(kw)
-                    return string.find(model_name, kw) ~= nil
-                  end)
-                end,
-              },
             },
           })
         end,
