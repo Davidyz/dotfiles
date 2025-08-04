@@ -1710,6 +1710,7 @@ M.plugins = {
         require("hover.providers.diagnostic")
 
         local peek_supported_capabilities = {
+          vim.lsp.protocol.Methods.textDocument_declaration,
           vim.lsp.protocol.Methods.textDocument_implementation,
           vim.lsp.protocol.Methods.textDocument_definition,
         }
@@ -1761,22 +1762,38 @@ M.plugins = {
                       return
                     end
                   end
-                  local _bufnr = vim.uri_to_bufnr(loc.uri)
-                  vim.fn.bufload(_bufnr)
+                  local peek_bufnr = vim.uri_to_bufnr(loc.uri)
+                  vim.fn.bufload(peek_bufnr)
                   local range = loc.range
-                  local ft = vim.bo[_bufnr].filetype
-                  vim.treesitter.start(_bufnr, ft)
+                  local ft = vim.bo[peek_bufnr].filetype
 
                   local md_lines = {
                     "```" .. ft,
-                    string.format(vim.bo[_bufnr].commentstring, method),
+                    string.format(vim.bo[peek_bufnr].commentstring, method),
                   }
+                  local line_num = math.ceil(vim.api.nvim_win_get_height(0) * 0.2)
+                  local ts_node = vim.treesitter.get_node({
+                    bufnr = peek_bufnr,
+                    pos = { range.start.line, range.start.character },
+                  })
+                  if ts_node ~= nil then
+                    local row_start, _, row_end, _ =
+                      vim.treesitter.get_node_range(ts_node)
+
+                    while row_start == row_end and ts_node ~= nil do
+                      -- find the closest multi_line parent node and treat it as the definition.
+                      ts_node = ts_node:parent()
+                      row_start, _, row_end, _ = vim.treesitter.get_node_range(ts_node)
+                    end
+
+                    line_num = row_end - row_start + 1
+                  end
                   vim.list_extend(
                     md_lines,
                     vim.api.nvim_buf_get_lines(
-                      _bufnr,
+                      peek_bufnr,
                       range.start.line,
-                      range.start.line + math.ceil(vim.api.nvim_win_get_height(0) * 0.2),
+                      range.start.line + line_num,
                       false
                     )
                   )
