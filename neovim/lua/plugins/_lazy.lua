@@ -1764,6 +1764,11 @@ M.plugins = {
                   end
                   local peek_bufnr = vim.uri_to_bufnr(loc.uri)
                   vim.fn.bufload(peek_bufnr)
+                  vim.api.nvim_buf_call(peek_bufnr, function()
+                    -- make sure the appropriate treesitter parser can be created
+                    vim.cmd("filetype detect")
+                  end)
+
                   local range = loc.range
                   local ft = vim.bo[peek_bufnr].filetype
 
@@ -1783,6 +1788,10 @@ M.plugins = {
                     while row_start == row_end and ts_node ~= nil do
                       -- find the closest multi_line parent node and treat it as the definition.
                       ts_node = ts_node:parent()
+                      if ts_node:parent() == nil then
+                        -- it's probably the root node. skip it.
+                        break
+                      end
                       row_start, _, row_end, _ = vim.treesitter.get_node_range(ts_node)
                     end
 
