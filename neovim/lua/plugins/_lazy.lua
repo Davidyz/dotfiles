@@ -4,6 +4,15 @@
 M = {}
 local utils = require("_utils")
 
+local fzf_files_action = function()
+  local has_frecency, frec = pcall(require, "fzf-lua-frecency")
+  if has_frecency then
+    return frec.frecency({ cwd_only = true, display_score = false })
+  else
+    return require("fzf-lua").files()
+  end
+end
+
 ---@type LazySpec[]
 M.plugins = {
   -- NOTE: mini
@@ -205,7 +214,7 @@ M.plugins = {
         end,
         dim_inactive = { enabled = false },
         default_integrations = {
-          blink_cmp = true,
+          blink_cmp = { style = "solid" },
           diffview = true,
           fidget = true,
           fzf = true,
@@ -254,7 +263,7 @@ M.plugins = {
         "MeanderingProgrammer/treesitter-modules.nvim",
         dependencies = {
           "nvim-treesitter/nvim-treesitter",
-          "Davidyz/nvim-dap-repl-highlights",
+          { "LiadOz/nvim-dap-repl-highlights" },
         },
         ---@module 'treesitter-modules'
         ---@return ts.mod.UserConfig
@@ -688,6 +697,7 @@ M.plugins = {
       return {
         port = 3000,
         use_bundled_binary = true,
+        extensions = { copilotchat = { enabled = false } },
       }
     end,
   },
@@ -1425,7 +1435,7 @@ M.plugins = {
                 icon = " ",
                 key = "f",
                 desc = "Find File",
-                action = ":lua Snacks.dashboard.pick('files')",
+                action = fzf_files_action,
               },
               {
                 icon = " ",
@@ -1468,7 +1478,7 @@ M.plugins = {
             },
           },
         },
-        image = { enabled = true },
+        image = { enabled = false },
         input = { enabled = true },
         notifier = { enabled = true },
         picker = { enabled = true },
@@ -1928,8 +1938,14 @@ M.plugins = {
     },
   },
   {
+    "elanmed/fzf-lua-frecency.nvim",
+    dependencies = { "ibhagwan/fzf-lua" },
+  },
+  {
     "ibhagwan/fzf-lua",
-    dependencies = { "echasnovski/mini.icons" },
+    dependencies = {
+      "echasnovski/mini.icons",
+    },
     cmd = { "FzfLua" },
     opts = function(_, opts)
       return vim.tbl_deep_extend("force", opts or {}, {
@@ -1948,9 +1964,6 @@ M.plugins = {
       })
     end,
     config = function(_, opts)
-      require("fzf-lua").setup(opts)
-      vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
-      vim.api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
       require("fzf-lua").register_ui_select(function(_, items)
         local min_h, max_h = 0.15, 0.70
         local h = (#items + 4) / vim.o.lines
@@ -1961,18 +1974,23 @@ M.plugins = {
         end
         return { winopts = { height = h, width = 0.60, row = 0.40 } }
       end)
+      require("fzf-lua").setup(opts)
+      vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
+      vim.api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
     end,
     keys = {
       {
         "<Leader>a",
-        "<cmd>FzfLua lsp_code_actions<cr>",
+        function()
+          require("fzf-lua").lsp_code_actions({ silent = true })
+        end,
         remap = false,
         mode = { "n", "x" },
         desc = "Code actions",
       },
       {
         "<Leader>tf",
-        "<cmd>FzfLua files<cr>",
+        fzf_files_action,
         remap = false,
         mode = "n",
         desc = "Fuzzy find files.",
@@ -2509,6 +2527,57 @@ M.plugins = {
     },
     opts = function(_, opts)
       opts = opts or {}
+      opts.opts = opts.opts or {}
+      opts.opts.system_prompt = function(_)
+        local prompt = [[
+You are an AI programming assistant named "CodeCompanion". You are currently plugged in to the Neovim text editor on a user's machine.
+
+Your core tasks include:
+- Answering general programming questions.
+- Explaining how the code in a Neovim buffer works.
+- Reviewing the selected code in a Neovim buffer.
+- Generating unit tests for the selected code.
+- Proposing fixes for problems in the selected code.
+- Scaffolding code for a new workspace.
+- Finding relevant code to the user's query.
+- Proposing fixes for test failures.
+- Answering questions about Neovim.
+- Running tools.
+- Any other tasks that the user gives you.
+
+You must:
+- Follow the user's requirements carefully and to the letter.
+- Keep your answers short and impersonal, especially if the user responds with context outside of your tasks.
+- Minimize other prose.
+- Use Markdown formatting in your answers.
+- Include the programming language name at the start of the Markdown code blocks.
+- Avoid including line numbers in code blocks.
+- Avoid wrapping the whole response in triple backticks.
+- Only return code that's relevant to the task at hand. You may not need to return all of the code that the user has shared.
+- Use actual line breaks instead of '\n' in your response to begin new lines.
+- Use '\n' only when you want a literal backslash followed by a character 'n'.
+- The non-code response should be in the same language as the user input, unless the user asked you to reply in a particular language.
+
+When given a task:
+1. Think step-by-step and describe your plan for what to build in pseudocode, written out in great detail, unless asked not to do so.
+2. Output the code in a single code block, being careful to only return relevant code.
+3. You should always generate short suggestions for the next user turns that are relevant to the conversation.
+4. You can only give one reply for each conversation turn.
+
+]]
+
+        local root = vim.fs.root(0, { ".git", ".vectorcode" })
+        if root then
+          prompt = prompt
+            .. string.format(
+              [[
+The user's currently working in a project located at `%s`. Take this into consideration when replying to user's question or perform tool calls.
+          ]],
+              root
+            )
+        end
+        return prompt
+      end
       -- opts.opts = { log_level = "DEBUG" }
       opts.display = {
         action_palette = { provider = "fzf_lua" },
@@ -2592,7 +2661,7 @@ M.plugins = {
           enabled = vim.fn.executable("vectorcode") == 1,
           ---@type VectorCode.CodeCompanion.ExtensionOpts
           opts = {
-            tool_group = { extras = { "file_search" }, collapse = true },
+            tool_group = { collapse = true },
             tool_opts = {
               ---@type VectorCode.CodeCompanion.ToolOpts
               ["*"] = { use_lsp = true },
@@ -2636,25 +2705,9 @@ M.plugins = {
             end,
           },
           tools = {
-            opts = { default_tools = { "vectorcode_toolbox", "read_file" } },
-          },
-          opts = {
-            ---@param message string
-            ---@param adapter CodeCompanion.Adapter
-            ---@param context table
-            ---@return string
-            prompt_decorator = function(message, adapter, context)
-              local root = vim.fs.root(0, { ".git", ".vectorcode" })
-              if root == nil then
-                return message
-              else
-                return string.format(
-                  "%s\n\nI'm currently working on a project located at %s.",
-                  message,
-                  root
-                )
-              end
-            end,
+            opts = {
+              default_tools = { "vectorcode_toolbox", "file_search", "read_file" },
+            },
           },
         },
         inline = {

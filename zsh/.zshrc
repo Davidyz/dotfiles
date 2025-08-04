@@ -142,6 +142,7 @@ compinit
 plugins=(
 	ipython-selector
 	autoupdate
+	dotenv
 	git
 	zsh-autosuggestions
 	fast-syntax-highlighting

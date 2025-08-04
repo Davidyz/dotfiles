@@ -99,14 +99,6 @@ mason_dap.setup({
   },
 })
 
-dap.listeners.on_config["dap-repl-highlight"] = function(config)
-  config = vim.deepcopy(config)
-  if config.type == "debugpy" then
-    config.repl_lang = config.repl_lang or "python"
-  end
-  return config
-end
-
 -- dap.listeners.before.attach.dapui_config = dapui.open
 -- dap.listeners.before.launch.dapui_config = dapui.open
 dap.listeners.before.event_terminated.dapui_config = dapui.close

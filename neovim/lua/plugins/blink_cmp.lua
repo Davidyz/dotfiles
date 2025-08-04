@@ -205,7 +205,10 @@ return function(_, opts)
       },
       keyword = { range = "full" },
     },
-    fuzzy = { implementation = "lua", sorts = { "exact", "score", "sort_text" } },
+    fuzzy = {
+      implementation = "prefer_rust_with_warning",
+      sorts = { "exact", "score", "sort_text" },
+    },
   })
   return opts
 end
