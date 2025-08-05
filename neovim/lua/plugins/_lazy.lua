@@ -330,11 +330,6 @@ M.plugins = {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
-    "nvim-treesitter/playground",
-    cmd = "TSPlaygroundToggle",
-    cond = utils.no_vscode,
-  },
-  {
     "windwp/nvim-autopairs",
     cond = utils.no_vscode,
     config = function()
@@ -1771,11 +1766,26 @@ M.plugins = {
 
                   local range = loc.range
                   local ft = vim.bo[peek_bufnr].filetype
-
-                  local md_lines = {
+                  local md_lines = {}
+                  local peek_path =
+                    vim.fs.abspath(vim.api.nvim_buf_get_name(peek_bufnr))
+                  local orig_path =
+                    vim.fs.abspath(vim.api.nvim_buf_get_name(opts.bufnr))
+                  if orig_path ~= peek_path then
+                    local cli = vim.lsp.get_client_by_id(context.client_id)
+                    if cli and cli.config.root_dir then
+                      local root_dir = vim.fs.abspath(cli.config.root_dir)
+                      if peek_path:sub(1, string.len(root_dir)) == root_dir then
+                        peek_path, _ = peek_path:sub(root_dir:len() + 2)
+                      end
+                    end
+                    peek_path:gsub(os.getenv("HOME") or "", "~")
+                    vim.list_extend(md_lines, { string.format("`%s`", peek_path) })
+                  end
+                  vim.list_extend(md_lines, {
                     "```" .. ft,
                     string.format(vim.bo[peek_bufnr].commentstring, method),
-                  }
+                  })
                   local line_num = math.ceil(vim.api.nvim_win_get_height(0) * 0.2)
                   local ts_node = vim.treesitter.get_node({
                     bufnr = peek_bufnr,
