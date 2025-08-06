@@ -1774,12 +1774,20 @@ M.plugins = {
                   if orig_path ~= peek_path then
                     local cli = vim.lsp.get_client_by_id(context.client_id)
                     if cli and cli.config.root_dir then
-                      local root_dir = vim.fs.abspath(cli.config.root_dir)
-                      if peek_path:sub(1, string.len(root_dir)) == root_dir then
-                        peek_path, _ = peek_path:sub(root_dir:len() + 2)
-                      end
+                      peek_path =
+                        string.format([[%s]], vim.fs.normalize(peek_path)):gsub(
+                          string.format(
+                            [[%s/]],
+                            vim.fs.normalize(vim.fs.abspath(cli.config.root_dir))
+                          ),
+                          ""
+                        )
                     end
-                    peek_path:gsub(os.getenv("HOME") or "", "~")
+
+                    peek_path = peek_path:gsub(
+                      string.format([[%s]], os.getenv("HOME") or ""),
+                      "~"
+                    )
                     vim.list_extend(md_lines, { string.format("`%s`", peek_path) })
                   end
                   vim.list_extend(md_lines, {
