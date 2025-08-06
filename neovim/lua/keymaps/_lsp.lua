@@ -1,7 +1,8 @@
+local utils = require("keymaps.utils")
 if vim.fn.exists("g:vscode") ~= 0 then
   return
 end
-
+local fzf_lua_jump_action = utils.fzf_lua_jump_action
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 vim.keymap.del({ "n" }, "gri")
@@ -21,45 +22,19 @@ local bufmap = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-local fzf = require("fzf-lua")
-local actions = require("fzf-lua.actions")
-local path = require("fzf-lua.path")
-
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function(args)
+    local fzf = require("fzf-lua")
+
     if vim.bo.filetype == "codecompanion" then
       return
     end
+
     local opts = {
       sync = false,
       jump1 = true,
-      jump1_action = function(selected, opts)
-        if #selected == 0 then
-          return
-        end
-        local entry = path.entry_to_file(selected[1], opts, false)
-        local uri = vim.uri_from_fname(entry.path) or vim.uri_from_bufnr(entry.bufnr)
-        if uri == nil then
-          return
-        end
-        for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
-          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
-            if vim.uri_from_bufnr(vim.api.nvim_win_get_buf(win)) == uri then
-              vim.api.nvim_set_current_win(win)
-              if entry.line > 0 or entry.col > 0 then
-                pcall(
-                  vim.api.nvim_win_set_cursor,
-                  win,
-                  { math.max(1, entry.line), math.max(1, entry.col) - 1 }
-                )
-              end
-              return
-            end
-          end
-        end
-        return actions.file_tabedit(selected, opts)
-      end,
+      jump1_action = fzf_lua_jump_action,
       unique_line_items = true,
     }
 

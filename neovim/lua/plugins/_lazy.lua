@@ -1984,6 +1984,7 @@ M.plugins = {
   {
     "elanmed/fzf-lua-frecency.nvim",
     dependencies = { "ibhagwan/fzf-lua" },
+    config = true,
   },
   {
     "ibhagwan/fzf-lua",
@@ -2004,7 +2005,14 @@ M.plugins = {
           },
         },
         files = { formatter = "path.dirname_first" },
-        lsp = { code_actions = { previewer = "codeaction_native" } },
+        lsp = {
+          code_actions = { previewer = "codeaction_native" },
+        },
+        actions = {
+          files = {
+            enter = require("keymaps.utils").fzf_lua_jump_action,
+          },
+        },
       })
     end,
     config = function(_, opts)
@@ -2750,7 +2758,7 @@ The user's currently working in a project located at `%s`. Take this into consid
           },
           tools = {
             opts = {
-              default_tools = { "vectorcode_toolbox", "file_search", "read_file" },
+              -- default_tools = { "vectorcode_toolbox", "file_search", "read_file" },
             },
           },
         },
