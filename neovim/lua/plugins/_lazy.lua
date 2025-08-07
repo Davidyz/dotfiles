@@ -1570,33 +1570,6 @@ M.plugins = {
     cmd = { "CodeSnap", "CodeSnapSave", "CodeSnapASCII" },
   },
   {
-    "folke/todo-comments.nvim",
-    config = true,
-    keys = {
-      {
-        "<Leader>tt",
-        "<cmd>TodoFzfLua<CR>",
-        mode = "n",
-        desc = "[T]odo Comments.",
-      },
-      {
-        "]t",
-        function()
-          require("todo-comments").jump_next()
-        end,
-        desc = "Next todo comment.",
-      },
-      {
-        "[t",
-        function()
-          require("todo-comments").jump_prev()
-        end,
-        desc = "Previous todo comment.",
-      },
-    },
-    event = { "BufReadPost", "BufNewFile" },
-  },
-  {
     "kawre/leetcode.nvim",
     cmd = "Leet",
     config = function()
@@ -2031,6 +2004,17 @@ M.plugins = {
       vim.api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
     end,
     keys = {
+      {
+        "<leader>tt",
+        function()
+          require("fzf-lua").grep({
+            search = [[\b(TODO|WIP|NOTE|XXX|INFO|DOCS|PERF|TEST|HACK|WARNING|WARN|FIX|FIXME|BUG|ERROR):]],
+            no_esc = true,
+            multiline = true,
+          })
+        end,
+        desc = "Todo comments",
+      },
       {
         "<Leader>a",
         function()
