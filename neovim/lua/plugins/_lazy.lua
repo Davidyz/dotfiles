@@ -5,12 +5,11 @@ M = {}
 local utils = require("_utils")
 
 local fzf_files_action = function()
-  local has_frecency, frec = pcall(require, "fzf-lua-frecency")
-  if has_frecency then
-    return frec.frecency({ cwd_only = true, display_score = false })
-  else
-    return require("fzf-lua").files()
-  end
+  -- local has_frecency, frec = pcall(require, "fzf-lua-frecency")
+  -- if has_frecency then
+  --   return frec.frecency({ cwd_only = true, display_score = false })
+  -- end
+  return require("fzf-lua").files()
 end
 
 ---@type LazySpec[]
@@ -509,11 +508,13 @@ M.plugins = {
           sh = { "shfmt" },
           zsh = { "shfmt" },
           bash = { "shfmt" },
-          json = { "jq" },
+          json = { "fixjson" },
+          json5 = { "prettier" },
           python = {},
           c = { "clang-format" },
           cpp = { "clang-format" },
         },
+        formatters = { prettier = { prepend_args = { "--quote-props", "preserve" } } },
       })
       if vim.fn.executable("black") == 1 then
         vim.list_extend(opts.formatters_by_ft.python, { "black" })
@@ -522,12 +523,22 @@ M.plugins = {
     end,
     config = function(_, opts)
       require("conform").setup(opts)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        callback = function()
-          if vim.g.format_on_save == false then
-            return
-          end
-          require("conform").format({ lsp_format = "first" })
+      vim.g.format_on_save = true
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = args.buf,
+            group = vim.api.nvim_create_augroup(
+              string.format("Conform:%d", args.buf),
+              { clear = true }
+            ),
+            callback = function()
+              if vim.g.format_on_save == false then
+                return
+              end
+              require("conform").format({ lsp_format = "first" })
+            end,
+          })
         end,
       })
     end,
@@ -1239,14 +1250,17 @@ M.plugins = {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
+    -- dir = "~/git/inlayhint-filler.nvim/",
+    event = "LspAttach",
     keys = {
       {
         "<Leader>I",
         function()
-          require("inlayhint-filler").fill()
+          return require("inlayhint-filler").fill()
         end,
         mode = { "n", "v" },
         desc = "Insert inlay hint to the buffer",
+        expr = true,
       },
     },
   },
@@ -1477,8 +1491,11 @@ M.plugins = {
         input = { enabled = true },
         notifier = { enabled = true },
         picker = { enabled = true },
+        ---@type snacks.profiler.Config
         profiler = {
           enabled = true,
+          -- filter_mod = { default = false, codecompanion = true },
+          -- filter_fn = { default = false, ["^codecompanion.*"] = true },
         },
         quickfile = { enabled = true },
         rename = { enabled = true },
@@ -1873,13 +1890,11 @@ M.plugins = {
         function()
           local gitsigns = require("gitsigns")
           gitsigns.toggle_current_line_blame()
-          local msg = nil
           if require("gitsigns.config").config.current_line_blame then
-            msg = "Enabled."
+            vim.notify("Enabled.", "info", { title = "Git Blame" })
           else
-            msg = "Disabled."
+            vim.notify("Disabled.", "info", { title = "Git Blame" })
           end
-          vim.notify(msg, "info", { title = "Git Blame" })
         end,
         noremap = true,
         desc = "Toggle git [b]lame.",
@@ -2636,6 +2651,7 @@ The user's currently working in a project located at `%s`. Take this into consid
               api_key = "TERM",
               chat_url = "/v1/chat/completions",
             },
+            schema = { cache_prompt = { default = true, mapping = "parameters" } },
           })
         end,
         ["Ollama"] = function()
@@ -2646,7 +2662,8 @@ The user's currently working in a project located at `%s`. Take this into consid
             },
             schema = {
               num_ctx = { default = 64000 },
-              model = { default = "qwen3:8b-q4_K_M-dynamic-thinking" },
+              -- model = { default = {"qwen3:8b-q4_K_M-dynamic-thinking"} },
+              -- think = { default = true },
             },
           })
         end,
@@ -2703,24 +2720,26 @@ The user's currently working in a project located at `%s`. Take this into consid
               ["*"] = { use_lsp = true },
               ls = {},
               vectorise = {},
+              ---@type VectorCode.CodeCompanion.QueryToolOpts
               query = {
-                default_num = { document = 15, chunks = 100 },
+                default_num = { document = 5, chunk = 10 },
+                max_num = { document = 10, chunk = 20 },
                 chunk_mode = true,
                 ---@type VectorCode.CodeCompanion.SummariseOpts
                 summarise = {
-                  enabled = true,
+                  enabled = false,
                   system_prompt = function(s)
                     return s
                   end,
-                  adapter = function()
-                    return require("codecompanion.adapters").extend("gemini", {
-                      name = "Summariser",
-                      schema = {
-                        model = { default = "gemini-2.0-flash-lite" },
-                      },
-                      opts = { stream = false },
-                    })
-                  end,
+                  -- adapter = function()
+                  --   return require("codecompanion.adapters").extend("gemini", {
+                  --     name = "Summariser",
+                  --     schema = {
+                  --       model = { default = "gemini-2.0-flash-lite" },
+                  --     },
+                  --     opts = { stream = false },
+                  --   })
+                  -- end,
                 },
               },
             },

@@ -110,7 +110,7 @@ function M.Require(item)
 end
 
 ---@param items string[]
----@param retry_count integer
+---@param retry_count? integer
 function M.tryRequire(items, retry_count)
   if retry_count == 0 then
     vim.o.cmdheight = #items + 1

@@ -19,6 +19,7 @@ M.mason_packages = {
   "shfmt",
   "stylua",
   "taplo",
+  "ty",
   "tree-sitter-cli",
   "vim-language-server",
   "yaml-language-server",

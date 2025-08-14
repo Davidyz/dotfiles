@@ -37,4 +37,11 @@ km_utils.setKeymap("", "<C-t>", function()
   require("snacks").dashboard.open({ win = 0, buf = 0 })
 end)
 
+km_utils.setKeymap("n", "<Leader>F", function()
+  vim.g.format_on_save = not vim.g.format_on_save
+end, {
+  desc = "Toggle format on save.",
+  noremap = true,
+})
+
 -- km_utils.setKeymap("n", "q", ":q<CR>", { noremap = true })

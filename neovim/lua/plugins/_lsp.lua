@@ -17,27 +17,9 @@ end
 local original_on_attach = function(client, bufnr)
   if allow_for_formatting(client) then
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
-  end
-  if
-    client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting)
-    and allow_for_formatting(client)
-  then
-    -- format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup(
-        string.format("LspFormatBuf%d", bufnr),
-        { clear = true }
-      ),
-      buffer = bufnr,
-      callback = function()
-        if vim.g.format_on_save == false then
-          return
-        end
-        vim.lsp.buf.format({
-          filter = allow_for_formatting,
-        })
-      end,
-    })
+  else
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
   end
   if
     not client:supports_method(

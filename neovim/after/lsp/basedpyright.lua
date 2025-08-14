@@ -27,12 +27,17 @@ return {
     },
   },
   on_attach = function(client, bufnr)
-    -- the following are handled by `ty`
-    if not vim.tbl_isempty(vim.lsp.get_clients({ name = "ty" })) then
+    -- the following are handled by `ty` or `pyrefly`
+    if
+      not vim.iter({ "ty", "pyrefly" }):any(function(name)
+        return vim.tbl_isempty(vim.lsp.get_clients({ name = name }))
+      end)
+    then
       client.server_capabilities.definitionProvider = false
       client.server_capabilities.declarationProvider = false
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.completionProvider = nil
+      client.server_capabilities.inlayHintProvider = false
     end
   end,
 }

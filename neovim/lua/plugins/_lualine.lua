@@ -150,6 +150,25 @@ local lualine_config = {
         separator = "",
       },
       "fileformat",
+      {
+        function()
+          if
+            vim.g.format_on_save
+            and vim.iter(vim.lsp.get_clients({ bufnr = 0 })):any(
+              ---@param cli vim.lsp.Client
+              function(cli)
+                return cli:supports_method(
+                  vim.lsp.protocol.Methods.textDocument_formatting,
+                  0
+                ) and not not cli.server_capabilities.documentFormattingProvider
+              end
+            )
+          then
+            return " "
+          end
+          return ""
+        end,
+      },
     },
     lualine_z = {
       {
