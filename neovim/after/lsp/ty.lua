@@ -12,5 +12,6 @@ return {
     client.server_capabilities.inlayHintProvider = false
     client.server_capabilities.signatureHelpProvider = nil
     client.server_capabilities.hoverProvider = false
+    client.server_capabilities.completionProvider = nil
   end,
 }
