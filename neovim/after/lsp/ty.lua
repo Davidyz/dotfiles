@@ -5,8 +5,8 @@ return {
   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
   handlers = {
     -- disable some functionalities that ty doesn't do well at.
-    [vim.lsp.protocol.Methods.textDocument_inlayHint] = function() end,
-    [vim.lsp.protocol.Methods.textDocument_signatureHelp] = function() end,
+    -- [vim.lsp.protocol.Methods.textDocument_inlayHint] = function() end,
+    -- [vim.lsp.protocol.Methods.textDocument_signatureHelp] = function() end,
   },
   on_attach = function(client, bufnr)
     client.server_capabilities.inlayHintProvider = false

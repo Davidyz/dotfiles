@@ -29,18 +29,7 @@ local original_on_attach = function(client, bufnr)
   then
     vim.lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
-  if
-    client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, bufnr)
-    and vim.bo.filetype ~= "tex"
-  then
-    vim.g.inlay_hints_visible = true
-    ---@diagnostic disable-next-line: unused-local
-    local status, err = pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
-    if not status then
-      ---@diagnostic disable-next-line: param-type-mismatch
-      vim.lsp.inlay_hint.enable(bufnr, true)
-    end
-  end
+
   if
     client:supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol, bufnr)
   then
@@ -70,6 +59,7 @@ require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },
   ensure_installed = nil,
 })
+vim.lsp.inlay_hint.enable(true)
 
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }
 for type, icon in pairs(signs) do
