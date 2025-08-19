@@ -2097,7 +2097,7 @@ M.plugins = {
       },
       {
         "<Leader>f",
-        "<cmd>FzfLua grep<cr>",
+        "<cmd>FzfLua grep_curbuf<cr>",
         remap = false,
         mode = "n",
         desc = "Fuzzy find current buffer.",

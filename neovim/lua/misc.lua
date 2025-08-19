@@ -12,8 +12,14 @@ vim.opt.mouse = "a"
 vim.opt.swapfile = false
 
 vim.opt.showmode = false
-vim.opt.clipboard = "unnamedplus"
+vim.o.clipboard = "unnamedplus"
 if vim.env.SSH_CLIENT ~= nil then
+  local function paste()
+    return {
+      vim.fn.split(vim.fn.getreg(""), "\n"),
+      vim.fn.getregtype(""),
+    }
+  end
   local osc52 = require("vim.ui.clipboard.osc52")
   vim.g.clipboard = {
     name = "OSC 52",
@@ -23,8 +29,8 @@ if vim.env.SSH_CLIENT ~= nil then
     },
     paste = {
       -- wezterm doesn't support pasting.
-      -- ["+"] = osc52.paste("+"),
-      -- ["*"] = osc52.paste("*"),
+      ["+"] = paste,
+      ["*"] = paste,
     },
   }
 end
