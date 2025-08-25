@@ -457,3 +457,11 @@ fi
 
 [ -f "$(command -v llama-server 2> /dev/null)" ] && eval "$(llama-server --completion-bash 2> /dev/null)" || true
 export SNACKS_KITTY=
+
+__wezterm_osc52_precmd () {   
+  if hash wezterm 2>/dev/null ; then
+    wezterm set-working-directory 2>/dev/null && return 0
+  fi
+  printf "\033]7;file://%s%s\033\\" "${HOSTNAME}" "${PWD}"
+}
+add-zsh-hook precmd __wezterm_osc52_precmd

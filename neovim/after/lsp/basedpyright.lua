@@ -34,11 +34,14 @@ return {
         return vim.tbl_isempty(vim.lsp.get_clients({ name = name }))
       end)
     then
-      client.server_capabilities.definitionProvider = false
-      client.server_capabilities.declarationProvider = false
-      client.server_capabilities.referencesProvider = false
+      -- client.server_capabilities.definitionProvider = false
+      -- client.server_capabilities.declarationProvider = false
+      -- client.server_capabilities.referencesProvider = false
       client.server_capabilities.documentFormattingProvider = false
       -- client.server_capabilities.inlayHintProvider = false
+
+      -- client.server_capabilities.signatureHelpProvider = nil
+      -- client.server_capabilities.hoverProvider = false
     end
   end,
 }

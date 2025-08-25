@@ -62,12 +62,6 @@ if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option_value("t_Co", { 256 }, {})
 end
 
-vim.api.nvim_set_hl(
-  0,
-  "MatchParen",
-  { bold = true, bg = vim.api.nvim_get_hl(0, { name = "LspReferenceText" }).bg }
-)
-
 vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
@@ -96,3 +90,8 @@ local ok, extui = pcall(require, "vim._extui")
 if ok then
   extui.enable({})
 end
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  -- avoid auto-commenting when hitting enter
+  command = "set formatoptions-=ro",
+})

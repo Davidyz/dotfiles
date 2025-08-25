@@ -291,59 +291,13 @@ M.plugins = {
     },
   },
   {
-    "hiphish/rainbow-delimiters.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    submodules = false,
-    config = function()
-      local rainbow_delimiters = require("rainbow-delimiters")
-      vim.g.rainbow_delimiters = {
-        strategy = {
-          [""] = rainbow_delimiters.strategy["global"],
-          vim = rainbow_delimiters.strategy["local"],
-        },
-        query = {
-          [""] = "rainbow-delimiters",
-          lua = "rainbow-blocks",
-        },
-        highlight = {
-          "RainbowDelimiterRed",
-          "RainbowDelimiterYellow",
-          "RainbowDelimiterBlue",
-          "RainbowDelimiterOrange",
-          "RainbowDelimiterGreen",
-          "RainbowDelimiterViolet",
-          "RainbowDelimiterCyan",
-        },
-      }
-      vim.api.nvim_set_hl(
-        0,
-        "MatchParen",
-        ---@diagnostic disable-next-line: param-type-mismatch
-        vim.tbl_deep_extend(
-          "force",
-          vim.api.nvim_get_hl(0, { name = "MatchParen" }),
-          { fg = "NONE" }
-        )
-      )
-    end,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-  },
-  {
-    "windwp/nvim-autopairs",
-    cond = utils.no_vscode,
-    config = function()
-      require("plugins.nvim_autopairs")
-    end,
-    event = { "InsertEnter", "CmdlineEnter" },
-  },
-  {
     "andymass/vim-matchup",
     event = { "BufReadPost", "BufNewFile" },
     init = function()
       vim.g.matchup_matchparen_offscreen = {
         method = "popup",
         fullwidth = 0,
-        border = "solid",
+        border = "none",
         highlight = "FidgetNormal",
       }
       vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
@@ -625,6 +579,13 @@ M.plugins = {
     version = "*",
     opts = require("plugins.blink_cmp"),
     cond = utils.no_vscode,
+  },
+  {
+    "saghen/blink.pairs",
+    version = "*",
+    dependencies = "saghen/blink.download",
+    opts = require("plugins.blink_pairs"),
+    event = { "BufReadPost", "BufNewFile", "CmdlineEnter" },
   },
   {
     "xzbdmw/colorful-menu.nvim",
@@ -1250,17 +1211,17 @@ M.plugins = {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
-    -- dir = "~/git/inlayhint-filler.nvim/",
     event = "LspAttach",
+    ---@type InlayHintFillerOpts
+    opts = { blacklisted_servers = {} },
     keys = {
       {
         "<Leader>I",
         function()
-          return require("inlayhint-filler").fill()
+          require("inlayhint-filler").fill()
         end,
         mode = { "n", "v" },
         desc = "Insert inlay hint to the buffer",
-        expr = true,
       },
     },
   },
@@ -1456,25 +1417,13 @@ M.plugins = {
                 icon = " ",
                 key = "g",
                 desc = "Find Text",
-                action = ":lua Snacks.dashboard.pick('live_grep')",
+                action = "<cmd>FzfLua grep_project<cr>",
               },
               {
                 icon = " ",
-                key = "r",
-                desc = "Recent Files",
-                action = ":lua Snacks.dashboard.pick('oldfiles')",
-              },
-              {
-                icon = " ",
-                key = "c",
-                desc = "Config",
-                action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
-              },
-              {
-                icon = " ",
-                key = "s",
-                desc = "Restore Session",
-                section = "session",
+                key = "G",
+                desc = "Git Files",
+                action = "<cmd>FzfLua git_files<cr>",
               },
               {
                 icon = "󰒲 ",
@@ -1992,7 +1941,7 @@ M.plugins = {
             vertical = "down:65%",
           },
         },
-        files = { formatter = "path.dirname_first" },
+        files = { formatter = "path.dirname_first", git_icons = true },
         lsp = {
           code_actions = { previewer = "codeaction_native" },
         },
