@@ -1178,7 +1178,6 @@ M.plugins = {
 
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp",
     dependencies = { "neovim/nvim-lspconfig", "ibhagwan/fzf-lua" },
     ft = { "python" },
     cmd = { "VenvSelect", "VenvSelectCurrent" },
@@ -2587,35 +2586,52 @@ The user's currently working in a project located at `%s`. Take this into consid
         },
       }
       opts.adapters = {
-        ["Gemini"] = function()
-          return require("codecompanion.adapters").extend("gemini", {
-            name = "Gemini",
-            schema = { model = { default = "gemini-2.5-flash" } },
-          })
-        end,
-        ["LlamaCPP"] = function()
-          return require("codecompanion.adapters").extend("openai_compatible", {
-            env = {
-              url = "http://127.0.0.1:8080",
-              api_key = "TERM",
-              chat_url = "/v1/chat/completions",
-            },
-            schema = { cache_prompt = { default = true, mapping = "parameters" } },
-          })
-        end,
-        ["Ollama"] = function()
-          return require("codecompanion.adapters").extend("ollama", {
-            env = {
-              url = os.getenv("OLLAMA_HOST"),
-              api_key = "TERM",
-            },
-            schema = {
-              num_ctx = { default = 64000 },
-              -- model = { default = {"qwen3:8b-q4_K_M-dynamic-thinking"} },
-              -- think = { default = true },
-            },
-          })
-        end,
+        acp = {
+          gemini_cli = function()
+            local mcp_server = {}
+            return require("codecompanion.adapters").extend("gemini_cli", {
+              commands = {
+                default = { "gemini", "--experimental-acp" },
+              },
+              defaults = {
+                -- auth_method = "gemini-api-key",
+                mcpServers = require("mcphub").get_hub_instance():get_servers(),
+                timeout = 20000, -- 20 seconds
+              },
+            })
+          end,
+        },
+        http = {
+          ["Gemini"] = function()
+            return require("codecompanion.adapters").extend("gemini", {
+              name = "Gemini",
+              schema = { model = { default = "gemini-2.5-flash" } },
+            })
+          end,
+          ["LlamaCPP"] = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              env = {
+                url = "http://127.0.0.1:8080",
+                api_key = "TERM",
+                chat_url = "/v1/chat/completions",
+              },
+              schema = { cache_prompt = { default = true, mapping = "parameters" } },
+            })
+          end,
+          ["Ollama"] = function()
+            return require("codecompanion.adapters").extend("ollama", {
+              env = {
+                url = os.getenv("OLLAMA_HOST"),
+                api_key = "TERM",
+              },
+              schema = {
+                num_ctx = { default = 64000 },
+                -- model = { default = {"qwen3:8b-q4_K_M-dynamic-thinking"} },
+                -- think = { default = true },
+              },
+            })
+          end,
+        },
       }
 
       opts.extensions = {
@@ -2676,19 +2692,19 @@ The user's currently working in a project located at `%s`. Take this into consid
                 chunk_mode = true,
                 ---@type VectorCode.CodeCompanion.SummariseOpts
                 summarise = {
-                  enabled = false,
+                  enabled = true,
                   system_prompt = function(s)
                     return s
                   end,
-                  -- adapter = function()
-                  --   return require("codecompanion.adapters").extend("gemini", {
-                  --     name = "Summariser",
-                  --     schema = {
-                  --       model = { default = "gemini-2.0-flash-lite" },
-                  --     },
-                  --     opts = { stream = false },
-                  --   })
-                  -- end,
+                  adapter = function()
+                    return require("codecompanion.adapters").extend("gemini", {
+                      name = "Summariser",
+                      schema = {
+                        model = { default = "gemini-2.0-flash-lite" },
+                      },
+                      opts = { stream = false },
+                    })
+                  end,
                 },
               },
             },
@@ -2699,13 +2715,17 @@ The user's currently working in a project located at `%s`. Take this into consid
         chat = {
           adapter = "Gemini",
           roles = {
-            ---@type string|fun(adapter: CodeCompanion.Adapter): string
+            ---@type string|fun(adapter: CodeCompanion.HTTPAdapter|CodeCompanion.ACPAdapter): string
             llm = function(adapter)
-              return string.format(
-                "%s (%s)",
-                adapter.formatted_name,
-                adapter.model.name
-              )
+              if adapter.model then
+                return string.format(
+                  "%s (%s)",
+                  adapter.formatted_name,
+                  adapter.model.name
+                )
+              else
+                return adapter.formatted_name
+              end
             end,
           },
           tools = {
@@ -2722,7 +2742,7 @@ The user's currently working in a project located at `%s`. Take this into consid
       -- opts.display = { chat = { show_references = false } }
 
       if os.getenv("OPENROUTER_API_KEY") then
-        opts.adapters["OpenRouter"] = function()
+        opts.adapters.http["OpenRouter"] = function()
           return require("codecompanion.adapters").extend("openai_compatible", {
             env = {
               url = "https://openrouter.ai/api",
@@ -2740,7 +2760,7 @@ The user's currently working in a project located at `%s`. Take this into consid
         opts.strategies.inline.adapter = "OpenRouter"
       end
       if os.getenv("SILICONFLOW_API_KEY") then
-        opts.adapters["SiliconFlow"] = function()
+        opts.adapters.http["SiliconFlow"] = function()
           return require("codecompanion.adapters").extend("openai_compatible", {
             env = {
               url = "https://api.siliconflow.cn/",
@@ -2758,7 +2778,7 @@ The user's currently working in a project located at `%s`. Take this into consid
         opts.strategies.inline.adapter = "SiliconFlow"
       end
       if os.getenv("QWEN_API_KEY") then
-        opts.adapters["Qwen"] = function()
+        opts.adapters.http["Qwen"] = function()
           return require("codecompanion.adapters").extend("openai_compatible", {
             env = {
               url = "https://dashscope.aliyuncs.com/compatible-mode",
@@ -2969,6 +2989,7 @@ The user's currently working in a project located at `%s`. Take this into consid
   },
   {
     "nvim-neotest/neotest",
+    commit = "52fca67", -- workaround for `test not found` bug.
     config = function()
       local default_python = require("venv-selector").python()
         or vim.fs.joinpath(
