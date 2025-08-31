@@ -238,10 +238,23 @@ return {
           {
             function()
               local response = vim.b.ai_raw_response
-              return string.format("ctx: %d", response.usage.total_tokens)
+              local curr_buf = vim.api.nvim_get_current_buf()
+              if response then
+                return string.format("ctx: %d", response.usage.total_tokens)
+              elseif _G.codecompanion_chat_metadata[curr_buf] then
+                return string.format(
+                  "%d tokens",
+                  _G.codecompanion_chat_metadata[curr_buf].tokens
+                )
+              end
             end,
             cond = function()
               return vim.b.ai_raw_response ~= nil
+                or (
+                  _G.codecompanion_chat_metadata
+                  and _G.codecompanion_chat_metadata[vim.api.nvim_get_current_buf()]
+                    ~= nil
+                )
             end,
           },
         },

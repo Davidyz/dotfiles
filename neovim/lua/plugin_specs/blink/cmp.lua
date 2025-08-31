@@ -1,7 +1,10 @@
+---@module "blink.cmp"
+---@module "lazy"
+
+---@return LazySpec[]
 return {
   {
     "saghen/blink.cmp",
-    build = "cargo build --release",
     dependencies = {
       "rafamadriz/friendly-snippets",
       "milanglacier/minuet-ai.nvim",
@@ -22,7 +25,6 @@ return {
       for _, m in ipairs({ "s", "x", "v", "o", "l" }) do
         pcall(vim.keymap.del, m, "<tab>", {})
       end
-      ---@module 'blink.cmp'
       ---@type blink.cmp.Config
       opts = vim.tbl_deep_extend("force", opts or {}, {
         keymap = {
@@ -52,15 +54,15 @@ return {
             "fallback",
           },
           ["<S-Tab>"] = { "select_prev", "fallback" },
-          ["<Left>"] = { "snippet_backward", "fallback" },
-          ["<Right>"] = { "snippet_forward", "fallback" },
+          ["<Left>"] = { "fallback" },
+          ["<Right>"] = { "fallback" },
           ["<CR>"] = {
             "accept",
             "fallback",
           },
 
-          ["<Up>"] = { "select_prev", "fallback" },
-          ["<Down>"] = { "select_next", "fallback" },
+          ["<Up>"] = { "snippet_backward", "select_prev", "fallback" },
+          ["<Down>"] = { "snippet_forward", "select_next", "fallback" },
           ["<C-p>"] = { "select_prev", "fallback" },
           ["<C-n>"] = { "select_next", "fallback" },
 
@@ -142,7 +144,8 @@ return {
             "buffer",
           },
           providers = {
-            lsp = { async = false, score_offset = 1 },
+            lsp = { async = true, score_offset = 1 },
+            snippets = { score_offset = 1 },
             minuet = {
               name = "minuet",
               module = "minuet.blink",

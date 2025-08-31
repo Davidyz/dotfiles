@@ -1,0 +1,7 @@
+{
+  "Lazy Plugin Spec": {
+    "prefix": "lazy",
+    "body": "---@module \"lazy\"\n\n---@type LazySpec[]\nreturn {$0}",
+    "description": "Lazy plugin spec."
+  }
+}
