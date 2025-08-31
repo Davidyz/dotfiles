@@ -1,5 +1,4 @@
 local utils = require("_utils")
-local lazy_config = require("plugins._lazy")
 
 if vim.loader ~= nil and type(vim.loader.enable) == "function" then
   vim.loader.enable()
@@ -42,11 +41,44 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+
 require("misc")
-require("lazy").setup(lazy_config.plugins, lazy_config.config)
+
+---Recursively find all specs in `this_dir`.
+---@param base_dir string
+---@return LazySpecImport[]
+local function find_specs(base_dir)
+  local this_dir = vim.fs.dirname(debug.getinfo(1, "S").short_src)
+  local specs = vim
+    .iter(vim.fs.dir(vim.fs.joinpath(this_dir, "lua", base_dir), { depth = math.huge }))
+    :filter(function(_, type)
+      return type == "directory"
+    end)
+    :map(function(p, _)
+      return {
+        import = string.format("%s.%s", base_dir, p:gsub("%.lua$", ""):gsub("/", ".")),
+      }
+    end)
+    :totable()
+  table.insert(specs, { import = base_dir })
+  return specs
+end
+
+require("lazy").setup({
+  spec = find_specs("plugin_specs"),
+  defaults = { lazy = true },
+  dev = { fallback = true },
+  install = { colorscheme = { "catppuccin-mocha" } },
+  profiling = { loader = true, require = true },
+  ui = {
+    border = "solid",
+    backdrop = 100,
+  },
+})
 
 local items = {
   "keymaps.main",
   "filetype.main",
 }
 utils.tryRequire(items, 2)
+require("lsp")

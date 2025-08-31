@@ -1,6 +1,6 @@
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 vim.lsp.on_type_formatting = vim.lsp.on_type_formatting
-  or require("plugins.lsp-handlers.on_type_formatting")
+  or require("lsp.on_type_formatting")
 vim.lsp.on_type_formatting.enable(true)
 
 ---@param client vim.lsp.Client
