@@ -104,7 +104,7 @@ return {
         return res
       end
       ---@module "symbol-usage"
-      ---@type UserOpts
+      ---@type UserOpts|{}
       return {
         text_format = text_format,
         definition = { enabled = true },
@@ -184,8 +184,8 @@ return {
         require("hover.providers.man")
         require("hover.providers.dap")
         require("hover.providers.diagnostic")
-
-        ---@type lsp.protocol.Method[]
+        require("hover.providers.fold_preview")
+        ---@type vim.lsp.protocol.Method[]
         local peek_supported_methods = {
           lsp.protocol.Methods.textDocument_declaration,
           lsp.protocol.Methods.textDocument_implementation,
@@ -202,7 +202,7 @@ return {
             }) ~= 0
           end,
           execute = function(opts, done)
-            ---@type {client: lsp.Client, method: lsp.protocol.Method}[]
+            ---@type {client: vim.lsp.Client, method: vim.lsp.protocol.Method}[]
             local combinations = {}
 
             for _, client in
@@ -220,7 +220,7 @@ return {
             end
 
             ---@param idx? integer
-            ---@param comb {client: lsp.Client, method: lsp.protocol.Method}
+            ---@param comb {client: vim.lsp.Client, method: vim.lsp.protocol.Method}
             local function do_peek(idx, comb)
               if idx == nil or comb == nil then
                 return pcall(done, false)

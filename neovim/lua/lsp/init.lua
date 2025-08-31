@@ -1,7 +1,9 @@
+local lsp = vim.lsp
+local methods = lsp.protocol.Methods
+
 vim.opt.completeopt = { "menu", "menuone", "popup" }
-vim.lsp.on_type_formatting = vim.lsp.on_type_formatting
-  or require("lsp.on_type_formatting")
-vim.lsp.on_type_formatting.enable(true)
+lsp.on_type_formatting = lsp.on_type_formatting or require("lsp.on_type_formatting")
+lsp.on_type_formatting.enable(true)
 
 ---@param client vim.lsp.Client
 ---@return boolean
@@ -16,24 +18,22 @@ end
 ---@param client vim.lsp.Client
 local original_on_attach = function(client, bufnr)
   if allow_for_formatting(client) then
-    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})"
+    vim.bo[bufnr].formatexpr = "v:lua.lsp.formatexpr(#{timeout_ms:250})"
   else
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end
-  if
-    not client:supports_method(
-      vim.lsp.protocol.Methods.textDocument_onTypeFormatting,
-      bufnr
-    )
-  then
-    vim.lsp.on_type_formatting.enable(false, { client_id = client.id })
+  if not client:supports_method(methods.textDocument_onTypeFormatting, bufnr) then
+    lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
 
-  if
-    client:supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol, bufnr)
-  then
+  if client:supports_method(methods.textDocument_documentSymbol, bufnr) then
     require("nvim-navic").attach(client, bufnr)
+  end
+
+  if client:supports_method(methods.textDocument_foldingRange, bufnr) then
+    local win = vim.fn.bufwinid(bufnr) or 0
+    vim.wo[win][0].foldexpr = "v:lua.lsp.foldexpr()"
   end
 end
 
@@ -44,22 +44,22 @@ local default_server_config = {
   single_file_support = true,
   capabilities = vim.tbl_deep_extend(
     "force",
-    vim.lsp.protocol.make_client_capabilities(),
+    lsp.protocol.make_client_capabilities(),
     {
       textDocument = {
-        onTypeFormatting = { dynamicRegistration = vim.lsp.on_type_formatting ~= nil },
+        onTypeFormatting = { dynamicRegistration = lsp.on_type_formatting ~= nil },
       },
     }
   ),
   on_attach = original_on_attach,
 }
 
-vim.lsp.config("*", default_server_config)
+lsp.config("*", default_server_config)
 require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },
   ensure_installed = nil,
 })
-vim.lsp.inlay_hint.enable(true)
+lsp.inlay_hint.enable(true)
 
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }
 for type, icon in pairs(signs) do

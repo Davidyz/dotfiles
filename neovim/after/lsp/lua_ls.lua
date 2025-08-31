@@ -1,3 +1,4 @@
+---@type vim.lsp.Config
 return {
   flags = { debounce_text_changes = 150 },
   settings = {
@@ -26,4 +27,8 @@ return {
       hint = { enable = true },
     },
   },
+  on_attach = function(client, bufnr)
+    client.server_capabilities.foldingRangeProvider = nil
+    client.server_capabilities.documentOnTypeFormattingProvider = nil
+  end,
 }

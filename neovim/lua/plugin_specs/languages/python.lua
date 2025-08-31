@@ -10,7 +10,7 @@ return {
           options = {
             activate_venv_in_terminal = true,
             cached_venv_automatic_activation = true,
-            notify_user_on_venv_activation = true,
+            notify_user_on_venv_activation = false,
             picker = "fzf-lua",
           },
         },

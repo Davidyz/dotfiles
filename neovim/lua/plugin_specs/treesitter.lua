@@ -8,6 +8,7 @@ return {
       end)
       require("nvim-treesitter").setup()
       require("nvim-treesitter").install({ "dap_repl" })
+      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
     build = ":TSUpdate",
     cond = require("_utils").no_vscode,
