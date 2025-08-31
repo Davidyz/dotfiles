@@ -4,12 +4,8 @@
 M = {}
 local utils = require("_utils")
 
-local fzf_files_action = function()
-  -- local has_frecency, frec = pcall(require, "fzf-lua-frecency")
-  -- if has_frecency then
-  --   return frec.frecency({ cwd_only = true, display_score = false })
-  -- end
-  return require("fzf-lua").files()
+local fzf_files_action = function(opts)
+  return require("fzf-lua").files(opts)
 end
 
 ---@type LazySpec[]
@@ -270,7 +266,10 @@ M.plugins = {
           ---@type ts.mod.UserConfig
           opts = vim.tbl_deep_extend("force", {
             ignore_install = { "csv" },
-            highlight = { enable = true },
+            highlight = {
+              enable = true,
+              additional_vim_regex_highlighting = false,
+            },
             indent = { enable = true },
             incremental_selection = {
               enable = true,
@@ -400,7 +399,7 @@ M.plugins = {
         return { "treesitter", "indent" }
       end,
     },
-    event = { "LspAttach" },
+    event = { "FileType" },
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -1144,25 +1143,31 @@ M.plugins = {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    opts = {
-      library = {
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "wezterm-types", mods = { "wezterm" } },
-        { path = "folke/snacks.nvim", words = { "Snacks" } },
-        {
-          path = "nvim-lua/plenary.nvim",
-          words = {
-            "describe",
-            "it",
-            "pending",
-            "before_each",
-            "after_each",
-            "clear",
-            "assert.*",
+    opts = function(_, opts)
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        library = {
+          { path = "luvit-meta/library", words = { "vim%.uv" } },
+          { path = "wezterm-types", mods = { "wezterm" } },
+          { path = "folke/snacks.nvim", words = { "Snacks" } },
+          {
+            path = "nvim-lua/plenary.nvim",
+            words = {
+              "describe",
+              "it",
+              "pending",
+              "before_each",
+              "after_each",
+              "clear",
+              "assert.*",
+            },
           },
         },
-      },
-    },
+        enabled = function(root_dir)
+          return root_dir:match("(%w+)%/?$") ~= "neovim"
+        end,
+      })
+      return opts
+    end,
     config = function(_, opts)
       require("lazydev").setup(opts)
       require("lazydev.lsp").supports = function(client)
@@ -1217,6 +1222,9 @@ M.plugins = {
       {
         "<Leader>I",
         function()
+          if vim.lsp.inlay_hint.apply_text_edits ~= nil then
+            return vim.lsp.inlay_hint.apply_text_edits({ bufnr = 0 })
+          end
           require("inlayhint-filler").fill()
         end,
         mode = { "n", "v" },
@@ -1793,27 +1801,9 @@ M.plugins = {
       {
         "K",
         function()
-          require("hover").hover()
+          require("hover").hover({})
         end,
         desc = "Trigger hover.",
-        mode = "n",
-        noremap = true,
-      },
-      {
-        "[h",
-        function()
-          require("hover").hover_switch("previous")
-        end,
-        desc = "Previous hover provider.",
-        mode = "n",
-        noremap = true,
-      },
-      {
-        "]h",
-        function()
-          require("hover").hover_switch("next")
-        end,
-        desc = "Next hover provider.",
         mode = "n",
         noremap = true,
       },
@@ -1863,23 +1853,23 @@ M.plugins = {
       },
       {
         "<Leader>gp",
-        "<cmd>Gitsigns preview_hunk<cr>",
+        "<cmd>Gitsigns preview_hunk_inline<cr>",
         noremap = true,
         desc = "Git [p]review hunk.",
         mode = { "n", "x" },
       },
       {
-        "]g",
+        "]h",
         "<cmd>Gitsigns nav_hunk next<cr>",
         noremap = true,
         desc = "Next hunk.",
         mode = { "n" },
       },
       {
-        "[g",
+        "[h",
         "<cmd>Gitsigns nav_hunk prev<cr>",
         noremap = true,
-        desc = "Next hunk.",
+        desc = "Previous hunk.",
         mode = { "n" },
       },
     },
@@ -1900,6 +1890,7 @@ M.plugins = {
         ignore_whitespace = false,
         virt_text_priority = 100,
       },
+      preview_config = { border = "solid" },
     },
     config = function(_, opts)
       require("gitsigns").setup(opts)
@@ -1918,11 +1909,6 @@ M.plugins = {
     },
   },
   {
-    "elanmed/fzf-lua-frecency.nvim",
-    dependencies = { "ibhagwan/fzf-lua" },
-    config = true,
-  },
-  {
     "ibhagwan/fzf-lua",
     dependencies = {
       "echasnovski/mini.icons",
@@ -1935,7 +1921,7 @@ M.plugins = {
           width = 0.90,
           preview = {
             border = "solid",
-            default = ((vim.fn.executable("bat") == 1) and "bat") or "cat",
+            default = "builtin",
             horizontal = "right:55%",
             vertical = "down:65%",
           },
@@ -1948,6 +1934,9 @@ M.plugins = {
           files = {
             enter = require("keymaps.utils").fzf_lua_jump_action,
           },
+        },
+        previewers = {
+          builtin = { snacks_image = { enabled = true, render_inline = false } },
         },
       })
     end,
@@ -1981,7 +1970,10 @@ M.plugins = {
       {
         "<Leader>a",
         function()
-          require("fzf-lua").lsp_code_actions({ silent = true })
+          require("fzf-lua").lsp_code_actions({
+            silent = true,
+            winopts = { preview = { horizontal = "right:65%", vertical = "down:75%" } },
+          })
         end,
         remap = false,
         mode = { "n", "x" },
@@ -2588,13 +2580,23 @@ The user's currently working in a project located at `%s`. Take this into consid
       opts.adapters = {
         acp = {
           gemini_cli = function()
-            local mcp_server = {}
             return require("codecompanion.adapters").extend("gemini_cli", {
               commands = {
-                default = { "gemini", "--experimental-acp" },
+                ["Gemini 2.5 Pro"] = {
+                  "gemini",
+                  "--experimental-acp",
+                  "-m",
+                  "gemini-2.5-pro",
+                },
+                ["Gemini 2.5 Flash"] = {
+                  "gemini",
+                  "--experimental-acp",
+                  "-m",
+                  "gemini-2.5-flash",
+                },
               },
               defaults = {
-                -- auth_method = "gemini-api-key",
+                auth_method = "oauth-personal",
                 mcpServers = require("mcphub").get_hub_instance():get_servers(),
                 timeout = 20000, -- 20 seconds
               },
@@ -2893,6 +2895,7 @@ The user's currently working in a project located at `%s`. Take this into consid
     opts = function()
       return {
         backend = "kitty",
+        processor = "magick_cli",
         max_width_window_percentage = 200 / 3,
         integrations = {
           markdown = {
@@ -2904,6 +2907,49 @@ The user's currently working in a project located at `%s`. Take this into consid
         editor_only_render_when_focused = true,
       }
     end,
+  },
+  {
+    "3rd/diagram.nvim",
+    ft = { "markdown", "codecompanion" },
+    dependencies = {
+      "3rd/image.nvim", -- you'd probably want to configure image.nvim manually instead of doing this
+    },
+    cond = function()
+      return vim.fn.executable("magick") == 1
+        and utils.no_vscode()
+        and utils.no_neovide()
+        and vim.fn.executable("lua5.1") == 1
+    end,
+    opts = { -- you can just pass {}, defaults below
+      events = {
+        render_buffer = { "InsertLeave", "BufWinEnter", "TextChanged" },
+        clear_buffer = { "BufLeave", "InsertEnter" },
+      },
+      renderer_options = {
+        mermaid = {
+          background = nil, -- nil | "transparent" | "white" | "#hex"
+          theme = "forest", -- nil | "default" | "dark" | "forest" | "neutral"
+          scale = 1, -- nil | 1 (default) | 2  | 3 | ...
+          width = nil, -- nil | 800 | 400 | ...
+          height = nil, -- nil | 600 | 300 | ...
+        },
+        plantuml = {
+          charset = nil,
+        },
+        d2 = {
+          theme_id = nil,
+          dark_theme_id = nil,
+          scale = nil,
+          layout = nil,
+          sketch = nil,
+        },
+        gnuplot = {
+          size = nil, -- nil | "800,600" | ...
+          font = nil, -- nil | "Arial,12" | ...
+          theme = nil, -- nil | "light" | "dark" | custom theme string
+        },
+      },
+    },
   },
   {
     "jsongerber/thanks.nvim",
