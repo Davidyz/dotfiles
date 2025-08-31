@@ -370,4 +370,35 @@ for exe, ls in pairs(conditionals) do
     end
   end
 end
+
+---@param opts {bufnr: integer?, methods: string|string[]|nil, strategy: "all"|"any"|nil}
+---@return vim.lsp.Client[]
+function M.get_lsp_clients(opts)
+  return vim
+    .iter(vim.lsp.get_clients({ bufnr = opts.bufnr }))
+    :filter(
+      ---@param cli vim.lsp.Client
+      function(cli)
+        if opts.methods == nil then
+          -- no constraint
+          return true
+        elseif type(opts.methods) == "string" then
+          -- same as `vim.lsp.get_clients`
+          return cli:supports_method(tostring(opts.methods), opts.bufnr)
+        else
+          local iter = vim.iter(opts.methods)
+          local strategy = opts.strategy or "any"
+          assert(strategy == "any" or strategy == "all")
+          return iter[strategy](
+            iter,
+            ---@param method string
+            function(method)
+              return cli:supports_method(method, opts.bufnr)
+            end
+          )
+        end
+      end
+    )
+    :totable()
+end
 return M

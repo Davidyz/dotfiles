@@ -1,4 +1,7 @@
 local api = vim.api
+local _utils = require("_utils")
+local lsp = vim.lsp
+
 return {
   {
     "xzbdmw/colorful-menu.nvim",
@@ -108,7 +111,7 @@ return {
         implementation = { enabled = true },
         symbol_filter = function(ctx)
           return function(symbol)
-            if ctx.method == vim.lsp.protocol.Methods.textDocument_references then
+            if ctx.method == lsp.protocol.Methods.textDocument_references then
               return string.find(symbol.uri, "tests") == nil
             else
               return true
@@ -182,45 +185,53 @@ return {
         require("hover.providers.dap")
         require("hover.providers.diagnostic")
 
-        local peek_supported_capabilities = {
-          vim.lsp.protocol.Methods.textDocument_declaration,
-          vim.lsp.protocol.Methods.textDocument_implementation,
-          vim.lsp.protocol.Methods.textDocument_definition,
+        ---@type lsp.protocol.Method[]
+        local peek_supported_methods = {
+          lsp.protocol.Methods.textDocument_declaration,
+          lsp.protocol.Methods.textDocument_implementation,
+          lsp.protocol.Methods.textDocument_definition,
         }
         require("hover").register({
           name = "LSP Peek",
           priority = 1000,
           enabled = function(bufnr)
-            return vim.iter(vim.lsp.get_clients({ bufnr = bufnr })):any(
-              ---@param cli vim.lsp.Client
-              function(cli)
-                return vim.iter(peek_supported_capabilities):any(function(method)
-                  return cli:supports_method(method, bufnr)
-                end)
-              end
-            )
+            return #_utils.get_lsp_clients({
+              bufnr = bufnr,
+              methods = peek_supported_methods,
+              strategy = "any",
+            }) ~= 0
           end,
           execute = function(opts, done)
-            local finished = false
-            for _, method in ipairs(peek_supported_capabilities) do
-              if
-                vim.iter(vim.lsp.get_clients({ bufnr = opts.bufnr })):any(
-                  ---@param cli vim.lsp.Client
-                  function(cli)
-                    return cli:supports_method(method, opts.bufnr)
-                  end
-                )
-              then
-                vim.lsp.buf_request(opts.bufnr, method, function(client, _bufnr)
-                  return vim.lsp.util.make_position_params(0, client.offset_encoding)
-                end, function(err, result, context, config)
+            ---@type {client: lsp.Client, method: lsp.protocol.Method}[]
+            local combinations = {}
+
+            for _, client in
+              ipairs(_utils.get_lsp_clients({
+                bufnr = opts.bufnr,
+                methods = peek_supported_methods,
+                strategy = "any",
+              }))
+            do
+              for _, method in ipairs(peek_supported_methods) do
+                if client:supports_method(method, opts.bufnr) then
+                  table.insert(combinations, { client = client, method = method })
+                end
+              end
+            end
+
+            ---@param idx? integer
+            ---@param comb {client: lsp.Client, method: lsp.protocol.Method}
+            local function do_peek(idx, comb)
+              if idx == nil or comb == nil then
+                return pcall(done, false)
+              end
+              local method = comb.method
+              comb.client:request(
+                method,
+                lsp.util.make_position_params(0, comb.client.offset_encoding),
+                function(err, result, context, config)
                   if result == nil or vim.tbl_isempty(result) then
-                    if not finished then
-                      finished = true
-                      return pcall(done, false)
-                    else
-                      return
-                    end
+                    return pcall(do_peek, next(combinations, idx))
                   end
                   local loc = result
                   if vim.islist(result) then
@@ -229,12 +240,7 @@ return {
                   loc.uri = loc.uri or loc.targetUri
                   loc.range = loc.range or loc.targetRange
                   if loc.uri == nil or loc.range == nil then
-                    if not finished then
-                      finished = true
-                      return pcall(done, false)
-                    else
-                      return
-                    end
+                    return pcall(do_peek, next(combinations, idx))
                   end
                   local peek_bufnr = vim.uri_to_bufnr(loc.uri)
                   vim.fn.bufload(peek_bufnr)
@@ -249,7 +255,7 @@ return {
                   local peek_path = vim.fs.abspath(api.nvim_buf_get_name(peek_bufnr))
                   local orig_path = vim.fs.abspath(api.nvim_buf_get_name(opts.bufnr))
                   if orig_path ~= peek_path then
-                    local cli = vim.lsp.get_client_by_id(context.client_id)
+                    local cli = lsp.get_client_by_id(context.client_id)
                     if cli and cli.config.root_dir then
                       peek_path =
                         string.format([[%s]], vim.fs.normalize(peek_path)):gsub(
@@ -302,25 +308,19 @@ return {
                     )
                   )
                   table.insert(md_lines, "```")
-                  if not finished then
-                    finished = true
-                    return pcall(done, {
-                      lines = md_lines,
-                      filetype = "markdown",
-                    })
-                  else
-                    return
-                  end
-                end)
-                return
-              end
+                  return pcall(done, {
+                    lines = md_lines,
+                    filetype = "markdown",
+                  })
+                end,
+                opts.bufnr
+              )
             end
+            do_peek(next(combinations))
           end,
         })
       end,
-      preview_opts = {
-        -- border = "double",
-      },
+      preview_opts = {},
       preview_window = false,
       title = true,
       mouse_providers = {
@@ -335,6 +335,13 @@ return {
           require("hover").hover({})
         end,
         desc = "Trigger hover.",
+        mode = "n",
+        noremap = true,
+      },
+      {
+        "W",
+        "<cmd>wincmd w<cr>",
+        desc = "Focus floating window",
         mode = "n",
         noremap = true,
       },
