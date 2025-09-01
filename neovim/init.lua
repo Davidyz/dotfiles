@@ -82,3 +82,6 @@ local items = {
 }
 utils.tryRequire(items, 2)
 require("lsp")
+if vim.g.neovide then
+  pcall(require, "neovide")
+end

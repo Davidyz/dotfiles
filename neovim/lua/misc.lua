@@ -62,7 +62,6 @@ if vim.fn.has("gui_running") == 0 and vim.fn.has("termguicolors") == 0 then
   vim.api.nvim_set_option_value("t_Co", { 256 }, {})
 end
 
-vim.opt.guifont = { "CaskaydiaCove Nerd Font Mono", "Monospace" }
 vim.o.updatetime = 50
 vim.o.laststatus = 3
 vim.o.winborder = "none"
