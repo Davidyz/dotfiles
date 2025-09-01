@@ -44,4 +44,5 @@ end, {
   noremap = true,
 })
 
+km_utils.setKeymap("n", "<BS>", "za", { noremap = true, desc = "Toggle fold." })
 -- km_utils.setKeymap("n", "q", ":q<CR>", { noremap = true })

@@ -32,7 +32,10 @@ local original_on_attach = function(client, bufnr)
   end
 
   if client:supports_method(methods.textDocument_foldingRange, bufnr) then
-    local win = vim.fn.bufwinid(bufnr) or 0
+    local win = vim.fn.bufwinid(bufnr)
+    if win < 0 then
+      win = 0
+    end
     vim.wo[win][0].foldexpr = "v:lua.lsp.foldexpr()"
   end
 end
