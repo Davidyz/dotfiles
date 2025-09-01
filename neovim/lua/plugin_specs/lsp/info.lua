@@ -10,8 +10,9 @@ return {
   {
     "SmiteshP/nvim-navic",
     opts = {
-      lsp = { auto_attach = true },
+      lsp = { auto_attach = true, preference = { "ty" } },
       icons = require("_utils").codicons,
+      click = true,
     },
     event = "LspAttach",
     cond = require("_utils").no_vscode,

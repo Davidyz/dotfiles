@@ -27,10 +27,6 @@ local original_on_attach = function(client, bufnr)
     lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
 
-  if client:supports_method(methods.textDocument_documentSymbol, bufnr) then
-    require("nvim-navic").attach(client, bufnr)
-  end
-
   if client:supports_method(methods.textDocument_foldingRange, bufnr) then
     local win = vim.fn.bufwinid(bufnr)
     if win < 0 then
