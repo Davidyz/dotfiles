@@ -1,0 +1,5 @@
+[font]
+normal = []
+size = 11.5
+[font.features]
+"*" = ["-calt"]

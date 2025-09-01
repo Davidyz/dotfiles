@@ -1,2 +1,4 @@
 [neovim.files]
 "neovim/" = { target = "~/AppData/Local/nvim/", type = "symbolic" }
+[neovide.files]
+"neovide/" = { target = "~/AppData/Roaming/nvide/", type = "symbolic" }

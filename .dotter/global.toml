@@ -1,6 +1,9 @@
 [neovim.files]
 "neovim/" = { target = "~/.config/nvim/", type = "symbolic" }
 
+[neovide.files]
+"neovide/" = { target = "~/.config/neovide/", type = "symbolic" }
+
 [hyprland.files]
 "hyprland/" = "~/.config/hypr/"
 
