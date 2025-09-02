@@ -43,3 +43,6 @@
 [glow.files]
 "glow/glow.yml" = { target = "~/.config/glow/glow.yml", type = "template" }
 "glow/catppuccin-mocha.json" = { target = "~/.config/glow/catppuccin-mocha.json", type = "symbolic" }
+
+[kitty.files]
+"kitty" = { target = "~/.config/kitty/", type = "symbolic" }

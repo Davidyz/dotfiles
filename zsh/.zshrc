@@ -465,3 +465,5 @@ __wezterm_osc52_precmd () {
   printf "\033]7;file://%s%s\033\\" "${HOSTNAME}" "${PWD}"
 }
 add-zsh-hook precmd __wezterm_osc52_precmd
+
+[[ "$TERMINFO" == *kitty* ]] && command -v kitten > /dev/null && alias ssh='kitten ssh'
