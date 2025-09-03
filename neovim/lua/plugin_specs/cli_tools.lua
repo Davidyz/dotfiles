@@ -40,6 +40,7 @@ return {
     "stevearc/conform.nvim",
     version = "*",
     opts = function(_, opts)
+      ---@type conform.setupOpts
       opts = vim.tbl_deep_extend("force", opts or {}, {
         formatters_by_ft = {
           lua = { "stylua" },
@@ -48,15 +49,25 @@ return {
           bash = { "shfmt" },
           json = { "fixjson" },
           json5 = { "prettier" },
-          python = {},
+          python = function()
+            if vim.fn.executable("black") == 1 then
+              return { "black" }
+            else
+              return {}
+            end
+          end,
           c = { "clang-format" },
           cpp = { "clang-format" },
+          markdown = { "injected" },
         },
-        formatters = { prettier = { prepend_args = { "--quote-props", "preserve" } } },
+        formatters = {
+          prettier = { prepend_args = { "--quote-props", "preserve" } },
+          injected = {
+            ignore_errors = true,
+            -- lang_to_formatters = { lua = "stylua" },
+          },
+        },
       })
-      if vim.fn.executable("black") == 1 then
-        vim.list_extend(opts.formatters_by_ft.python, { "black" })
-      end
       return opts
     end,
     config = function(_, opts)

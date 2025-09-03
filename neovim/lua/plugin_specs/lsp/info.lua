@@ -5,7 +5,7 @@ local lsp = vim.lsp
 return {
   {
     "xzbdmw/colorful-menu.nvim",
-    opts = { max_width = 0.3 },
+    opts = {},
   },
   {
     "SmiteshP/nvim-navic",

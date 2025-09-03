@@ -1,6 +1,6 @@
 local fonts = {
   "Maple\\ Mono\\ Normal\\ NL\\ NF\\ CN",
-  "Cascadia\\ Mono",
+  "Cascadia\\ Mono\\ NL",
   "Symbols\\ Nerd\\ Font\\ Mono",
   "codicon",
   "Noto\\ Sans\\ Mono",

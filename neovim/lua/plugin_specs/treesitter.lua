@@ -1,3 +1,6 @@
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -46,6 +49,71 @@ return {
           end
           return opts
         end,
+      },
+    },
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    opts = { move = { set_jumps = true } },
+    event = "FileType",
+    keys = {
+      {
+        "]f",
+        function()
+          require("nvim-treesitter-textobjects.move").goto_next_start(
+            "@function.outer",
+            "textobjects"
+          )
+        end,
+        desc = "Next function",
+      },
+      {
+        "[f",
+        function()
+          require("nvim-treesitter-textobjects.move").goto_previous_start(
+            "@function.outer",
+            "textobjects"
+          )
+        end,
+        desc = "Previous function",
+      },
+
+      {
+        "]c",
+        function()
+          require("nvim-treesitter-textobjects.move").goto_next_start(
+            "@class.outer",
+            "textobjects"
+          )
+        end,
+        desc = "Next class",
+      },
+      {
+        "[c",
+        function()
+          require("nvim-treesitter-textobjects.move").goto_previous_start(
+            "@class.outer",
+            "textobjects"
+          )
+        end,
+        desc = "Previous class",
+      },
+
+      {
+        "<leader>>",
+        function()
+          require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
+        end,
+        desc = "Swap with next parameter",
+      },
+      {
+        "<leader><",
+        function()
+          require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner")
+        end,
+        desc = "Swap with previous parameter",
       },
     },
   },
