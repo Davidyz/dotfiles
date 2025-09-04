@@ -1,5 +1,8 @@
 ---@module "lazy"
 
+---@module "vectorcode"
+---@module "codecompanion"
+
 ---@type LazySpec[]
 return {
   {
@@ -32,7 +35,7 @@ return {
   {
     "olimorris/codecompanion.nvim",
     -- dir = "~/git/codecompanion.nvim/",
-    version = "*",
+    -- version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -53,7 +56,7 @@ return {
       "CodeCompanionChat",
       "CodeCompanionActions",
     },
-    opts = function(_, opts)
+    opts = function(plugin, opts)
       opts = opts or {}
       opts.opts = opts.opts or {}
       opts.opts.system_prompt = function(_)
@@ -218,6 +221,16 @@ The user's currently working in a project located at `%s`. Take this into consid
           enabled = vim.fn.executable("vectorcode") == 1,
           ---@type VectorCode.CodeCompanion.ExtensionOpts
           opts = {
+            prompt_library = {
+              ["CodeCompanion Assistant"] = {
+                project_root = plugin.dir,
+                file_patterns = { "lua/codecompanion/**.lua", "doc/**/*.md" },
+              },
+              ["Kitty Assistant"] = {
+                project_root = "/usr/share/doc/kitty/",
+                file_patterns = { "**/*.txt" },
+              },
+            },
             tool_group = { collapse = true },
             tool_opts = {
               ---@type VectorCode.CodeCompanion.ToolOpts
@@ -229,9 +242,8 @@ The user's currently working in a project located at `%s`. Take this into consid
                 default_num = { document = 5, chunk = 10 },
                 max_num = { document = 10, chunk = 20 },
                 chunk_mode = true,
-                ---@type VectorCode.CodeCompanion.SummariseOpts
                 summarise = {
-                  enabled = true,
+                  enabled = false,
                   system_prompt = function(s)
                     return s
                   end,
@@ -244,6 +256,7 @@ The user's currently working in a project located at `%s`. Take this into consid
                       opts = { stream = false },
                     })
                   end,
+                  query_augmented = true,
                 },
               },
             },
