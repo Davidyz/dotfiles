@@ -196,11 +196,12 @@ return {
           name = "LSP Peek",
           priority = 1000,
           enabled = function(bufnr)
-            return #_utils.get_lsp_clients({
+            local clis = _utils.get_lsp_clients({
               bufnr = bufnr,
               methods = peek_supported_methods,
               strategy = "any",
-            }) ~= 0
+            })
+            return #clis ~= 0
           end,
           execute = function(opts, done)
             ---@type {client: vim.lsp.Client, method: vim.lsp.protocol.Method}[]
@@ -276,7 +277,10 @@ return {
                   end
                   vim.list_extend(md_lines, {
                     "```" .. ft,
-                    string.format(vim.bo[peek_bufnr].commentstring, method),
+                    string.format(
+                      vim.bo[peek_bufnr].commentstring,
+                      string.format("%s from %s", method, comb.client.name)
+                    ),
                   })
                   local line_num = math.ceil(api.nvim_win_get_height(0) * 0.2)
                   local ts_node = vim.treesitter.get_node({
@@ -321,7 +325,7 @@ return {
           end,
         })
       end,
-      preview_opts = {},
+      preview_opts = { border = "solid" },
       preview_window = false,
       title = true,
       mouse_providers = {
@@ -333,7 +337,7 @@ return {
       {
         "K",
         function()
-          require("hover").hover({})
+          (require("hover").open or require("hover").hover)({})
         end,
         desc = "Trigger hover.",
         mode = "n",

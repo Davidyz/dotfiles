@@ -35,7 +35,7 @@ return {
   {
     "olimorris/codecompanion.nvim",
     -- dir = "~/git/codecompanion.nvim/",
-    -- version = "*",
+    version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",

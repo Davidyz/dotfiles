@@ -39,7 +39,7 @@ return {
     opts = { blacklisted_servers = {} },
     keys = {
       {
-        "<Leader>I",
+        "<Leader>if",
         function()
           if vim.lsp.inlay_hint.apply_text_edits ~= nil then
             return vim.lsp.inlay_hint.apply_text_edits({ bufnr = 0 })
@@ -47,7 +47,7 @@ return {
           require("inlayhint-filler").fill()
         end,
         mode = { "n", "v" },
-        desc = "Insert inlay hint to the buffer",
+        desc = "[I]nlayhint [f]ill",
       },
     },
   },

@@ -3,5 +3,10 @@
     "prefix": "lazy",
     "body": "---@module \"lazy\"\n\n---@type LazySpec[]\nreturn {$0}",
     "description": "Lazy plugin spec."
+  },
+  "lspconfig": {
+    "prefix": "lspconfig",
+    "body": "---@type vim.lsp.Config\nreturn {}",
+    "description": "`vim.lsp.Config` object."
   }
 }

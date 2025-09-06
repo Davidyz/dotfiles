@@ -119,7 +119,7 @@ return {
   },
   {
     "andymass/vim-matchup",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "FileType",
     init = function()
       vim.g.matchup_matchparen_offscreen = {
         method = "popup",
@@ -287,7 +287,7 @@ return {
   {
     "kylechui/nvim-surround",
     opts = {},
-    event = { "BufReadPost", "BufNewFile" },
+    event = "FileType",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },
