@@ -1,16 +1,35 @@
 ---@module "lazy"
 
+local api = vim.api
+
 ---@type LazySpec[]
 return {
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       pcall(function()
         require("nvim-dap-repl-highlights").setup()
       end)
       require("nvim-treesitter").setup()
-      require("nvim-treesitter").install({ "dap_repl" })
+
+      vim.api.nvim_create_autocmd("User", {
+        group = vim.api.nvim_create_augroup("nvim_dap_repl_highlights", {}),
+        pattern = "TSUpdate",
+        callback = function()
+          require("nvim-treesitter.parsers").kitty = {
+            install_info = {
+              url = "https://github.com/OXY2DEV/tree-sitter-kitty",
+              files = { "src/parser.c" },
+              branch = "main",
+            },
+          }
+        end,
+      })
+
+      require("nvim-treesitter").install({ "dap_repl", "kitty" })
+
       vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
     build = ":TSUpdate",
