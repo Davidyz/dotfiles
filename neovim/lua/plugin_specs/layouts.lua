@@ -37,7 +37,6 @@ return {
     opts = { window = { open = "tab" } },
     lazy = false,
     priority = 1001,
-    commit = "d3e3529",
   },
   {
     "nvim-focus/focus.nvim",

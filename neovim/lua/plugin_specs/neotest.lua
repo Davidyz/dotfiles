@@ -4,7 +4,6 @@
 return {
   {
     "nvim-neotest/neotest",
-    commit = "52fca67", -- workaround for `test not found` bug.
     config = function()
       local default_python = require("venv-selector").python()
         or vim.fs.joinpath(
