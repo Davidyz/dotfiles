@@ -1,3 +1,5 @@
+local api = vim.api
+
 return {
   {
     "ibhagwan/fzf-lua",
@@ -6,6 +8,7 @@ return {
     },
     cmd = { "FzfLua" },
     opts = function(_, opts)
+      local fzf_lua_jump_action = require("keymaps.utils").fzf_lua_jump_action
       return vim.tbl_deep_extend("force", opts or {}, {
         winopts = {
           border = "solid",
@@ -23,8 +26,9 @@ return {
         },
         actions = {
           files = {
-            enter = require("keymaps.utils").fzf_lua_jump_action,
+            enter = fzf_lua_jump_action,
           },
+          buffers = { enter = fzf_lua_jump_action },
         },
         previewers = {
           builtin = { snacks_image = { enabled = true, render_inline = false } },
@@ -43,8 +47,11 @@ return {
         return { winopts = { height = h, width = 0.60, row = 0.40 } }
       end)
       require("fzf-lua").setup(opts)
-      vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
-      vim.api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
+      api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
+      api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
+      api.nvim_create_user_command("FzfLuaNotification", function(args)
+        return fzf_notification()
+      end, {})
     end,
     keys = {
       {

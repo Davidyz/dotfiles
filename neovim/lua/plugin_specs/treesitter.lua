@@ -14,11 +14,13 @@ return {
       end)
       require("nvim-treesitter").setup()
 
-      vim.api.nvim_create_autocmd("User", {
-        group = vim.api.nvim_create_augroup("nvim_dap_repl_highlights", {}),
+      api.nvim_create_autocmd("User", {
+        group = api.nvim_create_augroup("nvim_dap_repl_highlights", {}),
         pattern = "TSUpdate",
         callback = function()
           require("nvim-treesitter.parsers").kitty = {
+            tier = 2,
+            ---@diagnostic disable-next-line: missing-fields
             install_info = {
               url = "https://github.com/OXY2DEV/tree-sitter-kitty",
               files = { "src/parser.c" },
@@ -146,13 +148,13 @@ return {
         border = "none",
         highlight = "FidgetNormal",
       }
-      vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
+      api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         callback = function()
-          vim.api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
-          vim.api.nvim_set_hl(0, "MatchupVirtualText", {
+          api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
+          api.nvim_set_hl(0, "MatchupVirtualText", {
             bold = true,
             italic = true,
-            fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg,
+            fg = api.nvim_get_hl(0, { name = "Comment" }).fg,
           })
         end,
       })
