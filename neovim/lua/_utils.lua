@@ -401,4 +401,35 @@ function M.get_lsp_clients(opts)
     )
     :totable()
 end
+
+---@param t number
+---@return string
+function M.make_display_time(t)
+  local curr_time = assert(vim.uv.clock_gettime("realtime"))
+  local now = curr_time.nsec / 1e9 + curr_time.sec
+
+  local total_seconds = math.floor((now - t))
+
+  local digits = {}
+  while total_seconds > 0 do
+    table.insert(digits, 1, total_seconds % 60)
+    total_seconds = math.floor(total_seconds / 60)
+  end
+
+  if #digits == 1 then
+    return string.format("%ds", digits[1])
+  end
+  digits = vim
+    .iter(digits)
+    :map(function(d)
+      if d < 10 then
+        return "0" .. tostring(d)
+      else
+        return tostring(d)
+      end
+    end)
+    :totable()
+  return table.concat(digits, ":")
+end
+
 return M

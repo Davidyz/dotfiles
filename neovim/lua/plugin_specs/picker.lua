@@ -1,4 +1,61 @@
 local api = vim.api
+local utils = require("_utils")
+
+local function fzf_notification()
+  ---@type snacks.notifier.Notif[]
+  local notifications = require("snacks").notifier.get_history({ reverse = false })
+  ---@type table<string, snacks.notifier.Notif>
+  local entries = {}
+  for _, noti in ipairs(notifications) do
+    local first_line = noti.msg:gsub("\n.*", "")
+    entries[string.format("%s %s", utils.make_display_time(noti.added), first_line)] =
+      noti
+  end
+
+  local fzf_lua = require("fzf-lua")
+  local builtin = require("fzf-lua.previewer.builtin")
+
+  -- Inherit from "base" instead of "buffer_or_file"
+  local MyPreviewer = builtin.base:extend()
+
+  function MyPreviewer:new(o, opts, fzf_win)
+    MyPreviewer.super.new(self, o, opts, fzf_win)
+    setmetatable(self, MyPreviewer)
+    return self
+  end
+
+  function MyPreviewer:populate_preview_buf(entry_str)
+    local tmpbuf = self:get_tmp_buffer()
+    local replacement = {
+      string.format("%s", entry_str),
+    }
+    local entry = entries[entry_str]
+    if entry then
+      replacement = vim.split(entry.msg, "\n", { plain = true, trimempty = false })
+    end
+    api.nvim_buf_set_lines(tmpbuf, 0, -1, false, replacement)
+    if entry.ft ~= nil then
+      vim.schedule(function()
+        vim.bo[tmpbuf].filetype = entry.ft
+      end)
+    end
+    self:set_preview_buf(tmpbuf)
+    self.win:update_preview_scrollbar()
+  end
+
+  function MyPreviewer:gen_winopts()
+    local new_winopts = {
+      wrap = false,
+      number = true,
+    }
+    return vim.tbl_extend("force", self.winopts, new_winopts)
+  end
+
+  return fzf_lua.fzf_exec(vim.tbl_keys(entries), {
+    previewer = MyPreviewer,
+    prompt = "Notifications > ",
+  })
+end
 
 return {
   {
@@ -49,7 +106,7 @@ return {
       require("fzf-lua").setup(opts)
       api.nvim_set_hl(0, "FzfLuaBorder", { link = "FzfLuaNormal" })
       api.nvim_set_hl(0, "FzfLuaTitle", { link = "FzfLuaBufName" })
-      api.nvim_create_user_command("FzfLuaNotification", function(args)
+      api.nvim_create_user_command("FzfLuaNotification", function()
         return fzf_notification()
       end, {})
     end,
