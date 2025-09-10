@@ -15,7 +15,7 @@ return {
       require("nvim-treesitter").setup()
 
       api.nvim_create_autocmd("User", {
-        group = api.nvim_create_augroup("nvim_dap_repl_highlights", {}),
+        group = api.nvim_create_augroup("nvim-kitty-treesitter", {}),
         pattern = "TSUpdate",
         callback = function()
           require("nvim-treesitter.parsers").kitty = {
