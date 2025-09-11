@@ -1,6 +1,6 @@
 local api = vim.api
 local utils = require("_utils")
-
+local keymap_utils = require("keymaps.utils")
 local function fzf_notification()
   ---@type snacks.notifier.Notif[]
   local notifications = require("snacks").notifier.get_history({ reverse = false })
@@ -54,6 +54,29 @@ local function fzf_notification()
   return fzf_lua.fzf_exec(vim.tbl_keys(entries), {
     previewer = MyPreviewer,
     prompt = "Notifications > ",
+    actions = {
+      ["enter"] = function(selected)
+        for _, line in ipairs(selected) do
+          local entry = assert(entries[line])
+          local temp_buf = api.nvim_create_buf(false, true)
+          api.nvim_buf_set_lines(
+            temp_buf,
+            0,
+            -1,
+            false,
+            vim.split(entry.msg, "\n", { plain = true, trimempty = false })
+          )
+
+          if entry.ft ~= nil then
+            vim.schedule(function()
+              vim.bo[temp_buf].filetype = entry.ft
+            end)
+          end
+          vim.cmd("tabnew")
+          api.nvim_set_current_buf(temp_buf)
+        end
+      end,
+    },
   })
 end
 
@@ -65,7 +88,7 @@ return {
     },
     cmd = { "FzfLua" },
     opts = function(_, opts)
-      local fzf_lua_jump_action = require("keymaps.utils").fzf_lua_jump_action
+      local fzf_lua_jump_action = keymap_utils.fzf_lua_jump_action
       return vim.tbl_deep_extend("force", opts or {}, {
         winopts = {
           border = "solid",
