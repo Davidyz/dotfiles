@@ -166,6 +166,7 @@ The user's currently working in a project located at `%s`. Take this into consid
                 url = os.getenv("OLLAMA_HOST"),
                 api_key = "TERM",
               },
+              name = "Ollama",
               schema = {
                 num_ctx = { default = 64000 },
                 -- model = { default = {"qwen3:8b-q4_K_M-dynamic-thinking"} },
