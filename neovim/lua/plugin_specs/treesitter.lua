@@ -14,23 +14,7 @@ return {
       end)
       require("nvim-treesitter").setup()
 
-      api.nvim_create_autocmd("User", {
-        group = api.nvim_create_augroup("nvim-kitty-treesitter", {}),
-        pattern = "TSUpdate",
-        callback = function()
-          require("nvim-treesitter.parsers").kitty = {
-            tier = 2,
-            ---@diagnostic disable-next-line: missing-fields
-            install_info = {
-              url = "https://github.com/OXY2DEV/tree-sitter-kitty",
-              files = { "src/parser.c" },
-              branch = "main",
-            },
-          }
-        end,
-      })
-
-      require("nvim-treesitter").install({ "dap_repl", "kitty" })
+      require("nvim-treesitter").install({ "dap_repl" })
 
       vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
@@ -358,7 +342,12 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = function()
       vim.treesitter.language.register("markdown", "vimwiki")
-      return { file_types = { "markdown", "vimwiki", "codecompanion" } }
+      return {
+        file_types = { "markdown", "vimwiki", "codecompanion" },
+        completions = {
+          lsp = { enabled = true },
+        },
+      }
     end,
     ft = { "markdown", "vimwiki", "codecompanion" },
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },
