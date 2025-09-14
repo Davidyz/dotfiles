@@ -1,3 +1,5 @@
+---@module "lualine"
+
 local utils = require("_utils")
 
 vim.opt.laststatus = 3
@@ -84,6 +86,9 @@ local diffview_label = function()
     ---@module 'diffview'
 
     local view = require("diffview.lib").get_current_view()
+    if view == nil then
+      return ""
+    end
     local bufnr = vim.api.nvim_get_current_buf()
     local rev_label = ""
     local path = ""
@@ -134,16 +139,36 @@ return {
       sections = {
         lualine_a = { { "mode" } },
         lualine_b = {
-          "branch",
+          {
+            "branch",
+            fmt = function(str, ctx)
+              local git_root = vim.fs.root(0, { ".git" })
+              if git_root then
+                git_root = git_root:gsub(vim.env.HOME, "~")
+                return string.format("%s @ %s", str, git_root)
+              end
+              return str
+            end,
+          },
           "diff",
           {
             "diagnostics",
-            sources = { "nvim_lsp" },
+            sources = { "nvim_lsp", "nvim_diagnostic" },
           },
         },
         lualine_c = {
           get_context,
-          { "filename", path = 3 },
+          {
+            "filename",
+            path = 3,
+            fmt = function(str, ctx)
+              local git_root = vim.fs.root(0, { ".git" })
+              if git_root then
+                return str:gsub(git_root:gsub(vim.env.HOME, "~") .. "/", "")
+              end
+              return str
+            end,
+          },
         },
         lualine_x = { { "searchcount" }, { "progress" } },
         lualine_y = {
@@ -202,7 +227,7 @@ return {
             symbols = {
               modified = "[+]", -- Text to show when the file is modified.
             },
-
+            always_divide_middle = false,
             fmt = function(name, _)
               local ft_icon = get_devicon_for_buf()
               if ft_icon ~= "" then
