@@ -50,11 +50,33 @@ return {
           json = { "fixjson" },
           json5 = { "prettier" },
           python = function()
+            local formatters
             if vim.fn.executable("black") == 1 then
-              return { "black" }
+              formatters = { "black" }
+              if not vim.b.conform_notified_python_formatter then
+                vim.notify(
+                  string.format(
+                    "Using %s for python formatting.",
+                    table.concat(
+                      vim
+                        .iter(formatters)
+                        :map(function(s)
+                          return "`" .. s .. "`"
+                        end)
+                        :totable(),
+                      ", "
+                    )
+                  ),
+                  nil,
+                  { title = "Conform.nvim" }
+                )
+                vim.b.conform_notified_python_formatter = true
+              end
             else
-              return {}
+              formatters = { "ruff_format", "ruff_fix", "ruff_organize_imports" }
             end
+
+            return formatters
           end,
           c = { "clang-format" },
           cpp = { "clang-format" },
