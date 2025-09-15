@@ -79,6 +79,7 @@ return {
               action = ":Lazy",
               enabled = package.loaded.lazy ~= nil,
             },
+            { icon = "", key = "M", desc = "Mason", action = "<CMD>Mason<CR>" },
             { icon = " ", key = "q", desc = "Quit", action = ":q" },
           },
         },
