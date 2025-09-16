@@ -51,7 +51,13 @@ local function fzf_notification()
     return vim.tbl_extend("force", self.winopts, new_winopts)
   end
 
-  return fzf_lua.fzf_exec(vim.tbl_keys(entries), {
+  ---@type string[]
+  local entry_lines = vim.tbl_keys(entries)
+  table.sort(entry_lines, function(a, b)
+    return entries[a].added > entries[b].added
+  end)
+
+  return fzf_lua.fzf_exec(entry_lines, {
     previewer = MyPreviewer,
     prompt = "Notifications > ",
     actions = {
