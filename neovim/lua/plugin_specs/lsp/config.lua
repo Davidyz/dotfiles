@@ -1,3 +1,5 @@
+---@module "lazy"
+---@type LazySpec[]
 return {
   {
     "neovim/nvim-lspconfig",
@@ -41,17 +43,11 @@ return {
             },
           },
         },
-        enabled = function(root_dir)
-          return root_dir:match("(%w+)%/?$") ~= "neovim"
-        end,
       })
       return opts
     end,
     config = function(_, opts)
       require("lazydev").setup(opts)
-      require("lazydev.lsp").supports = function(client)
-        return client and vim.tbl_contains({ "lua_ls", "emmylua_ls" }, client.name)
-      end
     end,
     dependencies = {
       { "Bilal2453/luvit-meta" },
