@@ -1,6 +1,8 @@
 ---@module "blink.cmp"
 ---@module "lazy"
 
+local lspkind
+
 ---@return LazySpec[]
 return {
   {
@@ -11,13 +13,12 @@ return {
       "folke/lazydev.nvim",
       "moyiz/blink-emoji.nvim",
       {
-        "Kaiser-Yang/blink-cmp-dictionary",
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
-      {
         "saghen/blink.compat",
         version = "*",
       },
+      "MahanRahmati/blink-nerdfont.nvim",
+      "marcoSven/blink-cmp-yanky",
+      "archie-judd/blink-cmp-words",
     },
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
@@ -120,14 +121,20 @@ return {
             ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
           },
         },
-        signature = { enabled = true },
+        signature = {
+          enabled = true,
+          trigger = { enabled = true, show_on_insert = true, show_on_keyword = true },
+        },
         appearance = {
           use_nvim_cmp_as_default = true,
           nerd_font_variant = "mono",
           kind_icons = {
             ellipsis = false,
             text = function(ctx)
-              return require("lspkind").symbolic(ctx.kind, {
+              if lspkind == nil then
+                lspkind = require("lspkind").symbolic
+              end
+              return lspkind(ctx.kind, {
                 mode = "symbol",
               })
             end,
@@ -137,15 +144,24 @@ return {
           default = {
             "lazydev",
             "lsp",
-            "dictionary",
             "emoji",
             "path",
             "snippets",
             "buffer",
+            "nerdfont",
+            "yank",
+            "dictionary",
+            "thesaurus",
           },
           providers = {
             lsp = { async = true, score_offset = 1 },
-            snippets = { score_offset = 1 },
+            snippets = { score_offset = 1, max_items = 3 },
+            nerdfont = {
+              module = "blink-nerdfont",
+              name = "Nerd Fonts",
+              -- score_offset = 15, -- Tune by preference
+              opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
+            },
             minuet = {
               name = "minuet",
               module = "minuet.blink",
@@ -165,16 +181,37 @@ return {
               module = "blink-emoji",
               name = "Emoji",
               opts = { insert = true }, -- Insert emoji (default) or complete its name
+              max_items = 5,
+            },
+            thesaurus = {
+              name = "Synm",
+              module = "blink-cmp-words.thesaurus",
+              opts = {
+                definition_pointers = { "!", "&", "^" },
+                similarity_pointers = { "&", "^" },
+                similarity_depth = 2,
+              },
+              max_items = 5,
             },
             dictionary = {
-              module = "blink-cmp-dictionary",
               name = "Dict",
-              -- Make sure this is at least 2.
-              -- 3 is recommended
-              min_keyword_length = 3,
+              module = "blink-cmp-words.dictionary",
               opts = {
-                -- options for blink-cmp-dictionary
+                dictionary_search_threshold = 3,
+                definition_pointers = { "!", "&", "^" },
               },
+              max_items = 5,
+            },
+            yank = {
+              name = "yank",
+              module = "blink-yanky",
+              opts = {
+                minLength = 3,
+                onlyCurrentFiletype = false,
+                -- trigger_characters = { '"' },
+                kind_icon = "󰅍",
+              },
+              max_items = 3,
             },
           },
         },
@@ -184,7 +221,7 @@ return {
             auto_show = true,
             auto_show_delay_ms = 500,
             window = {
-              winblend = 30,
+              winblend = 0,
             },
           },
           trigger = {
@@ -248,5 +285,15 @@ return {
     },
     dependencies = { "rafamadriz/friendly-snippets" },
     cond = require("_utils").no_vscode,
+  },
+  {
+    "gbprod/yanky.nvim",
+    opts = {
+      ring = { history_length = 5 },
+      system_clipboard = {
+        sync_with_ring = true,
+        clipboard_register = nil,
+      },
+    },
   },
 }

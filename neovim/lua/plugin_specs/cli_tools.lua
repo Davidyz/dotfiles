@@ -1,3 +1,4 @@
+local api = vim.api
 return {
   {
     "Davidyz/executable-checker.nvim",
@@ -81,6 +82,12 @@ return {
           c = { "clang-format" },
           cpp = { "clang-format" },
           markdown = { "injected" },
+          toml = function(bufnr)
+            if api.nvim_buf_get_name(bufnr):match("pyproject%.toml$") ~= nil then
+              return { "pyproject-fmt" }
+            end
+            return { "taplo" }
+          end,
         },
         formatters = {
           prettier = { prepend_args = { "--quote-props", "preserve" } },

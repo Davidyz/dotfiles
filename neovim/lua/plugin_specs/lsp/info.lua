@@ -1,7 +1,9 @@
 local api = vim.api
-local _utils = require("_utils")
 local lsp = vim.lsp
 
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "xzbdmw/colorful-menu.nvim",
@@ -200,7 +202,7 @@ return {
       {
         "K",
         function()
-          (require("hover").open or require("hover").hover)({})
+          require("hover").open({})
         end,
         desc = "Trigger hover.",
         mode = "n",
@@ -232,6 +234,21 @@ return {
       options = {
         multiple_diag_under_cursor = true,
         show_source = true,
+      },
+    },
+  },
+  {
+
+    "saecki/live-rename.nvim",
+    opts = { hl = { others = "LspReferenceText", current = "LspReferenceText" } },
+    keys = {
+      {
+        "<Leader>rv",
+        function()
+          return require("live-rename").rename({ insert = true })
+        end,
+        mode = { "n" },
+        desc = "LSP rename",
       },
     },
   },
