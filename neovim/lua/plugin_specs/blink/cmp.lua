@@ -1,6 +1,10 @@
 ---@module "blink.cmp"
 ---@module "lazy"
 
+local function is_text()
+  return vim.list_contains(TEXT, vim.bo.filetype)
+end
+
 local lspkind
 
 ---@return LazySpec[]
@@ -192,6 +196,7 @@ return {
                 similarity_depth = 2,
               },
               max_items = 5,
+              enabled = is_text,
             },
             dictionary = {
               name = "Dict",
@@ -200,7 +205,14 @@ return {
                 dictionary_search_threshold = 3,
                 definition_pointers = { "!", "&", "^" },
               },
-              max_items = 5,
+              max_items = function()
+                if is_text() then
+                  return 5
+                else
+                  return 1
+                end
+              end,
+              enabled = is_text,
             },
             yank = {
               name = "yank",
@@ -212,6 +224,7 @@ return {
                 kind_icon = "󰅍",
               },
               max_items = 3,
+              score_offset = 0,
             },
           },
         },
