@@ -114,7 +114,7 @@ return {
                 -- it's probably the root node. skip it.
                 break
               end
-              row_start, _, row_end, _ = vim.treesitter.get_node_range(ts_node)
+              row_start, _, row_end, _ = vim.treesitter.get_node_range(assert(ts_node))
             end
 
             line_num = row_end - row_start + 1

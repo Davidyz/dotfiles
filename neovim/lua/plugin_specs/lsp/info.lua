@@ -1,5 +1,6 @@
 local api = vim.api
 local lsp = vim.lsp
+local diag = vim.diagnostic
 
 ---@module "lazy"
 
@@ -223,7 +224,7 @@ return {
     event = { "LspAttach" },
     dependencies = { "neovim/nvim-lspconfig" },
     init = function()
-      vim.diagnostic.config({
+      diag.config({
         virtual_text = false,
       })
     end,

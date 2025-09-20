@@ -1,4 +1,9 @@
 local api = vim.api
+local diag = vim.diagnostic
+
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "Davidyz/executable-checker.nvim",
@@ -50,6 +55,7 @@ return {
           bash = { "shfmt" },
           json = { "fixjson" },
           json5 = { "prettier" },
+          jinja = { "djlint" },
           python = function()
             local formatters
             if vim.fn.executable("black") == 1 then
@@ -128,6 +134,7 @@ return {
       local lint = require("lint")
       lint.linters_by_ft = {
         ["*"] = { "editorconfig-checker" },
+        python = { "ruff" },
         cmake = { "cmakelang" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },
@@ -150,6 +157,11 @@ return {
             lint.try_lint()
           end
         end,
+      })
+      diag.config({
+        float = {
+          source = true,
+        },
       })
     end,
     dependencies = { "williamboman/mason.nvim" },
