@@ -1,7 +1,7 @@
 return {
   {
     "linux-cultist/venv-selector.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "ibhagwan/fzf-lua" },
+    dependencies = { "ibhagwan/fzf-lua" },
     ft = { "python" },
     cmd = { "VenvSelect", "VenvSelectCurrent" },
     opts = function()

@@ -199,6 +199,9 @@ return {
       },
       mouse_delay = 1000,
     },
+    config = function(_, opts)
+      require("hover").config(opts)
+    end,
     keys = {
       {
         "K",
@@ -222,7 +225,6 @@ return {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
-    dependencies = { "neovim/nvim-lspconfig" },
     init = function()
       diag.config({
         virtual_text = false,

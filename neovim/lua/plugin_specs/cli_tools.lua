@@ -164,7 +164,10 @@ return {
         },
       })
     end,
-    dependencies = { "williamboman/mason.nvim" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "rachartier/tiny-inline-diagnostic.nvim",
+    },
     event = { "BufReadPost", "BufNewFile" },
   },
   {
