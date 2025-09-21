@@ -26,7 +26,7 @@ local function get_context()
   elseif user or hostname then
     result = user or hostname
   end
-  if vim.bo.filetype == "startify" and result ~= "" then
+  if vim.bo.filetype == "snacks_dashboard" and result ~= "" then
     result = result
       .. ": v"
       .. tostring(vim.version().major)
@@ -157,7 +157,12 @@ return {
           },
         },
         lualine_c = {
-          get_context,
+          {
+            get_context,
+            cond = function()
+              return vim.env.SSH_CONNECTION ~= nil
+            end,
+          },
           {
             "filename",
             path = 3,
