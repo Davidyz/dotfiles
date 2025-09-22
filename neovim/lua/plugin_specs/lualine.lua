@@ -135,6 +135,7 @@ return {
         component_separators = { left = "", right = "" },
         disabled_filetypes = {},
         globalstatus = true,
+        always_divide_middle = false,
       },
       sections = {
         lualine_a = { { "mode" } },
@@ -225,14 +226,13 @@ return {
             "tabs",
             mode = 1,
             max_length = function()
-              return vim.o.columns - 40
+              return math.floor(vim.o.columns * 0.9)
             end,
             path = 1,
             show_modified_status = true, -- Shows a symbol next to the tab name if the file has been modified.
             symbols = {
               modified = "[+]", -- Text to show when the file is modified.
             },
-            always_divide_middle = false,
             fmt = function(name, _)
               local ft_icon = get_devicon_for_buf()
               if ft_icon ~= "" then

@@ -122,28 +122,29 @@ return {
       },
     },
   },
-  {
-    "andymass/vim-matchup",
-    event = "FileType",
-    init = function()
-      vim.g.matchup_matchparen_offscreen = {
-        method = "popup",
-        fullwidth = 0,
-        border = "none",
-        highlight = "FidgetNormal",
-      }
-      api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
-        callback = function()
-          api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
-          api.nvim_set_hl(0, "MatchupVirtualText", {
-            bold = true,
-            italic = true,
-            fg = api.nvim_get_hl(0, { name = "Comment" }).fg,
-          })
-        end,
-      })
-    end,
-  },
+  -- {
+  --   "andymass/vim-matchup",
+  --   event = "FileType",
+  --   init = function()
+  --     vim.g.matchup_matchparen_offscreen = {
+  --       -- method = "popup",
+  --       method = "status_manual",
+  --       fullwidth = 0,
+  --       border = "none",
+  --       highlight = "FidgetNormal",
+  --     }
+  --     api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
+  --       callback = function()
+  --         api.nvim_set_hl(0, "MatchWord", { bold = true, italic = true })
+  --         api.nvim_set_hl(0, "MatchupVirtualText", {
+  --           bold = true,
+  --           italic = true,
+  --           fg = api.nvim_get_hl(0, { name = "Comment" }).fg,
+  --         })
+  --       end,
+  --     })
+  --   end,
+  -- },
   {
     "ThePrimeagen/refactoring.nvim",
     dependencies = {
@@ -361,5 +362,24 @@ return {
       type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
     },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    opts = function(self, opts)
+      ---@module "treesitter-context"
+      ---@type TSContext.UserConfig
+      return vim.tbl_deep_extend("force", opts or {}, {
+        enable = true,
+        min_window_height = 40,
+        max_lines = 10,
+        trim_scope = "outer",
+        -- ---@param bufnr integer
+        -- on_attach = function(bufnr)
+        --   return vim.fn.winheight(vim.fn.bufwinid(bufnr)) >= 40
+        -- end,
+      })
+    end,
+    cmd = { "TSContext" },
+    event = "FileType",
   },
 }
