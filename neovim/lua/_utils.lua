@@ -1,4 +1,5 @@
 local os = require("os")
+local api = vim.api
 local co = require("coroutine")
 
 local M = {}
@@ -87,14 +88,14 @@ end
 
 ---@param str string
 function M.getTermCode(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
+  return api.nvim_replace_termcodes(str, true, true, true)
 end
 
 function M.sendKey(str, mode, escape)
   if escape == nil then
     escape = false
   end
-  return vim.api.nvim_feedkeys(str, mode, escape)
+  return api.nvim_feedkeys(str, mode, escape)
 end
 
 ---@param item string
@@ -114,13 +115,9 @@ end
 function M.tryRequire(items, retry_count)
   if retry_count == 0 then
     vim.o.cmdheight = #items + 1
-    vim.api.nvim_echo(
-      { { "Failed to require the following files:", "None" } },
-      false,
-      {}
-    )
+    api.nvim_echo({ { "Failed to require the following files:", "None" } }, false, {})
     for _, item in ipairs(items) do
-      vim.api.nvim_echo({ { item, "None" } }, false, {})
+      api.nvim_echo({ { item, "None" } }, false, {})
     end
     return
   end
@@ -230,8 +227,8 @@ end
 M.has_selection = function()
   local mode = vim.fn.mode()
   if mode == "v" or mode == "V" or mode == "\22" then -- Normal, Line, or Block visual mode
-    local mark_start = vim.api.nvim_buf_get_mark(0, "<")
-    local mark_end = vim.api.nvim_buf_get_mark(0, ">")
+    local mark_start = api.nvim_buf_get_mark(0, "<")
+    local mark_end = api.nvim_buf_get_mark(0, ">")
 
     if mark_start[1] ~= mark_end[1] or mark_start[2] ~= mark_end[2] then
       return {
@@ -431,5 +428,74 @@ function M.make_display_time(t)
     :totable()
   return table.concat(digits, ":")
 end
+
+---@param opts {level?: string}
+function M.close_no_diagnostics(opts)
+  opts = opts or {}
+
+  ---@param level string
+  local function run(level)
+    level = string.upper(level)
+    local buffers = vim
+      .iter(api.nvim_list_bufs())
+      :filter(
+        ---@param bufnr integer
+        function(bufnr)
+          local stat = vim.uv.fs_stat(vim.uri_to_fname(vim.uri_from_bufnr(bufnr)))
+          return stat ~= nil and stat.type == "file"
+        end
+      )
+      :filter(
+        ---@param bufnr integer
+        function(bufnr)
+          local diags_levels = vim
+            .iter(vim.diagnostic.get(bufnr))
+            :map(
+              ---@param d vim.Diagnostic
+              function(d)
+                return d.severity or 4
+              end
+            )
+            :totable()
+          if #diags_levels == 0 then
+            return true
+          end
+          local most_serious = math.min(unpack(diags_levels))
+          return most_serious > vim.diagnostic.severity[level]
+        end
+      )
+      :totable()
+    for _, bufnr in ipairs(buffers) do
+      api.nvim_buf_delete(bufnr, {})
+    end
+    vim.notify(string.format("Closed %d buffers.", #buffers))
+  end
+  if opts.level ~= nil then
+    run(opts.level)
+  else
+    vim.ui.select(
+      { "ERROR", "WARN", "INFO", "HINT" },
+      { prompt = "Diagnostic Filter LEvel" },
+      function(item, _)
+        item = item or "WARN"
+        run(item)
+      end
+    )
+  end
+end
+
+api.nvim_create_user_command("CloseHealthyBufs", function(args)
+  ---@type string?
+  local level = args.args
+  if level == "" then
+    level = nil
+  end
+  M.close_no_diagnostics({ level = level })
+end, {
+  complete = function(_, _, _)
+    return { "ERROR", "WARN", "INFO", "HINT" }
+  end,
+  nargs = "?",
+})
 
 return M

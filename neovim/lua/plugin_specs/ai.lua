@@ -140,6 +140,10 @@ The user's currently working in a project located at `%s`. Take this into consid
                 mcpServers = require("mcphub").get_hub_instance():get_servers(),
                 timeout = 20000, -- 20 seconds
               },
+              env = {
+                HTTP_PROXY = vim.env.HTTP_PROXY,
+                HTTPS_PROXY = vim.env.HTTPS_PROXY,
+              },
             })
           end,
         },
@@ -184,7 +188,7 @@ The user's currently working in a project located at `%s`. Take this into consid
         },
         mcphub = { callback = "mcphub.extensions.codecompanion" },
         history = {
-          enabled = true,
+          enabled = false,
           opts = {
             keymap = "gh",
             save_chat_keymap = "sc",
@@ -194,11 +198,7 @@ The user's currently working in a project located at `%s`. Take this into consid
             auto_generate_title = true,
             continue_last_chat = false,
             delete_on_clearing_chat = false,
-            title_generation_opts = {
-              format_title = function(s)
-                return vim.trim(string.gsub(s, "<think>.*</think>", ""))
-              end,
-            },
+            title_generation_opts = {},
             summary = {
               create_summary_keymap = "gcs",
               browse_summaries_keymap = "gbs",
@@ -234,7 +234,6 @@ The user's currently working in a project located at `%s`. Take this into consid
             },
             tool_group = { collapse = true },
             tool_opts = {
-              ---@type VectorCode.CodeCompanion.ToolOpts
               ["*"] = { use_lsp = true },
               ls = {},
               vectorise = {},
@@ -244,12 +243,9 @@ The user's currently working in a project located at `%s`. Take this into consid
                 max_num = { document = 10, chunk = 20 },
                 chunk_mode = true,
                 summarise = {
-                  enabled = false,
-                  system_prompt = function(s)
-                    return s
-                  end,
+                  enabled = true,
                   adapter = function()
-                    return require("codecompanion.adapters").extend("gemini", {
+                    return require("codecompanion.adapters.http").extend("gemini", {
                       name = "Summariser",
                       schema = {
                         model = { default = "gemini-2.0-flash-lite" },
@@ -402,12 +398,14 @@ The user's currently working in a project located at `%s`. Take this into consid
         vim.system(vim.split(command, " ", { trimempty = true }), {}, nil)
       end
     end,
-    opts = function()
-      return {
+    opts = function(_, opts)
+      ---@type VectorCode.Opts
+      return vim.tbl_deep_extend("force", opts or {}, {
         async_backend = "lsp",
         notify = true,
         on_setup = { lsp = true },
         n_query = 10,
+        cli_cmds = { vectorcode = vim.fs.normalize("~/.local/bin/vectorcode") },
         timeout_ms = -1,
         async_opts = {
           events = { "BufWritePost" },
@@ -416,7 +414,7 @@ The user's currently working in a project located at `%s`. Take this into consid
           debounce = -1,
           n_query = 30,
         },
-      }
+      })
     end,
     config = function(_, opts)
       vim.lsp.config("vectorcode_server", {

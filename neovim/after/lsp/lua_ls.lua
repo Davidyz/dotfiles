@@ -1,6 +1,5 @@
 ---@type vim.lsp.Config
 return {
-  flags = { debounce_text_changes = 150 },
   settings = {
     Lua = {
       format = {
@@ -24,7 +23,8 @@ return {
       telemetry = {
         enable = false,
       },
-      hint = { enable = true },
+      diagnostics = { workspaceEvent = "OnSave" },
+      hint = { enable = true, setType = true },
     },
   },
   on_attach = function(client, bufnr)

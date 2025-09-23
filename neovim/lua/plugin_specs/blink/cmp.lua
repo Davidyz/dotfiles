@@ -160,6 +160,10 @@ return {
           providers = {
             lsp = { async = true, score_offset = 1 },
             snippets = { score_offset = 1, max_items = 3 },
+            path = {
+              module = "blink.cmp.sources.path",
+              score_offset = 10,
+            },
             nerdfont = {
               module = "blink-nerdfont",
               name = "Nerd Fonts",
@@ -195,11 +199,13 @@ return {
                 similarity_pointers = { "&", "^" },
                 similarity_depth = 2,
               },
-              max_items = 5,
+              max_items = 3,
               enabled = is_text,
+              score_offset = 0,
             },
             dictionary = {
               name = "Dict",
+              score_offset = 0,
               module = "blink-cmp-words.dictionary",
               opts = {
                 dictionary_search_threshold = 3,
@@ -207,7 +213,7 @@ return {
               },
               max_items = function()
                 if is_text() then
-                  return 5
+                  return 3
                 else
                   return 1
                 end
@@ -215,7 +221,7 @@ return {
               enabled = is_text,
             },
             yank = {
-              name = "yank",
+              name = "Yank",
               module = "blink-yanky",
               opts = {
                 minLength = 3,
@@ -280,7 +286,11 @@ return {
         },
         fuzzy = {
           implementation = "prefer_rust_with_warning",
-          sorts = { "exact", "score", "sort_text" },
+          sorts = {
+            "exact",
+            "score",
+            "sort_text",
+          },
         },
       })
       return opts
