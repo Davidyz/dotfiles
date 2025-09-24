@@ -6,22 +6,6 @@ local M = {}
 
 HOME = os.getenv("HOME")
 
-SOURCE_CODE = {
-  "java",
-  "c",
-  "cpp",
-  "python",
-  "hs",
-  "sh",
-  "go",
-  "php",
-  "json",
-  "bash",
-  "zsh",
-  "vim",
-  "lua",
-  "make",
-}
 TEXT = { "md", "txt", "markdown", "rmd", "pandoc", "text", "tex" }
 
 M.gitModified = function()
@@ -57,12 +41,6 @@ function M.contains(array, element)
     end
   end
   return false
-end
-
----@param filetype
----@return boolean
-function M.isSourceCode(filetype)
-  return M.contains(SOURCE_CODE, filetype)
 end
 
 ---@return string
