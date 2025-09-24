@@ -6,7 +6,7 @@
   },
   "lspconfig": {
     "prefix": "lspconfig",
-    "body": "---@type vim.lsp.Config\nreturn {}",
+    "body": "---@type vim.lsp.Config\nreturn {$0}",
     "description": "`vim.lsp.Config` object."
   }
 }

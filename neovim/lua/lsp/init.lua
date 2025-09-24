@@ -58,7 +58,7 @@ require("mason-lspconfig").setup({
   -- automatic_enable = { exclude = { "lua_ls" } },
   ensure_installed = nil,
 })
-lsp.enable({ "ruff" }, false)
+-- lsp.enable({ "ruff" }, false)
 lsp.inlay_hint.enable(true)
 
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }

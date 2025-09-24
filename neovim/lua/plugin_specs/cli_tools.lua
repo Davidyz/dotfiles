@@ -99,7 +99,6 @@ return {
           prettier = { prepend_args = { "--quote-props", "preserve" } },
           injected = {
             ignore_errors = true,
-            -- lang_to_formatters = { lua = "stylua" },
           },
         },
       })
@@ -120,7 +119,21 @@ return {
               if vim.g.format_on_save == false then
                 return
               end
-              require("conform").format({ lsp_format = "first" })
+              require("conform").format({
+                lsp_format = "first",
+                ---@param client vim.lsp.Client
+                filter = function(client)
+                  return not vim.tbl_contains({ "ruff" }, client.name, {})
+                end,
+              }, function(err, did_edit)
+                if err ~= nil then
+                  local level = vim.log.levels.ERROR
+                  if did_edit then
+                    level = vim.log.levels.WARN
+                  end
+                  vim.schedule_wrap(vim.notify)(err, level, { title = "Conform.nvim" })
+                end
+              end)
             end,
           })
         end,
@@ -134,7 +147,7 @@ return {
       local lint = require("lint")
       lint.linters_by_ft = {
         ["*"] = { "editorconfig-checker" },
-        python = { "ruff" },
+        python = {},
         cmake = { "cmakelang" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },
