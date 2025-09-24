@@ -12,17 +12,17 @@ return {
   {
     "saghen/blink.cmp",
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      "milanglacier/minuet-ai.nvim",
-      "folke/lazydev.nvim",
-      "moyiz/blink-emoji.nvim",
       {
         "saghen/blink.compat",
         version = "*",
       },
-      "MahanRahmati/blink-nerdfont.nvim",
+      "rafamadriz/friendly-snippets",
+      "moyiz/blink-emoji.nvim",
+      "milanglacier/minuet-ai.nvim",
       "marcoSven/blink-cmp-yanky",
+      "folke/lazydev.nvim",
       "archie-judd/blink-cmp-words",
+      "MahanRahmati/blink-nerdfont.nvim",
     },
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
