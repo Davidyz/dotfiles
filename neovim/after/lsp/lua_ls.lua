@@ -27,8 +27,7 @@ return {
       hint = { enable = true, setType = true },
     },
   },
-  on_attach = function(client, bufnr)
-    client.server_capabilities.foldingRangeProvider = nil
+  on_attach = function(client, _)
     client.server_capabilities.documentOnTypeFormattingProvider = nil
   end,
 }
