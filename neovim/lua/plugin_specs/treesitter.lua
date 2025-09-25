@@ -34,6 +34,7 @@ return {
           ---@type ts.mod.UserConfig
           opts = vim.tbl_deep_extend("force", {
             ignore_install = { "csv" },
+            auto_install = true,
             highlight = {
               enable = true,
               additional_vim_regex_highlighting = false,
@@ -83,6 +84,16 @@ return {
           )
         end,
         desc = "Previous function",
+      },
+      {
+        "vif",
+        function()
+          require("nvim-treesitter-textobjects.select").select_textobject(
+            "@function.inner",
+            "textobjects"
+          )
+        end,
+        desc = "Select inner function.",
       },
 
       {
@@ -281,7 +292,7 @@ return {
         desc = "sort selected treesitter nodes.",
       },
       {
-        "<leader>s",
+        "<leader>S",
         function()
           require("tssorter").sort({ reverse = true })
         end,

@@ -189,6 +189,7 @@ return {
         "hover.providers.dap",
         "hover.providers.diagnostic",
         "hover.providers.fold_preview",
+        "hover.providers.highlight",
         "plugin_extras.hover_peek",
       },
       preview_opts = { border = "solid" },

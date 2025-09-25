@@ -1,3 +1,6 @@
+---@module "lazy"
+
+---@type LazySpec
 return {
   "catppuccin/nvim",
   name = "catppuccin",
@@ -8,21 +11,29 @@ return {
     vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
   end,
   lazy = false,
-  opts = function()
-    local flavour = "mocha"
-    return {
-      flavour = flavour,
-      term_colors = true,
+  ---@param opts? CatppuccinOptions
+  opts = function(_, opts)
+    ---@type CatppuccinOptions
+    opts = vim.tbl_deep_extend("force", opts or {}, {
+      auto_integrations = true,
+      float = { solid = true },
       custom_highlights = function(colors)
         return {
           FloatBorder = { fg = colors.mantle, bg = colors.mantle },
           FloatTitle = { fg = colors.lavender, bg = colors.mantle },
           LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
           WinSeparator = { bg = colors.base, fg = colors.lavender },
+          Constant = { fg = colors.lavender },
+          ["@lsp.mod.builtin.python"] = { link = "@type.builtin" },
+          ["@type.builtin"] = {
+            fg = colors.lavender,
+            italic = true,
+          },
+          ["@function.builtin"] = { italic = true },
+          ["@lsp.type.property"] = { link = "@attribute" },
+          ["@property"] = { link = "@attribute" },
         }
       end,
-      dim_inactive = { enabled = false },
-      auto_integrations = true,
       default_integrations = {
         blink_cmp = { style = "solid" },
         diffview = true,
@@ -41,6 +52,11 @@ return {
         snacks = { enabled = true },
         which_key = true,
       },
-    }
+      dim_inactive = { enabled = false },
+      flavour = "mocha",
+      show_end_of_buffer = true,
+      term_colors = true,
+    })
+    return opts
   end,
 }

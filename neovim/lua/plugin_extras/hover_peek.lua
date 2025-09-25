@@ -93,11 +93,13 @@ return {
             vim.list_extend(md_lines, { string.format("`%s`", peek_path) })
           end
           vim.list_extend(md_lines, {
+            "",
+            string.format("**`%s`** from _%s_", method, comb.client.name),
             "```" .. ft,
-            string.format(
-              vim.bo[peek_bufnr].commentstring,
-              string.format("%s from %s", method, comb.client.name)
-            ),
+            -- string.format(
+            --   vim.bo[peek_bufnr].commentstring,
+            --   string.format("%s from %s", method, comb.client.name)
+            -- ),
           })
           local line_num = math.ceil(api.nvim_win_get_height(0) * 0.2)
           local ts_node = vim.treesitter.get_node({

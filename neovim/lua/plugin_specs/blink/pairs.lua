@@ -20,16 +20,23 @@ return {
       },
       highlights = {
         enabled = true,
-        -- requires require('vim._extui').enable({}), otherwise has no effect
-        -- cmdline = true,
-        groups = vim
-          .iter(vim.fn.range(1, 7))
-          :map(function(n)
-            -- catppuccin defines rainbow hl groups from 1 to 6.
-            -- this doesn't include yellow, which is reserved for the matching pair.
-            return string.format("rainbow%d", n % 6 + 1)
-          end)
-          :totable(),
+        groups = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterCyan",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterViolet",
+        },
+        -- groups = vim
+        --   .iter(vim.fn.range(1, 7))
+        --   :map(function(n)
+        --     -- catppuccin defines rainbow hl groups from 1 to 6.
+        --     -- this doesn't include yellow, which is reserved for the matching pair.
+        --     return string.format("rainbow%d", n % 6 + 1)
+        --   end)
+        --   :totable(),
         -- unmatched_group = "BlinkPairsUnmatched",
 
         -- highlights matching pairs under the cursor
