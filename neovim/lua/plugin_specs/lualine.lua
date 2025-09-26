@@ -1,8 +1,7 @@
 ---@module "lualine"
 
+local api = vim.api
 local utils = require("_utils")
-
-vim.opt.laststatus = 3
 
 local function get_devicon_for_buf()
   local full_name = vim.fn.expand("%") or ""
@@ -123,6 +122,9 @@ local diffview_label = function()
   return ""
 end
 
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "nvim-lualine/lualine.nvim",
@@ -279,6 +281,8 @@ return {
               end
             end,
             cond = function()
+              ---@module "codecompanion"
+
               return vim.b.ai_raw_response ~= nil
                 or (
                   _G.codecompanion_chat_metadata
@@ -335,6 +339,24 @@ return {
         "nvim-dap-ui",
       },
     },
+    config = function(_, opts)
+      vim.opt.laststatus = 3
+      vim.o.cmdheight = 0
+      require("lualine").setup(opts)
+      local group = api.nvim_create_augroup("cmdheight", { clear = true })
+      api.nvim_create_autocmd("CmdlineEnter", {
+        callback = function()
+          vim.o.cmdheight = 1
+        end,
+        group = group,
+      })
+      api.nvim_create_autocmd("CmdlineEnter", {
+        callback = function()
+          vim.o.cmdheight = 0
+        end,
+        group = group,
+      })
+    end,
     lazy = false,
     dependencies = { "echasnovski/mini.icons" },
   },
