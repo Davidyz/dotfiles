@@ -1,5 +1,29 @@
 ---@module "lazy"
 
+local api = vim.api
+
+---@param place? boolean
+---@param cb? function
+local function load_cov(place, cb)
+  if place == nil then
+    place = true
+  end
+  local cov = require("coverage")
+  local suc, status = true, nil
+  if not require("coverage.report").is_cached() then
+    cov.load(place)
+    suc, status = vim.wait(1000, function()
+      return require("coverage.report").is_cached()
+    end, 10)
+  end
+
+  if suc and type(cb) == "function" then
+    vim.schedule(function()
+      return cb()
+    end)
+  end
+end
+
 ---@type LazySpec[]
 return {
   {
@@ -118,20 +142,40 @@ return {
     "andythigpen/nvim-coverage",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
-      commands = true,
+      commands = false,
       auto_reload = true,
       signs = { covered = { hl = "LineNr" }, uncovered = { hl = "Exception" } },
+      summary = {
+        min_coverage = 95.0,
+        width_percentage = 0.9,
+        height_percentage = 0.8,
+        borders = {
+          topleft = " ",
+          topright = " ",
+          top = " ",
+          left = " ",
+          right = " ",
+          botleft = " ",
+          botright = " ",
+          bot = " ",
+        },
+        window = { winblend = 0 },
+      },
     },
     config = function(_, opts)
       local cov = require("coverage")
+      api.nvim_set_hl(0, "CoverageSummaryPass", { link = "LineNr" })
+      api.nvim_set_hl(0, "CoverageSummaryFail", { link = "Exception" })
       cov.setup(opts)
-      cov.load(true)
+      load_cov(false)
     end,
     keys = {
       {
         "]C",
         function()
-          require("coverage").jump_next("uncovered")
+          load_cov(true, function()
+            require("coverage").jump_next("uncovered")
+          end)
         end,
         desc = "Next uncovered snippet.",
         noremap = true,
@@ -139,12 +183,27 @@ return {
       {
         "[C",
         function()
-          require("coverage").jump_prev("uncovered")
+          load_cov(true, function()
+            require("coverage").jump_prev("uncovered")
+          end)
         end,
         desc = "Previous uncovered snippet.",
         noremap = true,
       },
+      {
+        "<leader>Cs",
+        function()
+          load_cov(true, require("coverage").summary)
+        end,
+        desc = "[C]overage [s]ummary.",
+      },
+      {
+        "<leader>Ct",
+        function()
+          load_cov(false, require("coverage").toggle)
+        end,
+        desc = "[C]overage [t]oggle.",
+      },
     },
-    cmd = { "Coverage" },
   },
 }
