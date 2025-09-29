@@ -79,6 +79,7 @@ require("lazy").setup({
 local items = {
   "keymaps.main",
   "filetype.main",
+  "cmd",
 }
 utils.tryRequire(items, 2)
 require("lsp")

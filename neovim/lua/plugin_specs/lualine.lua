@@ -329,14 +329,14 @@ return {
         lualine_z = { snacks_status_component },
       },
       extensions = {
-        "overseer",
         "lazy",
-        "mason",
         "man",
-        "oil",
+        "mason",
         "neo-tree",
-        "toggleterm",
         "nvim-dap-ui",
+        "oil",
+        "overseer",
+        -- "toggleterm",
       },
     },
     config = function(_, opts)

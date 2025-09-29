@@ -462,18 +462,4 @@ function M.close_no_diagnostics(opts)
   end
 end
 
-api.nvim_create_user_command("CloseHealthyBufs", function(args)
-  ---@type string?
-  local level = args.args
-  if level == "" then
-    level = nil
-  end
-  M.close_no_diagnostics({ level = level })
-end, {
-  complete = function(_, _, _)
-    return { "ERROR", "WARN", "INFO", "HINT" }
-  end,
-  nargs = "?",
-})
-
 return M
