@@ -171,6 +171,7 @@ return {
       },
       {
         "mfussenegger/nvim-dap-python",
+        build = false,
         config = function(_, opts)
           local python_test_runner = "unittest"
           if vim.fn.executable("pytest") == 1 then

@@ -74,15 +74,17 @@ require("lazy").setup({
     border = "solid",
     backdrop = 100,
   },
+  -- rocks = { enabled = false },
 })
 
 local items = {
   "keymaps.main",
   "filetype.main",
   "cmd",
+  "lsp",
 }
+
 utils.tryRequire(items, 2)
-require("lsp")
 if vim.g.neovide then
   pcall(require, "neovide")
 end
