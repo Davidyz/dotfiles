@@ -137,7 +137,7 @@ The user's currently working in a project located at `%s`. Take this into consid
               },
               defaults = {
                 auth_method = "oauth-personal",
-                mcpServers = require("mcphub").get_hub_instance():get_servers(),
+                -- mcpServers = require("mcphub").get_hub_instance():get_servers(),
                 timeout = 20000, -- 20 seconds
               },
               env = {
@@ -173,7 +173,7 @@ The user's currently working in a project located at `%s`. Take this into consid
               name = "Ollama",
               schema = {
                 num_ctx = { default = 64000 },
-                -- model = { default = {"qwen3:8b-q4_K_M-dynamic-thinking"} },
+                -- model = { default = { "qwen3:8b-q4_K_M-dynamic-thinking" } },
                 -- think = { default = true },
               },
             })
