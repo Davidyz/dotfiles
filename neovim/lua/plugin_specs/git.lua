@@ -90,6 +90,13 @@ return {
         mode = { "n", "x" },
       },
       {
+        "<Leader>gu",
+        "<cmd>Gitsigns undo_stage_hunk<cr>",
+        noremap = true,
+        desc = "Git [u]ndo add hunk.",
+        mode = { "n", "x" },
+      },
+      {
         "<Leader>gr",
         "<cmd>Gitsigns reset_hunk<cr>",
         noremap = true,

@@ -1,6 +1,8 @@
 ---@module "lazy"
 
 local fs = vim.fs
+local api = vim.api
+
 ---@type LazySpec[]
 return {
   {
@@ -28,10 +30,13 @@ return {
       {
         "mp",
         function()
-          local filepath = vim.api.nvim_buf_get_name(0)
+          local lp = require("livepreview")
+          if lp.is_running() then
+            return lp.close()
+          end
+          local filepath = api.nvim_buf_get_name(0)
           local Config = require("livepreview.config").config
           local utils = require("livepreview.utils")
-          local lp = require("livepreview")
           lp.start(filepath, Config.port)
 
           local urlpath = (
@@ -54,7 +59,10 @@ return {
           else
             vim.fn.setreg("+", url)
             vim.notify(
-              "**Active SSH session detected**.\nYanking the url to the clipboard.",
+              string.format(
+                "**Active SSH session detected**.\nYanking the url: `%s` to the clipboard.",
+                url
+              ),
               vim.log.levels.WARN,
               notify_opts
             )
