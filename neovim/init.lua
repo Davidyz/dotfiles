@@ -74,7 +74,7 @@ require("lazy").setup({
     border = "solid",
     backdrop = 100,
   },
-  -- rocks = { enabled = false },
+  rocks = { server = "https://lumen-oss.github.io/rocks-binaries/" },
 })
 
 local items = {
