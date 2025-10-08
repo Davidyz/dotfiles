@@ -2,6 +2,12 @@
 return {
   settings = {
     Lua = {
+      completion = {
+        callSnippet = "Replace",
+        displayContext = 5,
+        keywordSnippet = "Replace",
+      },
+      diagnostics = { workspaceEvent = "OnSave" },
       format = {
         enable = false,
         defaultConfig = {
@@ -10,24 +16,28 @@ return {
           quote_style = "double",
         },
       },
-      completion = {
-        callSnippet = "Replace",
-        displayContext = 5,
-        keywordSnippet = "Replace",
-      },
-      workspace = {
-        useGitIgnore = true,
-        checkThirdParty = false,
-      },
+      hint = { enable = true, setType = true },
+      language = { fixIndent = false },
+
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {
         enable = false,
       },
-      diagnostics = { workspaceEvent = "OnSave" },
-      hint = { enable = true, setType = true },
+
+      type = { inferParamType = true },
+      typeFormat = { enable = false },
+      workspace = {
+        useGitIgnore = true,
+        checkThirdParty = false,
+      },
     },
   },
   on_attach = function(client, _)
     client.server_capabilities.documentOnTypeFormattingProvider = nil
+    client.server_capabilities.foldingRangeProvider = nil
+    -- vim.schedule(function()
+    --   local winnr = vim.fn.bufwinid(bufnr)
+    --   vim.wo[winnr].foldlevel = 999
+    -- end)
   end,
 }

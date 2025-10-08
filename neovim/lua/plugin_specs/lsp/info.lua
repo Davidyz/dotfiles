@@ -115,7 +115,7 @@ return {
         implementation = { enabled = true },
         symbol_filter = function(ctx)
           return function(symbol)
-            if ctx.method == lsp.protocol.Methods.textDocument_references then
+            if ctx.method == "textDocument/references" then
               return string.find(symbol.uri, "tests") == nil
             else
               return true

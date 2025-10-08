@@ -2,11 +2,12 @@ local lsp = vim.lsp
 local api = vim.api
 local _utils = require("_utils")
 
----@type vim.lsp.protocol.Method[]
+---@type vim.lsp.protocol.Method.ClientToServer.Request[]
 local peek_supported_methods = {
-  lsp.protocol.Methods.textDocument_declaration,
-  lsp.protocol.Methods.textDocument_implementation,
-  lsp.protocol.Methods.textDocument_definition,
+  "textDocument/declaration",
+  "textDocument/implementation",
+  "textDocument/definition",
+  "textDocument/typeDefinition",
 }
 
 ---@module "hover"
@@ -24,7 +25,7 @@ return {
     return #clis ~= 0
   end,
   execute = function(opts, done)
-    ---@type {client: vim.lsp.Client, method: vim.lsp.protocol.Method}[]
+    ---@type {client: vim.lsp.Client, method: vim.lsp.protocol.Method.ClientToServer.Request}[]
     local combinations = {}
 
     for _, client in
@@ -42,7 +43,7 @@ return {
     end
 
     ---@param idx? integer
-    ---@param comb {client: vim.lsp.Client, method: vim.lsp.protocol.Method}
+    ---@param comb {client: vim.lsp.Client, method: vim.lsp.protocol.Method.ClientToServer.Request}
     local function do_peek(idx, comb)
       if idx == nil or comb == nil then
         return pcall(done, false)
@@ -51,7 +52,7 @@ return {
       comb.client:request(
         method,
         lsp.util.make_position_params(0, comb.client.offset_encoding),
-        function(err, result, context, config)
+        function(_, result, context, _)
           if result == nil or vim.tbl_isempty(result) then
             return pcall(do_peek, next(combinations, idx))
           end

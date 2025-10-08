@@ -194,7 +194,7 @@ return {
                   ---@param cli vim.lsp.Client
                   function(cli)
                     return cli:supports_method(
-                      vim.lsp.protocol.Methods.textDocument_formatting,
+                      "textDocument/formatting",
                       0
                     ) and not not cli.server_capabilities.documentFormattingProvider
                   end
@@ -274,10 +274,16 @@ return {
               if response then
                 return string.format("ctx: %d", response.usage.total_tokens)
               elseif _G.codecompanion_chat_metadata[curr_buf] then
-                return string.format(
-                  "%d tokens",
-                  _G.codecompanion_chat_metadata[curr_buf].tokens
-                )
+                local adapter = _G.codecompanion_chat_metadata[curr_buf].adapter
+                if adapter and adapter.model then
+                  return string.format(
+                    "%s: %d tokens",
+                    adapter.model,
+                    _G.codecompanion_chat_metadata[curr_buf].tokens
+                  )
+                else
+                  return string.format("%d tokens", _G.codecompanion_chat_metadata[curr_buf].tokens)
+                end
               end
             end,
             cond = function()

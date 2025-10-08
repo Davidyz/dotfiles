@@ -112,38 +112,20 @@ function M.tryRequire(items, retry_count)
   end
 end
 
----@param array table
----@param func function
+---@generic T: any
+---@param array T[]
+---@param func fun(item:T):boolean
 ---@return boolean
 function M.any(array, func)
-  if type(func) ~= "function" then
-    func = function(item)
-      return item
-    end
-  end
-  for i, item in ipairs(array) do
-    if func(item) then
-      return true
-    end
-  end
-  return false
+  return vim.iter(array):any(func)
 end
 
----@param array table
----@param func function
+---@generic T: any
+---@param array T[]
+---@param func fun(item:T):boolean
 ---@return boolean
 function M.all(array, func)
-  if type(func) ~= "function" then
-    func = function(item)
-      return item
-    end
-  end
-  for i, item in ipairs(array) do
-    if not func(item) then
-      return false
-    end
-  end
-  return true
+  return vim.iter(array):all(func)
 end
 
 ---@param func function

@@ -1,5 +1,4 @@
 local lsp = vim.lsp
-local methods = lsp.protocol.Methods
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 lsp.on_type_formatting = lsp.on_type_formatting or require("lsp.on_type_formatting")
@@ -23,11 +22,11 @@ local original_on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end
-  if not client:supports_method(methods.textDocument_onTypeFormatting, bufnr) then
+  if not client:supports_method("textDocument/onTypeFormatting", bufnr) then
     lsp.on_type_formatting.enable(false, { client_id = client.id })
   end
 
-  if client:supports_method(methods.textDocument_foldingRange, bufnr) then
+  if client:supports_method("textDocument/foldingRange", bufnr) then
     local win = vim.fn.bufwinid(bufnr)
     if win < 0 then
       win = 0
