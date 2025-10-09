@@ -46,8 +46,30 @@ return {
     "smoka7/hop.nvim",
     opts = {},
     keys = {
-      { "f", ":HopChar1<CR>", remap = false, mode = "n", desc = "Hop to character." },
-      { "F", ":HopNodes<CR>", remap = false, mode = "n", desc = "Hop to node." },
+      {
+        "f",
+        function()
+          local orig_cmdheight = vim.o.cmdheight
+          vim.o.cmdheight = 1
+          ---@diagnostic disable-next-line: missing-fields
+          require("hop").hint_char1({
+            current_line_only = false,
+          })
+          vim.o.cmdheight = orig_cmdheight
+        end,
+        remap = false,
+        mode = "n",
+        desc = "Hop to character.",
+      },
+      {
+        "F",
+        function()
+          return require("hop-treesitter").hint_nodes()
+        end,
+        remap = false,
+        mode = "n",
+        desc = "Hop to node.",
+      },
     },
   },
 
