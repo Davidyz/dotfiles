@@ -193,10 +193,8 @@ return {
                 and vim.iter(vim.lsp.get_clients({ bufnr = 0 })):any(
                   ---@param cli vim.lsp.Client
                   function(cli)
-                    return cli:supports_method(
-                      "textDocument/formatting",
-                      0
-                    ) and not not cli.server_capabilities.documentFormattingProvider
+                    return cli:supports_method("textDocument/formatting", 0)
+                      and not not cli.server_capabilities.documentFormattingProvider
                   end
                 )
               then
@@ -282,7 +280,10 @@ return {
                     _G.codecompanion_chat_metadata[curr_buf].tokens
                   )
                 else
-                  return string.format("%d tokens", _G.codecompanion_chat_metadata[curr_buf].tokens)
+                  return string.format(
+                    "%d tokens",
+                    _G.codecompanion_chat_metadata[curr_buf].tokens
+                  )
                 end
               end
             end,
