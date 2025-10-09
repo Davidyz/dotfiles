@@ -231,6 +231,10 @@ The user's currently working in a project located at `%s`. Take this into consid
                 project_root = "/usr/share/doc/kitty/",
                 file_patterns = { "**/*.txt" },
               },
+              ["Arch Wiki"] = {
+                project_root = "/usr/share/doc/arch-wiki/",
+                file_patterns = { "/usr/share/doc/arch-wiki/html/en/**/*.html" },
+              },
             },
             tool_group = { collapse = true },
             tool_opts = {

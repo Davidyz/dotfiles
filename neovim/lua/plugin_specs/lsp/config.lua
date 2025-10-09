@@ -17,6 +17,11 @@ return {
   {
     "williamboman/mason-lspconfig.nvim",
     version = "*",
+    event = { "BufReadPost", "BufNewFile", "FileType" },
+    opts = {
+      automatic_enable = { exclude = { "stylua" } },
+      ensure_installed = nil,
+    },
     cond = require("_utils").no_vscode,
     dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" },
   },
