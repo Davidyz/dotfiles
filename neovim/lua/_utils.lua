@@ -389,6 +389,32 @@ function M.make_display_time(t)
   return table.concat(digits, ":")
 end
 
+---@param path string?
+---@return uv.aliases.fs_stat_table|{}
+local function get_path_type(path)
+    if type(path) ~= "string" then
+        return {}
+    end
+  local stat = vim.uv.fs_stat(vim.fs.normalize(path))
+  if stat then
+    return stat
+  else
+    return {}
+  end
+end
+
+---@param path string?
+---@return boolean
+function M.is_file(path)
+  return get_path_type(path).type == "file"
+end
+
+---@param path string?
+---@return boolean
+function M.is_directory(path)
+  return get_path_type(path).type == "directory"
+end
+
 ---@param opts {level?: string}
 function M.close_no_diagnostics(opts)
   opts = opts or {}

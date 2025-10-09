@@ -1,3 +1,4 @@
+local utils = require("_utils")
 vim.opt.smartcase = true
 vim.opt.encoding = "utf-8"
 
@@ -72,11 +73,10 @@ local group = vim.api.nvim_create_augroup("ViewSaver", { clear = true })
 vim.api.nvim_create_autocmd("BufUnload", {
   group = group,
   callback = function(args)
-    local uri = vim.uri_from_bufnr(0)
-    local path = vim.uri_to_fname(uri)
-    local stat = vim.uv.fs_stat(path)
-    if stat ~= nil and stat.type == "file" then
-      vim.cmd("mkview")
+    if utils.is_file(vim.uri_to_fname(vim.uri_from_bufnr(args.buf))) then
+      vim.schedule(function()
+        vim.cmd("mkview")
+      end)
     end
   end,
 })

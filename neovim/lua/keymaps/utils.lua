@@ -1,6 +1,9 @@
 local M = {}
--- @param mode string
--- @param keys string
+
+local utils = require("_utils")
+
+---@param mode string
+---@param keys string
 function M.setKeymap(mode, keys, command, extra_args)
   if extra_args == false then
     extra_args = { noremap = false }
@@ -29,10 +32,7 @@ M.fzf_lua_jump_action = function(selected, opts)
         local buf = vim.api.nvim_win_get_buf(win)
         local fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
         if fname then
-          local stat = vim.uv.fs_stat(fname)
-          if stat and stat.type == "file" then
-            return true
-          end
+          return utils.is_file(fname)
         end
         return false
       end)

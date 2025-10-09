@@ -1,5 +1,6 @@
 ---@module "lazy"
 
+local utils = require("_utils")
 local api = vim.api
 
 ---@param place? boolean
@@ -34,8 +35,8 @@ return {
           vim.fs.root(0, { ".venv", "pyproject.toml", ".git" }) or ".",
           ".venv/bin/python"
         )
-      local stat = vim.uv.fs_stat(default_python)
-      if not stat or stat.type ~= "file" then
+
+      if utils.is_file(default_python) then
         default_python = "python"
       end
       require("neotest").setup({
@@ -101,8 +102,7 @@ return {
         "<Space>ta",
         function()
           local buf_name = vim.api.nvim_buf_get_name(0)
-          local stat = vim.uv.fs_stat(buf_name)
-          if stat ~= nil and stat.type == "file" then
+          if utils.is_file(buf_name) then
             require("neotest").run.run(buf_name)
             require("neotest").summary.open()
           end
@@ -116,11 +116,9 @@ return {
           if root_dir == nil then
             return
           end
-          local stat
           for _, dir in pairs({ "tests", "test" }) do
             local test_dir = vim.fs.joinpath(root_dir, dir)
-            stat = vim.uv.fs_stat(test_dir)
-            if stat and stat.type == "directory" then
+            if utils.is_directory(test_dir) then
               require("neotest").run.run(test_dir)
               require("neotest").summary.open()
               return

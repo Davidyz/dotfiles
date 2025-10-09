@@ -17,6 +17,7 @@ return {
         },
       },
       hint = { enable = true, setType = true },
+      hover = { expandAlias = false },
       language = { fixIndent = false },
 
       -- Do not send telemetry data containing a randomized but unique identifier
