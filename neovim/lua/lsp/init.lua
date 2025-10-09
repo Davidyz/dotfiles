@@ -1,4 +1,5 @@
 local lsp = vim.lsp
+local api = vim.api
 
 vim.opt.completeopt = { "menu", "menuone", "popup" }
 lsp.on_type_formatting = lsp.on_type_formatting or require("lsp.on_type_formatting")
@@ -12,27 +13,6 @@ local function allow_for_formatting(client)
     vim.list_extend(blacklisted_formatter, { "ruff", "ruff_lsp" })
   end
   return not vim.list_contains(blacklisted_formatter, client.name)
-end
-
----@param client vim.lsp.Client
-local original_on_attach = function(client, bufnr)
-  if allow_for_formatting(client) then
-    vim.bo[bufnr].formatexpr = "v:lua.lsp.formatexpr(#{timeout_ms:250})"
-  else
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  end
-  if not client:supports_method("textDocument/onTypeFormatting", bufnr) then
-    lsp.on_type_formatting.enable(false, { client_id = client.id })
-  end
-
-  if client:supports_method("textDocument/foldingRange", bufnr) then
-    local win = vim.fn.bufwinid(bufnr)
-    if win < 0 then
-      win = 0
-    end
-    vim.wo[win][0].foldexpr = "v:lua.lsp.foldexpr()"
-  end
 end
 
 ---@type vim.lsp.Config
@@ -49,11 +29,38 @@ local default_server_config = {
       },
     }
   ),
-  on_attach = original_on_attach,
+  on_attach = function(client, bufnr)
+    if allow_for_formatting(client) then
+      vim.bo[bufnr].formatexpr = "v:lua.lsp.formatexpr(#{timeout_ms:250})"
+    else
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
+    if not client:supports_method("textDocument/onTypeFormatting", bufnr) then
+      lsp.on_type_formatting.enable(false, { client_id = client.id })
+    end
+
+    if client:supports_method("textDocument/foldingRange", bufnr) then
+      local win = vim.fn.bufwinid(bufnr)
+      if win < 0 then
+        win = 0
+      end
+      vim.wo[win][0].foldexpr = "v:lua.lsp.foldexpr()"
+    end
+  end,
 }
 
+api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = lsp.get_client_by_id(args.data.client_id)
+    lsp.inlay_hint.enable(
+      client and client:supports_method("textDocument/inlayHint", args.buf),
+      { bufnr = args.buf }
+    )
+  end,
+})
+
 lsp.config("*", default_server_config)
-lsp.inlay_hint.enable(true)
 
 local signs = { Error = "󰅚", Warn = "", Hint = "󰌶", Info = "" }
 for type, icon in pairs(signs) do
