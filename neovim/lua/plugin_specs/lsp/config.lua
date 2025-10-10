@@ -19,7 +19,7 @@ return {
     version = "*",
     event = { "BufReadPost", "BufNewFile", "FileType" },
     opts = {
-      automatic_enable = { exclude = { "stylua" } },
+      automatic_enable = { exclude = { "stylua", "rust_analyzer" } },
       ensure_installed = nil,
     },
     cond = require("_utils").no_vscode,

@@ -1,0 +1,10 @@
+---@module "lazy"
+
+---@type LazySpec[]
+return {
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^6",
+    ft = { "rust" },
+  },
+}

@@ -47,6 +47,7 @@ return {
             runner = "pytest",
             python = default_python,
           }),
+          require("rustaceanvim.neotest"),
         },
       })
 
