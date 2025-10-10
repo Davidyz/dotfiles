@@ -135,7 +135,7 @@ return {
         theme = "auto",
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
-        disabled_filetypes = {},
+        disabled_filetypes = { winbar = { "dap-repl", "dap-view" } },
         globalstatus = true,
         always_divide_middle = false,
       },
