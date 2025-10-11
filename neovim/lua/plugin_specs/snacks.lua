@@ -87,7 +87,8 @@ return {
       image = { enabled = false },
       input = { enabled = true },
       notifier = { enabled = true },
-      picker = { enabled = true },
+      ---@type snacks.picker.Config
+      picker = { enabled = true, ui_select = false },
       ---@type snacks.profiler.Config
       profiler = {
         enabled = true,

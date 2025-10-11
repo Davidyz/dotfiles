@@ -1,5 +1,7 @@
 ---@module "lazy"
 
+local notify = nil
+
 ---@type LazySpec[]
 return {
   {
@@ -16,7 +18,78 @@ return {
     keys = {
       { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
       { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
-      { "<Space>i", "<cmd>DapStepInto<CR>", desc = "DAP Step [I]nto.", noremap = true },
+      {
+        "<Space>i",
+        function()
+          -- stepIn on steroids.
+          -- handles multiple stepin targets.
+          if notify == nil then
+            notify = vim.schedule_wrap(vim.notify)
+          end
+          local dap = require("dap")
+          local session = dap.session()
+          if session == nil then
+            return notify("No active session!")
+          end
+
+          local curr_frame = session.current_frame
+          if curr_frame == nil then
+            return notify("No active frame!")
+          end
+          session:request(
+            "stepInTargets",
+            { frameId = curr_frame.id },
+            function(_, result)
+              if
+                result == nil
+                or result.targets == nil
+                or vim.tbl_isempty(result.targets)
+              then
+                return notify("No step in targets!")
+              end
+
+              local targets = {}
+              for t in vim.iter(result.targets) do
+                targets[t.label] = { id = targets[t.id] }
+              end
+              local labels = vim.tbl_keys(targets)
+
+              local function stepIn(item)
+                if item == nil then
+                  return notify("Cancelled!")
+                end
+                session:request("stepIn", {
+                  threadId = session.stopped_thread_id,
+                  targetId = (targets[item] or {}).id,
+                }, nil)
+              end
+
+              if #labels == 1 then
+                return stepIn(labels[1])
+              end
+
+              if vim.bo.filetype == "python" then
+                -- debugpy sucks
+                return stepIn("")
+              end
+              vim.ui.select(
+                vim
+                  .iter(targets)
+                  :map(function(k, _)
+                    return k
+                  end)
+                  :totable(),
+                { prompt = "Select a stepIn target: " },
+                function(item, _)
+                  stepIn(item)
+                end
+              )
+            end
+          )
+        end,
+        desc = "DAP Step [I]nto.",
+        noremap = true,
+      },
       { "<Space>q", "<cmd>DapStepOut<CR>", desc = "DAP Step Out.", noremap = true },
       {
         "<Space>s",
