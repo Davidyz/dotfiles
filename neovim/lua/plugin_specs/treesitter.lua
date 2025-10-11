@@ -1,6 +1,6 @@
 ---@module "lazy"
 
-local api = vim.api
+local keymap_utils = require("keymaps.utils")
 
 ---@type LazySpec[]
 return {
@@ -192,9 +192,20 @@ return {
     keys = {
       {
         "<leader>ef",
-        function()
-          return require("refactoring").refactor("Extract Function")
-        end,
+        keymap_utils.make_keymap_callback({
+          function()
+            return require("refactoring").refactor("Extract Function")
+          end,
+          rust = function()
+            vim.lsp.buf.code_action({
+              apply = true,
+              filter = function(x)
+                return x.kind == "refactor.extract"
+                  and x.title:lower():find("function") ~= nil
+              end,
+            })
+          end,
+        }),
         desc = "Extract Function",
         noremap = true,
         expr = true,
@@ -202,9 +213,20 @@ return {
       },
       {
         "<leader>ev",
-        function()
-          return require("refactoring").refactor("Extract Variable")
-        end,
+        keymap_utils.make_keymap_callback({
+          function()
+            return require("refactoring").refactor("Extract Variable")
+          end,
+          rust = function()
+            vim.lsp.buf.code_action({
+              apply = true,
+              filter = function(x)
+                return x.kind == "refactor.extract"
+                  and (string.find(x.title:lower(), "variable") ~= nil)
+              end,
+            })
+          end,
+        }),
         desc = "Extract Variable",
         noremap = true,
         expr = true,
@@ -212,9 +234,22 @@ return {
       },
       {
         "<leader>if",
-        function()
-          return require("refactoring").refactor("Inline Function")
-        end,
+        keymap_utils.make_keymap_callback({
+          function()
+            return require("refactoring").refactor("Inline Function")
+          end,
+          rust = function()
+            vim.lsp.buf.code_action({
+              apply = true,
+              filter = function(x)
+                return x.kind == "refactor.inline"
+                  and vim.iter({ "function", "callers" }):any(function(kw)
+                    return string.find(x.title:lower(), kw) ~= nil
+                  end)
+              end,
+            })
+          end,
+        }),
         desc = "Inline Function",
         noremap = true,
         expr = true,
@@ -222,9 +257,20 @@ return {
       },
       {
         "<leader>iv",
-        function()
-          return require("refactoring").refactor("Inline Variable")
-        end,
+        keymap_utils.make_keymap_callback({
+          function()
+            return require("refactoring").refactor("Inline Variable")
+          end,
+          rust = function()
+            vim.lsp.buf.code_action({
+              apply = true,
+              filter = function(x)
+                return x.kind == "refactor.inline"
+                  and (string.find(x.title:lower(), "variable") ~= nil)
+              end,
+            })
+          end,
+        }),
         desc = "Inline Variable",
         noremap = true,
         expr = true,

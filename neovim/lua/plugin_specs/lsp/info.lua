@@ -1,5 +1,4 @@
 local api = vim.api
-local lsp = vim.lsp
 local diag = vim.diagnostic
 
 ---@module "lazy"
@@ -253,6 +252,37 @@ return {
         end,
         mode = { "n" },
         desc = "LSP rename",
+      },
+    },
+  },
+  {
+    "Davidyz/inlayhint-filler.nvim",
+    event = "LspAttach",
+    ---@module "inlayhint-filler"
+    ---@type InlayHintFillerOpts
+    opts = {
+      blacklisted_servers = {},
+      force = function(ctx)
+        if vim.bo[ctx.bufnr].filetype == "rust" then
+          return true
+        end
+        return false
+      end,
+      eager = function(ctx)
+        return vim.bo[ctx.bufnr].filetype == "rust"
+      end,
+    },
+    keys = {
+      {
+        "<Leader>if",
+        function()
+          if vim.lsp.inlay_hint.apply_text_edits ~= nil then
+            return vim.lsp.inlay_hint.apply_text_edits({ bufnr = 0 })
+          end
+          require("inlayhint-filler").fill()
+        end,
+        mode = { "n", "v" },
+        desc = "[I]nlayhint [f]ill",
       },
     },
   },
