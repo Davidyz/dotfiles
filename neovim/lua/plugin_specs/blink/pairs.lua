@@ -11,12 +11,20 @@ return {
   opts = function(_, opts)
     api.nvim_set_hl(0, "BlinkPairsMatchParen", {})
     api.nvim_set_hl(0, "BlinkPairsMatchParen", { bold = true })
+
     opts = vim.tbl_deep_extend("force", opts or {}, {
+      ---@type blink.pairs.MappingsConfig
       mappings = {
         enabled = true,
         -- cmdline = true,
         disabled_filetypes = {},
-        pairs = {},
+        pairs = {
+          ["<"] = {
+            "<",
+            ">",
+            filetypes = { "rust" },
+          },
+        },
       },
       highlights = {
         enabled = true,
