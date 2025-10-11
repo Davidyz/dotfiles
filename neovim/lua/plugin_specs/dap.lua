@@ -1,3 +1,6 @@
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "mfussenegger/nvim-dap",
@@ -56,13 +59,6 @@ return {
         desc = "DAP Toggle [B]reakpoint.",
         noremap = true,
       },
-      {
-        "<leader>d",
-        function()
-          require("dapui").toggle()
-        end,
-        desc = "Toggle DAP UI.",
-      },
     },
     cmd = {
       "DapShowLog",
@@ -101,61 +97,104 @@ return {
         cond = require("_utils").no_vscode,
       },
       {
-        "rcarriga/nvim-dap-ui",
-        cond = require("_utils").no_vscode,
-        dependencies = { "nvim-neotest/nvim-nio" },
-        key = {},
+        "igorlfs/nvim-dap-view",
+        ---@module 'dap-view'
+        ---@type dapview.Config
         opts = {
-          icons = { expanded = "▾", collapsed = "▸" },
-          mappings = {
-            -- Use a table to apply multiple mappings
-            expand = { "<CR>", "<2-LeftMouse>" },
-            open = "o",
-            remove = "d",
-            edit = "e",
-            repl = "r",
-            toggle = "t",
-          },
-          expand_lines = true,
-          layouts = {
-            -- You can change the order of elements in the sidebar
-            {
-              elements = {
-                "watches",
-                "stacks",
-                "scopes",
-              },
-              size = 40,
-              position = "left", -- Can be "left", "right", "top", "bottom"
-            },
-            {
-              elements = { "repl", "breakpoints" },
-              size = 10,
-              position = "bottom", -- Can be "left", "right", "top", "bottom"
+          windows = {
+            position = "right",
+            terminal = {
+              position = "below",
             },
           },
-          floating = {
-            max_height = nil, -- These can be integers or a float between 0 and 1.
-            max_width = nil, -- Floats will be treated as percentage of your screen.
-            border = "single", -- Border style. Can be "single", "double" or "rounded"
-            mappings = {
-              close = { "q", "<Esc>" },
-            },
-          },
-          windows = { indent = 2 },
-          render = {
-            indent = 1,
-            -- max_type_length = nil, -- Can be integer or nil.
+          follow_tab = true,
+          winbar = { controls = { enabled = true } },
+        },
+        cmd = { "DapViewOpen" },
+        keys = {
+          {
+            "<leader>d",
+            function()
+              require("dap-view").toggle(true)
+            end,
+            desc = "Toggle DAP UI.",
           },
         },
         config = function(_, opts)
           local dap = require("dap")
-          local dapui = require("dapui")
-          dapui.setup(opts)
-          dap.listeners.before.event_terminated.dapui_config = dapui.close
-          dap.listeners.before.event_exited.dapui_config = dapui.close
+          local dap_view = require("dap-view")
+          dap_view.setup(opts)
+          local function close()
+            dap_view.close(true)
+          end
+          dap.listeners.before.event_terminated.dapui_config = close
+          dap.listeners.before.event_exited.dapui_config = close
         end,
       },
+      -- {
+      --   "rcarriga/nvim-dap-ui",
+      --   cond = require("_utils").no_vscode,
+      --   dependencies = { "nvim-neotest/nvim-nio" },
+      --   keys = {
+      --     {
+      --       "<leader>d",
+      --       function()
+      --         require("dapui").toggle()
+      --       end,
+      --       desc = "Toggle DAP UI.",
+      --     },
+      --   },
+      --   opts = {
+      --     icons = { expanded = "▾", collapsed = "▸" },
+      --     mappings = {
+      --       -- Use a table to apply multiple mappings
+      --       expand = { "<CR>", "<2-LeftMouse>" },
+      --       open = "o",
+      --       remove = "d",
+      --       edit = "e",
+      --       repl = "r",
+      --       toggle = "t",
+      --     },
+      --     expand_lines = true,
+      --     layouts = {
+      --       -- You can change the order of elements in the sidebar
+      --       {
+      --         elements = {
+      --           "watches",
+      --           "stacks",
+      --           "console",
+      --         },
+      --         size = 40,
+      --         position = "left", -- Can be "left", "right", "top", "bottom"
+      --       },
+      --       {
+      --         elements = { "repl", "breakpoints" },
+      --         size = 10,
+      --         position = "bottom", -- Can be "left", "right", "top", "bottom"
+      --       },
+      --     },
+      --     floating = {
+      --       max_height = nil, -- These can be integers or a float between 0 and 1.
+      --       max_width = nil, -- Floats will be treated as percentage of your screen.
+      --       border = "single", -- Border style. Can be "single", "double" or "rounded"
+      --       mappings = {
+      --         close = { "q", "<Esc>" },
+      --       },
+      --     },
+      --     windows = { indent = 2 },
+      --     render = {
+      --       indent = 1,
+      --       -- max_type_length = nil, -- Can be integer or nil.
+      --     },
+      --   },
+      --   config = function(_, opts)
+      --     local dap = require("dap")
+      --     local dapui = require("dapui")
+      --     dapui.setup(opts)
+      --     dap.listeners.before.event_terminated.dapui_config = dapui.close
+      --     dap.listeners.before.event_exited.dapui_config = dapui.close
+      --   end,
+      -- },
       {
         "jay-babu/mason-nvim-dap.nvim",
         cond = require("_utils").no_vscode,
