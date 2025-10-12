@@ -70,12 +70,14 @@ vim.o.winborder = "none"
 vim.o.viewoptions = "folds,cursor"
 local group = vim.api.nvim_create_augroup("ViewSaver", { clear = true })
 
-vim.api.nvim_create_autocmd("BufUnload", {
+vim.api.nvim_create_autocmd("BufLeave", {
   group = group,
   callback = function(args)
-    if utils.is_file(vim.uri_to_fname(vim.uri_from_bufnr(args.buf))) then
+    if utils.is_file(args.file) then
       vim.schedule(function()
-        vim.cmd("mkview")
+        vim.api.nvim_buf_call(args.buf, function()
+          vim.cmd("mkview")
+        end)
       end)
     end
   end,

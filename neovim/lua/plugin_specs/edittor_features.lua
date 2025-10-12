@@ -157,4 +157,23 @@ return {
       },
     },
   },
+  {
+    "Davidyz/atone.nvim",
+    branch = "feat/customisable_node_label",
+    ---@module "atone"
+    ---@type Atone.Config
+    opts = {
+      ---@param ctx Atone.Tree.Node.Label.Ctx
+      node_label_formatter = function(ctx)
+        return string.format(
+          "[%d] added: %d, removed: %d",
+          ctx.seq,
+          ctx.diff.added,
+          ctx.diff.removed
+        )
+      end,
+    },
+    cmd = { "Atone" },
+    -- dir = "~/git/atone.nvim/",
+  },
 }
