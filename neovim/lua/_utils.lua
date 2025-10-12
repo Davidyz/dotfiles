@@ -392,9 +392,9 @@ end
 ---@param path string?
 ---@return uv.aliases.fs_stat_table|{}
 local function get_path_type(path)
-    if type(path) ~= "string" then
-        return {}
-    end
+  if type(path) ~= "string" then
+    return {}
+  end
   local stat = vim.uv.fs_stat(vim.fs.normalize(path))
   if stat then
     return stat
@@ -468,6 +468,17 @@ function M.close_no_diagnostics(opts)
       end
     )
   end
+end
+M.find_nvim_runtime = function()
+  local project_root = vim.fs.root(0, ".git")
+  local runtime = vim.env.VIMRUNTIME
+  if
+    M.is_directory(project_root)
+    and M.is_directory(vim.fs.joinpath(project_root, "runtime", "lua"))
+  then
+    runtime = vim.fs.joinpath(project_root, "runtime")
+  end
+  return runtime
 end
 
 return M

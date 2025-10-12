@@ -144,19 +144,25 @@ return {
             end,
           },
         },
+        ---@type blink.cmp.SourceConfigPartial
         sources = {
-          default = {
-            "lazydev",
-            "lsp",
-            "emoji",
-            "path",
-            "snippets",
-            "buffer",
-            "nerdfont",
-            "yank",
-            "dictionary",
-            "thesaurus",
-          },
+          default = function()
+            local sources = {
+              "lsp",
+              "emoji",
+              "path",
+              "snippets",
+              "buffer",
+              "nerdfont",
+              "yank",
+              "dictionary",
+              "thesaurus",
+            }
+            if package.loaded["lazydev"] then
+              table.insert(sources, "lazydev")
+            end
+            return sources
+          end,
           providers = {
             lsp = { async = true, score_offset = 1 },
             snippets = { score_offset = 1, max_items = 3 },
@@ -184,6 +190,9 @@ return {
               name = "LazyDev",
               module = "lazydev.integrations.blink",
               score_offset = 100,
+              enabled = function()
+                return package.loaded["lazydev"] ~= nil
+              end,
             },
             emoji = {
               module = "blink-emoji",

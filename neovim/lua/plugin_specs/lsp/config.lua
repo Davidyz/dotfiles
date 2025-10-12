@@ -1,4 +1,7 @@
 ---@module "lazy"
+
+local utils = require("_utils")
+
 ---@type LazySpec[]
 return {
   {
@@ -29,8 +32,13 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
+    cond = function()
+      return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
+    end,
     opts = function(_, opts)
+      ---@type lazydev.Config
       opts = vim.tbl_deep_extend("force", opts or {}, {
+        runtime = utils.find_nvim_runtime(),
         library = {
           { path = "luvit-meta/library", words = { "vim%.uv" } },
           { path = "wezterm-types", mods = { "wezterm" } },

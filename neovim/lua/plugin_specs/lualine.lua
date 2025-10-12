@@ -78,8 +78,6 @@ local function arduino_status()
   return line
 end
 
-local snacks_status_component = require("snacks").profiler.status()
-
 local diffview_label = function()
   if package.loaded["diffview"] ~= nil then
     ---@module 'diffview'
@@ -333,7 +331,20 @@ return {
             end,
           },
         },
-        lualine_z = { snacks_status_component },
+        lualine_z = {
+          {
+            function()
+              local profiler = require("snacks").profiler
+              if profiler.running() then
+                return profiler.status()
+              end
+            end,
+            cond = function()
+              return package.loaded["snacks"] ~= nil
+                and require("snacks").profiler.running()
+            end,
+          },
+        },
       },
       extensions = {
         "lazy",
