@@ -97,27 +97,41 @@ return {
             "",
             string.format("**`%s`** from _%s_", method, comb.client.name),
             "```" .. ft,
-            -- string.format(
-            --   vim.bo[peek_bufnr].commentstring,
-            --   string.format("%s from %s", method, comb.client.name)
-            -- ),
           })
           local line_num = math.ceil(api.nvim_win_get_height(0) * 0.2)
+          ---@type TSNode?
           local ts_node = vim.treesitter.get_node({
             bufnr = peek_bufnr,
             pos = { range.start.line, range.start.character },
           })
           if ts_node ~= nil then
-            local row_start, _, row_end, _ = vim.treesitter.get_node_range(ts_node)
+            local row_start, _, row_end, _ = ts_node:range()
 
-            while row_start == row_end and ts_node ~= nil do
+            if range.start.line ~= range["end"].line then
+              row_start = range.start.line
+              row_end = range["end"].line
+            end
+            local new_row_start = row_start
+            local new_row_end = row_end
+
+            while
+              (row_start == new_row_start or row_end == new_row_end)
+              and ts_node ~= nil
+            do
               -- find the closest multi_line parent node and treat it as the definition.
+
               ts_node = ts_node:parent()
+              if ts_node == nil then
+                break
+              end
+              row_start = new_row_start
+              row_end = new_row_end
+
               if ts_node:parent() == nil then
                 -- it's probably the root node. skip it.
                 break
               end
-              row_start, _, row_end, _ = vim.treesitter.get_node_range(assert(ts_node))
+              new_row_start, _, new_row_end, _ = ts_node:range()
             end
 
             line_num = row_end - row_start + 1
