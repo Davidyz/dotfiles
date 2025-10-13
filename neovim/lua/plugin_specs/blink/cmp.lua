@@ -43,13 +43,19 @@ return {
           ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
           ["<C-e>"] = { "hide", "fallback" },
 
+          ["<Esc>"] = {
+            function(cmp)
+              if cmp.snippet_active() then
+                return vim.snippet.stop()
+              end
+            end,
+            "fallback",
+          },
           ["<Tab>"] = {
             function(cmp)
               local col = vim.fn.col(".") - 1
               if cmp.is_menu_visible() then
                 return cmp.select_next()
-              -- elseif cmp.snippet_active() then
-              --   return cmp.accept()
               elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
                 return nil
               else
