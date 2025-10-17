@@ -257,6 +257,7 @@ return {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
+    -- dir = "~/git/inlayhint-filler.nvim/",
     event = "LspAttach",
     ---@module "inlayhint-filler"
     ---@type InlayHintFillerOpts
@@ -277,9 +278,13 @@ return {
         "<Leader>if",
         function()
           if vim.lsp.inlay_hint.apply_text_edits ~= nil then
-            return vim.lsp.inlay_hint.apply_text_edits({ bufnr = 0 })
+            vim.schedule(function()
+              vim.notify("Using built-in API.")
+              vim.lsp.inlay_hint.apply_text_edits()
+            end)
+          else
+            require("inlayhint-filler").fill()
           end
-          require("inlayhint-filler").fill()
         end,
         mode = { "n", "v" },
         desc = "[I]nlayhint [f]ill",

@@ -92,7 +92,14 @@ return {
       ---@type snacks.profiler.Config
       profiler = {
         enabled = true,
-        -- filter_mod = { default = false, codecompanion = true },
+        on_stop = { pick = false },
+        filter_mod = {
+          default = true,
+          ["^vim%."] = true,
+
+          ["^vim%.lsp%."] = true,
+          ["^vim%.api%."] = true,
+        },
         -- filter_fn = { default = false, ["^codecompanion.*"] = true },
       },
       quickfile = { enabled = true },
@@ -133,6 +140,17 @@ return {
         local snacks = require("snacks")
         if snacks.profiler.running() then
           snacks.profiler.stop()
+          vim.ui.input({ prompt = "Filter?", default = "" }, function(value)
+            local specs = nil
+            if value == "" then
+            elseif value ~= nil then
+              if value:find("^%^") == nil then
+                value = "^" .. value
+              end
+              specs = { filter = { name = value } }
+            end
+            snacks.profiler.pick(specs)
+          end)
         else
           snacks.profiler.start()
         end

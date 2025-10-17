@@ -200,8 +200,10 @@ return {
           local function close()
             dap_view.close(true)
           end
-          dap.listeners.before.event_terminated.dapui_config = close
-          dap.listeners.before.event_exited.dapui_config = close
+          dap.listeners.after.event_output.dap_view = dap_view.open
+          dap.listeners.after.event_initialized.dap_view = dap_view.open
+          -- dap.listeners.before.event_terminated.dapui_config = close
+          -- dap.listeners.before.event_exited.dapui_config = close
         end,
       },
       -- {

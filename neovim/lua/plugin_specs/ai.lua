@@ -247,7 +247,7 @@ The user's currently working in a project located at `%s`. Take this into consid
                 max_num = { document = 10, chunk = 20 },
                 chunk_mode = true,
                 summarise = {
-                  enabled = true,
+                  enabled = false,
                   adapter = function()
                     return require("codecompanion.adapters.http").extend("gemini", {
                       name = "Summariser",

@@ -233,7 +233,7 @@ return {
         mode = { "x" },
       },
       {
-        "<leader>if",
+        "<leader>iF",
         keymap_utils.make_keymap_callback({
           function()
             return require("refactoring").refactor("Inline Function")
@@ -253,7 +253,7 @@ return {
         desc = "Inline Function",
         noremap = true,
         expr = true,
-        mode = { "x" },
+        mode = { "x", "n" },
       },
       {
         "<leader>iv",
@@ -274,7 +274,7 @@ return {
         desc = "Inline Variable",
         noremap = true,
         expr = true,
-        mode = { "x" },
+        mode = { "x", "n" },
       },
       {
         "<leader>eb",

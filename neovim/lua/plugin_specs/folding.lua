@@ -58,11 +58,6 @@ return {
       foldtext = { enabled = true },
       useLspFoldsWithTreesitterFallback = true,
     },
-    init = function()
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldlevel = 99
-      vim.opt.foldlevelstart = 99
-    end,
     keys = {
       {
         "[z",

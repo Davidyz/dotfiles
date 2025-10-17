@@ -18,13 +18,7 @@ return {
         enabled = true,
         -- cmdline = true,
         disabled_filetypes = {},
-        pairs = {
-          ["<"] = {
-            "<",
-            ">",
-            filetypes = { "rust" },
-          },
-        },
+        pairs = {},
       },
       highlights = {
         enabled = true,
