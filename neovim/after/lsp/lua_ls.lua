@@ -35,7 +35,6 @@ return {
   },
   on_attach = function(client, _)
     client.server_capabilities.documentOnTypeFormattingProvider = nil
-    client.server_capabilities.foldingRangeProvider = nil
     -- vim.schedule(function()
     --   local winnr = vim.fn.bufwinid(bufnr)
     --   vim.wo[winnr].foldlevel = 999

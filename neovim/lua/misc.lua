@@ -86,27 +86,15 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 
-api.nvim_create_augroup("restore_view_group", { clear = true })
-
-api.nvim_create_autocmd("BufWinLeave", {
-  group = "restore_view_group",
-  callback = function()
-    pcall(function()
-      if vim.bo.buftype == "" and vim.fn.bufname() ~= "" then
-        vim.cmd("mkview")
-      end
-    end)
-  end,
-})
-
--- Autocommand to load the view when entering a buffer in a window
-api.nvim_create_autocmd("BufWinEnter", {
-  group = "restore_view_group",
-  callback = function()
-    pcall(function()
-      if vim.bo.buftype == "" and vim.fn.bufname() ~= "" then
-        vim.cmd("loadview")
-      end
-    end)
+-- Go to last loc when opening a buffer
+api.nvim_create_autocmd("BufReadPost", {
+  group = api.nvim_create_augroup("restore_view_group", { clear = true }),
+  callback = function(event)
+    local buf = event.buf
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
   end,
 })

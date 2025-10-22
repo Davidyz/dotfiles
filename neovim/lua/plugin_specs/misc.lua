@@ -85,25 +85,4 @@ return {
     },
     opts = {},
   },
-
-  {
-    "amitds1997/remote-nvim.nvim",
-    cond = function()
-      return require("_utils").no_vscode() and require("_utils").cpu_count() >= 2
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim", -- For standard functions
-      "MunifTanjim/nui.nvim", -- To build the plugin UI
-      "ibhagwan/fzf-lua",
-    },
-    opt = {},
-    config = true,
-    cmd = {
-      "RemoteCleanup",
-      "RemoteConfigDel",
-      "RemoteInfo",
-      "RemoteLog",
-      "RemoteStart",
-    },
-  },
 }
