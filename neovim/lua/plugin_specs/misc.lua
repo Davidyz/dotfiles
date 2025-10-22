@@ -28,7 +28,6 @@ return {
       })
     end,
     dependencies = {
-      "ibhagwan/fzf-lua",
       "MunifTanjim/nui.nvim",
 
       -- optional

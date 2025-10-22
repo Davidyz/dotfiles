@@ -54,9 +54,14 @@ return {
   {
     "chrisgrieser/nvim-origami",
     event = "FileType",
+    ---@module "origami"
+    ---@type Origami.config
     opts = {
       foldtext = { enabled = true },
       useLspFoldsWithTreesitterFallback = true,
+      pauseFoldsOnSearch = true,
+      autoFold = { enabled = false },
+      foldKeymaps = { enabled = false },
     },
     keys = {
       {

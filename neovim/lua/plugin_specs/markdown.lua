@@ -18,9 +18,6 @@ return {
   {
     "Davidyz/live-preview.nvim",
     branch = "feat/configurable_hostname",
-    dependencies = {
-      "ibhagwan/fzf-lua",
-    },
     -- dir = "~/git/live-preview.nvim/",
     config = function(self, _)
       return require("livepreview.config").set({ address = "0.0.0.0" })

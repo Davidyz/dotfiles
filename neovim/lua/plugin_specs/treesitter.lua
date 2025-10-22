@@ -16,7 +16,7 @@ return {
 
       require("nvim-treesitter").install({ "dap_repl" })
 
-      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      -- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
     build = ":TSUpdate",
     cond = require("_utils").no_vscode,
@@ -161,7 +161,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "ibhagwan/fzf-lua",
     },
     cond = require("_utils").no_vscode,
     config = function()

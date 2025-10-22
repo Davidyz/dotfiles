@@ -29,8 +29,7 @@ end
 api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function(args)
-    local fzf = require("fzf-lua")
-
+    local snacks = require("snacks")
     if vim.bo.filetype == "codecompanion" then
       return
     end
@@ -43,25 +42,25 @@ api.nvim_create_autocmd("LspAttach", {
     }
 
     bufmap("n", "gd", function()
-      return fzf.lsp_definitions(opts)
+      return snacks.picker.lsp_definitions()
     end, { desc = "Goto definition." })
 
     bufmap("n", "gD", function()
-      return fzf.lsp_typedefs(opts)
+      return snacks.picker.lsp_type_definitions()
     end, { desc = "Goto type definition." })
 
     bufmap("n", "gi", function()
-      return fzf.lsp_implementations(opts)
+      return snacks.picker.lsp_implementations()
     end, { desc = "Goto implementations." })
 
     bufmap("n", "gr", function()
-      return fzf.lsp_references(opts)
+      return snacks.picker.lsp_references()
     end, { desc = "LSP reference." })
     bufmap({ "i", "n" }, "<C-f>", function()
-      return fzf.lsp_document_symbols()
+      return snacks.picker.lsp_symbols()
     end, { desc = "Document symbols." })
     bufmap({ "i", "n" }, "<C-S-f>", function()
-      return fzf.lsp_live_workspace_symbols()
+      return snacks.picker.lsp_workspace_symbols({ live = true })
     end, { desc = "Workspace symbols." })
 
     -- Move to the previous diagnostic

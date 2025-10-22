@@ -39,14 +39,6 @@ local default_server_config = {
     if not client:supports_method("textDocument/onTypeFormatting", bufnr) then
       lsp.on_type_formatting.enable(false, { client_id = client.id })
     end
-
-    if client:supports_method("textDocument/foldingRange", bufnr) then
-      local win = vim.fn.bufwinid(bufnr)
-      if win < 0 then
-        win = 0
-      end
-      vim.wo[win][0].foldexpr = "v:lua.lsp.foldexpr()"
-    end
   end,
 }
 

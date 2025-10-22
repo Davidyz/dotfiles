@@ -166,7 +166,10 @@ return {
         "CursorMovedI",
       }, {
         callback = function()
-          if vim.bo.filetype ~= "lua" or (vim.fs.root(0, { "selene.toml" }) ~= nil) then
+          if
+            (vim.bo.filetype ~= "lua" or (vim.fs.root(0, { "selene.toml" }) ~= nil))
+            and vim.bo.buftype == ""
+          then
             lint.try_lint()
           end
         end,

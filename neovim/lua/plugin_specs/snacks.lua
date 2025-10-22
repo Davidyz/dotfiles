@@ -1,10 +1,44 @@
+---@module "lazy"
+---@type LazySpec
 return {
   "folke/snacks.nvim",
+  dependencies = {
+    {
+      "rachartier/tiny-code-action.nvim",
+      dependencies = {
+        { "nvim-lua/plenary.nvim" },
+        {
+          "folke/snacks.nvim",
+          opts = {
+            terminal = {},
+          },
+        },
+      },
+      event = "LspAttach",
+      opts = function(self, opts)
+        opts = opts or {}
+        if vim.fn.executable("delta") == 1 then
+          opts.backend = "delta"
+        end
+        opts.picker = "snacks"
+      end,
+      keys = {
+        {
+          "<leader>a",
+          function()
+            require("tiny-code-action").code_action({})
+          end,
+        },
+      },
+    },
+  },
   submodules = false,
   priority = 1000,
   lazy = false,
-  version = "*",
+  -- version = "*",
   opts = function()
+    ---@module "snacks"
+    ---@type snacks.Config
     return {
       bigfile = { enabled = true },
       dashboard = {
@@ -51,7 +85,7 @@ return {
               key = "f",
               desc = "Find File",
               action = function(opts)
-                return require("fzf-lua").files(opts)
+                require("snacks").picker.files()
               end,
             },
             {
@@ -88,8 +122,87 @@ return {
       input = { enabled = true },
       notifier = { enabled = true },
       ---@type snacks.picker.Config
-      picker = { enabled = true, ui_select = false },
-      ---@type snacks.profiler.Config
+      picker = {
+        enabled = true,
+        ui_select = true,
+        layouts = {
+          default = {
+            layout = {
+              box = "horizontal",
+              width = 0.9,
+              height = 0.9,
+              {
+                box = "vertical",
+                border = "solid",
+                title = "{title} {live} {flags}",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+              },
+              {
+                win = "preview",
+                title = "{preview}",
+                border = "solid",
+                width = 0.6,
+              },
+            },
+          },
+          vertical = {
+            layout = {
+              backdrop = false,
+              width = 0.9,
+              min_width = 80,
+              height = 0.9,
+              min_height = 30,
+              box = "vertical",
+              border = "solid",
+              title = "{title} {live} {flags}",
+              title_pos = "center",
+              { win = "input", height = 1, border = "solid" },
+              { win = "list", border = "none" },
+              { win = "preview", title = "{preview}", height = 0.6, border = "solid" },
+            },
+          },
+        },
+        actions = {
+          select = function(picker)
+            picker.list:select()
+          end,
+          confirm = function(picker, item, action)
+            ---@diagnostic disable-next-line: inject-field
+            action.cmd = "tabdrop"
+            ---@diagnostic disable-next-line: param-type-mismatch
+            pcall(require("snacks").picker.actions.jump, picker, item, action)
+          end,
+        },
+        layout = {
+          preset = function()
+            return vim.o.columns >= 120 and "default" or "vertical"
+          end,
+        },
+        jump = { reuse_win = false },
+        win = {
+          input = {
+            keys = {
+              ["<S-Tab>"] = {
+                "select",
+                mode = { "n", "x", "i" },
+              },
+              ["<Tab>"] = { "select", mode = { "n", "x", "i" } },
+            },
+          },
+          list = {
+            keys = {
+              ["<S-Tab>"] = {
+                "select",
+                mode = { "n", "x", "i" },
+              },
+              ["<Tab>"] = { "select", mode = { "n", "x", "i" } },
+            },
+          },
+          preview = { wo = { cursorcolumn = false } },
+        },
+        matcher = { frecency = true, history_bonus = true },
+      },
       profiler = {
         enabled = true,
         on_stop = { pick = false },
@@ -119,10 +232,12 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
+        ---@diagnostic disable-next-line: duplicate-set-field
         _G.dd = function(...)
           snacks.debug.inspect(...)
         end
 
+        ---@diagnostic disable-next-line: duplicate-set-field
         _G.dt = function(...)
           snacks.debug.backtrace(...)
         end
@@ -172,6 +287,143 @@ return {
       end,
       desc = "Prev Reference",
       mode = { "n", "t" },
+    },
+
+    -- NOTE: picker
+    {
+      "<leader>tt",
+      function()
+        require("snacks").picker.grep({
+          cmd = [[\b(TODO|WIP|NOTE|XXX|INFO|DOCS|PERF|TEST|HACK|WARNING|WARN|FIX|FIXME|BUG|ERROR):]],
+        })
+      end,
+      desc = "Todo comments",
+    },
+    {
+      "<Leader>a",
+      function()
+        error("Not implemented!")
+      end,
+      remap = false,
+      mode = { "n", "x" },
+      desc = "Code actions",
+    },
+    {
+      "<Leader>tf",
+      function()
+        require("snacks").picker.files()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Fuzzy find files.",
+    },
+    {
+      "<Leader>tb",
+      function()
+        require("snacks").picker.buffers()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Show buffers.",
+    },
+    {
+      "<Leader>tq",
+      function()
+        require("snacks").picker.qflist()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Show quickfix.",
+    },
+    {
+      "<Leader>tD",
+      function()
+        require("snacks").picker.diagnostics()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Project-wise diagnostics.",
+    },
+    {
+      "<Leader>td",
+      function()
+        require("snacks").picker.diagnostics_buffer()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Buffer diagnostics.",
+    },
+    {
+      "<Leader>th",
+      function()
+        require("snacks").picker.help()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Find help tags.",
+    },
+    {
+      "<Leader>tH",
+      function()
+        require("snacks").picker.highlights()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Find highlight groups.",
+    },
+    {
+      "R",
+      function()
+        require("snacks").picker.grep()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Live grep.",
+    },
+    {
+      "<Leader>f",
+      function()
+        require("snacks").picker.grep_buffers()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Fuzzy find current buffer.",
+    },
+    {
+      "<Leader>tr",
+      function()
+        require("snacks").picker.resume()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "Resume last picker session",
+    },
+    {
+      "<Space>df",
+      function()
+        require("plugin_extras.snacks").dap.dap_frames()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "[D]ap [f]rames",
+    },
+    {
+      "<Space>dv",
+      function()
+        require("plugin_extras.snacks").dap.dap_variables()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "[D]ap [v]ariables",
+    },
+    {
+      "<Space>db",
+      function()
+        return require("plugin_extras.snacks").dap.dap_breakpoints()
+      end,
+      remap = false,
+      mode = "n",
+      desc = "[D]ap [b]reakpoints",
     },
   },
 }

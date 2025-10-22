@@ -117,7 +117,7 @@ return {
       wk.add({
         { "<leader>c", group = "CodeCompanion" },
         { "<leader>C", group = "Coverage" },
-        { "<leader>t", group = "Fzf-lua" },
+        { "<leader>t", group = "Picker" },
         { "<leader>r", group = "Refactoring" },
         { "<leader>e", group = "Extract" },
         { "<leader>g", group = "Git integrations" },

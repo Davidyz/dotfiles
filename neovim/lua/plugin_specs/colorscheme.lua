@@ -24,7 +24,7 @@ return {
           LspInfoBorder = { fg = colors.mantle, bg = colors.mantle },
           WinSeparator = { bg = colors.base, fg = colors.lavender },
           Constant = { fg = colors.lavender },
-          ["@lsp.mod.builtin.python"] = { link = "@type.builtin" },
+          ["@lsp.mod.builtin"] = { link = "@type.builtin" },
           ["@type.builtin"] = {
             fg = colors.lavender,
             italic = true,

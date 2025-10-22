@@ -40,7 +40,6 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "Davidyz/VectorCode",
-      "ibhagwan/fzf-lua",
       {
         "ravitemer/codecompanion-history.nvim",
         -- dir = "~/git/codecompanion-history.nvim/",
@@ -111,7 +110,7 @@ The user's currently working in a project located at `%s`. Take this into consid
       end
       -- opts.opts = { log_level = "DEBUG" }
       opts.display = {
-        action_palette = { provider = "fzf_lua" },
+        action_palette = { provider = "snacks" },
         chat = {
           show_header_separator = false,
           window = { sticky = true },
@@ -194,7 +193,7 @@ The user's currently working in a project located at `%s`. Take this into consid
             save_chat_keymap = "sc",
             auto_save = true,
             expiration_days = 0,
-            picker = "fzf-lua",
+            picker = "snacks",
             auto_generate_title = true,
             continue_last_chat = false,
             delete_on_clearing_chat = false,
@@ -618,6 +617,5 @@ The user's currently working in a project located at `%s`. Take this into consid
       })
       job:start()
     end,
-    dependencies = { "ibhagwan/fzf-lua" },
   },
 }
