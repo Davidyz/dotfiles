@@ -48,7 +48,7 @@ return {
   submodules = false,
   priority = 1000,
   lazy = false,
-  -- version = "*",
+  version = "*",
   opts = function()
     ---@module "snacks"
     ---@type snacks.Config
