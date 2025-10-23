@@ -6,7 +6,6 @@ local utils = require("keymaps.utils")
 if fn.exists("g:vscode") ~= 0 then
   return
 end
-local fzf_lua_jump_action = utils.fzf_lua_jump_action
 vim.o.pumheight = math.floor(vim.o.lines / 4)
 
 vim.keymap.del({ "n" }, "gri")
@@ -16,30 +15,25 @@ vim.keymap.del({ "n" }, "grr")
 vim.keymap.del({ "n" }, "grt")
 pcall(vim.keymap.del, { "n" }, "<C-s>")
 
-local bufmap = function(mode, lhs, rhs, opts)
-  local curr_buf = api.nvim_get_current_buf()
-  opts = opts or { buffer = curr_buf }
+local function make_mapper(bufnr)
+  return function(mode, lhs, rhs, opts)
+    opts = opts or { buffer = bufnr }
 
-  if opts.buffer == nil then
-    opts.buffer = curr_buf
+    if opts.buffer == nil then
+      opts.buffer = bufnr
+    end
+    vim.keymap.set(mode, lhs, rhs, opts)
   end
-  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",
   callback = function(args)
+    local bufmap = make_mapper(args.buf)
     local snacks = require("snacks")
     if vim.bo.filetype == "codecompanion" then
       return
     end
-
-    local opts = {
-      sync = false,
-      jump1 = true,
-      jump1_action = fzf_lua_jump_action,
-      unique_line_items = true,
-    }
 
     bufmap("n", "gd", function()
       return snacks.picker.lsp_definitions()

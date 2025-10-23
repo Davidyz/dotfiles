@@ -16,11 +16,24 @@ return {
       },
       event = "LspAttach",
       opts = function(self, opts)
-        opts = opts or {}
+        opts = vim.tbl_deep_extend("force", opts or {}, {
+          backend = vim.fn.executable("delta") == 1 and "delta" or "vim",
+          picker = {
+            "snacks",
+            opts = {
+              layout = {
+                preset = function()
+                  return vim.o.columns >= 120 and "default" or "vertical"
+                end,
+              },
+            },
+          },
+        })
+
         if vim.fn.executable("delta") == 1 then
           opts.backend = "delta"
         end
-        opts.picker = "snacks"
+        return opts
       end,
       keys = {
         {
@@ -98,13 +111,17 @@ return {
               icon = " ",
               key = "g",
               desc = "Find Text",
-              action = "<cmd>FzfLua grep_project<cr>",
+              action = function()
+                require("snacks").picker.grep()
+              end,
             },
             {
               icon = " ",
               key = "G",
               desc = "Git Files",
-              action = "<cmd>FzfLua git_files<cr>",
+              action = function()
+                require("snacks").picker.git_files()
+              end,
             },
             {
               icon = "󰒲 ",
@@ -167,12 +184,7 @@ return {
           select = function(picker)
             picker.list:select()
           end,
-          confirm = function(picker, item, action)
-            ---@diagnostic disable-next-line: inject-field
-            action.cmd = "tabdrop"
-            ---@diagnostic disable-next-line: param-type-mismatch
-            pcall(require("snacks").picker.actions.jump, picker, item, action)
-          end,
+          confirm = { action = "confirm", cmd = "tabdrop" },
         },
         layout = {
           preset = function()
@@ -424,6 +436,15 @@ return {
       remap = false,
       mode = "n",
       desc = "[D]ap [b]reakpoints",
+    },
+    {
+      "<Leader>P",
+      function()
+        require("snacks").profiler.pick()
+      end,
+      mode = "n",
+      remap = false,
+      desc = "Snacks profiler",
     },
   },
 }
