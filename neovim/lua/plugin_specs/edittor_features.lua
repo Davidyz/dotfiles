@@ -29,7 +29,6 @@ return {
     },
     cmd = { "CodeSnap", "CodeSnapSave", "CodeSnapASCII" },
   },
-  { "mawkler/modicator.nvim", opts = {}, event = { "BufReadPost", "BufNewFile" } },
   {
     "brenoprata10/nvim-highlight-colors",
     config = function()

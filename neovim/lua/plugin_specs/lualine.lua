@@ -1,5 +1,6 @@
 ---@module "lualine"
 
+local fn = vim.fn
 local api = vim.api
 local utils = require("_utils")
 
@@ -119,6 +120,37 @@ local diffview_label = function()
   end
   return ""
 end
+
+local highlight_base = "lualine_b_"
+local highlights_suffix = {
+  n = "normal",
+  v = "visual",
+  c = "command",
+  i = "insert",
+  r = "replace",
+}
+
+local get_target_hl = utils.cache(function(mode)
+  local linked_group = highlights_suffix[mode]
+  if linked_group then
+    linked_group = highlight_base .. linked_group
+    return api.nvim_get_hl(0, { name = linked_group })
+  end
+end)
+
+local function update_hl(mode)
+  local mode_hl = get_target_hl(mode)
+  if mode_hl then
+    api.nvim_set_hl(0, "CursorLineNr", { fg = mode_hl.fg })
+  end
+end
+
+api.nvim_create_autocmd({ "ModeChanged" }, {
+  callback = function(args)
+    local target_mode = args.match:gsub(".*:", ""):lower():sub(1, 1)
+    update_hl(target_mode)
+  end,
+})
 
 ---@module "lazy"
 
@@ -374,6 +406,7 @@ return {
         end,
         group = group,
       })
+      update_hl(fn.mode())
     end,
     lazy = false,
     dependencies = { "echasnovski/mini.icons" },
