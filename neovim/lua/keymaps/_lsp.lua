@@ -35,26 +35,30 @@ api.nvim_create_autocmd("LspAttach", {
       return
     end
 
+    local opts = {
+      unique_lines = true,
+    }
+
     bufmap("n", "gd", function()
-      return snacks.picker.lsp_definitions()
+      return snacks.picker.lsp_definitions(opts)
     end, { desc = "Goto definition." })
 
     bufmap("n", "gD", function()
-      return snacks.picker.lsp_type_definitions()
+      return snacks.picker.lsp_type_definitions(opts)
     end, { desc = "Goto type definition." })
 
     bufmap("n", "gi", function()
-      return snacks.picker.lsp_implementations()
+      return snacks.picker.lsp_implementations(opts)
     end, { desc = "Goto implementations." })
 
     bufmap("n", "gr", function()
-      return snacks.picker.lsp_references()
+      return snacks.picker.lsp_references(opts)
     end, { desc = "LSP reference." })
     bufmap({ "i", "n" }, "<C-f>", function()
-      return snacks.picker.lsp_symbols()
+      return snacks.picker.lsp_symbols(opts)
     end, { desc = "Document symbols." })
-    bufmap({ "i", "n" }, "<C-S-f>", function()
-      return snacks.picker.lsp_workspace_symbols({ live = true })
+    bufmap({ "i", "n" }, "<C-F>", function()
+      return snacks.picker.lsp_workspace_symbols({ live = true, unique_lines = true })
     end, { desc = "Workspace symbols." })
 
     -- Move to the previous diagnostic
