@@ -1,4 +1,23 @@
 ---@module "lazy"
+
+local function pick_profiler()
+  local snacks = require("snacks")
+  if snacks.profiler.running() then
+    snacks.profiler.stop()
+  end
+  vim.ui.input({ prompt = "Filter?", default = "" }, function(value)
+    local specs = nil
+    if value == "" then
+    elseif value ~= nil then
+      if value:find("^%^") == nil then
+        value = "^" .. value
+      end
+      specs = { filter = { name = value } }
+    end
+    snacks.profiler.pick(specs)
+  end)
+end
+
 ---@type LazySpec
 return {
   "folke/snacks.nvim",
@@ -266,18 +285,7 @@ return {
       function()
         local snacks = require("snacks")
         if snacks.profiler.running() then
-          snacks.profiler.stop()
-          vim.ui.input({ prompt = "Filter?", default = "" }, function(value)
-            local specs = nil
-            if value == "" then
-            elseif value ~= nil then
-              if value:find("^%^") == nil then
-                value = "^" .. value
-              end
-              specs = { filter = { name = value } }
-            end
-            snacks.profiler.pick(specs)
-          end)
+          pick_profiler()
         else
           snacks.profiler.start()
         end
@@ -439,9 +447,7 @@ return {
     },
     {
       "<Leader>P",
-      function()
-        require("snacks").profiler.pick()
-      end,
+      pick_profiler,
       mode = "n",
       remap = false,
       desc = "Snacks profiler",

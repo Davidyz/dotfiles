@@ -37,6 +37,7 @@ api.nvim_create_autocmd("LspAttach", {
 
     local opts = {
       unique_lines = true,
+      include_current = true,
     }
 
     bufmap("n", "gd", function()
