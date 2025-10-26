@@ -11,6 +11,10 @@
     navigate = true
     features = catppuccin-mocha
     side-by-side = true
+    dark = true      
+    navigate = true
+	wrap-max-lines = 0
+
 
 [merge]
     conflictstyle = diff3

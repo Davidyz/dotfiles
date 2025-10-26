@@ -1,26 +1,10 @@
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "wintermute-cell/gitignore.nvim",
     cmd = "Gitignore",
-    config = function()
-      local gitignore = require("gitignore")
-      gitignore.generate = function(opts)
-        vim.ui.select(
-          gitignore.templateNames,
-          { prompt = "Select templates for gitignore file> " },
-          function(item, idx)
-            if item then
-              gitignore.createGitignoreBuffer(opts.args, item)
-            end
-          end
-        )
-      end
-      vim.api.nvim_create_user_command(
-        "Gitignore",
-        gitignore.generate,
-        { nargs = "?", complete = "file" }
-      )
-    end,
   },
   {
     "f-person/git-blame.nvim",
@@ -135,6 +119,17 @@ return {
     end,
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "Gitsigns" },
+  },
+  {
+    "pwntester/octo.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-mini/mini.icons" },
+    cmd = { "Octo" },
+    opts = {
+      picker = "snacks",
+    },
+    cond = function()
+      return vim.fn.executable("gh") == 1
+    end,
   },
   {
     "jsongerber/thanks.nvim",
