@@ -4,8 +4,9 @@ local api = vim.api
 
 return {
   "saghen/blink.pairs",
-  version = "*",
-  dependencies = "saghen/blink.download",
+  -- version = "*",
+  build = "cargo build --release",
+  dependencies = { "saghen/blink.download" },
   ---@param opts blink.pairs.Config
   ---@return blink.pairs.Config
   opts = function(_, opts)

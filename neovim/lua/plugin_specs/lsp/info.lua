@@ -272,6 +272,7 @@ return {
       eager = function(ctx)
         return vim.bo[ctx.bufnr].filetype == "rust"
       end,
+      verbose = true,
     },
     keys = {
       {

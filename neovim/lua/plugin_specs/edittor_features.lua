@@ -180,4 +180,27 @@ return {
     },
     cmd = { "Atone" },
   },
+  {
+    "xzbdmw/clasp.nvim",
+    event = { "BufNewFile", "BufReadPost" },
+    opts = {},
+    keys = {
+      {
+        "<C-->",
+        function()
+          require("clasp").wrap("prev")
+        end,
+        mode = { "n", "i" },
+        desc = "Shrink parenthesis.",
+      },
+      {
+        "<C-=>",
+        function()
+          require("clasp").wrap("next")
+        end,
+        mode = { "n", "i" },
+        desc = "Shrink parenthesis.",
+      },
+    },
+  },
 }
