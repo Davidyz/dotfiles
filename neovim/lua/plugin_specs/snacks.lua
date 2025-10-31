@@ -26,13 +26,16 @@ return {
       {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = { signs = false },
+        opts = {
+          signs = false,
+          highlight = { multiline = false, keyword = "bg", after = "" },
+        },
       },
     },
     submodules = false,
     priority = 1000,
     lazy = false,
-    version = "*",
+    -- version = "*",
     opts = function()
       ---@module "snacks"
       ---@type snacks.Config

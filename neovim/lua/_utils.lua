@@ -415,6 +415,14 @@ function M.is_directory(path)
   return get_path_type(path).type == "directory"
 end
 
+---@param dir string
+---@param path string
+function M.is_in_child_dir(dir, path)
+  dir = vim.fs.abspath(dir)
+  path = vim.fs.abspath(path)
+  return path:find("^" .. dir) ~= nil
+end
+
 ---@param opts {level?: string}
 function M.close_no_diagnostics(opts)
   opts = opts or {}

@@ -1,4 +1,5 @@
 local api = vim.api
+local fn = vim.fn
 local utils = require("_utils")
 local keymap_utils = require("keymaps.utils")
 local function fzf_notification()
@@ -86,6 +87,9 @@ local function fzf_notification()
   })
 end
 
+---@module "lazy"
+
+---@type LazySpec[]
 return {
   {
     "ibhagwan/fzf-lua",
@@ -140,138 +144,6 @@ return {
         return fzf_notification()
       end, {})
     end,
-    keys = {
-      {
-        "<leader>tt",
-        function()
-          require("fzf-lua").grep({
-            search = [[\b(TODO|WIP|NOTE|XXX|INFO|DOCS|PERF|TEST|HACK|WARNING|WARN|FIX|FIXME|BUG|ERROR):]],
-            no_esc = true,
-            multiline = true,
-          })
-        end,
-        desc = "Todo comments",
-      },
-      {
-        "<Leader>a",
-        function()
-          require("fzf-lua").lsp_code_actions({
-            silent = true,
-            winopts = { preview = { horizontal = "right:65%", vertical = "down:75%" } },
-          })
-        end,
-        remap = false,
-        mode = { "n", "x" },
-        desc = "Code actions",
-      },
-      {
-        "<Leader>tf",
-        function(opts)
-          return require("fzf-lua").files(opts)
-        end,
-        remap = false,
-        mode = "n",
-        desc = "Fuzzy find files.",
-      },
-      {
-        "<Leader>tb",
-        "<cmd>FzfLua buffers<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Show buffers.",
-      },
-      {
-        "<Leader>tq",
-        "<cmd>FzfLua quickfix<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Show quickfix.",
-      },
-      {
-        "<Leader>tD",
-        "<cmd>FzfLua diagnostics_workspace<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Project-wise diagnostics.",
-      },
-      {
-        "<Leader>td",
-        "<cmd>FzfLua diagnostics_document<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Buffer diagnostics.",
-      },
-      {
-        "<Leader>th",
-        "<cmd>FzfLua helptags<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Find help tags.",
-      },
-      {
-        "<Leader>tH",
-        "<cmd>FzfLua highlights<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Find highlight groups.",
-      },
-      {
-        "R",
-        "<cmd>FzfLua grep_project<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Live grep.",
-      },
-      {
-        "<Leader>f",
-        "<cmd>FzfLua grep_curbuf<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Fuzzy find current buffer.",
-      },
-      {
-        "<Leader>tr",
-        "<cmd>FzfLua resume<cr>",
-        remap = false,
-        mode = "n",
-        desc = "Resume last fzf-lua session",
-      },
-      {
-        "<Space>df",
-        "<cmd>FzfLua dap_frames<cr>",
-        remap = false,
-        mode = "n",
-        desc = "[D]ap [f]rames",
-      },
-      {
-        "<Space>dc",
-        "<cmd>FzfLua dap_commands<cr>",
-        remap = false,
-        mode = "n",
-        desc = "[D]ap [c]ommands",
-      },
-      {
-        "<Space>dv",
-        "<cmd>FzfLua dap_variables<cr>",
-        remap = false,
-        mode = "n",
-        desc = "[D]ap [v]ariables",
-      },
-      {
-        "<Space>db",
-        "<cmd>FzfLua dap_breakpoints<cr>",
-        remap = false,
-        mode = "n",
-        desc = "[D]ap [b]reakpoints",
-      },
-      {
-        "<Space>dc",
-        "<cmd>FzfLua dap_configurations<cr>",
-        remap = false,
-        mode = "n",
-        desc = "[D]ap [c]onfigurations",
-      },
-    },
   },
   { "nvim-telescope/telescope.nvim", enabled = false },
 }
