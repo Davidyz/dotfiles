@@ -174,6 +174,7 @@ return {
               },
             },
           },
+          sources = { grep = { need_search = false, live = false } },
           previewers = { diff = { builtin = false } },
           actions = {
             select = function(picker)
@@ -359,10 +360,7 @@ return {
       {
         "R",
         function()
-          require("snacks").picker.grep({
-            live = true,
-            need_search = true,
-          })
+          require("snacks").picker.grep()
         end,
         remap = false,
         mode = "n",
