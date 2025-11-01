@@ -32,10 +32,11 @@ return {
         },
       },
     },
+    -- dir = "~/git/snacks.nvim/",
     submodules = false,
     priority = 1000,
     lazy = false,
-    -- version = "*",
+    version = "*",
     opts = function()
       ---@module "snacks"
       ---@type snacks.Config
@@ -117,8 +118,22 @@ return {
                 action = ":Lazy",
                 enabled = package.loaded.lazy ~= nil,
               },
-              { icon = "", key = "M", desc = "Mason", action = "<CMD>Mason<CR>" },
-              { icon = " ", key = "q", desc = "Quit", action = ":q" },
+              {
+                icon = "",
+                key = "M",
+                desc = "Mason",
+                action = function()
+                  require("mason.api.command").Mason()
+                end,
+              },
+              {
+                icon = " ",
+                key = "q",
+                desc = "Quit",
+                action = function()
+                  vim.cmd.quit()
+                end,
+              },
             },
           },
         },

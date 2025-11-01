@@ -292,4 +292,29 @@ return {
       },
     },
   },
+  {
+    "rachartier/tiny-code-action.nvim",
+    keys = {
+      {
+        "<Leader>a",
+        function()
+          require("tiny-code-action").code_action()
+        end,
+      },
+    },
+    opts = function(self, opts)
+      ---@module "snacks"
+
+      return vim.tbl_deep_extend("force", opts or {}, {
+        backend = "vim",
+        picker = {
+          "snacks",
+          ---@type snacks.picker.Config
+          opts = {
+            layout = { preset = "default" },
+          },
+        },
+      })
+    end,
+  },
 }
