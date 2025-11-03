@@ -131,6 +131,9 @@ return {
                   if did_edit then
                     level = vim.log.levels.WARN
                   end
+                  if type(err) == "table" then
+                    err = vim.inspect(err)
+                  end
                   vim.schedule_wrap(vim.notify)(err, level, { title = "Conform.nvim" })
                 end
               end)
