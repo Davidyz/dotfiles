@@ -263,12 +263,7 @@ return {
     ---@type InlayHintFillerOpts
     opts = {
       blacklisted_servers = {},
-      force = function(ctx)
-        if vim.bo[ctx.bufnr].filetype == "rust" then
-          return true
-        end
-        return false
-      end,
+      force = false,
       eager = function(ctx)
         return vim.bo[ctx.bufnr].filetype == "rust"
       end,

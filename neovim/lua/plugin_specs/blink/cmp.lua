@@ -1,6 +1,8 @@
 ---@module "blink.cmp"
 ---@module "lazy"
 
+local api = vim.api
+
 local function is_text()
   return vim.list_contains(TEXT, vim.bo.filetype)
 end
@@ -24,6 +26,7 @@ return {
       "archie-judd/blink-cmp-words",
       "MahanRahmati/blink-nerdfont.nvim",
     },
+    build = "cargo build --release",
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     opts = function(_, opts)
@@ -154,20 +157,32 @@ return {
         sources = {
           default = function()
             local sources = {
-              "lsp",
-              "emoji",
-              "path",
-              "snippets",
-              "buffer",
-              "nerdfont",
-              "yank",
-              "dictionary",
-              "thesaurus",
+              lsp = true,
+              emoji = true,
+              path = true,
+              snippets = true,
+              buffer = true,
+              nerdfont = true,
+              yank = true,
+              dictionary = true,
+              thesaurus = true,
             }
             if package.loaded["lazydev"] then
-              table.insert(sources, "lazydev")
+              sources.lazydev = true
             end
-            return sources
+
+            if api.nvim_buf_get_name(0):find("lsp:rename$") then
+              return { "buffer" }
+            end
+
+            return vim
+              .iter(sources)
+              :map(function(k, v)
+                if v then
+                  return k
+                end
+              end)
+              :totable()
           end,
           providers = {
             lsp = { async = true, score_offset = 1 },

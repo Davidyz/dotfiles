@@ -164,10 +164,11 @@ return {
     ---@type Atone.Config
     opts = {
       node_label = {
+        ---@param ctx AtoneNode.Label.Ctx
         formatter = function(ctx)
           return {
             "[",
-            { tostring(ctx.seq), "Keyword" },
+            { tostring(ctx.seq), ctx.is_current and "Keyword" or "Comment" },
             "] ",
             { ctx.h_time, "Comment" },
             " ",
@@ -179,6 +180,15 @@ return {
       },
     },
     cmd = { "Atone" },
+    keys = {
+      {
+        "<leader>u",
+        function()
+          require("atone.core").toggle()
+        end,
+        desc = "Undotree",
+      },
+    },
   },
   {
     "xzbdmw/clasp.nvim",
