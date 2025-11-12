@@ -6,12 +6,10 @@ return {
     "afonsofrancof/OSC11.nvim",
     opts = {
       on_dark = function()
-        vim.notify("dark")
         vim.opt.background = "dark"
         vim.cmd.colorscheme("catppuccin-mocha")
       end,
       on_light = function()
-        vim.notify("light")
         vim.opt.background = "light"
         vim.cmd.colorscheme("catppuccin-latte")
       end,

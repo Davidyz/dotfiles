@@ -68,7 +68,6 @@ require("lazy").setup({
   spec = find_specs("plugin_specs"),
   defaults = { lazy = true },
   dev = { fallback = true },
-  install = { colorscheme = { "catppuccin-mocha" } },
   profiling = { loader = true, require = true },
   ui = {
     border = "solid",

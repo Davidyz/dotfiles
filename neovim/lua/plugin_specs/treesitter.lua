@@ -358,7 +358,7 @@ return {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
-      local palette = require("catppuccin.palettes.mocha")
+      local palette = require("catppuccin.palettes").get_palette()
       local excluded_ft = {
         ["neo-tree"] = true,
         snacks_dashboard = true,
