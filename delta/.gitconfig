@@ -9,9 +9,9 @@
 
 [delta]
     navigate = true
-    features = catppuccin-mocha
+    ; features = catppuccin-mocha
     side-by-side = true
-    dark = true      
+    ; dark = true      
     navigate = true
 	wrap-max-lines = 0
 
