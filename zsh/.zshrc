@@ -483,7 +483,7 @@ fi
 [ ! -d ~/.config/nvim/lua ] || export MANPAGER='nvim +Man!'
 if [ -f "$(which bat 2> /dev/null)" ]; then 
 	[ -d ~/.cache/bat/ ] || bat cache --build > /dev/null 
-	[ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME=Catppuccin\ Mocha
+	(($DARK_MODE)) && ([ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME=Catppuccin\ Mocha) || ([ -f ~/.config/bat/themes/Catppuccin\ Latte.tmTheme ] && export BAT_THEME=Catppuccin\ Latte)
 fi
 
 [ -f "$(command -v llama-server 2> /dev/null)" ] && eval "$(llama-server --completion-bash 2> /dev/null)" || true
