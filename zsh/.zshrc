@@ -476,7 +476,12 @@ fi
 [ -f "$HOME/.config/fsh/catppuccin-mocha.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O ~/.config/fsh/catppuccin-mocha.ini
 [ -f "$HOME/.config/fsh/catppuccin-latte.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-latte.ini -O ~/.config/fsh/catppuccin-latte.ini
 
-(( DARK_MODE )) && fast-theme XDG:catppuccin-mocha -q || fast-theme XDG:catppuccin-latte -q
+if $DARK_MODE; then
+	fast-theme XDG:catppuccin-mocha -q
+else
+	fast-theme XDG:catppuccin-latte -q
+fi
+
 
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
 
