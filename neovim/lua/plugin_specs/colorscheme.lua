@@ -6,14 +6,17 @@ return {
     "afonsofrancof/OSC11.nvim",
     opts = {
       on_dark = function()
+        vim.notify("dark")
         vim.opt.background = "dark"
-        vim.cmd("colorscheme catppuccin-mocha")
+        vim.cmd.colorscheme("catppuccin-mocha")
       end,
       on_light = function()
-        vim.opt.background = "ligth"
-        vim.cmd("colorscheme catppuccin-latte")
+        vim.notify("light")
+        vim.opt.background = "light"
+        vim.cmd.colorscheme("catppuccin-latte")
       end,
     },
+    events = { "UIEnter" },
   },
   {
     "catppuccin/nvim",
@@ -22,7 +25,6 @@ return {
     config = function(_, opts)
       require("catppuccin").setup(opts)
       vim.cmd.colorscheme("catppuccin")
-      vim.api.nvim_set_hl(0, "CursorColumn", { link = "CursorLine" })
     end,
     lazy = false,
     ---@param opts? CatppuccinOptions
@@ -46,6 +48,7 @@ return {
             ["@function.builtin"] = { italic = true },
             ["@lsp.type.property"] = { link = "@attribute" },
             ["@property"] = { link = "@attribute" },
+            CursorColumn = { link = "CursorLine" },
           }
         end,
         default_integrations = {
@@ -67,7 +70,6 @@ return {
           which_key = true,
         },
         dim_inactive = { enabled = false },
-        flavour = "mocha",
         show_end_of_buffer = true,
         term_colors = true,
       })
