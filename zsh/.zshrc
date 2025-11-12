@@ -1,3 +1,25 @@
+is_dark_mode() {
+  local reply color r g b oldstty
+  exec {ttyfd}<>/dev/tty || return 1
+  oldstty=$(stty -g <&$ttyfd)
+  stty -echo -icanon min 0 time 2 <&$ttyfd
+  print -n $'\e]11;?\a' >&$ttyfd
+  read -r -u $ttyfd -t 0.1 reply
+  stty "$oldstty" <&$ttyfd
+  exec {ttyfd}>&-
+  [[ $reply =~ 'rgb:'* ]] || return 1
+  color=${reply##*rgb:}
+  IFS=/ read -r r g b <<< "$color"
+  (( r=16#${r:0:2}, g=16#${g:0:2}, b=16#${b:0:2} ))
+  (( (r*299 + g*587 + b*114) / 1000 < 128 ))
+}
+
+if is_dark_mode; then
+	DARK_MODE=true
+else 
+	DARK_MODE=false 
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
 if [ -d $HOME/.cargo/bin ]
@@ -432,16 +454,29 @@ git_delete_merged_branches() {
 	git checkout $original_branch
 }
 
-[ -f $(command -v fzf 2> /dev/null) ] && export FZF_DEFAULT_OPTS=" \
+if [ -f $(command -v fzf 2> /dev/null) ]; then
+	if (( $DARK_MODE )); then 
+		export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
 --bind 'tab:toggle'
 "
+	else
+	export FZF_DEFAULT_OPTS=" \
+--color=bg+:#CCD0DA,bg:#EFF1F5,spinner:#DC8A78,hl:#D20F39 \
+--color=fg:#4C4F69,header:#D20F39,info:#8839EF,pointer:#DC8A78 \
+--color=marker:#7287FD,fg+:#4C4F69,prompt:#8839EF,hl+:#D20F39 \
+--color=selected-bg:#BCC0CC \
+--color=border:#9CA0B0,label:#4C4F69"	
+	fi
+fi
 
 [ -d "$HOME/.config/fsh/" ] || mkdir ~/.config/fsh -p
 [ -f "$HOME/.config/fsh/catppuccin-mocha.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O ~/.config/fsh/catppuccin-mocha.ini
-[ ! -z "$(fast-theme --show | grep catppuccin-mocha)" ] || fast-theme XDG:catppuccin-mocha
+[ -f "$HOME/.config/fsh/catppuccin-latte.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-latte.ini -O ~/.config/fsh/catppuccin-latte.ini
+
+(( DARK_MODE )) && fast-theme XDG:catppuccin-mocha -q || fast-theme XDG:catppuccin-latte -q
 
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
 
