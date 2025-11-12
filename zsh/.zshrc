@@ -455,7 +455,7 @@ git_delete_merged_branches() {
 }
 
 if [ -f $(command -v fzf 2> /dev/null) ]; then
-	if (( $DARK_MODE )); then 
+	if $DARK_MODE; then 
 		export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
@@ -486,9 +486,14 @@ fi
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
 
 [ ! -d ~/.config/nvim/lua ] || export MANPAGER='nvim +Man!'
-if [ -f "$(which bat 2> /dev/null)" ]; then 
+
+if command -v bat > /dev/null 2> /dev/null ; then 
 	[ -d ~/.cache/bat/ ] || bat cache --build > /dev/null 
-	(($DARK_MODE)) && ([ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME=Catppuccin\ Mocha) || ([ -f ~/.config/bat/themes/Catppuccin\ Latte.tmTheme ] && export BAT_THEME=Catppuccin\ Latte)
+	if $DARK_MODE; then
+		[ -f ~/.config/bat/themes/Catppuccin\ Mocha.tmTheme ] && export BAT_THEME="Catppuccin Mocha" 
+	else
+		[ -f ~/.config/bat/themes/Catppuccin\ Latte.tmTheme ] && export BAT_THEME="Catppuccin Latte"
+	fi
 fi
 
 [ -f "$(command -v llama-server 2> /dev/null)" ] && eval "$(llama-server --completion-bash 2> /dev/null)" || true
