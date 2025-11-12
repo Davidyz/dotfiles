@@ -52,3 +52,6 @@
 
 [paru.files]
 "paru" = { target = "~/.config/paru", type = "symbolic" }
+
+[rime.files]
+"rime" = { target = "~/.local/share/fcitx5/rime", type = "symbolic" }

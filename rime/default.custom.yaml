@@ -1,0 +1,5 @@
+patch:
+  schema_list:
+    - schema: luna_pinyin_fluency
+    - schema: luna_pinyin
+    - schema: terra_pinyin
