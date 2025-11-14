@@ -456,6 +456,21 @@ return {
         mode = "n",
         remap = false,
       },
+
+      {
+        "<Leader>tgi",
+        function()
+          require("snacks").gh.issue()
+        end,
+        desc = "Github issues",
+      },
+      {
+        "<Leader>tgp",
+        function()
+          require("snacks").gh.pr()
+        end,
+        desc = "Github PRs",
+      },
     },
   },
 }

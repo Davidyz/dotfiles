@@ -121,17 +121,6 @@ return {
     cmd = { "Gitsigns" },
   },
   {
-    "pwntester/octo.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-mini/mini.icons" },
-    cmd = { "Octo" },
-    opts = {
-      picker = "snacks",
-    },
-    cond = function()
-      return vim.fn.executable("gh") == 1
-    end,
-  },
-  {
     "jsongerber/thanks.nvim",
     opts = {
       star_on_install = true,
