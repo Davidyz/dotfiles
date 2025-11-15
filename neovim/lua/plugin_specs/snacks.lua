@@ -1,5 +1,7 @@
 ---@module "lazy"
 
+local fn = vim.fn
+
 local function pick_profiler()
   local snacks = require("snacks")
   if snacks.profiler.running() then
@@ -55,7 +57,7 @@ return {
               indent = 2,
               padding = 2,
               cwd = true,
-              file = vim.fn.fnamemodify(".", ":~"),
+              file = fn.fnamemodify(".", ":~"),
             },
             {
               icon = " ",
@@ -137,6 +139,7 @@ return {
             },
           },
         },
+        gh = { enabled = fn.executable("gh") == 1 },
         image = { enabled = false },
         input = { enabled = true },
         notifier = { enabled = true },

@@ -36,6 +36,7 @@ function M.dap_frames()
   local start_picker = function()
     snacks().picker({
       title = "DAP StackFrame",
+      preview = "preview",
       items = vim
         .iter(frames)
         :filter(
