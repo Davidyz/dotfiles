@@ -7,7 +7,7 @@ return {
         displayContext = 5,
         keywordSnippet = "Replace",
       },
-      diagnostics = { workspaceEvent = "OnSave" },
+      diagnostics = { workspaceEvent = "OnSave", unusedLocalExclude = { "_*" } },
       format = {
         enable = false,
         defaultConfig = {

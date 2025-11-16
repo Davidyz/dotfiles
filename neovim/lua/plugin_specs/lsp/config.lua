@@ -21,10 +21,24 @@ return {
     "williamboman/mason-lspconfig.nvim",
     version = "*",
     event = { "BufReadPost", "BufNewFile", "FileType" },
-    opts = {
-      automatic_enable = { exclude = { "stylua", "rust_analyzer" } },
-      ensure_installed = nil,
-    },
+    opts = function(_, opts)
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        ensure_installed = nil,
+      })
+      opts.automatic_enable = opts.automatic_enable or {}
+      opts.automatic_enable.exclude = opts.automatic_enable.exclude
+        or { "stylua", "rust_analyzer" }
+
+      -- NOTE: use emmylua_ls if explicitly supported (have .emmyrc.json) in project root
+      local has_emmy = vim.fn.executable("emmylua_ls") == 1
+      if vim.fs.root(".", { ".emmyrc.json" }) ~= nil and has_emmy then
+        table.insert(opts.automatic_enable.exclude, "lua_ls")
+      elseif has_emmy then
+        table.insert(opts.automatic_enable.exclude, "emmylua_ls")
+      end
+
+      return opts
+    end,
     cond = require("_utils").no_vscode,
     dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" },
   },
