@@ -450,7 +450,7 @@ git_delete_merged_branches() {
 	git checkout $original_branch
 }
 
-__periodic_fzf_theme() {
+__update_fzf_theme() {
 	if [ -f $(command -v fzf 2> /dev/null) ]; then
 		if is_dark_mode; then 
 			export FZF_DEFAULT_OPTS=" \
@@ -474,7 +474,7 @@ __periodic_fzf_theme() {
 [ -f "$HOME/.config/fsh/catppuccin-mocha.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-mocha.ini -O ~/.config/fsh/catppuccin-mocha.ini
 [ -f "$HOME/.config/fsh/catppuccin-latte.ini" ] || wget https://raw.githubusercontent.com/catppuccin/zsh-fsh/main/themes/catppuccin-latte.ini -O ~/.config/fsh/catppuccin-latte.ini
 
-__periodic_fast_theme(){
+__update_fast_theme(){
 	if is_dark_mode; then
 		fast-theme XDG:catppuccin-mocha -q
 	else
@@ -482,7 +482,7 @@ __periodic_fast_theme(){
 	fi
 }
 
-__periodic_bat_theme() {
+__update_bat_theme() {
 	if command -v bat > /dev/null 2> /dev/null ; then 
 		[ -d ~/.cache/bat/ ] || bat cache --build > /dev/null 
 		if is_dark_mode; then
@@ -493,9 +493,13 @@ __periodic_bat_theme() {
 	fi
 }
 
-add-zsh-hook periodic __periodic_fast_theme
-add-zsh-hook periodic __periodic_fzf_theme
-add-zsh-hook periodic __periodic_bat_theme
+_preexec_theme_hooks(){
+	__update_fast_theme
+	__update_fzf_theme
+	__update_bat_theme
+}
+
+add-zsh-hook preexec _preexec_theme_hooks
 
 
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
