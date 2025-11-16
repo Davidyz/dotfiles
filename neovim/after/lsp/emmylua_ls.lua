@@ -55,11 +55,10 @@ return {
       workspace = {
         library = {
           vim.env.VIMRUNTIME,
-          -- vim.fn.stdpath("config"),
-          -- vim.fn.stdpath("data"),
         },
         checkThirdParty = true,
         enableCodeLens = true,
+        ignoreDir = { "test_build" },
       },
       completion = {
         enable = true,

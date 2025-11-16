@@ -30,6 +30,7 @@ return {
       workspace = {
         useGitIgnore = true,
         checkThirdParty = false,
+        ignoreDir = { "test_build" },
       },
     },
   },
