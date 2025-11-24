@@ -15,7 +15,7 @@ return {
     "williamboman/mason.nvim",
     version = "*",
     init = function()
-      vim.api.nvim_create_autocmd("FileType", {
+      api.nvim_create_autocmd("FileType", {
         pattern = "mason",
         callback = function()
           vim.o.cursorline = false
@@ -49,13 +49,14 @@ return {
       ---@type conform.setupOpts
       opts = vim.tbl_deep_extend("force", opts or {}, {
         formatters_by_ft = {
-          lua = { "stylua" },
-          sh = { "shfmt" },
-          zsh = { "shfmt" },
           bash = { "shfmt" },
+          c = { "clang-format" },
+          cpp = { "clang-format" },
+          jinja = { "djlint" },
           json = { "fixjson" },
           json5 = { "prettier" },
-          jinja = { "djlint" },
+          lua = { "stylua" },
+          markdown = { "injected" },
           python = function()
             local formatters
             if vim.fn.executable("black") == 1 then
@@ -85,15 +86,15 @@ return {
 
             return formatters
           end,
-          c = { "clang-format" },
-          cpp = { "clang-format" },
-          markdown = { "injected" },
+          rust = { "rustfmt", lsp_format = "first" },
+          sh = { "shfmt" },
           toml = function(bufnr)
             if api.nvim_buf_get_name(bufnr):match("pyproject%.toml$") ~= nil then
               return { "pyproject-fmt" }
             end
             return { "taplo" }
           end,
+          zsh = { "shfmt" },
         },
         formatters = {
           prettier = { prepend_args = { "--quote-props", "preserve" } },
@@ -107,20 +108,20 @@ return {
     config = function(_, opts)
       require("conform").setup(opts)
       vim.g.format_on_save = true
-      vim.api.nvim_create_autocmd("BufEnter", {
+      api.nvim_create_autocmd("BufEnter", {
         callback = function(args)
-          vim.api.nvim_create_autocmd("BufWritePre", {
+          api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
-            group = vim.api.nvim_create_augroup(
+            group = api.nvim_create_augroup(
               string.format("Conform:%d", args.buf),
               { clear = true }
             ),
-            callback = function()
+            callback = function(_args)
               if vim.g.format_on_save == false then
                 return
               end
               require("conform").format({
-                lsp_format = "first",
+                bufnr = _args.buf,
                 ---@param client vim.lsp.Client
                 filter = function(client)
                   return not vim.tbl_contains({ "ruff" }, client.name, {})
@@ -158,7 +159,7 @@ return {
         ["yaml.ghaction"] = { "actionlint" },
         lua = { "selene" },
       }
-      vim.api.nvim_create_autocmd({
+      api.nvim_create_autocmd({
         "BufReadPost",
         "BufWritePost",
         "InsertEnter",

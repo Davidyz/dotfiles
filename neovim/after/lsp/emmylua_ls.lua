@@ -1,11 +1,11 @@
+---@type vim.lsp.Config
 return {
   capabilities = {
     textDocument = {
-      formatting = {
-        dynamicRegistration = true,
-      },
+      formatting = vim.NIL,
     },
   },
+  -- flags = { debounce_text_changes = 0 },
   settings = {
     Lua = {
       runtime = {
@@ -53,9 +53,6 @@ return {
         arrayIndex = true,
       },
       workspace = {
-        library = {
-          vim.env.VIMRUNTIME,
-        },
         checkThirdParty = true,
         enableCodeLens = true,
         ignoreDir = { "test_build" },

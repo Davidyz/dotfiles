@@ -1,6 +1,5 @@
----@module "lazy"
-
 local fn = vim.fn
+local api = vim.api
 
 local function pick_profiler()
   local snacks = require("snacks")
@@ -20,6 +19,7 @@ local function pick_profiler()
   end)
 end
 
+---@module "lazy"
 ---@type LazySpec[]
 return {
   {
@@ -41,7 +41,7 @@ return {
     version = "*",
     opts = function()
       ---@module "snacks"
-      ---@type snacks.Config
+      ---@type snacks.plugins.Config
       return {
         bigfile = { enabled = true },
         dashboard = {
@@ -255,7 +255,7 @@ return {
     end,
     init = function()
       local snacks = require("snacks")
-      vim.api.nvim_create_autocmd("User", {
+      api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
         callback = function()
           ---@diagnostic disable-next-line: duplicate-set-field
@@ -395,8 +395,8 @@ return {
             main = { current = true },
             ---@param picker snacks.Picker
             on_show = function(picker)
-              local cursor = vim.api.nvim_win_get_cursor(picker.main)
-              local info = vim.api.nvim_win_call(picker.main, vim.fn.winsaveview)
+              local cursor = api.nvim_win_get_cursor(picker.main)
+              local info = api.nvim_win_call(picker.main, vim.fn.winsaveview)
               picker.list:view(cursor[1], info.topline)
               picker:show_preview()
             end,

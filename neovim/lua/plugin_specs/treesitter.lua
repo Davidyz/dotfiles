@@ -1,7 +1,6 @@
----@module "lazy"
-
 local keymap_utils = require("keymaps.utils")
 
+---@module "lazy"
 ---@type LazySpec[]
 return {
   {
@@ -62,7 +61,10 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
-    opts = { move = { set_jumps = true } },
+    ---@type TSTextObjects.UserConfig
+    opts = {
+      move = { set_jumps = true },
+    },
     event = "FileType",
     keys = {
       {

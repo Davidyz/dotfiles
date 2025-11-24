@@ -1,7 +1,6 @@
----@module "lazy"
-
 local utils = require("_utils")
 
+---@module "lazy"
 ---@type LazySpec[]
 return {
   {
@@ -24,10 +23,10 @@ return {
     opts = function(_, opts)
       opts = vim.tbl_deep_extend("force", opts or {}, {
         ensure_installed = nil,
-      })
+      }) --[[@as table]]
       opts.automatic_enable = opts.automatic_enable or {}
-      opts.automatic_enable.exclude = opts.automatic_enable.exclude
-        or { "stylua", "rust_analyzer" }
+      opts.automatic_enable.exclude =
+        vim.list_extend(opts.automatic_enable, { "stylua", "rust_analyzer" })
 
       -- NOTE: use emmylua_ls if explicitly supported (have .emmyrc.json) in project root
       local has_emmy = vim.fn.executable("emmylua_ls") == 1
@@ -46,9 +45,11 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
+    lazy = false,
     cond = function()
       return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
     end,
+    ---@param opts? lazydev.Config|{}
     opts = function(_, opts)
       ---@type lazydev.Config
       opts = vim.tbl_deep_extend("force", opts or {}, {
@@ -57,6 +58,10 @@ return {
           { path = "luvit-meta/library", words = { "vim%.uv" } },
           { path = "wezterm-types", mods = { "wezterm" } },
           { path = "folke/snacks.nvim", words = { "Snacks" } },
+          {
+            path = "codecompanion.nvim",
+            words = { "codecompanion", "CodeCompanion" },
+          },
           {
             path = "nvim-lua/plenary.nvim",
             words = {

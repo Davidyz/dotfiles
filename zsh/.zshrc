@@ -43,6 +43,10 @@ then
   export PATH=$PATH:/usr/lib/distcc/bin/
 fi
 
+if [ -d /usr/lib/ccache/bin/ ]; then
+	export PATH=/usr/lib/ccache/bin/:$PATH
+fi
+
 if [ -d $HOME/.luarocks/bin/ ] 
 then
   export PATH=$PATH:$HOME/.luarocks/bin:
