@@ -153,7 +153,6 @@ api.nvim_create_autocmd({ "ModeChanged" }, {
 })
 
 ---@module "lazy"
-
 ---@type LazySpec[]
 return {
   {

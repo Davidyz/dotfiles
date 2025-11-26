@@ -16,7 +16,17 @@ return {
       )
     end,
     keys = {
-      { "<F5>", "<cmd>DapContinue<CR>", desc = "DAP Continue." },
+      {
+        "<F5>",
+        function()
+          local dap = require("dap")
+          if vim.tbl_isempty(require("dap.breakpoints").get(0)) then
+            dap.set_breakpoint(nil, nil, nil)
+          end
+          dap.continue({ new = dap.session() == nil })
+        end,
+        desc = "DAP Continue.",
+      },
       { "<Space>o", "<cmd>DapStepOver<CR>", desc = "DAP Step [O]ver.", noremap = true },
       {
         "<Space>i",
