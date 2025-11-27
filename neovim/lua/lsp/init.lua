@@ -26,6 +26,18 @@ local default_server_config = {
     {
       textDocument = {
         onTypeFormatting = { dynamicRegistration = lsp.on_type_formatting ~= nil },
+        inlayHint = {
+          resolveSupport = {
+            properties = {
+              "textEdits",
+              "tooltip",
+              "location",
+
+              "label.command",
+              "label.tooltip",
+            },
+          },
+        },
       },
     }
   ),

@@ -32,7 +32,7 @@ return {
       local has_emmy = vim.fn.executable("emmylua_ls") == 1
       if vim.fs.root(".", { ".emmyrc.json" }) ~= nil and has_emmy then
         table.insert(opts.automatic_enable.exclude, "lua_ls")
-      elseif has_emmy then
+      else
         table.insert(opts.automatic_enable.exclude, "emmylua_ls")
       end
 
@@ -45,7 +45,6 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    lazy = false,
     cond = function()
       return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
     end,
@@ -57,13 +56,8 @@ return {
         library = {
           { path = "luvit-meta/library", words = { "vim%.uv" } },
           { path = "wezterm-types", mods = { "wezterm" } },
-          { path = "folke/snacks.nvim", words = { "Snacks" } },
           {
-            path = "codecompanion.nvim",
-            words = { "codecompanion", "CodeCompanion" },
-          },
-          {
-            path = "nvim-lua/plenary.nvim",
+            path = "plenary.nvim",
             words = {
               "describe",
               "it",
