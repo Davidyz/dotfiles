@@ -45,9 +45,9 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    cond = function()
-      return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
-    end,
+    -- cond = function()
+    --   return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
+    -- end,
     ---@param opts? lazydev.Config|{}
     opts = function(_, opts)
       ---@type lazydev.Config
@@ -56,18 +56,17 @@ return {
         library = {
           { path = "luvit-meta/library", words = { "vim%.uv" } },
           { path = "wezterm-types", mods = { "wezterm" } },
-          {
-            path = "plenary.nvim",
-            words = {
-              "describe",
-              "it",
-              "pending",
-              "before_each",
-              "after_each",
-              "clear",
-              "assert.*",
-            },
-          },
+        },
+      })
+      table.insert(opts.library, {
+        path = "lewis6991/nvim-test",
+        words = {
+          "describe",
+          "it",
+          "pending",
+          "before_each",
+          "after_each",
+          "clear",
         },
       })
       return opts
@@ -79,6 +78,7 @@ return {
       { "Bilal2453/luvit-meta" },
       { "justinsgithub/wezterm-types" },
       { "folke/snacks.nvim" },
+      "lewis6991/nvim-test",
     },
   },
 }
