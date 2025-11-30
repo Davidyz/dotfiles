@@ -271,6 +271,18 @@ return {
           -- vim.ui.input = Snacks.input.input
           vim.o.laststatus = 3
           vim.o.showtabline = 2
+
+          vim.ui.select = function(items, opts, on_choice)
+            return snacks.picker.select(
+              items,
+              vim.tbl_deep_extend(
+                "force",
+                { snacks = { sort = { fields = { "idx" } } } },
+                opts or {}
+              ),
+              on_choice
+            )
+          end
         end,
       })
     end,
