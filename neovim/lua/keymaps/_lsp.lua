@@ -79,5 +79,29 @@ api.nvim_create_autocmd("LspAttach", {
         { bufnr = bufnr }
       )
     end, { desc = "[I]nlayhint [t]oggle" })
+
+    local inlay_hint_action = lsp.inlay_hint.apply_action
+    if inlay_hint_action then
+      local mode = { "n", "v" }
+      bufmap(mode, "gie", function()
+        inlay_hint_action("textEdits")
+      end, { desc = "Apply text[E]dits" })
+
+      bufmap(mode, "gih", function()
+        inlay_hint_action("hover", {}, nil)
+      end, { desc = "Inlay hint [h]over" })
+
+      bufmap(mode, "gil", function()
+        inlay_hint_action("location")
+      end, { desc = "Jump to [l]ocation" })
+
+      bufmap(mode, "gic", function()
+        inlay_hint_action("command")
+      end, { desc = "Inlay hint [c]ommand" })
+
+      bufmap(mode, "git", function()
+        inlay_hint_action("tooltip")
+      end, { desc = "[t]ooltips" })
+    end
   end,
 })

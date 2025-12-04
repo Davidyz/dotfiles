@@ -2,7 +2,11 @@
 ---@type LazySpec[]
 return {
 
-  { "nmac427/guess-indent.nvim", opts = {}, event = { "FileType" } },
+  {
+    "nmac427/guess-indent.nvim",
+    opts = {},
+    event = { "FileType", "BufReadPre", "BufNewFile" },
+  },
   {
     "mistricky/codesnap.nvim",
     build = "make",
