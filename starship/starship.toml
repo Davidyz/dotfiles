@@ -178,6 +178,7 @@ symbol = " "
 
 [pijul_channel]
 symbol = " "
+disabled = true
 
 [rlang]
 symbol = "󰟔 "
