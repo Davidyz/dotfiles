@@ -1,5 +1,5 @@
-local M = {}
-
-M.dap = require("plugin_extras.snacks.dap")
-
-return M
+return setmetatable({}, {
+  __index = function(_, key)
+    return require("plugin_extras.snacks." .. key)
+  end,
+})
