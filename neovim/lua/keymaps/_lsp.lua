@@ -83,23 +83,97 @@ api.nvim_create_autocmd("LspAttach", {
     local inlay_hint_action = lsp.inlay_hint.apply_action
     if inlay_hint_action then
       local mode = { "n", "v" }
-      bufmap(mode, "gie", function()
+      bufmap(mode, "<Leader>ie", function()
         inlay_hint_action("textEdits")
       end, { desc = "Apply text[E]dits" })
 
-      bufmap(mode, "gih", function()
+      bufmap(mode, "<Leader>ih", function()
         inlay_hint_action("hover", {}, nil)
       end, { desc = "Inlay hint [h]over" })
 
-      bufmap(mode, "gil", function()
-        inlay_hint_action("location")
-      end, { desc = "Jump to [l]ocation" })
+      bufmap(mode, "<Leader>il", function()
+        -- inlay_hint_action("location")
+        inlay_hint_action(function(hints, ctx, _)
+          hints = vim
+            .iter(hints)
+            :filter(
+              ---@param item lsp.InlayHint
+              function(item)
+                return type(item.label) == "table"
+                  and vim.iter(item.label):any(
+                    ---@param label lsp.InlayHintLabelPart
+                    function(label)
+                      return label.location ~= nil
+                    end
+                  )
+              end
+            )
+            :totable()
+          if #hints == 0 then
+            return 0
+          end
 
-      bufmap(mode, "gic", function()
+          snacks.picker.pick({
+            items = vim
+              .iter(hints)
+              :map(
+                ---@param hint lsp.InlayHint
+                ---@return snacks.picker.Item[]
+                function(hint)
+                  ---@type snacks.picker.Item[]
+                  local result = {}
+                  vim.iter(hint.label):each(
+                    ---@param label lsp.InlayHintLabelPart
+                    function(label)
+                      if label.location == nil then
+                        return
+                      end
+
+                      local picker_pos = vim.tbl_deep_extend(
+                        "force",
+                        label.location,
+                        { encoding = ctx.client.offset_encoding }
+                      ) ---@cast picker_pos snacks.picker.lsp.Loc
+
+                      local fname = vim.uri_to_fname(label.location.uri)
+                      if
+                        vim.iter(result):any(function(item)
+                          return vim.deep_equal(item.loc, picker_pos)
+                        end)
+                      then
+                        return
+                      end
+                      local idx = #result + 1
+                      result[idx] = {
+                        idx = idx,
+                        score = 1,
+                        text = label.value,
+                        loc = picker_pos,
+                        file = fname,
+                      }
+                    end
+                  )
+                  return result
+                end
+              )
+              :flatten(1)
+              :totable(),
+            format = function(item, picker)
+              return { { item.text, "Type" } }
+            end,
+            title = "InlayHint Locations",
+            auto_confirm = true,
+            sort = {},
+          })
+          return 1
+        end, nil, nil)
+      end, { desc = "Jump to location" })
+
+      bufmap(mode, "<Leader>ic", function()
         inlay_hint_action("command")
       end, { desc = "Inlay hint [c]ommand" })
 
-      bufmap(mode, "git", function()
+      bufmap(mode, "<Leader>iT", function()
         inlay_hint_action("tooltip")
       end, { desc = "[t]ooltips" })
     end
