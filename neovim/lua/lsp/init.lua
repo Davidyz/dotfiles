@@ -25,7 +25,9 @@ local default_server_config = {
     lsp.protocol.make_client_capabilities(),
     {
       textDocument = {
-        onTypeFormatting = { dynamicRegistration = lsp.on_type_formatting ~= nil },
+        onTypeFormatting = (lsp.on_type_formatting ~= nil) and {
+          dynamicRegistration = false,
+        } or vim.NIL,
         inlayHint = {
           resolveSupport = {
             properties = {
