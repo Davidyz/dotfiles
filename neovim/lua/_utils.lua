@@ -259,30 +259,45 @@ M.codicons = {
   Variable = "  ",
 }
 
-M.mason_packages = {
-  "actionlint",
-  "basedpyright",
-  "bash-language-server",
-  "clang-format",
-  "clangd",
-  "clangd",
-  "debugpy",
-  "editorconfig-checker",
-  "harper-ls",
-  "html-lsp",
-  "jsonls",
-  "lua-language-server",
-  "prettierd",
-  "ruff",
-  "shellcheck",
-  "shfmt",
-  "stylua",
-  "taplo",
-  "ty",
-  "tree-sitter-cli",
-  "vim-language-server",
-  "yaml-language-server",
-}
+---@module "mason-tool-installer"
+
+M.mason_packages = vim
+  .iter({
+    "actionlint",
+    "basedpyright",
+    "bash-language-server",
+    "clang-format",
+    "clangd",
+    "clangd",
+    "debugpy",
+    "editorconfig-checker",
+    "harper-ls",
+    "html-lsp",
+    "jsonls",
+    "lua-language-server",
+    "prettierd",
+    "ruff",
+    "shellcheck",
+    "shfmt",
+    "stylua",
+    "taplo",
+    "ty",
+    "tree-sitter-cli",
+    "vim-language-server",
+    "yaml-language-server",
+  })
+  :map(function(package)
+    if type(package) == "string" then
+      return {
+        package,
+        condition = function()
+          return fn.executable(package) ~= 1
+        end,
+      }
+    end
+    return package
+  end)
+  :totable()
 
 M.treesitter_parsers = {
   "python",
