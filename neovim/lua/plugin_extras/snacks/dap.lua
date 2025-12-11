@@ -53,10 +53,14 @@ function M.dap_frames()
               pos = { frame.line, frame.column },
               text = frame.name,
             }
-            if sources[frame.id].path then
-              item.file = sources[frame.id].path
-            else
-              item.preview = { text = sources[frame.id].content, ft = session.filetype }
+            if sources[frame.id] then
+              item.preview = {
+                text = table.concat(
+                  api.nvim_buf_get_lines(sources[frame.id], 0, -1, false),
+                  "\n"
+                ),
+                ft = vim.bo[sources[frame.id]].filetype or session.filetype,
+              }
             end
 
             return item
@@ -73,19 +77,16 @@ function M.dap_frames()
       if frame.source == nil then
         resolved_count = resolved_count + 1
       elseif frame.source.path then
-        sources[frame.id] = { path = frame.source.path }
+        sources[frame.id] = vim.uri_to_bufnr(vim.uri_from_fname(frame.source.path))
+        fn.bufload(sources[frame.id])
         resolved_count = resolved_count + 1
       elseif frame.source.sourceReference then
-        session:request(
-          "source",
+        session:source(
           { sourceReference = frame.source.sourceReference },
-          ---@param result dap.SourceResponse
-          function(err, result)
+          function(_, source_buf)
             resolved_count = resolved_count + 1
-            if result.content then
-              sources[frame.id] = { content = result.content }
-            end
-
+            sources[frame.id] = source_buf
+            fn.bufload(source_buf)
             if resolved_count == num_frames and not done then
               done = true
               return start_picker()

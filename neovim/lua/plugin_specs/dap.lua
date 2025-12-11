@@ -20,7 +20,12 @@ return {
         "<F5>",
         function()
           local dap = require("dap")
-          if vim.tbl_isempty(require("dap.breakpoints").get(0)) then
+
+          local bp = vim
+            .iter(require("dap.breakpoints").get(api.nvim_get_current_buf()))
+            :flatten(math.huge)
+            :totable()
+          if vim.tbl_isempty(bp) then
             dap.set_breakpoint(nil, nil, nil)
           end
           dap.continue({ new = dap.session() == nil })
