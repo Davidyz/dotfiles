@@ -505,6 +505,17 @@ _preexec_theme_hooks(){
 
 add-zsh-hook preexec _preexec_theme_hooks
 
+_rustup_autoinstall(){
+	# install rust-analyzer when `cd` into a rust project
+	if [ -f Cargo.toml ] && command -v rustup > /dev/null 2> /dev/null; then
+		if [ -z "$(rustup component list --installed | grep rust-analyzer)" ]; then
+			echo "Installing rust-analyzer for the current project..."
+			rustup component add rust-analyzer
+		fi
+	fi
+}
+
+add-zsh-hook chpwd _rustup_autoinstall
 
 [ ! -z "$HAS_STARSHIP" ] && eval "$(starship init zsh)"
 

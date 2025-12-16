@@ -135,7 +135,7 @@ local function attach(client, bufnr)
   local otf_capabilities =
     vim.tbl_get(client.server_capabilities, "documentOnTypeFormattingProvider")
   if not otf_capabilities then
-    vim.notify(
+    vim.schedule_wrap(vim.notify)(
       string.format(
         "Client with id %d does not support textDocument/onTypeFormatting requests",
         client_id
