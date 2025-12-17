@@ -22,106 +22,62 @@ return {
   {
     "Wansmer/symbol-usage.nvim",
     event = "LspAttach",
-    opts = function()
-      local function h(name)
-        return api.nvim_get_hl(0, { name = name })
-      end
-
-      -- hl-groups can have any name
-      api.nvim_set_hl(
-        0,
-        "SymbolUsageRounding",
-        { fg = h("CursorLine").bg, italic = true }
-      )
-      api.nvim_set_hl(
-        0,
-        "SymbolUsageContent",
-        { bg = h("CursorLine").bg, fg = h("Comment").fg, italic = true }
-      )
-      api.nvim_set_hl(
-        0,
-        "SymbolUsageRef",
-        { fg = h("Function").fg, bg = h("CursorLine").bg, italic = true }
-      )
-      api.nvim_set_hl(
-        0,
-        "SymbolUsageDef",
-        { fg = h("Type").fg, bg = h("CursorLine").bg, italic = true }
-      )
-      api.nvim_set_hl(
-        0,
-        "SymbolUsageImpl",
-        { fg = h("@keyword").fg, bg = h("CursorLine").bg, italic = true }
-      )
-
+    opts = function(_, opts)
       local function text_format(symbol)
         local res = {}
 
-        local round_start = { "", "SymbolUsageRounding" }
-        local round_end = { "", "SymbolUsageRounding" }
-
         -- Indicator that shows if there are any other symbols in the same line
-        local stacked_functions_content = symbol.stacked_count > 0
-            and ("+%s"):format(symbol.stacked_count)
-          or ""
+        local stacked_functions_content = symbol.stacked_count > 0 and ("+%s"):format(symbol.stacked_count) or ""
 
         if symbol.references then
           local usage = symbol.references <= 1 and "usage" or "usages"
           local num = symbol.references == 0 and "no" or symbol.references
-          table.insert(res, round_start)
-          table.insert(res, { "󰌹  ", "SymbolUsageRef" })
-          table.insert(res, { ("%s %s"):format(num, usage), "SymbolUsageContent" })
-          table.insert(res, round_end)
+          table.insert(res, { "󰌹 ", "Function" })
+          table.insert(res, { ("%s %s"):format(num, usage), "Comment" })
         end
 
         if symbol.definition then
           if #res > 0 then
             table.insert(res, { " ", "NonText" })
           end
-          table.insert(res, round_start)
-          table.insert(res, { "󰳽  ", "SymbolUsageDef" })
-          table.insert(res, { symbol.definition .. " defs", "SymbolUsageContent" })
-          table.insert(res, round_end)
+          table.insert(res, { "󰳽 ", "Type" })
+          table.insert(res, { symbol.definition .. " defs", "Comment" })
         end
 
         if symbol.implementation then
           if #res > 0 then
             table.insert(res, { " ", "NonText" })
           end
-          table.insert(res, round_start)
-          table.insert(res, { "󰡱  ", "SymbolUsageImpl" })
-          table.insert(res, { symbol.implementation .. " impls", "SymbolUsageContent" })
-          table.insert(res, round_end)
+          table.insert(res, { "󰡱 ", "@keyword" })
+          table.insert(res, { symbol.implementation .. " impls", "Comment" })
         end
 
         if stacked_functions_content ~= "" then
           if #res > 0 then
             table.insert(res, { " ", "NonText" })
           end
-          table.insert(res, round_start)
-          table.insert(res, { "  ", "SymbolUsageImpl" })
-          table.insert(res, { stacked_functions_content, "SymbolUsageContent" })
-          table.insert(res, round_end)
+          table.insert(res, { " ", "@keyword" })
+          table.insert(res, { stacked_functions_content, "Comment" })
         end
 
         return res
       end
       ---@module "symbol-usage"
       ---@type UserOpts|{}
-      return {
+      return vim.tbl_deep_extend("force", opts or {}, {
         text_format = text_format,
         definition = { enabled = true },
         implementation = { enabled = true },
         symbol_filter = function(ctx)
           return function(symbol)
             if ctx.method == "textDocument/references" then
-              return string.find(symbol.uri, "tests") == nil
+              return string.find(symbol.uri, "test") == nil
             else
               return true
             end
           end
         end,
-      }
+      })
     end,
   },
   {
@@ -146,11 +102,7 @@ return {
       require("fidget").setup(opts)
       local comment_hl = api.nvim_get_hl(0, { name = "Comment" })
       local float_border = api.nvim_get_hl(0, { name = "FloatBorder" })
-      api.nvim_set_hl(
-        0,
-        "FidgetNormal",
-        { fg = comment_hl.fg, guifg = comment_hl.guifg, bg = float_border.bg }
-      )
+      api.nvim_set_hl(0, "FidgetNormal", { fg = comment_hl.fg, guifg = comment_hl.guifg, bg = float_border.bg })
     end,
     cond = require("_utils").no_vscode,
   },
@@ -297,14 +249,11 @@ return {
         end,
       },
     },
-    opts = function(self, opts)
-      ---@module "snacks"
-
+    opts = function(_, opts)
       return vim.tbl_deep_extend("force", opts or {}, {
         backend = "vim",
         picker = {
           "snacks",
-          ---@type snacks.picker.Config
           opts = {
             layout = { preset = "default" },
           },
