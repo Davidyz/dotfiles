@@ -99,10 +99,39 @@ return {
           end,
         },
         http = {
+          ["zai"] = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "zai",
+              formatted_name = "Z.ai",
+              env = {
+                api_key = "ZAI_API_KEY",
+                url = "https://open.bigmodel.cn/api/paas/v4",
+                models_endpoint = "/models",
+                chat_url = "/chat/completions",
+              },
+              handlers = {
+                parse_message_meta = function(_, data)
+                  local extra = data.extra
+                  if extra and extra.reasoning_content then
+                    data.output.reasoning = { content = extra.reasoning_content }
+                  end
+                  if data.output.content == "" then
+                    data.output.content = nil
+                  end
+                  return data
+                end,
+              },
+            })
+          end,
           ["Gemini"] = function()
             return require("codecompanion.adapters").extend("gemini", {
               name = "Gemini",
-              schema = { model = { default = "gemini-2.5-flash" } },
+              schema = {
+                model = {
+                  default = "gemini-3-flash-preview",
+                },
+              },
+              -- opts = { stream = false },
             })
           end,
           ["LlamaCPP"] = function()
@@ -259,11 +288,7 @@ return {
             ---@type string|fun(adapter: CodeCompanion.HTTPAdapter|CodeCompanion.ACPAdapter): string
             llm = function(adapter)
               if adapter.model then
-                return string.format(
-                  "%s (%s)",
-                  adapter.formatted_name,
-                  adapter.model.name
-                )
+                return string.format("%s (%s)", adapter.formatted_name, adapter.model.name)
               else
                 return adapter.formatted_name
               end
