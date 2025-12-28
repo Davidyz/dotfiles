@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 # Inserts a blank line between shell prompts
 add_newline = true
-scan_timeout = 30
+scan_timeout = 5
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character]
