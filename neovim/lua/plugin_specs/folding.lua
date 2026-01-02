@@ -58,7 +58,7 @@ return {
     ---@type Origami.config
     opts = {
       foldtext = { enabled = true },
-      useLspFoldsWithTreesitterFallback = true,
+      useLspFoldsWithTreesitterFallback = { enabled = true },
       pauseFoldsOnSearch = true,
       autoFold = { enabled = false },
       foldKeymaps = { enabled = false },
