@@ -1,5 +1,6 @@
 ---@module "lazy"
 
+local api = vim.api
 local notify = nil
 
 ---@type LazySpec[]
@@ -21,10 +22,7 @@ return {
         function()
           local dap = require("dap")
 
-          local bp = vim
-            .iter(require("dap.breakpoints").get(api.nvim_get_current_buf()))
-            :flatten(math.huge)
-            :totable()
+          local bp = vim.iter(require("dap.breakpoints").get(api.nvim_get_current_buf()) or {}):flatten(1):totable()
           if vim.tbl_isempty(bp) then
             dap.set_breakpoint(nil, nil, nil)
           end
@@ -51,56 +49,48 @@ return {
           if curr_frame == nil then
             return notify("No active frame!")
           end
-          session:request(
-            "stepInTargets",
-            { frameId = curr_frame.id },
-            function(_, result)
-              if
-                result == nil
-                or result.targets == nil
-                or vim.tbl_isempty(result.targets)
-              then
-                return notify("No step in targets!")
-              end
-
-              local targets = {}
-              for t in vim.iter(result.targets) do
-                targets[t.label] = { id = targets[t.id] }
-              end
-              local labels = vim.tbl_keys(targets)
-
-              local function stepIn(item)
-                if item == nil then
-                  return notify("Cancelled!")
-                end
-                session:request("stepIn", {
-                  threadId = session.stopped_thread_id,
-                  targetId = (targets[item] or {}).id,
-                }, nil)
-              end
-
-              if #labels == 1 then
-                return stepIn(labels[1])
-              end
-
-              if vim.bo.filetype == "python" then
-                -- debugpy sucks
-                return stepIn("")
-              end
-              vim.ui.select(
-                vim
-                  .iter(targets)
-                  :map(function(k, _)
-                    return k
-                  end)
-                  :totable(),
-                { prompt = "Select a stepIn target: " },
-                function(item, _)
-                  stepIn(item)
-                end
-              )
+          session:request("stepInTargets", { frameId = curr_frame.id }, function(_, result)
+            if result == nil or result.targets == nil or vim.tbl_isempty(result.targets) then
+              return notify("No step in targets!")
             end
-          )
+
+            local targets = {}
+            for t in vim.iter(result.targets) do
+              targets[t.label] = { id = targets[t.id] }
+            end
+            local labels = vim.tbl_keys(targets)
+
+            local function stepIn(item)
+              if item == nil then
+                return notify("Cancelled!")
+              end
+              session:request("stepIn", {
+                threadId = session.stopped_thread_id,
+                targetId = (targets[item] or {}).id,
+              }, nil)
+            end
+
+            if #labels == 1 then
+              return stepIn(labels[1])
+            end
+
+            if vim.bo.filetype == "python" then
+              -- debugpy sucks
+              return stepIn("")
+            end
+            vim.ui.select(
+              vim
+                .iter(targets)
+                :map(function(k, _)
+                  return k
+                end)
+                :totable(),
+              { prompt = "Select a stepIn target: " },
+              function(item, _)
+                stepIn(item)
+              end
+            )
+          end)
         end,
         desc = "DAP Step [I]nto.",
         noremap = true,
@@ -112,12 +102,7 @@ return {
           local widgets = require("dap.ui.widgets")
           local float = widgets.centered_float(widgets.scopes, { border = "solid" })
           vim.keymap.set("n", "q", "<cmd>q<cr>", { noremap = true, buffer = float.buf })
-          vim.keymap.set(
-            "n",
-            "<Space>s",
-            "<cmd>q<cr>",
-            { noremap = true, buffer = float.buf }
-          )
+          vim.keymap.set("n", "<Space>s", "<cmd>q<cr>", { noremap = true, buffer = float.buf })
         end,
         desc = "DAP [s]cope",
         noremap = true,
@@ -127,11 +112,9 @@ return {
         function()
           local bp = require("dap.breakpoints").get()[vim.api.nvim_get_current_buf()]
           local cursor_pos = vim.api.nvim_win_get_cursor(0)
-          if
-            vim.iter(bp or {}):any(function(item)
-              return item.line == cursor_pos[1]
-            end)
-          then
+          if vim.iter(bp or {}):any(function(item)
+            return item.line == cursor_pos[1]
+          end) then
             require("dap").toggle_breakpoint()
           else
             vim.ui.input({ prompt = "Breakpoint Condition?" }, function(value)
@@ -191,8 +174,10 @@ return {
         opts = {
           windows = {
             position = "right",
+            size = 0.4,
             terminal = {
               position = "below",
+              size = 0.4,
             },
           },
           follow_tab = true,
@@ -305,10 +290,7 @@ return {
           if vim.fn.executable("pytest") == 1 then
             python_test_runner = "pytest"
           end
-          require("dap-python").setup(
-            require("venv-selector").python() or "python3",
-            opts
-          )
+          require("dap-python").setup(require("venv-selector").python() or "python3", opts)
           require("dap-python").test_runner = python_test_runner
         end,
       },
