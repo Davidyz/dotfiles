@@ -80,7 +80,7 @@ api.nvim_create_autocmd("LspAttach", {
       )
     end, { desc = "[I]nlayhint [t]oggle" })
 
-    local inlay_hint_action = lsp.inlay_hint.apply_action
+    local inlay_hint_action = lsp.inlay_hint.action or lsp.inlay_hint.apply_action
     if inlay_hint_action then
       local mode = { "n", "v" }
       bufmap(mode, "<Leader>ie", function()
@@ -92,7 +92,9 @@ api.nvim_create_autocmd("LspAttach", {
       end, { desc = "Inlay hint [h]over" })
 
       bufmap(mode, "<Leader>il", function()
-        -- inlay_hint_action("location")
+        if snacks.picker.lsp_inlay_hint_locations then
+          return snacks.picker.lsp_inlay_hint_locations()
+        end
         inlay_hint_action(function(hints, ctx, _)
           hints = vim
             .iter(hints)
