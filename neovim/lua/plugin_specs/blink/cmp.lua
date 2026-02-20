@@ -26,7 +26,7 @@ return {
       "archie-judd/blink-cmp-words",
       "MahanRahmati/blink-nerdfont.nvim",
     },
-    build = "cargo build --release",
+    -- build = "cargo build --release",
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     opts = function(_, opts)
@@ -285,8 +285,7 @@ return {
             selection = {
               auto_insert = false,
               preselect = function(ctx)
-                return ctx.mode ~= "cmdline"
-                  and not require("blink.cmp").snippet_active({ direction = 1 })
+                return ctx.mode ~= "cmdline" and not require("blink.cmp").snippet_active({ direction = 1 })
               end,
             },
           },
