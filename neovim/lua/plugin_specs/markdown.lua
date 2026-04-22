@@ -52,31 +52,31 @@ return {
           local url = string.format("http://%s:%d/%s", host, Config.port, urlpath)
           local notify_opts = { title = "live-preview.nvim" }
 
-          if has_kitten() then
-            -- use kitty if available. This _should_ allow opening browsers over ssh?
-            return vim.system({ "kitten", "@", "open-url", url }, {}, function(out)
-              if out.code ~= 0 then
-                vim.schedule_wrap(vim.notify)(
-                  out.stderr or "An error has occurred. Failed to open " .. url
-                )
-              end
-            end)
-          end
+          -- if has_kitten() then
+          --   -- use kitty if available. This _should_ allow opening browsers over ssh?
+          --   local res = vim
+          --     .system({ "kitten", "@", "run", "xdg-open", url }, { detach = true, text = true }, function(out)
+          --       if out.code ~= 0 then
+          --         vim.schedule_wrap(vim.notify)(
+          --           out.stderr or ("An error has occurred. Failed to open " .. url),
+          --           vim.log.levels.ERROR,
+          --           { title = "LivePreview" }
+          --         )
+          --       end
+          --     end)
+          --     :wait()
+          --   if res.code == 0 then
+          --     return
+          --   end
+          -- end
 
           if vim.env.SSH_CONNECTION == nil then
-            vim.notify(
-              string.format("live-preview.nvim: Opening browser at %s", url),
-              vim.log.levels.INFO,
-              notify_opts
-            )
+            vim.notify(string.format("live-preview.nvim: Opening browser at %s", url), vim.log.levels.INFO, notify_opts)
             utils.open_browser(url, Config.browser)
           else
             vim.fn.setreg("+", url)
             vim.notify(
-              string.format(
-                "**Active SSH session detected**.\nYanking the url: `%s` to the clipboard.",
-                url
-              ),
+              string.format("**Active SSH session detected**.\nYanking the url: `%s` to the clipboard.", url),
               vim.log.levels.WARN,
               notify_opts
             )
