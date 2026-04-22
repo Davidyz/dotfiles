@@ -2,6 +2,13 @@
 
 local fs = vim.fs
 local api = vim.api
+local fn = vim.fn
+
+---@param exec string|nil
+---@return boolean
+local function has_kitten(exec)
+  return fn.executable(exec or "kitten") == 1
+end
 
 ---@type LazySpec[]
 return {
@@ -44,6 +51,18 @@ return {
           end
           local url = string.format("http://%s:%d/%s", host, Config.port, urlpath)
           local notify_opts = { title = "live-preview.nvim" }
+
+          if has_kitten() then
+            -- use kitty if available. This _should_ allow opening browsers over ssh?
+            return vim.system({ "kitten", "@", "open-url", url }, {}, function(out)
+              if out.code ~= 0 then
+                vim.schedule_wrap(vim.notify)(
+                  out.stderr or "An error has occurred. Failed to open " .. url
+                )
+              end
+            end)
+          end
+
           if vim.env.SSH_CONNECTION == nil then
             vim.notify(
               string.format("live-preview.nvim: Opening browser at %s", url),

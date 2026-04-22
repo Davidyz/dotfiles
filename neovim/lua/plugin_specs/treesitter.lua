@@ -440,4 +440,9 @@ return {
     cmd = { "TSContext" },
     event = "FileType",
   },
+  {
+    "bezhermoso/tree-sitter-ghostty",
+    build = "make nvim_install",
+    lazy = false,
+  },
 }
