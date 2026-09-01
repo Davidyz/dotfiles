@@ -140,7 +140,7 @@ return {
           },
         },
         gh = { enabled = fn.executable("gh") == 1 },
-        image = { enabled = false },
+        image = { enabled = true },
         input = { enabled = true },
         notifier = { enabled = true },
         ---@type snacks.picker.Config

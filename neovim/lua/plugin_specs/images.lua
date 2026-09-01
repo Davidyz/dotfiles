@@ -1,6 +1,8 @@
+local enabled = require("neovim.lua.plugin_extras.hover_peek").enabled
 return {
   {
     "3rd/image.nvim",
+    enabled = false,
     filetypes = { "markdown" },
     dependencies = { "leafo/magick" },
     cond = function()
@@ -27,6 +29,7 @@ return {
   },
   {
     "3rd/diagram.nvim",
+    enabled=false,
     ft = { "markdown", "codecompanion" },
     dependencies = {
       "3rd/image.nvim", -- you'd probably want to configure image.nvim manually instead of doing this
