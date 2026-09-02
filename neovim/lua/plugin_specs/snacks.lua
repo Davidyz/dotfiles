@@ -34,7 +34,7 @@ return {
         },
       },
     },
-    dir = "~/git/snacks.nvim/",
+    -- dir = "~/git/snacks.nvim/",
     submodules = false,
     priority = 1000,
     lazy = false,

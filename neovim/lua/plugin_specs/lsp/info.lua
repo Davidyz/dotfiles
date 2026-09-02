@@ -145,7 +145,7 @@ return {
     -- "lewis6991/hover.nvim",
     "Davidyz/hover.nvim",
     branch = "feat/inlayhint",
-    dir = "~/git/hover.nvim/",
+    -- dir = "~/git/hover.nvim/",
     opts = {
       providers = {
         "hover.providers.lsp",

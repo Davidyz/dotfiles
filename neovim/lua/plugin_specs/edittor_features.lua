@@ -163,7 +163,7 @@ return {
   {
     "Davidyz/atone.nvim",
     branch = "feat/customisable_node_label",
-    dir = "~/git/atone.nvim/",
+    -- dir = "~/git/atone.nvim/",
     opts = {
       ui = {
         compact = true,

@@ -399,6 +399,8 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    -- NOTE: causes freezes on nvim v0.12+
+    enabled = vim.version().minor < 12,
     opts = function()
       vim.treesitter.language.register("markdown", "vimwiki")
       return {
