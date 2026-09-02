@@ -482,8 +482,8 @@ return {
             api_key = "LLAMACPP_API_KEY",
             name = "llama.cpp",
             end_point = "http://localhost:8080/v1/completions",
-            model = "qwen3-coder-30b-a3b",
-            optional = { max_tokens = 100 },
+            model = "qwen3.6-35b-a3b",
+            optional = { max_tokens = 1000 },
             stream = false,
             template = {
               prompt = function(prefix, suffix, _)
