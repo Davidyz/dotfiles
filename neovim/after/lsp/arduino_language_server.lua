@@ -1,7 +1,4 @@
-if
-  vim.fn.filereadable(vim.fn.expand("~/.arduino15/arduino-cli.yaml")) == 0
-  and vim.fn.executable("arduino-cli")
-then
+if vim.fn.filereadable(vim.fn.expand("~/.arduino15/arduino-cli.yaml")) == 0 and vim.fn.executable("arduino-cli") then
   vim.fn.system("arduino-cli config init")
 end
 return {

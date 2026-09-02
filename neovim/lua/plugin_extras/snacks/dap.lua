@@ -19,10 +19,7 @@ function M.dap_frames()
   local session = get_session()
   assert(session.stopped_thread_id ~= nil, "Failed to find currently stopped thread!")
   ---@type dap.Thread
-  local thread = assert(
-    session.threads[session.stopped_thread_id],
-    "Failed to find currently stopped thread!"
-  )
+  local thread = assert(session.threads[session.stopped_thread_id], "Failed to find currently stopped thread!")
   if thread.frames == nil then
     return vim.notify("No StackFrame.")
   end
@@ -67,10 +64,7 @@ function M.dap_frames()
             }
             if sources[frame.id] then
               item.preview = {
-                text = table.concat(
-                  api.nvim_buf_get_lines(sources[frame.id], 0, -1, false),
-                  "\n"
-                ),
+                text = table.concat(api.nvim_buf_get_lines(sources[frame.id], 0, -1, false), "\n"),
                 ft = vim.bo[sources[frame.id]].filetype or session.filetype,
               }
             end
@@ -93,18 +87,15 @@ function M.dap_frames()
         fn.bufload(sources[frame.id])
         resolved_count = resolved_count + 1
       elseif frame.source.sourceReference then
-        session:source(
-          { sourceReference = frame.source.sourceReference },
-          function(_, source_buf)
-            resolved_count = resolved_count + 1
-            sources[frame.id] = source_buf
-            fn.bufload(source_buf)
-            if resolved_count == num_frames and not done then
-              done = true
-              return start_picker()
-            end
+        session:source({ sourceReference = frame.source.sourceReference }, function(_, source_buf)
+          resolved_count = resolved_count + 1
+          sources[frame.id] = source_buf
+          fn.bufload(source_buf)
+          if resolved_count == num_frames and not done then
+            done = true
+            return start_picker()
           end
-        )
+        end)
       end
 
       if resolved_count == num_frames and not done then
@@ -145,10 +136,7 @@ function M.dap_variables()
   local session = get_session()
   assert(session.stopped_thread_id ~= nil, "Failed to find currently stopped thread!")
   ---@type dap.Thread
-  local thread = assert(
-    session.threads[session.stopped_thread_id],
-    "Failed to find currently stopped thread!"
-  )
+  local thread = assert(session.threads[session.stopped_thread_id], "Failed to find currently stopped thread!")
 
   local frame = assert(session.current_frame, "Failed to find current frame.")
   assert(frame.scopes, "Failed to find any scopes.")
@@ -168,9 +156,7 @@ function M.dap_variables()
 
       local hl_group_name = string.format("@lsp.type.%s", var.type or "variable")
 
-      if
-        vim.tbl_isempty(api.nvim_get_hl(0, { name = hl_group_name, create = false }))
-      then
+      if vim.tbl_isempty(api.nvim_get_hl(0, { name = hl_group_name, create = false })) then
         hl_group_name = "Variable"
       end
 
@@ -237,11 +223,7 @@ function M.dap_variables()
               if loc_result.source.path then
                 snacks().picker.actions.jump(
                   picker,
-                  vim.tbl_deep_extend(
-                    "force",
-                    item,
-                    { pos = { loc_result.line, loc_result.column } }
-                  )
+                  vim.tbl_deep_extend("force", item, { pos = { loc_result.line, loc_result.column } })
                 )
               end
             end

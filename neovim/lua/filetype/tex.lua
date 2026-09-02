@@ -4,10 +4,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
   pattern = "*.tex",
   callback = function()
     if vim.fn.executable("texcount") ~= 0 and vim.bo.filetype == "tex" then
-      vim.b.latex_wc = string.match(
-        vim.fn.system("texcount -inc -sum -1 " .. vim.fn.expand("%")),
-        "%d+"
-      )
+      vim.b.latex_wc = string.match(vim.fn.system("texcount -inc -sum -1 " .. vim.fn.expand("%")), "%d+")
     end
   end,
 })
@@ -22,11 +19,9 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   end,
 })
 
-if
-  utils.all({ "xargs", "pgrep", "zathura" }, function(arg)
-    return vim.fn.executable(arg) == 1
-  end)
-then
+if utils.all({ "xargs", "pgrep", "zathura" }, function(arg)
+  return vim.fn.executable(arg) == 1
+end) then
   vim.api.nvim_create_autocmd({ "BufLeave", "VimLeave" }, {
     pattern = "*.tex",
     callback = function()

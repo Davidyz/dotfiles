@@ -9,8 +9,7 @@ local function fzf_notification()
   local entries = {}
   for _, noti in ipairs(notifications) do
     local first_line = noti.msg:gsub("\n.*", "")
-    entries[string.format("%s %s", utils.make_display_time(noti.added), first_line)] =
-      noti
+    entries[string.format("%s %s", utils.make_display_time(noti.added), first_line)] = noti
   end
 
   local fzf_lua = require("fzf-lua")

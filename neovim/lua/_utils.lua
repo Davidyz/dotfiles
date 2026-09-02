@@ -218,8 +218,7 @@ end
 
 ---@return boolean
 function M.is_basic_ssh()
-  return vim.fn.environ()["FANCY_TERM"] == nil
-    and vim.fn.environ()["SSH_CONNECTION"] ~= nil
+  return vim.fn.environ()["FANCY_TERM"] == nil and vim.fn.environ()["SSH_CONNECTION"] ~= nil
 end
 
 M.codicons = {
@@ -483,23 +482,16 @@ function M.close_no_diagnostics(opts)
   if opts.level ~= nil then
     run(opts.level)
   else
-    vim.ui.select(
-      { "ERROR", "WARN", "INFO", "HINT" },
-      { prompt = "Diagnostic Filter LEvel" },
-      function(item, _)
-        item = item or "WARN"
-        run(item)
-      end
-    )
+    vim.ui.select({ "ERROR", "WARN", "INFO", "HINT" }, { prompt = "Diagnostic Filter LEvel" }, function(item, _)
+      item = item or "WARN"
+      run(item)
+    end)
   end
 end
 M.find_nvim_runtime = function()
   local project_root = vim.fs.root(0, ".git")
   local runtime = vim.env.VIMRUNTIME
-  if
-    M.is_directory(project_root)
-    and M.is_directory(vim.fs.joinpath(project_root, "runtime", "lua"))
-  then
+  if M.is_directory(project_root) and M.is_directory(vim.fs.joinpath(project_root, "runtime", "lua")) then
     runtime = vim.fs.joinpath(project_root, "runtime")
   end
   return runtime

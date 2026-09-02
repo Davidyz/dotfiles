@@ -29,16 +29,14 @@ M.fzf_lua_jump_action = function(selected, opts)
     return
   end
   if
-    not vim
-      .iter(vim.api.nvim_tabpage_list_wins(vim.api.nvim_get_current_tabpage()))
-      :any(function(win)
-        local buf = vim.api.nvim_win_get_buf(win)
-        local fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
-        if fname then
-          return utils.is_file(fname)
-        end
-        return false
-      end)
+    not vim.iter(vim.api.nvim_tabpage_list_wins(vim.api.nvim_get_current_tabpage())):any(function(win)
+      local buf = vim.api.nvim_win_get_buf(win)
+      local fname = vim.uri_to_fname(vim.uri_from_bufnr(buf))
+      if fname then
+        return utils.is_file(fname)
+      end
+      return false
+    end)
   then
     -- do not open in new tab if current tab doesn't contain a file
     return actions.buf_edit(selected, opts)
@@ -53,11 +51,7 @@ M.fzf_lua_jump_action = function(selected, opts)
       if vim.uri_from_bufnr(vim.api.nvim_win_get_buf(win)) == uri then
         vim.api.nvim_set_current_win(win)
         if entry.line > 0 or entry.col > 0 then
-          pcall(
-            vim.api.nvim_win_set_cursor,
-            win,
-            { math.max(1, entry.line), math.max(1, entry.col) - 1 }
-          )
+          pcall(vim.api.nvim_win_set_cursor, win, { math.max(1, entry.line), math.max(1, entry.col) - 1 })
         end
         return
       end

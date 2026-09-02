@@ -12,9 +12,7 @@ return {
     build = "make",
     version = "*",
     cond = function()
-      return require("_utils").no_vscode()
-        and vim.fn.executable("make")
-        and require("_utils").platform() ~= "win"
+      return require("_utils").no_vscode() and vim.fn.executable("make") and require("_utils").platform() ~= "win"
     end,
     config = function(_, opts)
       if vim.fn.isdirectory(opts.save_path) ~= 1 then
@@ -93,12 +91,9 @@ return {
   {
     "keaising/im-select.nvim",
     cond = function()
-      return require("_utils").any(
-        { "fcitx-remote", "fcitx5-remote", "im-select", "im-select.exe" },
-        function(arg)
-          return vim.fn.executable(arg) == 1
-        end
-      )
+      return require("_utils").any({ "fcitx-remote", "fcitx5-remote", "im-select", "im-select.exe" }, function(arg)
+        return vim.fn.executable(arg) == 1
+      end)
     end,
     main = "im_select",
     opts = {

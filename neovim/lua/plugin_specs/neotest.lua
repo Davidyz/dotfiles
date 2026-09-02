@@ -31,10 +31,7 @@ return {
     "nvim-neotest/neotest",
     config = function()
       local default_python = require("venv-selector").python()
-        or vim.fs.joinpath(
-          vim.fs.root(0, { ".venv", "pyproject.toml", ".git" }) or ".",
-          ".venv/bin/python"
-        )
+        or vim.fs.joinpath(vim.fs.root(0, { ".venv", "pyproject.toml", ".git" }) or ".", ".venv/bin/python")
 
       if utils.is_file(default_python) then
         default_python = "python"

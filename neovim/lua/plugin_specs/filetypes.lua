@@ -11,10 +11,7 @@ return {
     ft = { "tex" },
     cond = require("_utils").no_vscode,
     config = function()
-      require("executable-checker").add_executable(
-        { "zathura", "xdotool", "biber" },
-        "vimtex"
-      )
+      require("executable-checker").add_executable({ "zathura", "xdotool", "biber" }, "vimtex")
       vim.g.vimtex_quickfix_mode = 0
       vim.g.vimtex_syntax_enabled = 0
 
@@ -24,10 +21,7 @@ return {
         vim.g.vimtex_view_method = "general"
         vim.g.vimtex_view_general_viewer = "firefox"
       end
-      vim.api.nvim_create_autocmd(
-        { "BufEnter", "BufWritePost" },
-        { command = "VimtexView", pattern = "*.tex" }
-      )
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, { command = "VimtexView", pattern = "*.tex" })
       --vim.g.vimtex_view_general_viewer = "okular"
       --vim.g.vimtex_view_general_options = "--unique file:@pdf#src:@line@tex"
     end,

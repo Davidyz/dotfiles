@@ -70,30 +70,21 @@ return {
       {
         "]f",
         function()
-          require("nvim-treesitter-textobjects.move").goto_next_start(
-            "@function.outer",
-            "textobjects"
-          )
+          require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
         end,
         desc = "Next function",
       },
       {
         "[f",
         function()
-          require("nvim-treesitter-textobjects.move").goto_previous_start(
-            "@function.outer",
-            "textobjects"
-          )
+          require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
         end,
         desc = "Previous function",
       },
       {
         "vif",
         function()
-          require("nvim-treesitter-textobjects.select").select_textobject(
-            "@function.inner",
-            "textobjects"
-          )
+          require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
         end,
         desc = "Select inner function.",
       },
@@ -101,20 +92,14 @@ return {
       {
         "]c",
         function()
-          require("nvim-treesitter-textobjects.move").goto_next_start(
-            "@class.outer",
-            "textobjects"
-          )
+          require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
         end,
         desc = "Next class",
       },
       {
         "[c",
         function()
-          require("nvim-treesitter-textobjects.move").goto_previous_start(
-            "@class.outer",
-            "textobjects"
-          )
+          require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
         end,
         desc = "Previous class",
       },
@@ -201,8 +186,7 @@ return {
             vim.lsp.buf.code_action({
               apply = true,
               filter = function(x)
-                return x.kind == "refactor.extract"
-                  and x.title:lower():find("function") ~= nil
+                return x.kind == "refactor.extract" and x.title:lower():find("function") ~= nil
               end,
             })
           end,
@@ -222,8 +206,7 @@ return {
             vim.lsp.buf.code_action({
               apply = true,
               filter = function(x)
-                return x.kind == "refactor.extract"
-                  and (string.find(x.title:lower(), "variable") ~= nil)
+                return x.kind == "refactor.extract" and (string.find(x.title:lower(), "variable") ~= nil)
               end,
             })
           end,
@@ -266,8 +249,7 @@ return {
             vim.lsp.buf.code_action({
               apply = true,
               filter = function(x)
-                return x.kind == "refactor.inline"
-                  and (string.find(x.title:lower(), "variable") ~= nil)
+                return x.kind == "refactor.inline" and (string.find(x.title:lower(), "variable") ~= nil)
               end,
             })
           end,

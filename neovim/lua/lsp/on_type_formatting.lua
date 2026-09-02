@@ -31,11 +31,7 @@ local function on_type_formatting(err, result, ctx)
 
   local bufnr = assert(ctx.bufnr)
 
-  if
-    not result
-    or not api.nvim_buf_is_loaded(bufnr)
-    or util.buf_versions[bufnr] ~= ctx.version
-  then
+  if not result or not api.nvim_buf_is_loaded(bufnr) or util.buf_versions[bufnr] ~= ctx.version then
     return
   end
 
@@ -132,14 +128,10 @@ end
 local function attach(client, bufnr)
   local client_id = client.id
   ---@type lsp.DocumentOnTypeFormattingOptions?
-  local otf_capabilities =
-    vim.tbl_get(client.server_capabilities, "documentOnTypeFormattingProvider")
+  local otf_capabilities = vim.tbl_get(client.server_capabilities, "documentOnTypeFormattingProvider")
   if not otf_capabilities then
     vim.schedule_wrap(vim.notify)(
-      string.format(
-        "Client with id %d does not support textDocument/onTypeFormatting requests",
-        client_id
-      ),
+      string.format("Client with id %d does not support textDocument/onTypeFormatting requests", client_id),
       vim.log.levels.WARN
     )
     return
@@ -255,10 +247,7 @@ function M.enable(enable, filter)
   filter = filter or {}
 
   if filter.client_id then
-    local client = assert(
-      lsp.get_client_by_id(filter.client_id),
-      "Client not found for id " .. filter.client_id
-    )
+    local client = assert(lsp.get_client_by_id(filter.client_id), "Client not found for id " .. filter.client_id)
     toggle_for_client(enable, client)
   else
     toggle_globally(enable)

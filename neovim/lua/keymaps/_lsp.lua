@@ -74,10 +74,7 @@ api.nvim_create_autocmd("LspAttach", {
 
     bufmap("n", "<Leader>it", function()
       local bufnr = api.nvim_get_current_buf()
-      return lsp.inlay_hint.enable(
-        not lsp.inlay_hint.is_enabled({ bufnr = bufnr }),
-        { bufnr = bufnr }
-      )
+      return lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
     end, { desc = "[I]nlayhint [t]oggle" })
 
     local inlay_hint_action = lsp.inlay_hint.action or lsp.inlay_hint.apply_action
@@ -131,11 +128,8 @@ api.nvim_create_autocmd("LspAttach", {
                         return
                       end
 
-                      local picker_pos = vim.tbl_deep_extend(
-                        "force",
-                        label.location,
-                        { encoding = ctx.client.offset_encoding }
-                      ) ---@cast picker_pos snacks.picker.lsp.Loc
+                      local picker_pos =
+                        vim.tbl_deep_extend("force", label.location, { encoding = ctx.client.offset_encoding }) ---@cast picker_pos snacks.picker.lsp.Loc
 
                       local fname = vim.uri_to_fname(label.location.uri)
                       if

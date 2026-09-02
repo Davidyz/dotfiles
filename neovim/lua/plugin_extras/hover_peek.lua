@@ -80,17 +80,12 @@ return {
           if orig_path ~= peek_path then
             local cli = lsp.get_client_by_id(context.client_id)
             if cli and cli.config.root_dir then
-              peek_path = string.format([[%s]], vim.fs.normalize(peek_path)):gsub(
-                string.format(
-                  [[%s/]],
-                  vim.fs.normalize(vim.fs.abspath(cli.config.root_dir))
-                ),
-                ""
-              )
+              peek_path = string
+                .format([[%s]], vim.fs.normalize(peek_path))
+                :gsub(string.format([[%s/]], vim.fs.normalize(vim.fs.abspath(cli.config.root_dir))), "")
             end
 
-            peek_path =
-              peek_path:gsub(string.format([[%s]], os.getenv("HOME") or ""), "~")
+            peek_path = peek_path:gsub(string.format([[%s]], os.getenv("HOME") or ""), "~")
             vim.list_extend(md_lines, { string.format("`%s`", peek_path) })
           end
           vim.list_extend(md_lines, {
@@ -114,10 +109,7 @@ return {
             local new_row_start = row_start
             local new_row_end = row_end
 
-            while
-              (row_start == new_row_start or row_end == new_row_end)
-              and ts_node ~= nil
-            do
+            while (row_start == new_row_start or row_end == new_row_end) and ts_node ~= nil do
               -- find the closest multi_line parent node and treat it as the definition.
 
               ts_node = ts_node:parent()
@@ -138,12 +130,7 @@ return {
           end
           vim.list_extend(
             md_lines,
-            api.nvim_buf_get_lines(
-              peek_bufnr,
-              range.start.line,
-              range.start.line + line_num,
-              false
-            )
+            api.nvim_buf_get_lines(peek_bufnr, range.start.line, range.start.line + line_num, false)
           )
           table.insert(md_lines, "```")
           return pcall(done, {
