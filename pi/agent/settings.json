@@ -1,0 +1,22 @@
+{
+  "packages": [
+    "npm:pi-lsp",
+    "npm:pi-subagents",
+    "npm:pi-mcp-adapter",
+    "https://github.com/XYenon/catppuccin-pi-coding-agent",
+    "npm:pi-execution-time"
+  ],
+  "lastChangelogVersion": "0.84.4",
+  "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
+  "defaultProvider": "llamacpp",
+  "defaultModel": "qwen3.6-35b-a3b-thinking",
+  "enableInstallTelemetry": false,
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 40960,
+    "keepRecentTokens": 10000
+  },
+  "hideThinkingBlock": true,
+  "editorPaddingX": 1,
+  "defaultThinkingLevel": "high"
+}

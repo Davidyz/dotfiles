@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "llamacpp": {
+      "baseUrl": "http://127.0.0.1:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "$LLAMACPP_API_KEY",
+      "models": [
+        {
+          "id": "qwen3.6-35b-a3b",
+          "name": "Qwen3.6 35B A3B Instruct",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "qwen3.6-35b-a3b-thinking",
+          "name": "Qwen3.6 35B A3B Thinking",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 32000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "compat": {
+            "supportsReasoningEffort": true
+          },
+          "thinkingLevelMap": {
+            "minimal": "none",
+            "low": "low",
+            "medium": "medium",
+            "high": "medium",
+            "xhigh": "xhigh",
+            "max": "xhigh"
+          }
+        }
+      ]
+    }
+  }
+}

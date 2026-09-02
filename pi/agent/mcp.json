@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "toolPrefix": "server",
+    "idleTimeout": 10,
+    "requestTimeoutMs": 30000
+  },
+  "mcpServers": {
+    "exa": {
+      "url": "https://mcp.exa.ai/mcp",
+      "lifecycle": "keep-alive",
+      "requestTimeoutMs": 30000
+    }
+  }
+}

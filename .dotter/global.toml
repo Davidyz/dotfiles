@@ -55,3 +55,6 @@
 
 [rime.files]
 "rime" = { target = "~/.local/share/fcitx5/rime", type = "symbolic" }
+
+[pi.files]
+"pi" = { target = "~/.pi/", type = "symbolic" }
