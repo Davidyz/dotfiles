@@ -39,7 +39,6 @@ return {
     },
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
-      { "zapling/mason-conform.nvim", opts = { ignore_install = { "black" } } },
     },
   },
   {
@@ -48,6 +47,7 @@ return {
     opts = function(_, opts)
       ---@type conform.setupOpts
       opts = vim.tbl_deep_extend("force", opts or {}, {
+        default_format_opts = { lsp_format = "prefer" },
         formatters_by_ft = {
           bash = { "shfmt" },
           c = { "clang-format" },
@@ -55,8 +55,8 @@ return {
           jinja = { "djlint" },
           json = { "fixjson" },
           json5 = { "prettier" },
-          lua = { "stylua" },
           markdown = { "injected" },
+          typescript = { "prettier" },
           python = function()
             local formatters
             if vim.fn.executable("black") == 1 then
@@ -86,7 +86,7 @@ return {
 
             return formatters
           end,
-          rust = { "rustfmt", lsp_format = "first" },
+          -- rust = { "rustfmt", lsp_format = "first" },
           sh = { "shfmt" },
           toml = function(bufnr)
             if api.nvim_buf_get_name(bufnr):match("pyproject%.toml$") ~= nil then
@@ -112,16 +112,14 @@ return {
         callback = function(args)
           api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
-            group = api.nvim_create_augroup(
-              string.format("Conform:%d", args.buf),
-              { clear = true }
-            ),
+            group = api.nvim_create_augroup(string.format("Conform:%d", args.buf), { clear = true }),
             callback = function(_args)
               if vim.g.format_on_save == false then
                 return
               end
               require("conform").format({
                 bufnr = _args.buf,
+                -- lsp_format = "fallback",
                 ---@param client vim.lsp.Client
                 filter = function(client)
                   return not vim.tbl_contains({ "ruff" }, client.name, {})
@@ -143,6 +141,26 @@ return {
         end,
       })
     end,
+    keys = {
+      {
+        "f",
+        function()
+          if vim.g.format_on_save == false then
+            return
+          end
+          require("conform").format({
+            bufnr = api.nvim_get_current_buf(),
+            async = true,
+            ---@param client vim.lsp.Client
+            filter = function(client)
+              return not vim.tbl_contains({ "ruff" }, client.name, {})
+            end,
+          })
+        end,
+        mode = { "x", "v" },
+        desc = "Range formatting",
+      },
+    },
     event = { "BufReadPost", "BufNewFile" },
   },
   {
@@ -170,10 +188,7 @@ return {
         "CursorMovedI",
       }, {
         callback = function()
-          if
-            (vim.bo.filetype ~= "lua" or (vim.fs.root(0, { "selene.toml" }) ~= nil))
-            and vim.bo.buftype == ""
-          then
+          if (vim.bo.filetype ~= "lua" or (vim.fs.root(0, { "selene.toml" }) ~= nil)) and vim.bo.buftype == "" then
             lint.try_lint()
           end
         end,

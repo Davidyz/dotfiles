@@ -20,29 +20,25 @@ local default_server_config = {
   ---@type vim.lsp.Client.Flags|{}
   flags = { debounce_text_changes = 150 },
   single_file_support = true,
-  capabilities = vim.tbl_deep_extend(
-    "force",
-    lsp.protocol.make_client_capabilities(),
-    {
-      textDocument = {
-        onTypeFormatting = (lsp.on_type_formatting ~= nil) and {
-          dynamicRegistration = false,
-        } or vim.NIL,
-        inlayHint = {
-          resolveSupport = {
-            properties = {
-              "textEdits",
-              "tooltip",
-              "location",
+  capabilities = vim.tbl_deep_extend("force", lsp.protocol.make_client_capabilities(), {
+    textDocument = {
+      onTypeFormatting = (lsp.on_type_formatting ~= nil) and {
+        dynamicRegistration = false,
+      } or vim.NIL,
+      inlayHint = {
+        resolveSupport = {
+          properties = {
+            "textEdits",
+            "tooltip",
+            "location",
 
-              "label.command",
-              "label.tooltip",
-            },
+            "label.command",
+            "label.tooltip",
           },
         },
       },
-    }
-  ),
+    },
+  }),
   on_attach = function(client, bufnr)
     if allow_for_formatting(client) then
       vim.bo[bufnr].formatexpr = "v:lua.lsp.formatexpr(#{timeout_ms:250})"
@@ -59,10 +55,7 @@ local default_server_config = {
 api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = lsp.get_client_by_id(args.data.client_id)
-    lsp.inlay_hint.enable(
-      client and client:supports_method("textDocument/inlayHint", args.buf),
-      { bufnr = args.buf }
-    )
+    lsp.inlay_hint.enable(client and client:supports_method("textDocument/inlayHint", args.buf), { bufnr = args.buf })
   end,
 })
 

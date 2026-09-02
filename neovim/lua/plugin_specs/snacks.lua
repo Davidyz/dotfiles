@@ -34,7 +34,7 @@ return {
         },
       },
     },
-    -- dir = "~/git/snacks.nvim/",
+    dir = "~/git/snacks.nvim/",
     submodules = false,
     priority = 1000,
     lazy = false,
@@ -142,8 +142,7 @@ return {
         gh = { enabled = fn.executable("gh") == 1 },
         image = { enabled = true },
         input = { enabled = true },
-        notifier = { enabled = true },
-        ---@type snacks.picker.Config
+        notifier = { enabled = false },
         picker = {
           enabled = true,
           ui_select = true,
@@ -248,6 +247,7 @@ return {
           left = { "mark", "sign", "git" },
           right = { "fold" },
         },
+        terminal = { enabled = true },
         words = { enabled = true },
         -- scroll = { animate = { easing = "inOutCirc" } },
         styles = { input = { relative = "cursor", row = -3, col = 0 } },
@@ -255,36 +255,29 @@ return {
     end,
     init = function()
       local snacks = require("snacks")
-      api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          ---@diagnostic disable-next-line: duplicate-set-field
-          _G.dd = function(...)
-            snacks.debug.inspect(...)
-          end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      _G.dd = function(...)
+        snacks.debug.inspect(...)
+      end
 
-          ---@diagnostic disable-next-line: duplicate-set-field
-          _G.dt = function(...)
-            snacks.debug.backtrace(...)
-          end
-          vim.print = _G.dd
-          -- vim.ui.input = Snacks.input.input
-          vim.o.laststatus = 3
-          vim.o.showtabline = 2
+      ---@diagnostic disable-next-line: duplicate-set-field
+      _G.dt = function(...)
+        snacks.debug.backtrace(...)
+      end
+      vim.print = _G.dd
+      -- vim.ui.input = Snacks.input.input
+      vim.o.laststatus = 3
+      vim.o.showtabline = 2
 
-          vim.ui.select = function(items, opts, on_choice)
-            return snacks.picker.select(
-              items,
-              vim.tbl_deep_extend(
-                "force",
-                { snacks = { sort = { fields = { "idx" } } } },
-                opts or {}
-              ),
-              on_choice
-            )
-          end
-        end,
-      })
+      vim.ui.select = function(items, opts, on_choice)
+        return snacks.picker.select(
+          items,
+          vim.tbl_deep_extend("force", { snacks = { sort = { fields = { "idx" } } } }, opts or {}),
+          on_choice
+        )
+      end
+
+      vim.notify = vim.schedule_wrap(snacks.notifier.notify)
     end,
     keys = {
       {

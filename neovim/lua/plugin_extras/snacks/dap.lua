@@ -31,11 +31,12 @@ function M.dap_frames()
   local num_frames = #frames
   local resolved_count = 0
 
-  ---@type table<integer, {path: string?, content: string?}>
+  ---@type table<integer, integer> frame_id to bufnr
   local sources = {}
   local start_picker = function()
     snacks().picker({
       title = "DAP StackFrame",
+      preview = "preview",
       items = vim
         .iter(frames)
         :filter(
@@ -48,10 +49,21 @@ function M.dap_frames()
           ---@param frame dap.StackFrame
           ---@return snacks.picker.Item
           function(frame)
+            local pos
+            if frame.line and frame.column then
+              pos = { frame.line, frame.column }
+            end
+            local end_pos
+            if frame.endLine and frame.endColumn then
+              end_pos = { frame.endLine, frame.endColumn }
+            end
             ---@type snacks.picker.finder.Item
             local item = {
-              pos = { frame.line, frame.column },
+              pos = pos,
+              end_pos = end_pos,
               text = frame.name,
+              line = frame.name,
+              buf = sources[frame.id],
             }
             if sources[frame.id] then
               item.preview = {

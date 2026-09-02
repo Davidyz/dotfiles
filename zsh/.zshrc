@@ -18,6 +18,7 @@ PERIOD=5
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin/:$PATH
+export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 if [ -d $HOME/.cargo/bin ]
 then
 	export PATH=$PATH:$HOME/.cargo/bin
@@ -535,3 +536,110 @@ __wezterm_osc52_precmd () {
 add-zsh-hook precmd __wezterm_osc52_precmd
 
 [[ "$TERMINFO" == *kitty* ]] && command -v kitten > /dev/null && alias ssh='kitten ssh'
+
+video_compare() {
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: video_compare <distorted> <reference>"
+        return 1
+    fi
+
+    ffmpeg -i "$1" -i "$2" \
+        -filter_complex "[0:v][1:v]libvmaf=n_threads=$(nproc || sysctl -n hw.ncpu)" \
+        -f null -
+}
+
+clear_aur_cache() { 
+	python <<EOF
+import glob
+import os
+
+_paru_clone_dir = os.path.expanduser(
+    os.environ.get("AUR_HELPER_CACHE", "~/.cache/paru/clone/")
+)
+
+asset_ext = ("deb", "tar.gz", "pkg.*")
+total_size = 0
+total_count = 0
+
+
+def format_size(size_byte: int) -> str:
+    if size_byte < 1024:
+        return "{:.2f} B".format(size_byte)
+    elif size_byte < 1024**2:
+        return "{:.2f} KB".format(size_byte / 1024)
+    elif size_byte < 1024**3:
+        return "{:.2f} MB".format(size_byte / 1024**2)
+    else:
+        return "{:.2f} GB".format(size_byte / 1024**3)
+
+
+for ext in asset_ext:
+    glob_pattern = os.path.join(_paru_clone_dir, "**", f"*.{ext}")
+    files = glob.glob(glob_pattern, recursive=False)
+    total_count += len(files)
+    total_size = sum(os.path.getsize(f) for f in files)
+    for file in files:
+        os.unlink(file)
+
+print(f"Deleted {total_count} files, saved {format_size(total_size)}.")
+EOF
+}
+
+pprint_sse(){
+	python3 -u -c '
+import sys
+from json import JSONDecodeError, dumps, loads
+from typing import Any
+
+
+def pprint_sse(data: str) -> bool:
+    """
+    Pretty-print a server-side event (SSE) event.
+    Returns `True` when `[DONE]`.
+    """
+    data = data.strip()
+    if data == "":
+        return False
+
+    is_stream = data.startswith("data:")
+
+    json_str = data.replace("data:", "").strip()
+    is_json = True
+    json_body: Any = None
+    try:
+        json_body = loads(json_str)
+    except JSONDecodeError:
+        is_json = False
+    try:
+        import rich
+
+        if is_json:
+            if is_stream:
+                rich.print("[bold red]data: [/bold red]", end="")
+            rich.print_json(json_str)
+        else:
+            if data.endswith("[DONE]"):
+                rich.print(f"[bold red]{data}[/bold red]")
+            else:
+                rich.print(data)
+
+    except Exception:
+        if is_json:
+            print(dumps(json_body, indent=2))
+        else:
+            print(data)
+
+    if not is_stream:
+        # NOTE: if not a stream, terminate immediately.
+        return True
+    return data.strip().endswith("[DONE]")
+
+
+if __name__ == "__main__":
+    print()
+    for line in sys.stdin:
+        if pprint_sse(line.strip()):
+            break'
+}
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit

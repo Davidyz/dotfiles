@@ -163,24 +163,26 @@ return {
   {
     "Davidyz/atone.nvim",
     branch = "feat/customisable_node_label",
-    -- dir = "~/git/atone.nvim/",
-    ---@module "atone"
-    ---@type Atone.Config
+    dir = "~/git/atone.nvim/",
     opts = {
-      node_label = {
-        ---@param ctx AtoneNode.Label.Ctx
-        formatter = function(ctx)
-          return {
-            "[",
-            { tostring(ctx.seq), ctx.is_current and "Keyword" or "Comment" },
-            "] ",
-            { ctx.h_time, "Comment" },
-            " ",
-            { tostring(ctx.diff.added), "DiffAdded" },
-            " ",
-            { tostring(ctx.diff.removed), "DiffRemoved" },
-          }
-        end,
+      ui = {
+        compact = true,
+        node_label = {
+          ---@module "atone"
+          ---@param ctx AtoneNode.Label.Ctx
+          formatter = function(ctx)
+            return {
+              "[",
+              { ctx.seq, ctx.is_current and "keyword" or "comment" },
+              "] ",
+              { ctx.h_time, "comment" },
+              " ",
+              { ctx.diff.added, "diffadded" },
+              " ",
+              { ctx.diff.removed, "diffremoved" },
+            }
+          end,
+        },
       },
     },
     cmd = { "Atone" },

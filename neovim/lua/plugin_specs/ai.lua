@@ -35,6 +35,8 @@ return {
   {
     "olimorris/codecompanion.nvim",
     -- dir = "~/git/codecompanion.nvim/",
+    branch = "develop",
+    -- version = "17.33.0",
     -- version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -200,10 +202,10 @@ return {
 
       opts.extensions = {
         dap = {
-          enabled = true,
+          enabled = false,
           opts = { tool_opts = {}, interval_ms = 1 },
         },
-        mcphub = { callback = "mcphub.extensions.codecompanion" },
+        mcphub = { callback = "mcphub.extensions.codecompanion", enabled = false },
         history = {
           enabled = false,
           opts = {
@@ -357,6 +359,7 @@ return {
         opts.strategies.chat.adapter = "Qwen"
         opts.strategies.inline.adapter = "Qwen"
       end
+      opts.interactions = opts.strategies
       return opts
     end,
     cond = function()
@@ -389,15 +392,12 @@ return {
 
   {
     "Davidyz/VectorCode",
-    -- dir = "~/git/VectorCode/",
+    dir = "~/git/VectorCode/",
     version = "*",
     -- build = "uv tool upgrade vectorcode",
     build = function(plugin)
       if vim.fn.executable("uv") ~= 1 then
-        return vim.notify(
-          "Failed to install VectorCode because `uv` is missing.",
-          vim.log.levels.WARN
-        )
+        return vim.notify("Failed to install VectorCode because `uv` is missing.", vim.log.levels.WARN)
       end
       local stdpath = vim.fn.stdpath("data")
       if string.find(plugin.dir, stdpath) then
@@ -488,33 +488,17 @@ return {
             template = {
               prompt = function(prefix, suffix, _)
                 if vim.bo.filetype == "gitcommit" then
-                  local git_diff_job = vim.system(
-                    { "git", "diff", "--cached" },
-                    {},
-                    nil
-                  )
-                  local recent_commits_job = vim.system(
-                    { "git", "log", "HEAD~10..HEAD", "--" },
-                    {},
-                    nil
-                  )
-                  local curr_branch_job = vim.system(
-                    { "git", "branch", "--show-current" },
-                    {},
-                    nil
-                  )
+                  local git_diff_job = vim.system({ "git", "diff", "--cached" }, {}, nil)
+                  local recent_commits_job = vim.system({ "git", "log", "HEAD~10..HEAD", "--" }, {}, nil)
+                  local curr_branch_job = vim.system({ "git", "branch", "--show-current" }, {}, nil)
                   local git_diff = vim.trim(git_diff_job:wait().stdout)
 
                   if git_diff then
                     local recent_commits = recent_commits_job:wait().stdout
                     local curr_branch = vim.trim(curr_branch_job:wait().stdout)
-                    local prompt = "<|fim_prefix|>"
+                    local prompt = ""
                     if curr_branch then
-                      prompt = prompt
-                        .. string.format(
-                          "<|file_sep|>The current branch name is `%s`\n",
-                          curr_branch
-                        )
+                      prompt = prompt .. string.format("<|file_sep|>The current branch name is `%s`\n", curr_branch)
                     end
                     if recent_commits then
                       prompt = prompt
@@ -526,26 +510,15 @@ return {
                     prompt = prompt
                       .. "Write a concise conventional commit message for the following git diff: "
                       .. git_diff
-                    return prompt
-                      .. "<|fim_prefix|>"
-                      .. prefix
-                      .. "<|fim_suffix|>"
-                      .. suffix
-                      .. "<|fim_middle|>"
+                    return prompt .. "<|fim_prefix|>" .. prefix .. "<|fim_suffix|>" .. suffix .. "<|fim_middle|>"
                   end
                 end
-                local prompt = "<|fim_prefix|>"
-                  .. prefix
-                  .. "<|fim_suffix|>"
-                  .. suffix
-                  .. "<|fim_middle|>"
+                local prompt = "<|fim_prefix|>" .. prefix .. "<|fim_suffix|>" .. suffix .. "<|fim_middle|>"
                 local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
                 if has_vc then
-                  prompt = vectorcode_config
-                    .get_cacher_backend()
-                    .make_prompt_component(0, function(file)
-                      return "<|file_separator|>" .. file.path .. "\n" .. file.document
-                    end).content .. prompt
+                  prompt = vectorcode_config.get_cacher_backend().make_prompt_component(0, function(file)
+                    return "<|file_separator|>" .. file.path .. "\n" .. file.document
+                  end).content .. prompt
                 end
 
                 return prompt
@@ -561,32 +534,18 @@ return {
               repo_context = function()
                 local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
                 if has_vc then
-                  return vectorcode_config
-                    .get_cacher_backend()
-                    .make_prompt_component(0, function(file)
-                      return "<|file_separator|>" .. file.path .. "\n" .. file.document
-                    end).content
+                  return vectorcode_config.get_cacher_backend().make_prompt_component(0, function(file)
+                    return "<|file_separator|>" .. file.path .. "\n" .. file.document
+                  end).content
                 else
                   return ""
                 end
               end,
               git_diff = function()
                 if vim.bo.filetype == "gitcommit" then
-                  local git_diff_job = vim.system(
-                    { "git", "diff", "--cached" },
-                    {},
-                    nil
-                  )
-                  local recent_commits_job = vim.system(
-                    { "git", "log", "HEAD~10..HEAD", "--" },
-                    {},
-                    nil
-                  )
-                  local curr_branch_job = vim.system(
-                    { "git", "branch", "--show-current" },
-                    {},
-                    nil
-                  )
+                  local git_diff_job = vim.system({ "git", "diff", "--cached" }, {}, nil)
+                  local recent_commits_job = vim.system({ "git", "log", "HEAD~10..HEAD", "--" }, {}, nil)
+                  local curr_branch_job = vim.system({ "git", "branch", "--show-current" }, {}, nil)
                   local git_diff = vim.trim(git_diff_job:wait().stdout)
                   local curr_branch = vim.trim(curr_branch_job:wait().stdout)
                   if git_diff then
@@ -594,8 +553,7 @@ return {
 
                     local prompt = ""
                     if curr_branch then
-                      prompt =
-                        string.format("The current branch name is `%s`\n", curr_branch)
+                      prompt = string.format("The current branch name is `%s`\n", curr_branch)
                     end
                     if recent_commits then
                       prompt = prompt

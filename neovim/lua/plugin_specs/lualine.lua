@@ -97,8 +97,7 @@ local diffview_label = function()
         if rev.type == 1 then
           rev_label = "LOCAL"
         elseif rev.type == 2 then
-          local head =
-            vim.trim(vim.fn.system({ "git", "rev-parse", "--revs-only", "HEAD" }))
+          local head = vim.trim(vim.fn.system({ "git", "rev-parse", "--revs-only", "HEAD" }))
           if head == rev.commit then
             rev_label = "HEAD"
           else
@@ -292,6 +291,22 @@ return {
               end
             end,
           },
+          {
+            function()
+              local winid = vim.api.nvim_get_current_win()
+              local cursor = vim.api.nvim_win_get_cursor(winid)
+              local pos = vim.pos(cursor[1] - 1, cursor[2], { win = winid })
+              return "raw: "
+                .. vim.inspect({ pos.row, pos.col })
+                .. "; cursor: "
+                .. vim.inspect(cursor)
+                .. "; screenpos: "
+                .. vim.inspect(pos:to_display(winid))
+            end,
+            cond = function()
+              return vim.pos ~= nil and vim.pos.to_display ~= nil
+            end,
+          },
         },
         lualine_z = {
           {
@@ -303,16 +318,9 @@ return {
               elseif _G.codecompanion_chat_metadata[curr_buf] then
                 local adapter = _G.codecompanion_chat_metadata[curr_buf].adapter
                 if adapter and adapter.model then
-                  return string.format(
-                    "%s: %d tokens",
-                    adapter.model,
-                    _G.codecompanion_chat_metadata[curr_buf].tokens
-                  )
+                  return string.format("%s: %d tokens", adapter.model, _G.codecompanion_chat_metadata[curr_buf].tokens)
                 else
-                  return string.format(
-                    "%d tokens",
-                    _G.codecompanion_chat_metadata[curr_buf].tokens
-                  )
+                  return string.format("%d tokens", _G.codecompanion_chat_metadata[curr_buf].tokens)
                 end
               end
             end,
@@ -322,8 +330,7 @@ return {
               return vim.b.ai_raw_response ~= nil
                 or (
                   _G.codecompanion_chat_metadata
-                  and _G.codecompanion_chat_metadata[vim.api.nvim_get_current_buf()]
-                    ~= nil
+                  and _G.codecompanion_chat_metadata[vim.api.nvim_get_current_buf()] ~= nil
                 )
             end,
           },
@@ -339,8 +346,7 @@ return {
               separator = "   ",
             },
             cond = function()
-              return package.loaded["nvim-navic"] ~= nil
-                and require("nvim-navic").is_available()
+              return package.loaded["nvim-navic"] ~= nil and require("nvim-navic").is_available()
             end,
           },
         },
@@ -350,11 +356,7 @@ return {
               if vim.bo.filetype == "arduino" then
                 return arduino_status()
               elseif vim.bo.filetype == "python" then
-                return string.gsub(
-                  require("venv-selector").venv(),
-                  os.getenv("HOME"),
-                  "~"
-                ) or ""
+                return string.gsub(require("venv-selector").venv(), os.getenv("HOME"), "~") or ""
               end
             end,
             cond = function()
@@ -371,8 +373,7 @@ return {
               end
             end,
             cond = function()
-              return package.loaded["snacks"] ~= nil
-                and require("snacks").profiler.running()
+              return package.loaded["snacks"] ~= nil and require("snacks").profiler.running()
             end,
           },
         },
@@ -389,7 +390,7 @@ return {
       },
     },
     config = function(_, opts)
-      vim.opt.laststatus = 3
+      vim.o.laststatus = 3
       vim.o.cmdheight = 0
       require("lualine").setup(opts)
       local group = api.nvim_create_augroup("cmdheight", { clear = true })
@@ -399,7 +400,7 @@ return {
         end,
         group = group,
       })
-      api.nvim_create_autocmd("CmdlineEnter", {
+      api.nvim_create_autocmd("CmdlineLeave", {
         callback = function()
           vim.o.cmdheight = 0
         end,

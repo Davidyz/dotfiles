@@ -10,7 +10,8 @@ return {
   settings = {
     basedpyright = {
       analysis = {
-        typeCheckingMode = "standard",
+        autoFormatStrings = true,
+        autoImportCompletions = true,
         inlayHints = {
           callArgumentNames = "all",
           functionReturnTypes = true,
@@ -20,8 +21,8 @@ return {
           useTypingExtensions = true,
           callArgumentNamesMatching = true,
         },
-        autoFormatStrings = true,
-        autoImportCompletions = true,
+        typeCheckingMode = "standard",
+        exclude = { "build/**" },
       },
       linting = { enabled = false },
       disableOrganizeImports = true,

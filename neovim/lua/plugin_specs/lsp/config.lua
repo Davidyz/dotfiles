@@ -25,8 +25,7 @@ return {
         ensure_installed = nil,
       }) --[[@as table]]
       opts.automatic_enable = opts.automatic_enable or {}
-      opts.automatic_enable.exclude =
-        vim.list_extend(opts.automatic_enable, { "stylua", "rust_analyzer" })
+      opts.automatic_enable.exclude = vim.list_extend(opts.automatic_enable, { "rust_analyzer" })
 
       -- NOTE: use emmylua_ls if explicitly supported (have .emmyrc.json) in project root
       local has_emmy = vim.fn.executable("emmylua_ls") == 1
@@ -34,6 +33,10 @@ return {
         table.insert(opts.automatic_enable.exclude, "lua_ls")
       else
         table.insert(opts.automatic_enable.exclude, "emmylua_ls")
+      end
+
+      if vim.fn.executable("pyrefly") == 1 then
+        vim.list_extend(opts.automatic_enable.exclude, { "basedpyright", "ty" })
       end
 
       return opts
@@ -46,7 +49,13 @@ return {
     "folke/lazydev.nvim",
     ft = "lua",
     -- cond = function()
-    --   return utils.find_nvim_runtime() == vim.env.VIMRUNTIME
+    --   if
+    --     vim.version().prerelease == "dev"
+    --             and utils.find_nvim_runtime() ~= vim.env.VIMRUNTIME
+    --   then
+    --     return false
+    --   end
+    --   return true
     -- end,
     ---@param opts? lazydev.Config|{}
     opts = function(_, opts)

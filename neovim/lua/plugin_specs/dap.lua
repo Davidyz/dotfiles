@@ -11,6 +11,11 @@ return {
     config = function()
       local dap = require("dap")
       dap.defaults.fallback.switchbuf = "useopen,usetab,usevisible,newtab"
+      -- dap.defaults.fallback.switchbuf = function(buf, line, col)
+      --   local winid = vim.api.nvim_get_current_win()
+      --   vim.api.nvim_win_set_buf(winid, buf)
+      --   vim.api.nvim_win_set_cursor(winid, { line, col })
+      -- end
       vim.api.nvim_create_autocmd(
         "BufEnter",
         { pattern = "[dap-repl]", callback = require("dap.ext.autocompl").attach }
@@ -306,6 +311,7 @@ return {
   },
   {
     "Davidyz/coredumpy.nvim",
+    -- dir = "~/git/coredumpy.nvim/",
     cmd = { "Coredumpy" },
     opts = function()
       return { python = nil }

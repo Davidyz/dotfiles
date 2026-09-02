@@ -21,7 +21,7 @@ return {
   },
   {
     "Wansmer/symbol-usage.nvim",
-    event = "LspAttach",
+    -- event = "LspAttach",
     opts = function(_, opts)
       local function text_format(symbol)
         local res = {}
@@ -79,6 +79,16 @@ return {
         end,
       })
     end,
+    keys = {
+      {
+        "gu",
+        function()
+          require("symbol-usage").toggle_globally()
+        end,
+        desc = "Toggle symbol usage",
+        mode = { "n" },
+      },
+    },
   },
   {
     "j-hui/fidget.nvim",
@@ -132,10 +142,14 @@ return {
     end,
   },
   {
-    "lewis6991/hover.nvim",
+    -- "lewis6991/hover.nvim",
+    "Davidyz/hover.nvim",
+    branch = "feat/inlayhint",
+    dir = "~/git/hover.nvim/",
     opts = {
       providers = {
         "hover.providers.lsp",
+        "hover.providers.inlay_hint",
         "hover.providers.man",
         "hover.providers.dap",
         "hover.providers.diagnostic",
@@ -209,21 +223,20 @@ return {
   },
   {
     "Davidyz/inlayhint-filler.nvim",
-    -- dir = "~/git/inlayhint-filler.nvim/",
-    event = "LspAttach",
+    dir = "~/git/inlayhint-filler.nvim/",
     ---@module "inlayhint-filler"
-    ---@type InlayHintFillerOpts
+    ---@type InlayHintFiller.Opts
     opts = {
       blacklisted_servers = {},
       force = false,
       eager = function(ctx)
-        return vim.bo[ctx.bufnr].filetype == "rust"
+        return vim.bo[ctx.bufnr].filetype == "rust" and false
       end,
       verbose = true,
     },
     keys = {
       {
-        "<Leader>if",
+        "gif",
         function()
           if vim.lsp.inlay_hint.apply_text_edits ~= nil then
             vim.schedule(function()
@@ -231,12 +244,41 @@ return {
               vim.lsp.inlay_hint.apply_text_edits()
             end)
           else
-            require("inlayhint-filler").fill()
+            require("inlayhint-filler").do_action.textEdits()
+            -- require("inlayhint-filler").fill({ textobject = true })
           end
         end,
         mode = { "n", "v" },
+        expr = true,
         desc = "[I]nlayhint [f]ill",
       },
+      --   {
+      --     "<Leader>il",
+      --     function()
+      --       require("inlayhint-filler").do_action.location()
+      --     end,
+      --     mode = { "n", "v" },
+      --     expr = true,
+      --     desc = "[I]nlayhint [l]ocation",
+      --   },
+      --   {
+      --     "<Leader>ic",
+      --     function()
+      --       require("inlayhint-filler").do_action.command()
+      --     end,
+      --     mode = { "n", "v" },
+      --     expr = true,
+      --     desc = "[I]nlayhint [c]ommand",
+      --   },
+      --   {
+      --     "<Leader>iT",
+      --     function()
+      --       require("inlayhint-filler").do_action.tooltip()
+      --     end,
+      --     mode = { "n", "v" },
+      --     expr = true,
+      --     desc = "[I]nlayhint [t]ooltip",
+      --   },
     },
   },
   {
