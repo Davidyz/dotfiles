@@ -1,5 +1,6 @@
 local api = vim.api
 local diag = vim.diagnostic
+local fn = vim.fn
 
 ---@module "lazy"
 
@@ -56,6 +57,7 @@ return {
           json = { "fixjson" },
           json5 = { "prettier" },
           markdown = { "injected" },
+          rust = { "rustfmt", lsp_format = "prefer" },
           typescript = { "prettier" },
           python = function()
             local formatters
@@ -145,16 +147,18 @@ return {
       {
         "f",
         function()
-          if vim.g.format_on_save == false then
+          if vim.g.format_on_save == false and (string.lower(fn.mode())):find("n") ~= nil then
             return
           end
+
           require("conform").format({
             bufnr = api.nvim_get_current_buf(),
-            async = true,
+            async = false,
             ---@param client vim.lsp.Client
             filter = function(client)
               return not vim.tbl_contains({ "ruff" }, client.name, {})
             end,
+            lsp_format = "fallback",
           })
         end,
         mode = { "x", "v" },
