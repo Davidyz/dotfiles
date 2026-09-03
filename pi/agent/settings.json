@@ -4,8 +4,7 @@
     "npm:pi-subagents",
     "npm:pi-mcp-adapter",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
-    "npm:pi-execution-time",
-    "npm:pi-effort"
+    "npm:pi-execution-time"
   ],
   "lastChangelogVersion": "0.84.4",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",

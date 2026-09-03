@@ -8,10 +8,15 @@
         {
           "id": "tc-code-latest",
           "name": "Auto",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
+          },
           "cost": {
             "input": 0,
             "output": 0,
@@ -24,7 +29,7 @@
         {
           "id": "minimax-m2.5",
           "name": "MiniMax-M2.5",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
@@ -33,6 +38,11 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
           },
           "contextWindow": 196608,
           "maxTokens": 32768,
@@ -48,7 +58,7 @@
         {
           "id": "kimi-k2.5",
           "name": "Kimi-K2.5",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
@@ -58,16 +68,26 @@
             "cacheRead": 0,
             "cacheWrite": 0
           },
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
+          },
           "contextWindow": 262144,
           "maxTokens": 32768
         },
         {
           "id": "glm-5",
           "name": "GLM-5",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
+          },
           "cost": {
             "input": 0,
             "output": 0,
@@ -88,7 +108,7 @@
         {
           "id": "deepseek/deepseek-v4-flash-0731",
           "name": "DeepSeek-V4-Flash",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
@@ -97,6 +117,11 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0
+          },
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
           },
           "contextWindow": 1000000,
           "maxTokens": 384000,
@@ -112,10 +137,15 @@
         {
           "id": "deepseek/deepseek-v4-pro-0813",
           "name": "DeepSeek-V4-Pro",
-          "reasoning": false,
+          "reasoning": true,
           "input": [
             "text"
           ],
+          "compat": {
+            "supportsReasoningEffort": true,
+            "thinkingFormat": "reasoning_effort",
+            "supportsDeveloperRole": false
+          },
           "cost": {
             "input": 0,
             "output": 0,
