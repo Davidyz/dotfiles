@@ -24,7 +24,7 @@
         {
           "id": "minimax-m2.5",
           "name": "MiniMax-M2.5",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
@@ -48,7 +48,7 @@
         {
           "id": "kimi-k2.5",
           "name": "Kimi-K2.5",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
@@ -64,7 +64,7 @@
         {
           "id": "glm-5",
           "name": "GLM-5",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
@@ -86,9 +86,9 @@
           }
         },
         {
-          "id": "deepseek-v4-flash",
+          "id": "deepseek/deepseek-v4-flash-0731",
           "name": "DeepSeek-V4-Flash",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
@@ -110,9 +110,9 @@
           }
         },
         {
-          "id": "deepseek-v4-pro-202606",
+          "id": "deepseek/deepseek-v4-pro-0813",
           "name": "DeepSeek-V4-Pro",
-          "reasoning": true,
+          "reasoning": false,
           "input": [
             "text"
           ],
