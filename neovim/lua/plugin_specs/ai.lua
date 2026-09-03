@@ -321,6 +321,23 @@ return {
           adapter = "Gemini",
         },
       }
+      if os.getenv("TOKENPLAN_API_KEY") then
+        opts.adapters.http["TokenPlan"] = function()
+          return require("codecompanion.adapters").extend("openai_compatible", {
+            env = {
+              url = "https://api.lkeap.cloud.tencent.com/plan/v3",
+              api_key = "TOKENPLAN_API_KEY",
+              chat_url = "/chat/completions",
+              models_endpoint = "/models",
+            },
+            schema = {
+              model = {
+                default = "deepseek-v4-flash",
+              },
+            },
+          })
+        end
+      end
 
       if os.getenv("SILICONFLOW_API_KEY") then
         opts.adapters.http["SiliconFlow"] = function()
