@@ -6,7 +6,7 @@
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "npm:pi-execution-time"
   ],
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.0",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",

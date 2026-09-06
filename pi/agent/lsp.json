@@ -109,6 +109,31 @@
       "diagnosticsWaitMs": 2000,
       "initializationOptions": {},
       "settings": {}
+    },
+    {
+      "id": "gopls",
+      "enabled": true,
+      "include": [
+        "**/*.go",
+        "**/*.gomod",
+        "**/*.gowork",
+        "**/*.gotmpl"
+      ],
+      "rootMarkers": [
+        "go.mod",
+        "go.work",
+        ".git"
+      ],
+      "bin": "gopls",
+      "args": [],
+      "cwd": "{root}",
+      "languageIdByExtension": {
+        ".go": "go"
+      },
+      "startupTimeoutMs": 45000,
+      "diagnosticsWaitMs": 2000,
+      "initializationOptions": {},
+      "settings": {}
     }
   ]
 }
