@@ -593,7 +593,7 @@ return {
             },
           },
         },
-        request_timeout = 10,
+        request_timeout = 1000,
       }
 
       require("minuet").setup(opts)
