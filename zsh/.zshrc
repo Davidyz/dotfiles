@@ -642,4 +642,20 @@ if __name__ == "__main__":
             break'
 }
 
+jj(){
+	# jump to the nearest parent git repo, excluding the current one.
+	curr_dir=$(realpath $(pwd)/..)
+	prev_dir=
+	while ([ ! "$prev_dir" = "$curr_dir" ]); do
+		prev_dir=$(realpath ${curr_dir})
+		if [ -d "$curr_dir/.git" ]; then
+			cd $curr_dir
+			return 0
+		fi
+		curr_dir=$(realpath ${curr_dir}/..)
+	done
+	echo "No parent git repo."
+	return 1
+}
+
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
