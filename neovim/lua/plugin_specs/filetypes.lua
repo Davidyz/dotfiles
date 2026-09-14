@@ -15,10 +15,14 @@ return {
       vim.g.vimtex_quickfix_mode = 0
       vim.g.vimtex_syntax_enabled = 0
 
-      if vim.fn.executable("zathura") then
+      vim.g.vimtex_view_method = "general"
+
+      if vim.fn.executable("okular") == 1 then
+        vim.g.vimtex_view_general_viewer = "okular"
+        vim.g.vimtex_view_general_options = "--unique file:@pdf\\#src:@line@tex"
+      elseif vim.fn.executable("zathura") == 1 then
         vim.g.vimtex_view_method = "zathura"
       else
-        vim.g.vimtex_view_method = "general"
         vim.g.vimtex_view_general_viewer = "firefox"
       end
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, { command = "VimtexView", pattern = "*.tex" })
