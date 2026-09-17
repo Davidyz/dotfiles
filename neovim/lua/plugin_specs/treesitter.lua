@@ -402,6 +402,7 @@ return {
     opts = {
       inline_ghost_text = false,
       type_signs = { [":"] = { " ", "Title" }, ["/"] = { " ", "Title" } },
+      remove_notice = true,
     },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
