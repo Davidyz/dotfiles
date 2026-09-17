@@ -1,3 +1,5 @@
+local utils = require("_utils")
+local api = vim.api
 return {
   {
     "stevearc/vim-arduino",
@@ -25,9 +27,18 @@ return {
       else
         vim.g.vimtex_view_general_viewer = "firefox"
       end
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, { command = "VimtexView", pattern = "*.tex" })
-      --vim.g.vimtex_view_general_viewer = "okular"
-      --vim.g.vimtex_view_general_options = "--unique file:@pdf#src:@line@tex"
+
+      if not utils.is_basic_ssh() then
+        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+          pattern = "*.tex",
+          callback = function(args)
+            vim.schedule(function()
+              api.nvim_cmd({ cmd = "VimtexView" }, {})
+              api.nvim_cmd({ cmd = "VimtexCompile" }, {})
+            end)
+          end,
+        })
+      end
     end,
   },
   {
