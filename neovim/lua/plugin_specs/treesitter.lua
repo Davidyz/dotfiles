@@ -148,39 +148,18 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "lewis6991/async.nvim",
     },
     cond = require("_utils").no_vscode,
-    config = function()
-      require("refactoring").setup({
-        show_success_message = true,
-        prompt_func_return_type = {
-          go = false,
-          java = false,
-          cpp = false,
-          c = false,
-          h = false,
-          hpp = false,
-          cxx = false,
-        },
-        prompt_func_param_type = {
-          go = false,
-          java = false,
-          cpp = false,
-          c = false,
-          h = false,
-          hpp = false,
-          cxx = false,
-        },
-        printf_statements = {},
-        print_var_statements = {},
-      })
+    opts = function(_, _opts)
+      return vim.tbl_deep_extend("force", _opts or {}, {})
     end,
     keys = {
       {
         "<leader>ef",
         keymap_utils.make_keymap_callback({
           function()
-            return require("refactoring").refactor("Extract Function")
+            return require("refactoring").extract_func({})
           end,
           rust = function()
             vim.lsp.buf.code_action({
@@ -200,7 +179,7 @@ return {
         "<leader>ev",
         keymap_utils.make_keymap_callback({
           function()
-            return require("refactoring").refactor("Extract Variable")
+            return require("refactoring").extract_var({})
           end,
           rust = function()
             vim.lsp.buf.code_action({
@@ -217,10 +196,10 @@ return {
         mode = { "x" },
       },
       {
-        "<leader>iF",
+        "<leader>if",
         keymap_utils.make_keymap_callback({
           function()
-            return require("refactoring").refactor("Inline Function")
+            return require("refactoring").inline_func({})
           end,
           rust = function()
             vim.lsp.buf.code_action({
@@ -243,7 +222,7 @@ return {
         "<leader>iv",
         keymap_utils.make_keymap_callback({
           function()
-            return require("refactoring").refactor("Inline Variable")
+            return require("refactoring").inline_var({})
           end,
           rust = function()
             vim.lsp.buf.code_action({
@@ -260,21 +239,11 @@ return {
         mode = { "x", "n" },
       },
       {
-        "<leader>eb",
+        "<leader>eff",
         function()
-          return require("refactoring").refactor("Extract Block")
+          return require("refactoring").extract_func_to_file({})
         end,
-        desc = "Extract block",
-        noremap = true,
-        expr = true,
-        mode = { "n" },
-      },
-      {
-        "<leader>ebf",
-        function()
-          return require("refactoring").refactor("Extract Block To File")
-        end,
-        desc = "Extract block to file",
+        desc = "Extract function to file",
         noremap = true,
         expr = true,
         mode = { "n" },
@@ -282,7 +251,7 @@ return {
       {
         "<leader>rp",
         function()
-          return require("refactoring").debug.print_var({})
+          return require("refactoring.debug").print_loc({})
         end,
         mode = { "n" },
         expr = true,
@@ -291,7 +260,7 @@ return {
       {
         "<leader>rc",
         function()
-          return require("refactoring").debug.cleanup({})
+          return require("refactoring.debug").cleanup({})
         end,
         mode = { "n" },
         expr = true,

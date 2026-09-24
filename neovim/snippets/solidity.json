@@ -1,0 +1,6 @@
+{
+  "Constructor": {
+    "prefix": "constructor",
+    "body": "constructor($1) {\n    $2\n}"
+  }
+}
