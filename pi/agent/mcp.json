@@ -9,6 +9,19 @@
       "url": "https://mcp.exa.ai/mcp",
       "lifecycle": "keep-alive",
       "requestTimeoutMs": 30000
+    },
+    "canvas": {
+      "command": "uvx",
+      "args": [
+        "canvas-api-mcp"
+      ],
+      "env": {
+        "CANVAS_BASE_URL": "https://canvas.cityu.edu.hk",
+        "CANVAS_TOKEN": "${CANVAS_TOKEN}"
+      },
+      "lifecycle": "lazy",
+      "idleTimeout": 10000,
+      "requestTimeoutMs": 30000
     }
   }
 }
