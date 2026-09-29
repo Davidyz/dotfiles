@@ -19,9 +19,14 @@
         "CANVAS_BASE_URL": "https://canvas.cityu.edu.hk",
         "CANVAS_TOKEN": "${CANVAS_TOKEN}"
       },
-      "lifecycle": "lazy",
+      "lifecycle": "keep-alive",
       "idleTimeout": 10000,
-      "requestTimeoutMs": 30000
+      "requestTimeoutMs": 30000,
+      "excludeTools": [
+        "submit_assignment",
+        "post_discussion_reply",
+        "canvas_request"
+      ]
     }
   }
 }
