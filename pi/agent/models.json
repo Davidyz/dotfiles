@@ -52,7 +52,8 @@
             "medium": "medium",
             "high": "high",
             "xhigh": "xhigh",
-            "max": null
+            "max": null,
+            "off": "none"
           }
         },
         {
@@ -102,7 +103,8 @@
             "medium": null,
             "high": "high",
             "xhigh": null,
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -132,7 +134,8 @@
             "medium": "high",
             "high": "high",
             "xhigh": "high",
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -161,7 +164,8 @@
             "medium": "high",
             "high": "high",
             "xhigh": "high",
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -190,7 +194,8 @@
             "medium": "medium",
             "high": "high",
             "xhigh": "high",
-            "max": "high"
+            "max": "high",
+            "off": "none"
           }
         },
         {
@@ -283,7 +288,8 @@
             "medium": "medium",
             "high": "high",
             "xhigh": "xhigh",
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -312,7 +318,8 @@
             "medium": null,
             "high": "high",
             "xhigh": null,
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -342,7 +349,8 @@
             "medium": null,
             "high": "high",
             "xhigh": null,
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -394,7 +402,8 @@
             "medium": null,
             "high": "high",
             "xhigh": null,
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         },
         {
@@ -423,7 +432,8 @@
             "medium": "high",
             "high": "high",
             "xhigh": "high",
-            "max": "max"
+            "max": "max",
+            "off": "none"
           }
         }
       ]
@@ -458,7 +468,8 @@
             "medium": "medium",
             "high": "medium",
             "xhigh": "xhigh",
-            "max": "xhigh"
+            "max": "xhigh",
+            "off": "none"
           }
         },
         {
@@ -486,7 +497,8 @@
             "medium": "medium",
             "high": "medium",
             "xhigh": "xhigh",
-            "max": "xhigh"
+            "max": "xhigh",
+            "off": "none"
           }
         }
       ]

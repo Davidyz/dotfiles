@@ -2,11 +2,10 @@
   "packages": [
     "npm:pi-lsp",
     "npm:pi-subagents",
-    "npm:pi-mcp-adapter",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "npm:pi-execution-time"
   ],
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.1",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
