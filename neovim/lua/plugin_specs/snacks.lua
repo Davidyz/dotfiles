@@ -140,7 +140,16 @@ return {
           },
         },
         gh = { enabled = fn.executable("gh") == 1 },
-        image = { enabled = true },
+        image = {
+          enabled = true,
+          doc = {
+            ---@param lang string tree-sitter language
+            ---@param type snacks.image.Type image type
+            conceal = function(lang, type)
+              return false
+            end,
+          },
+        },
         input = { enabled = true },
         notifier = { enabled = false },
         picker = {
