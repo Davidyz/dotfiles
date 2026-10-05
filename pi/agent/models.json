@@ -435,6 +435,53 @@
             "max": "max",
             "off": "none"
           }
+        },
+        {
+          "id": "kimi-k2.6",
+          "name": "Kimi-K2.6",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image",
+            "video"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "compat": {
+            "supportsReasoningEffort": false,
+            "thinkingFormat": "deepseek",
+            "supportsDeveloperRole": false
+          }
+        },
+        {
+          "id": "mimo-v2.6-flash",
+          "name": "MiMo-V2.6-Flash",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 1000000,
+          "maxTokens": 131072,
+          "compat": {
+            "supportsReasoningEffort": false,
+            "thinkingFormat": "qwen",
+            "supportsDeveloperRole": false
+          }
         }
       ]
     },
