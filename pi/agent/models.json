@@ -442,8 +442,7 @@
           "reasoning": true,
           "input": [
             "text",
-            "image",
-            "video"
+            "image"
           ],
           "cost": {
             "input": 0,
@@ -465,9 +464,7 @@
           "reasoning": true,
           "input": [
             "text",
-            "image",
-            "video",
-            "audio"
+            "image"
           ],
           "cost": {
             "input": 0,
