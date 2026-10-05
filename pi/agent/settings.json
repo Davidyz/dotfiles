@@ -5,7 +5,7 @@
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "npm:pi-execution-time"
   ],
-  "lastChangelogVersion": "0.99.1",
+  "lastChangelogVersion": "1.0.3",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -17,5 +17,16 @@
   },
   "hideThinkingBlock": true,
   "editorPaddingX": 1,
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "low",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "transport": "auto",
+  "markdown": {
+    "mermaid": "streaming"
+  },
+  "collapseChangelog": true,
+  "quietStartup": "header",
+  "doubleEscapeAction": "tree",
+  "tuiMode": "regular"
 }
