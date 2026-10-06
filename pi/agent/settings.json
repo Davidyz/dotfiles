@@ -3,9 +3,10 @@
     "npm:pi-lsp",
     "npm:pi-subagents",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
-    "npm:pi-execution-time"
+    "npm:pi-execution-time",
+    "npm:pi-observational-memory"
   ],
-  "lastChangelogVersion": "1.0.3",
+  "lastChangelogVersion": "1.0.4",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -28,5 +29,16 @@
   "collapseChangelog": true,
   "quietStartup": "header",
   "doubleEscapeAction": "tree",
-  "tuiMode": "regular"
+  "tuiMode": "regular",
+  "enabledModels": [
+    "tencent_token_plan/deepseek/deepseek-flash",
+    "tencent_token_plan/minimax-m3",
+    "tencent_token_plan/glm-5.3",
+    "tencent_token_plan/glm-5.3-flash",
+    "tencent_token_plan/kimi-k3",
+    "tencent_token_plan/deepseek/deepseek-v4-pro-0813",
+    "tencent_token_plan/mimo-v2.6-flash",
+    "llamacpp/ornith1.5-35b-a3b-thinking",
+    "llamacpp/qwen3.6-35b-a3b-thinking"
+  ]
 }
