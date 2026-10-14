@@ -1,12 +1,12 @@
 {
   "packages": [
     "npm:pi-lsp",
-    "npm:pi-subagents",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "npm:pi-execution-time",
-    "npm:pi-observational-memory"
+    "npm:pi-observational-memory",
+    "npm:@tintinweb/pi-subagents"
   ],
-  "lastChangelogVersion": "1.0.4",
+  "lastChangelogVersion": "1.2.0",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -20,7 +20,8 @@
   "editorPaddingX": 1,
   "defaultThinkingLevel": "low",
   "terminal": {
-    "showTerminalProgress": true
+    "showTerminalProgress": true,
+    "imageWidthCells": 60
   },
   "transport": "auto",
   "markdown": {

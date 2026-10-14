@@ -14,7 +14,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -41,7 +40,6 @@
           },
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "contextWindow": 196608,
@@ -71,7 +69,6 @@
           },
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "contextWindow": 262144,
@@ -86,7 +83,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -123,7 +119,6 @@
           },
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "contextWindow": 1000000,
@@ -153,7 +148,6 @@
           },
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "contextWindow": 1000000,
@@ -177,7 +171,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -207,7 +200,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -229,7 +221,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -250,7 +241,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -271,7 +261,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -301,7 +290,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -332,7 +320,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -363,7 +350,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -385,7 +371,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -415,7 +400,6 @@
           ],
           "compat": {
             "supportsReasoningEffort": true,
-            "thinkingFormat": "reasoning_effort",
             "supportsDeveloperRole": false
           },
           "cost": {
@@ -454,7 +438,6 @@
           "maxTokens": 32768,
           "compat": {
             "supportsReasoningEffort": false,
-            "thinkingFormat": "deepseek",
             "supportsDeveloperRole": false
           }
         },
@@ -476,7 +459,6 @@
           "maxTokens": 131072,
           "compat": {
             "supportsReasoningEffort": false,
-            "thinkingFormat": "qwen",
             "supportsDeveloperRole": false
           }
         }
