@@ -192,26 +192,6 @@
           }
         },
         {
-          "id": "minimax-m2.7",
-          "name": "MiniMax-M2.7",
-          "reasoning": true,
-          "input": [
-            "text"
-          ],
-          "compat": {
-            "supportsReasoningEffort": true,
-            "supportsDeveloperRole": false
-          },
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "contextWindow": 204800,
-          "maxTokens": 131072
-        },
-        {
           "id": "minimax-m3",
           "name": "MiniMax-M3",
           "reasoning": true,
