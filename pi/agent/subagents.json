@@ -1,0 +1,5 @@
+{
+  "packageAgents": [
+    "@tintinweb/pi-subagents"
+  ]
+}
