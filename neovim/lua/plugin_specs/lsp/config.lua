@@ -35,8 +35,8 @@ return {
         table.insert(opts.automatic_enable.exclude, "emmylua_ls")
       end
 
-      if vim.fn.executable("pyrefly") == 1 then
-        vim.list_extend(opts.automatic_enable.exclude, { "basedpyright", "ty" })
+      if vim.fn.executable("ty") == 1 then
+        vim.list_extend(opts.automatic_enable.exclude, { "basedpyright", "pyrefly" })
       end
 
       return opts
