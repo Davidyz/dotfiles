@@ -506,6 +506,29 @@
             "max": "xhigh",
             "off": "none"
           }
+        },
+        {
+          "id": "qwen3.8-flash-next",
+          "name": "Qwen3.8 Flash Next",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "compat": {
+            "supportsReasoningEffort": true,
+            "supportsDeveloperRole": false
+          },
+          "contextWindow": 131072,
+          "thinkingLevelMap": {
+            "minimal": "low",
+            "low": "low",
+            "medium": "medium",
+            "high": "medium",
+            "xhigh": "xhigh",
+            "max": "xhigh",
+            "off": "none"
+          }
         }
       ]
     }
