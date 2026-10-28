@@ -5,7 +5,8 @@
     "npm:pi-execution-time",
     "npm:pi-observational-memory",
     "npm:@tintinweb/pi-subagents",
-    "npm:@panzenbaby/pi-secure-extension"
+    "npm:@panzenbaby/pi-secure-extension",
+    "npm:@milanglacier/pi-plan-mode"
   ],
   "lastChangelogVersion": "1.4.0",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",

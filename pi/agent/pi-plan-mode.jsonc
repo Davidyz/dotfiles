@@ -1,0 +1,8 @@
+{
+	"enable_request_user_input_on_startup": true,
+	"keybinding": {
+		"toggle_plan_mode": [
+			"ctrl+shift+p"
+		]
+	}
+}
