@@ -44,5 +44,8 @@
     "llamacpp/ornith1.5-35b-a3b-thinking",
     "llamacpp/qwen3.6-35b-a3b-thinking",
     "llamacpp/qwen3.8-flash-next"
-  ]
+  ],
+  "observational-memory": {
+    "compactAfterTokensMode": "ratio"
+  }
 }
