@@ -4,6 +4,14 @@
       "url": "https://mcp.exa.ai/mcp",
       "timeout": 30,
       "exposure": "direct"
+    },
+    "draw_io": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@drawio/mcp"
+      ],
+      "exposure": "direct"
     }
   }
 }
