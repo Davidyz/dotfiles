@@ -8,7 +8,8 @@
     "npm:@panzenbaby/pi-secure-extension",
     "npm:@milanglacier/pi-plan-mode",
     "npm:pi-sidebar-tui",
-    "npm:pi-notify-agent"
+    "npm:pi-notify-agent",
+    "npm:opencode-pi"
   ],
   "lastChangelogVersion": "1.5.0",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
