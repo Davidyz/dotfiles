@@ -11,7 +11,7 @@
     "npm:pi-notify-agent",
     "npm:opencode-pi"
   ],
-  "lastChangelogVersion": "1.5.0",
+  "lastChangelogVersion": "1.5.1",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -45,8 +45,7 @@
     "tencent_token_plan/deepseek/deepseek-v4-pro-0813",
     "tencent_token_plan/mimo-v2.6-flash",
     "llamacpp/ornith1.5-35b-a3b-thinking",
-    "llamacpp/qwen3.6-35b-a3b-thinking",
-    "llamacpp/qwen3.8-flash-next"
+    "llamacpp/qwen3.6-35b-a3b-thinking"
   ],
   "observational-memory": {
     "compactAfterTokensMode": "ratio"
