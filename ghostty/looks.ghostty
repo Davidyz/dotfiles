@@ -1,0 +1,15 @@
+font-family = "Maple Mono Normal NL NF CN"
+font-size = 11
+font-feature = -calt, -liga, -dlig
+
+cursor-style = block
+cursor-color = #b4befe
+cursor-text = #1e1e2e
+
+shell-integration = detect
+shell-integration-features = no-cursor
+
+window-padding-x = 8
+window-padding-y = 8
+
+gtk-tabs-location = top

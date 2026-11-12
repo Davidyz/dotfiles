@@ -50,6 +50,9 @@
 [kitty.files]
 "kitty" = { target = "~/.config/kitty/", type = "symbolic" }
 
+[ghostty.files]
+"ghostty" = { target = "~/.config/ghostty/", type = "symbolic" }
+
 [paru.files]
 "paru" = { target = "~/.config/paru", type = "symbolic" }
 

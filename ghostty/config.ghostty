@@ -1,0 +1,9 @@
+config-file = looks.ghostty
+config-file = keys.ghostty
+window-decoration = server
+gtk-toolbar-style = flat
+gtk-wide-tabs = false
+
+theme = "dark:Catppuccin Mocha,light:Catppuccin Latte"
+
+bell-features = attention,title
