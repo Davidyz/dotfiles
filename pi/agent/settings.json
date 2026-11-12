@@ -9,9 +9,10 @@
     "npm:@milanglacier/pi-plan-mode",
     "npm:pi-sidebar-tui",
     "npm:pi-notify-agent",
-    "npm:opencode-pi"
+    "npm:opencode-pi",
+    "npm:pi-ask-user"
   ],
-  "lastChangelogVersion": "1.5.1",
+  "lastChangelogVersion": "1.5.2",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -35,7 +36,7 @@
   "collapseChangelog": true,
   "quietStartup": "header",
   "doubleEscapeAction": "tree",
-  "tuiMode": "regular",
+  "tuiMode": "fullscreen",
   "enabledModels": [
     "tencent_token_plan/deepseek/deepseek-flash",
     "tencent_token_plan/minimax-m3",
@@ -51,6 +52,8 @@
     "compactAfterTokensMode": "ratio"
   },
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.23.1"
-  }
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.23.2"
+  },
+  "cacheWarming": "idle",
+  "followUpMode": "all"
 }
