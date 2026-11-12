@@ -27,7 +27,7 @@ return {
     opts = {
       ui = { height = 0.8, border = "solid" },
       max_concurrent_jobs = math.min(4, require("_utils").cpu_count()),
-      PATH = "append",
+      PATH = "prepend",
     },
     event = { "FileType" },
   },
