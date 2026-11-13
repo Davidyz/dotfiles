@@ -9,7 +9,6 @@
     "npm:@milanglacier/pi-plan-mode",
     "npm:pi-sidebar-tui",
     "npm:pi-notify-agent",
-    "npm:opencode-pi",
     "npm:pi-ask-user"
   ],
   "lastChangelogVersion": "1.5.2",
@@ -51,9 +50,9 @@
   "observational-memory": {
     "compactAfterTokensMode": "ratio"
   },
-  "extensionChangelogVersions": {
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.23.2"
-  },
   "cacheWarming": "idle",
-  "followUpMode": "all"
+  "followUpMode": "all",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.24.0"
+  }
 }
