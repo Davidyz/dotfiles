@@ -53,3 +53,9 @@ instructions.
 - Treat subagent launch, workflow, and tooling failures as infrastructure
   blockers: report the exact failure and state, and retry only with a clear
   same-protocol fix. Do not silently fall back to another execution mode.
+- Avoid scheduling subagents in series. When you need to perform a certain workflow, 
+  you should wait for the first round to finish, validate the results (by yourself 
+  or by spawning validator subagents) and then proceed to the next phase. 
+  Parallel subagents are ok, but if you need more than 3 subagents, do not spawn 
+  them in one batch. Spawn at most 3 subagents at one time, and wait for the 
+  previous batch to finish before spawning the next batch.
