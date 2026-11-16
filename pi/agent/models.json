@@ -445,7 +445,7 @@
       ]
     },
     "llamacpp": {
-      "baseUrl": "http://127.0.0.1:8080/v1",
+      "baseUrl": "http://zephyr-1.mullet-ide.ts.net:8080/v1",
       "api": "openai-completions",
       "apiKey": "$LLAMACPP_API_KEY",
       "models": [
