@@ -1,0 +1,14 @@
+{
+  "model": {
+    "thinking": "off"
+  },
+  "observerModel": {
+    "thinking": "off"
+  },
+  "reflectorModel": {
+    "thinking": "off"
+  },
+  "dropperModel": {
+    "thinking": "off"
+  }
+}

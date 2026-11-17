@@ -10,7 +10,8 @@
     "npm:pi-sidebar-tui",
     "npm:pi-notify-agent",
     "npm:pi-ask-user",
-    "npm:@tintinweb/pi-tasks"
+    "npm:@tintinweb/pi-tasks",
+    "npm:pi-blackhole"
   ],
   "lastChangelogVersion": "1.5.2",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
@@ -48,13 +49,10 @@
     "llamacpp/ornith1.5-35b-a3b-thinking",
     "llamacpp/qwen3.6-35b-a3b-thinking"
   ],
-  "observational-memory": {
-    "compactAfterTokensMode": "ratio",
-    "consolidateWhenIdle": true
-  },
   "cacheWarming": "idle",
   "followUpMode": "all",
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.25.0"
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.0",
+    "{\"source\":\"npm:@tintinweb/pi-tasks\",\"scope\":\"user\"}": "0.9.1"
   }
 }
