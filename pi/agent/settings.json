@@ -3,7 +3,6 @@
     "npm:pi-lsp",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "npm:pi-execution-time",
-    "npm:pi-observational-memory",
     "npm:@tintinweb/pi-subagents",
     "npm:@panzenbaby/pi-secure-extension",
     "npm:@milanglacier/pi-plan-mode",
@@ -53,6 +52,7 @@
   "followUpMode": "all",
   "extensionChangelogVersions": {
     "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.0",
-    "{\"source\":\"npm:@tintinweb/pi-tasks\",\"scope\":\"user\"}": "0.9.1"
+    "{\"source\":\"npm:@tintinweb/pi-tasks\",\"scope\":\"user\"}": "0.9.1",
+    "{\"source\":\"npm:pi-blackhole\",\"scope\":\"user\"}": "0.5.18"
   }
 }
