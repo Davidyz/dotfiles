@@ -10,5 +10,6 @@
   },
   "dropperModel": {
     "thinking": "off"
-  }
+  },
+  "sessionFallback": true
 }
