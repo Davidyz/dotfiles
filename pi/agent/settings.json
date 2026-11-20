@@ -10,7 +10,9 @@
     "npm:pi-notify-agent",
     "npm:pi-ask-user",
     "npm:@tintinweb/pi-tasks",
-    "npm:pi-blackhole"
+    "npm:pi-blackhole",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-undo-redo"
   ],
   "lastChangelogVersion": "1.5.2",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
@@ -51,7 +53,7 @@
   "cacheWarming": "idle",
   "followUpMode": "all",
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.1",
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.2",
     "{\"source\":\"npm:@tintinweb/pi-tasks\",\"scope\":\"user\"}": "0.9.1",
     "{\"source\":\"npm:pi-blackhole\",\"scope\":\"user\"}": "0.5.18"
   }
