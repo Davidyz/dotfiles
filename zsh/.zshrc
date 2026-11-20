@@ -58,6 +58,7 @@ export ZSH_DISABLE_COMPFIX=true
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH/custom/"
 export PATH="$HOME/perl5/bin${PATH:+:${PATH}}"
+export FFF_ENABLE_HOME_SCAN=0
 
 [ -d "$ZSH" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
