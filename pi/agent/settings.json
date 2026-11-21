@@ -14,7 +14,7 @@
     "npm:@ff-labs/pi-fff",
     "npm:pi-undo-redo"
   ],
-  "lastChangelogVersion": "1.5.2",
+  "lastChangelogVersion": "1.6.0",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",
@@ -47,7 +47,6 @@
     "tencent_token_plan/kimi-k3",
     "tencent_token_plan/deepseek/deepseek-v4-pro-0813",
     "tencent_token_plan/mimo-v2.6-flash",
-    "llamacpp/ornith1.5-35b-a3b-thinking",
     "llamacpp/qwen3.6-35b-a3b-thinking"
   ],
   "cacheWarming": "idle",
@@ -55,6 +54,6 @@
   "extensionChangelogVersions": {
     "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.2",
     "{\"source\":\"npm:@tintinweb/pi-tasks\",\"scope\":\"user\"}": "0.9.1",
-    "{\"source\":\"npm:pi-blackhole\",\"scope\":\"user\"}": "0.5.18"
+    "{\"source\":\"npm:pi-blackhole\",\"scope\":\"user\"}": "0.5.19"
   }
 }

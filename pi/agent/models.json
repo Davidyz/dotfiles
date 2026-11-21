@@ -450,35 +450,6 @@
       "apiKey": "$LLAMACPP_API_KEY",
       "models": [
         {
-          "id": "ornith1.5-35b-a3b-thinking",
-          "name": "Ornith 1.5 35B A3B",
-          "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
-          "contextWindow": 131072,
-          "maxTokens": 32000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          },
-          "compat": {
-            "supportsReasoningEffort": true
-          },
-          "thinkingLevelMap": {
-            "minimal": "none",
-            "low": "low",
-            "medium": "medium",
-            "high": "medium",
-            "xhigh": "xhigh",
-            "max": "xhigh",
-            "off": "none"
-          }
-        },
-        {
           "id": "qwen3.6-35b-a3b-thinking",
           "name": "Qwen3.6 35B A3B",
           "reasoning": true,
