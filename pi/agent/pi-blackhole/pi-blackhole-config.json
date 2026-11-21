@@ -11,5 +11,6 @@
   "dropperModel": {
     "thinking": "off"
   },
-  "sessionFallback": true
+  "sessionFallback": true,
+  "tailBehavior": "unobserved"
 }
