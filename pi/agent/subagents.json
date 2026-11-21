@@ -1,5 +1,7 @@
 {
   "packageAgents": [
     "@tintinweb/pi-subagents"
-  ]
+  ],
+  "reportUsage": true,
+  "toolDescriptionMode": "compact"
 }
