@@ -1,15 +1,15 @@
 {
   "model": {
-    "thinking": "off"
+    "thinking": "minimal"
   },
   "observerModel": {
-    "thinking": "off"
+    "thinking": "minimal"
   },
   "reflectorModel": {
-    "thinking": "off"
+    "thinking": "minimal"
   },
   "dropperModel": {
-    "thinking": "off"
+    "thinking": "minimal"
   },
   "sessionFallback": true,
   "tailBehavior": "unobserved"
