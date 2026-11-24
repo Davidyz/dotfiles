@@ -12,5 +12,6 @@
     "thinking": "minimal"
   },
   "sessionFallback": true,
-  "tailBehavior": "unobserved"
+  "tailBehavior": "unobserved",
+  "compactAfterRatio": 0.6
 }
