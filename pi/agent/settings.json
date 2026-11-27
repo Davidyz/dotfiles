@@ -12,9 +12,11 @@
     "npm:@tintinweb/pi-tasks",
     "npm:pi-blackhole",
     "npm:@ff-labs/pi-fff",
-    "npm:pi-undo-redo"
+    "npm:pi-undo-redo",
+    "npm:pi-btw",
+    "npm:pi-goal-x"
   ],
-  "lastChangelogVersion": "1.6.0",
+  "lastChangelogVersion": "1.6.1",
   "theme": "catppuccin-latte-lavender/catppuccin-mocha-lavender",
   "defaultProvider": "llamacpp",
   "defaultModel": "qwen3.6-35b-a3b-thinking",

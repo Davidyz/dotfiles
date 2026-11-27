@@ -3,5 +3,7 @@
     "@tintinweb/pi-subagents"
   ],
   "reportUsage": true,
-  "toolDescriptionMode": "compact"
+  "toolDescriptionMode": "compact",
+  "maxConcurrent": 2,
+  "workflowsEnabled": false
 }
